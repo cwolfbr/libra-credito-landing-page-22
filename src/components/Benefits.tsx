@@ -4,16 +4,16 @@ import { Check } from 'lucide-react';
 
 const benefits = [
   {
-    title: "Taxas a partir de 0,99% ao mês",
+    title: "Taxas a partir de 1,09% ao mês",
     description: "As menores taxas do mercado para empréstimo com garantia de imóvel"
   },
   {
-    title: "Até 20 anos para pagar",
+    title: "Até 180 meses para pagar",
     description: "Parcelas que cabem no seu bolso com prazos estendidos"
   },
   {
-    title: "Até 80% do valor do imóvel",
-    description: "Libere até 80% do valor de avaliação do seu imóvel"
+    title: "Até 50% do valor do imóvel",
+    description: "Libere até 50% do valor de avaliação do seu imóvel"
   }
 ];
 

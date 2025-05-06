@@ -21,7 +21,7 @@ const Hero: React.FC = () => {
               Crédito com Garantia de Imóvel
             </h1>
             <p className="text-lg md:text-xl mb-6 text-libra-silver">
-              Taxas a partir de 0,99% ao mês, as melhores condições do mercado para você realizar seus projetos.
+              Taxas a partir de 1,09% ao mês, as melhores condições do mercado para você realizar seus projetos.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button 
