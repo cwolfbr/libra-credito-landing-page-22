@@ -44,7 +44,7 @@ const Testimonials: React.FC = () => {
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-libra-navy mb-4">O que nossos clientes dizem</h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Veja como o crédito com garantia de imóvel transformou a vida financeira de nossos clientes.
+            Veja como o crédito com garantia de imóvel transformou a vida financeira de nossos clientes com taxas a partir de 1,09% a.m. e prazo de até 180 meses.
           </p>
         </div>
         
@@ -52,7 +52,7 @@ const Testimonials: React.FC = () => {
           <div className="w-full aspect-[9/16] max-w-sm mx-auto rounded-lg overflow-hidden shadow-xl">
             <iframe 
               className="w-full h-full"
-              src="https://www.youtube.com/embed/E9lwL6R2l1s" 
+              src="https://youtube.com/embed/gRVfAjebQw4" 
               title="Depoimento Cliente - Libra Crédito"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

@@ -30,8 +30,8 @@ const LoanSimulator: React.FC = () => {
   // Função que seria chamada para consultar a API
   const calculateLoan = () => {
     // Simulação de cálculo - Será substituído pela chamada API
-    const interest = 0.0099; // 0.99% ao mês
-    const term = 240; // 20 anos em meses
+    const interest = 0.0109; // 1.09% ao mês
+    const term = 180; // 15 anos em meses
     
     // Cálculo da parcela usando a fórmula de amortização
     const payment = loanAmount * (interest * Math.pow(1 + interest, term)) / (Math.pow(1 + interest, term) - 1);
@@ -43,6 +43,9 @@ const LoanSimulator: React.FC = () => {
     setRequiredIncome(income);
     setShowResults(true);
   };
+
+  // Check if loan amount is more than 50% of property value
+  const isLoanAmountValid = loanAmount <= propertyValue * 0.5;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,7 +75,7 @@ const LoanSimulator: React.FC = () => {
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-libra-navy mb-4">Simule seu empréstimo</h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Descubra quanto você pode obter com a garantia do seu imóvel e quais serão as condições de pagamento.
+            Descubra quanto você pode obter com a garantia do seu imóvel (até 50% do valor) e quais serão as condições de pagamento.
           </p>
         </div>
         
@@ -202,6 +205,7 @@ const LoanSimulator: React.FC = () => {
                   <p className="text-sm text-gray-600 mb-2">Parcela mensal estimada:</p>
                   <p className="text-3xl font-bold text-libra-navy">{formatCurrency(monthlyPayment)}</p>
                   <p className="text-xs text-gray-500 mt-2">*Valores aproximados, sujeitos à análise de crédito</p>
+                  <p className="text-xs text-gray-500 mt-1">Taxa a partir de 1,09% a.m. em até 180 meses</p>
                 </div>
                 
                 <div className="bg-libra-light p-6 rounded-lg text-center">
