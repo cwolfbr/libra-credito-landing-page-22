@@ -26,7 +26,7 @@ const Hero: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-4">
               <Button 
                 onClick={scrollToSimulator}
-                className="bg-libra-gold hover:bg-white hover:text-libra-navy text-libra-navy font-semibold text-lg px-8 py-6"
+                className="bg-libra-blue hover:bg-white hover:text-libra-navy text-white font-semibold text-lg px-8 py-6"
               >
                 Simular Agora
               </Button>
@@ -39,10 +39,9 @@ const Hero: React.FC = () => {
             </div>
           </div>
           <div className="w-full aspect-video rounded-lg overflow-hidden shadow-xl animate-fade-in">
-            {/* Substitua pelo ID do vídeo real do YouTube */}
             <iframe 
               className="w-full h-full"
-              src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+              src="https://www.youtube.com/embed/E9lwL6R2l1s" 
               title="Crédito com Garantia de Imóvel - Libra Crédito"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

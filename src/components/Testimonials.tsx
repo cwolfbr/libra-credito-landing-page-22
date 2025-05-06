@@ -4,23 +4,23 @@ import { MessageSquare, User } from 'lucide-react';
 
 const testimonials = [
   {
-    name: "Carlos Silva",
-    occupation: "Empresário",
-    text: "Consegui capital de giro para minha empresa com taxas muito menores do que eu pagava nos bancos tradicionais. O processo foi rápido e sem burocracia."
+    name: "José Augusto Felix",
+    age: "61 anos",
+    text: "Dentre as possibilidades que haviam no mercado, optei por fechar com a Libra, justamente pelo excelente atendimento e taxas competitivas. Recebi toda a assistência necessária e fiquei bastante satisfeito."
   },
   {
-    name: "Maria Oliveira",
-    occupation: "Professora",
-    text: "Utilizei o crédito para quitar dívidas com juros altos. Agora pago uma parcela única com juros menores e organizei minha vida financeira."
+    name: "Alcidemir Francisco de Oliveira",
+    age: "59 anos",
+    text: "Conheci a Libra pelo Instagram e as conversas iniciais foram rápidas e eficientes. Aprecio muito a atenção aos detalhes e o processo transparente. Eu achei a experiência geral, positiva e útil para o meu objetivo, que era reduzir dívidas."
   },
   {
-    name: "João Santos",
-    occupation: "Engenheiro",
-    text: "Fiz a reforma dos meus sonhos sem precisar usar todas as minhas economias. As condições de pagamento são excelentes."
+    name: "Emanuele Cristina Presenti",
+    age: "27 anos",
+    text: "Meu primeiro contato com a Libra foi pelo Google, pesquisei mais detalhes sobre a empresa e entrei em contato. A primeira comunicação foi ótima e os consultores também! Fiz cotação com outras empresas, mas o valor que a Libra liberou foi maior, e as condições de pagamento e taxa de juros também foram melhores."
   }
 ];
 
-const TestimonialCard: React.FC<{name: string, occupation: string, text: string}> = ({ name, occupation, text }) => {
+const TestimonialCard: React.FC<{name: string, age: string, text: string}> = ({ name, age, text }) => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100 mb-4">
       <div className="flex items-start gap-3 mb-4">
@@ -29,7 +29,7 @@ const TestimonialCard: React.FC<{name: string, occupation: string, text: string}
         </div>
         <div>
           <h4 className="font-bold text-libra-navy">{name}</h4>
-          <p className="text-sm text-gray-500">{occupation}</p>
+          <p className="text-sm text-gray-500">{age}</p>
         </div>
       </div>
       <p className="text-gray-600 italic">{text}</p>
@@ -50,10 +50,9 @@ const Testimonials: React.FC = () => {
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div className="w-full aspect-[9/16] max-w-sm mx-auto rounded-lg overflow-hidden shadow-xl">
-            {/* Substitua pelo ID do vídeo real do YouTube ou outro serviço */}
             <iframe 
               className="w-full h-full"
-              src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+              src="https://www.youtube.com/embed/E9lwL6R2l1s" 
               title="Depoimento Cliente - Libra Crédito"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -63,7 +62,7 @@ const Testimonials: React.FC = () => {
           
           <div>
             <div className="flex items-center gap-2 mb-6">
-              <MessageSquare className="w-6 h-6 text-libra-gold" />
+              <MessageSquare className="w-6 h-6 text-libra-blue" />
               <h3 className="text-2xl font-bold text-libra-navy">Depoimentos de Clientes</h3>
             </div>
             
@@ -72,7 +71,7 @@ const Testimonials: React.FC = () => {
                 <TestimonialCard 
                   key={index}
                   name={testimonial.name}
-                  occupation={testimonial.occupation}
+                  age={testimonial.age}
                   text={testimonial.text}
                 />
               ))}

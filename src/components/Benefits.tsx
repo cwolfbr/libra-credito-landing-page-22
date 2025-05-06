@@ -12,20 +12,8 @@ const benefits = [
     description: "Parcelas que cabem no seu bolso com prazos estendidos"
   },
   {
-    title: "Sem entrada e sem burocracia",
-    description: "Processo simples e rápido, sem a necessidade de entrada"
-  },
-  {
     title: "Até 80% do valor do imóvel",
     description: "Libere até 80% do valor de avaliação do seu imóvel"
-  },
-  {
-    title: "Pague somente após liberação do crédito",
-    description: "Sem taxas de abertura de crédito ou análise prévia"
-  },
-  {
-    title: "Para qualquer finalidade",
-    description: "Utilize o valor para o que precisar, sem restrições"
   }
 ];
 
@@ -33,7 +21,7 @@ const BenefitCard: React.FC<{title: string, description: string}> = ({ title, de
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
       <div className="flex items-start gap-4">
-        <div className="bg-libra-gold rounded-full p-2 flex-shrink-0">
+        <div className="bg-libra-blue rounded-full p-2 flex-shrink-0">
           <Check className="w-5 h-5 text-white" />
         </div>
         <div>
@@ -56,7 +44,7 @@ const Benefits: React.FC = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-slide-up">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-slide-up">
           {benefits.map((benefit, index) => (
             <BenefitCard 
               key={index} 

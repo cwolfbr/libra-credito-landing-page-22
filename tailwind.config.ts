@@ -64,10 +64,10 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				libra: {
-					navy: '#0A2342',
+					navy: '#003399',
 					gold: '#D4AF37',
 					silver: '#F0F0F0',
-					blue: '#1A5F7A',
+					blue: '#00ccff',
 					light: '#F8F9FA'
 				}
 			},
@@ -109,7 +109,7 @@ export default {
 				'slide-up': 'slide-up 0.5s ease-out'
 			},
 			backgroundImage: {
-				'hero-pattern': 'linear-gradient(to right, rgba(10, 35, 66, 0.9), rgba(10, 35, 66, 0.7))',
+				'hero-pattern': 'linear-gradient(to right, rgba(0, 51, 153, 0.9), rgba(0, 51, 153, 0.7))',
 				'gold-gradient': 'linear-gradient(90deg, #D4AF37 0%, #F2D57E 50%, #D4AF37 100%)'
 			}
 		}
