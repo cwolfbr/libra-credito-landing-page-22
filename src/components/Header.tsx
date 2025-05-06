@@ -7,12 +7,13 @@ const Header: React.FC = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md py-3 md:py-4">
       <div className="container mx-auto flex justify-between items-center">
-        <div className="flex items-center">
+        <div className="flex items-center gap-3">
           <img 
-            src="/public/lovable-uploads/75b290f8-4c51-45af-b45c-b737f5e1ca37.png" 
+            src="/lovable-uploads/75b290f8-4c51-45af-b45c-b737f5e1ca37.png" 
             alt="Libra Crédito" 
-            className="h-12 md:h-16"
+            className="h-10 md:h-12"
           />
+          <span className="text-libra-navy font-semibold text-lg md:text-xl">Libra Crédito</span>
         </div>
         <div className="flex items-center gap-4">
           <a href="tel:08000000000" className="hidden md:flex items-center text-libra-navy font-medium">
