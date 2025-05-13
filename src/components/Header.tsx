@@ -4,11 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Info } from 'lucide-react';
 
 const Header: React.FC = () => {
-  const scrollToChat = () => {
-    const chatSection = document.getElementById('agent-chat');
-    if (chatSection) {
-      chatSection.scrollIntoView({ behavior: 'smooth' });
-    }
+  const handleWhatsAppContact = () => {
+    window.open('https://wa.me/5516996360424?text=Ol%C3%A1%2C%20Quero%20agendar%20uma%20conversa%20com%20o%20consultor!', '_blank');
   };
 
   return (
@@ -29,7 +26,7 @@ const Header: React.FC = () => {
           </p>
           <Button 
             className="bg-libra-blue hover:bg-libra-navy text-white font-medium"
-            onClick={scrollToChat}
+            onClick={handleWhatsAppContact}
           >
             Fale Conosco
           </Button>
