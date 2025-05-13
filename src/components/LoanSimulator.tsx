@@ -70,6 +70,10 @@ const LoanSimulator: React.FC = () => {
 
   // Cálculo do valor mínimo necessário do imóvel (2x o valor do empréstimo)
   const minPropertyValue = loanAmount * 2;
+  
+  // Cálculo do valor máximo necessário do imóvel (3x o valor do empréstimo)
+  const maxPropertyValue = loanAmount * 3;
+
   return <section id="simulator" className="py-16 md:py-24 bg-gradient-to-b from-libra-light to-white">
       <div className="container mx-auto">
         <div className="text-center mb-12">
@@ -193,13 +197,13 @@ const LoanSimulator: React.FC = () => {
                             <Info className="w-4 h-4 text-gray-400" />
                           </TooltipTrigger>
                           <TooltipContent className="max-w-xs">
-                            <p>Em determinados casos, a avaliação mínima necessária pode ser até 3x o valor do empréstimo, dependendo da análise de risco.</p>
+                            <p>Dependendo das características do imóvel (tipo, região e documentação), a avaliação mínima necessária pode ser até {formatCurrency(maxPropertyValue)}.</p>
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
                     </div>
                     <p className="text-3xl font-bold text-libra-navy">{formatCurrency(minPropertyValue)}</p>
-                    <p className="text-xs text-gray-500 mt-2">*Mínimo de 2x o valor solicitado</p>
+                    <p className="text-xs text-gray-500 mt-2">*Dependendo das características do imóvel (tipo, região e documentação), pode ser necessário até {formatCurrency(maxPropertyValue)}</p>
                   </div>
                 </div>
               </div>
