@@ -1,5 +1,7 @@
+
 import React from 'react';
 import { ChevronUp } from 'lucide-react';
+
 const Footer: React.FC = () => {
   const scrollToTop = () => {
     window.scrollTo({
@@ -7,6 +9,7 @@ const Footer: React.FC = () => {
       behavior: 'smooth'
     });
   };
+  
   return <footer className="bg-libra-navy text-white">
       <div className="container mx-auto py-8 md:py-12">
         <div className="flex flex-col md:flex-row justify-between items-center mb-8">
@@ -23,7 +26,7 @@ const Footer: React.FC = () => {
           </button>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 pb-8 border-b border-libra-blue/20">
+        <div className="grid grid-cols-1 md:grid-cols-1 gap-8 mb-8 pb-8 border-b border-libra-blue/20">
           <div>
             <h3 className="font-bold text-lg mb-4">Produtos</h3>
             <ul className="space-y-2">
@@ -31,26 +34,6 @@ const Footer: React.FC = () => {
               <li><a href="#" className="text-libra-silver hover:text-white transition-colors">Crédito com garantia de imóvel</a></li>
               <li><a href="#" className="text-libra-silver hover:text-white transition-colors">Consolidação de dívidas</a></li>
               <li><a href="#" className="text-libra-silver hover:text-white transition-colors">Capital de giro para empresas</a></li>
-            </ul>
-          </div>
-          
-          <div>
-            <h3 className="font-bold text-lg mb-4">Empresa</h3>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-libra-silver hover:text-white transition-colors">Sobre nós</a></li>
-              <li><a href="#" className="text-libra-silver hover:text-white transition-colors">Trabalhe conosco</a></li>
-              <li><a href="#" className="text-libra-silver hover:text-white transition-colors">Blog</a></li>
-              <li><a href="#" className="text-libra-silver hover:text-white transition-colors">Contato</a></li>
-            </ul>
-          </div>
-          
-          <div>
-            <h3 className="font-bold text-lg mb-4">Legal</h3>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-libra-silver hover:text-white transition-colors">Termos de uso</a></li>
-              <li><a href="#" className="text-libra-silver hover:text-white transition-colors">Política de privacidade</a></li>
-              <li><a href="#" className="text-libra-silver hover:text-white transition-colors">Política de cookies</a></li>
-              <li><a href="#" className="text-libra-silver hover:text-white transition-colors">Informações legais</a></li>
             </ul>
           </div>
         </div>
@@ -75,4 +58,5 @@ const Footer: React.FC = () => {
       </div>
     </footer>;
 };
+
 export default Footer;
