@@ -49,10 +49,10 @@ const Testimonials: React.FC = () => {
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-          <div className="w-full aspect-[9/16] max-w-sm mx-auto rounded-lg overflow-hidden shadow-xl">
+          <div className="w-full aspect-[16/9] max-w-xl mx-auto rounded-lg overflow-hidden shadow-xl">
             <iframe 
               className="w-full h-full"
-              src="https://youtube.com/embed/gRVfAjebQw4" 
+              src="https://www.youtube.com/embed/ETQRA4cvADk" 
               title="Depoimento Cliente - Libra Crédito"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
