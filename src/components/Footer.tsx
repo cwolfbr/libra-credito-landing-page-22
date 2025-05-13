@@ -1,29 +1,23 @@
-
 import React from 'react';
 import { ChevronUp } from 'lucide-react';
-
 const Footer: React.FC = () => {
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   };
-
-  return (
-    <footer className="bg-libra-navy text-white">
+  return <footer className="bg-libra-navy text-white">
       <div className="container mx-auto py-8 md:py-12">
         <div className="flex flex-col md:flex-row justify-between items-center mb-8">
           <div className="mb-6 md:mb-0">
             <h2 className="text-2xl md:text-3xl font-bold">
               <span className="text-libra-gold">LIBRA</span> CRÉDITO
             </h2>
-            <p className="text-sm text-libra-silver mt-2">
-              Soluções financeiras personalizadas para você
-            </p>
+            <p className="text-sm text-libra-silver mt-2">Vem que a gente equi</p>
           </div>
           
-          <button 
-            onClick={scrollToTop}
-            className="flex items-center gap-2 text-libra-silver hover:text-white transition-colors"
-          >
+          <button onClick={scrollToTop} className="flex items-center gap-2 text-libra-silver hover:text-white transition-colors">
             Voltar ao topo
             <ChevronUp className="w-4 h-4" />
           </button>
@@ -79,8 +73,6 @@ const Footer: React.FC = () => {
           </div>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;

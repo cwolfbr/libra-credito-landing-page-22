@@ -1,10 +1,7 @@
-
 import React from 'react';
 import { Phone, Mail, Facebook, Instagram, Linkedin, Youtube, ExternalLink } from 'lucide-react';
-
 const ContactSection: React.FC = () => {
-  return (
-    <section className="py-16 md:py-24 bg-libra-navy text-white">
+  return <section className="py-16 md:py-24 bg-libra-navy text-white">
       <div className="container mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Fale Conosco</h2>
@@ -24,7 +21,7 @@ const ContactSection: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-lg">Telefone</h4>
-                  <p className="text-libra-silver">0800 000 0000</p>
+                  <p className="text-libra-silver">16 99636 0424</p>
                   <p className="text-sm text-libra-silver mt-1">Segunda a sexta, das 9h às 18h</p>
                 </div>
               </div>
@@ -44,49 +41,19 @@ const ContactSection: React.FC = () => {
             <div className="mt-8 pt-6 border-t border-libra-blue/30">
               <h4 className="font-bold text-lg mb-4">Acompanhe nas redes sociais</h4>
               <div className="flex flex-wrap gap-4">
-                <a 
-                  href="https://www.facebook.com/LibraCreditoOficial/" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="bg-libra-blue/30 hover:bg-libra-gold p-3 rounded-full transition-colors"
-                  aria-label="Facebook"
-                >
+                <a href="https://www.facebook.com/LibraCreditoOficial/" target="_blank" rel="noopener noreferrer" className="bg-libra-blue/30 hover:bg-libra-gold p-3 rounded-full transition-colors" aria-label="Facebook">
                   <Facebook className="w-5 h-5 text-white" />
                 </a>
-                <a 
-                  href="https://www.instagram.com/libracredito/" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="bg-libra-blue/30 hover:bg-libra-gold p-3 rounded-full transition-colors"
-                  aria-label="Instagram"
-                >
+                <a href="https://www.instagram.com/libracredito/" target="_blank" rel="noopener noreferrer" className="bg-libra-blue/30 hover:bg-libra-gold p-3 rounded-full transition-colors" aria-label="Instagram">
                   <Instagram className="w-5 h-5 text-white" />
                 </a>
-                <a 
-                  href="https://www.linkedin.com/company/libracredito/" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="bg-libra-blue/30 hover:bg-libra-gold p-3 rounded-full transition-colors"
-                  aria-label="LinkedIn"
-                >
+                <a href="https://www.linkedin.com/company/libracredito/" target="_blank" rel="noopener noreferrer" className="bg-libra-blue/30 hover:bg-libra-gold p-3 rounded-full transition-colors" aria-label="LinkedIn">
                   <Linkedin className="w-5 h-5 text-white" />
                 </a>
-                <a 
-                  href="https://www.youtube.com/channel/UCXpuj7LlTLT_kdbwwJHS0qA" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="bg-libra-blue/30 hover:bg-libra-gold p-3 rounded-full transition-colors"
-                  aria-label="YouTube"
-                >
+                <a href="https://www.youtube.com/channel/UCXpuj7LlTLT_kdbwwJHS0qA" target="_blank" rel="noopener noreferrer" className="bg-libra-blue/30 hover:bg-libra-gold p-3 rounded-full transition-colors" aria-label="YouTube">
                   <Youtube className="w-5 h-5 text-white" />
                 </a>
-                <a 
-                  href="https://www.reclameaqui.com.br/empresa/libra-credito-solucoes-financeiras/" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="bg-libra-blue/30 hover:bg-libra-gold p-3 rounded-full transition-colors"
-                  aria-label="Reclame Aqui"
-                >
+                <a href="https://www.reclameaqui.com.br/empresa/libra-credito-solucoes-financeiras/" target="_blank" rel="noopener noreferrer" className="bg-libra-blue/30 hover:bg-libra-gold p-3 rounded-full transition-colors" aria-label="Reclame Aqui">
                   <ExternalLink className="w-5 h-5 text-white" />
                 </a>
               </div>
@@ -94,8 +61,6 @@ const ContactSection: React.FC = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default ContactSection;
