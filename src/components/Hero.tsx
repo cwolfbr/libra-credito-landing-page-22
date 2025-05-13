@@ -40,7 +40,7 @@ const Hero: React.FC = () => {
               <Button 
                 onClick={scrollToAgentChat}
                 variant="outline" 
-                className="border-white text-white hover:bg-white hover:text-libra-navy font-semibold text-lg px-8 py-6"
+                className="border-white text-libra-blue hover:bg-white hover:text-libra-navy font-semibold text-lg px-8 py-6 bg-white/30"
               >
                 Fale com Assistente
               </Button>
