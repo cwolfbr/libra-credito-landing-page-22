@@ -1,9 +1,16 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Phone } from 'lucide-react';
+import { Info } from 'lucide-react';
 
 const Header: React.FC = () => {
+  const scrollToChat = () => {
+    const chatSection = document.getElementById('agent-chat');
+    if (chatSection) {
+      chatSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md py-3 md:py-4">
       <div className="container mx-auto flex justify-between items-center">
@@ -16,11 +23,14 @@ const Header: React.FC = () => {
           <span className="text-libra-navy font-semibold text-lg md:text-xl">Libra Crédito</span>
         </div>
         <div className="flex items-center gap-4">
-          <a href="tel:08000000000" className="hidden md:flex items-center text-libra-navy font-medium">
-            <Phone className="w-4 h-4 mr-2" />
-            0800 000 0000
-          </a>
-          <Button className="bg-libra-blue hover:bg-libra-navy text-white font-medium">
+          <p className="hidden md:flex items-center text-libra-navy font-medium text-sm">
+            <Info className="w-4 h-4 mr-2 text-libra-blue" />
+            A Libra não realiza nenhum tipo de cobrança até a liberação do crédito
+          </p>
+          <Button 
+            className="bg-libra-blue hover:bg-libra-navy text-white font-medium"
+            onClick={scrollToChat}
+          >
             Fale Conosco
           </Button>
         </div>
