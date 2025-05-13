@@ -3,7 +3,7 @@ import React from 'react';
 
 const AgentChat: React.FC = () => {
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-b from-white to-libra-light">
+    <section id="agent-chat" className="py-16 md:py-24 bg-gradient-to-b from-white to-libra-light">
       <div className="container mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-libra-navy mb-4">Fale com nosso Assistente Virtual</h2>

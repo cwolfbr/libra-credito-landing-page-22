@@ -10,6 +10,13 @@ const Hero: React.FC = () => {
       simulatorSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
+  
+  const scrollToAgentChat = () => {
+    const agentChatSection = document.getElementById('agent-chat');
+    if (agentChatSection) {
+      agentChatSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <section className="pt-24 pb-16 md:pt-32 md:pb-24 bg-hero-pattern bg-cover bg-center relative">
@@ -31,10 +38,11 @@ const Hero: React.FC = () => {
                 Simular Agora
               </Button>
               <Button 
+                onClick={scrollToAgentChat}
                 variant="outline" 
                 className="border-white text-white hover:bg-white hover:text-libra-navy font-semibold text-lg px-8 py-6"
               >
-                Saiba Mais
+                Fale com Assistente
               </Button>
             </div>
           </div>
