@@ -1,11 +1,12 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
-import { HelpCircle } from 'lucide-react';
+import { HelpCircle, AlertCircle } from 'lucide-react';
+import { toast } from '@/hooks/use-toast';
 
 type LoanPurpose = 'consolidacao' | 'capital' | 'investimento' | 'reforma';
 type PropertyType = 'casa' | 'apartamento' | 'comercial' | 'rural';
@@ -26,9 +27,58 @@ const LoanSimulator: React.FC = () => {
   const [showResults, setShowResults] = useState<boolean>(false);
   const [monthlyPayment, setMonthlyPayment] = useState<number>(0);
   const [requiredIncome, setRequiredIncome] = useState<number>(0);
+  const [validationError, setValidationError] = useState<string | null>(null);
+
+  // Check if property value is at least double the loan amount
+  useEffect(() => {
+    if (propertyValue < loanAmount * 2) {
+      setValidationError('O valor da garantia deve ser pelo menos o dobro do valor necessário');
+    } else {
+      setValidationError(null);
+    }
+  }, [loanAmount, propertyValue]);
+
+  // Ensure property value is at least double the loan amount when loan amount changes
+  useEffect(() => {
+    if (propertyValue < loanAmount * 2) {
+      setPropertyValue(loanAmount * 2);
+    }
+  }, [loanAmount]);
+
+  // Handle loan amount change
+  const handleLoanAmountChange = (value: number[]) => {
+    const newLoanAmount = value[0];
+    setLoanAmount(newLoanAmount);
+    
+    // Ensure property value is at least double the new loan amount
+    if (propertyValue < newLoanAmount * 2) {
+      setPropertyValue(newLoanAmount * 2);
+    }
+  };
+
+  // Handle property value change
+  const handlePropertyValueChange = (value: number[]) => {
+    const newPropertyValue = value[0];
+    setPropertyValue(newPropertyValue);
+    
+    // Limit loan amount to half of property value
+    if (loanAmount > newPropertyValue / 2) {
+      setLoanAmount(Math.floor(newPropertyValue / 2));
+    }
+  };
 
   // Função que seria chamada para consultar a API
   const calculateLoan = () => {
+    // Check validation before calculation
+    if (validationError) {
+      toast({
+        title: "Erro na simulação",
+        description: validationError,
+        variant: "destructive",
+      });
+      return;
+    }
+    
     // Simulação de cálculo - Será substituído pela chamada API
     const interest = 0.0109; // 1.09% ao mês
     const term = 180; // 15 anos em meses
@@ -44,7 +94,7 @@ const LoanSimulator: React.FC = () => {
     setShowResults(true);
   };
 
-  // Check if loan amount is more than 50% of property value
+  // Check if loan amount is valid
   const isLoanAmountValid = loanAmount <= propertyValue * 0.5;
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -117,9 +167,9 @@ const LoanSimulator: React.FC = () => {
                     <Slider
                       value={[loanAmount]}
                       min={100000}
-                      max={5000000}
+                      max={Math.min(5000000, propertyValue / 2)}
                       step={50000}
-                      onValueChange={(value) => setLoanAmount(value[0])}
+                      onValueChange={handleLoanAmountChange}
                       className="my-4"
                     />
                     <div className="flex justify-between text-sm text-gray-500">
@@ -170,21 +220,39 @@ const LoanSimulator: React.FC = () => {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Valor da garantia: {formatCurrency(propertyValue)}
+                    <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                      <span>Valor da garantia: {formatCurrency(propertyValue)}</span>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <HelpCircle className="w-4 h-4 ml-1 text-gray-400" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p className="max-w-xs">O valor da garantia deve ser pelo menos o dobro do valor necessário</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                     </label>
+                    
                     <Slider
                       value={[propertyValue]}
-                      min={200000}
+                      min={Math.max(200000, loanAmount * 2)}
                       max={10000000}
                       step={100000}
-                      onValueChange={(value) => setPropertyValue(value[0])}
+                      onValueChange={handlePropertyValueChange}
                       className="my-4"
                     />
                     <div className="flex justify-between text-sm text-gray-500">
                       <span>R$ 200 mil</span>
                       <span>R$ 10 milhões</span>
                     </div>
+                    
+                    {validationError && (
+                      <div className="flex items-center gap-2 text-red-500 mt-1 text-sm">
+                        <AlertCircle className="w-4 h-4" />
+                        <span>{validationError}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -194,6 +262,7 @@ const LoanSimulator: React.FC = () => {
               <Button 
                 type="submit" 
                 className="bg-libra-gold hover:bg-libra-navy text-white font-semibold text-lg px-8 py-6"
+                disabled={!!validationError}
               >
                 Simular Agora
               </Button>
