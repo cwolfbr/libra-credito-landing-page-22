@@ -1,6 +1,8 @@
 
-import React from 'react';
-import { MessageSquare, User } from 'lucide-react';
+import React, { useState } from 'react';
+import { MessageSquare, User, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 
 const testimonials = [
   {
@@ -20,10 +22,10 @@ const testimonials = [
   }
 ];
 
-const TestimonialCard: React.FC<{name: string, age: string, text: string}> = ({ name, age, text }) => {
+const TestimonialCard: React.FC<{name: string, age: string, text: string, isMobile: boolean}> = ({ name, age, text, isMobile }) => {
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100 mb-4">
-      <div className="flex items-start gap-3 mb-4">
+    <div className={`bg-white p-4 ${!isMobile && 'md:p-6'} rounded-lg shadow-md border border-gray-100 h-full`}>
+      <div className="flex items-start gap-3 mb-3">
         <div className="bg-gray-100 rounded-full p-2">
           <User className="w-4 h-4 text-libra-navy" />
         </div>
@@ -32,24 +34,26 @@ const TestimonialCard: React.FC<{name: string, age: string, text: string}> = ({ 
           <p className="text-sm text-gray-500">{age}</p>
         </div>
       </div>
-      <p className="text-gray-600 italic">{text}</p>
+      <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 italic`}>{text}</p>
     </div>
   );
 };
 
 const Testimonials: React.FC = () => {
+  const isMobile = useIsMobile();
+  
   return (
-    <section className="py-16 md:py-24 bg-white">
+    <section className={`${isMobile ? 'py-8' : 'py-16 md:py-24'} bg-white`}>
       <div className="container mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-libra-navy mb-4">O que nossos clientes dizem</h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+        <div className="text-center mb-6 md:mb-12">
+          <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy mb-2 md:mb-4`}>O que nossos clientes dizem</h2>
+          <p className={`${isMobile ? 'text-sm px-4' : 'text-lg'} text-gray-600 max-w-3xl mx-auto`}>
             Veja como o crédito com garantia de imóvel transformou a vida financeira de nossos clientes com taxas a partir de 1,09% a.m. e prazo de até 180 meses.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-          <div className="w-full aspect-[16/9] max-w-xl mx-auto rounded-lg overflow-hidden shadow-xl">
+        <div className={`grid grid-cols-1 ${!isMobile && 'lg:grid-cols-2'} gap-6 items-center`}>
+          <div className={`w-full aspect-[16/9] max-w-xl mx-auto rounded-lg overflow-hidden shadow-xl ${isMobile ? 'mb-4' : ''}`}>
             <iframe 
               className="w-full h-full"
               src="https://www.youtube.com/embed/ETQRA4cvADk" 
@@ -61,21 +65,43 @@ const Testimonials: React.FC = () => {
           </div>
           
           <div>
-            <div className="flex items-center gap-2 mb-6">
-              <MessageSquare className="w-6 h-6 text-libra-blue" />
-              <h3 className="text-2xl font-bold text-libra-navy">Depoimentos de Clientes</h3>
+            <div className="flex items-center gap-2 mb-4 md:mb-6">
+              <MessageSquare className="w-5 h-5 md:w-6 md:h-6 text-libra-blue" />
+              <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-libra-navy`}>Depoimentos de Clientes</h3>
             </div>
             
-            <div className="space-y-4">
-              {testimonials.map((testimonial, index) => (
-                <TestimonialCard 
-                  key={index}
-                  name={testimonial.name}
-                  age={testimonial.age}
-                  text={testimonial.text}
-                />
-              ))}
-            </div>
+            {isMobile ? (
+              <div className="relative px-4">
+                <Carousel className="w-full">
+                  <CarouselContent>
+                    {testimonials.map((testimonial, index) => (
+                      <CarouselItem key={index}>
+                        <TestimonialCard 
+                          name={testimonial.name}
+                          age={testimonial.age}
+                          text={testimonial.text}
+                          isMobile={isMobile}
+                        />
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="left-0 bg-white/80" />
+                  <CarouselNext className="right-0 bg-white/80" />
+                </Carousel>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {testimonials.map((testimonial, index) => (
+                  <TestimonialCard 
+                    key={index}
+                    name={testimonial.name}
+                    age={testimonial.age}
+                    text={testimonial.text}
+                    isMobile={isMobile}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
