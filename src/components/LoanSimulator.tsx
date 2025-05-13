@@ -69,6 +69,10 @@ const LoanSimulator: React.FC = () => {
     setCep(formattedCEP);
   };
 
+  const handleContactRequest = () => {
+    window.open('https://api.whatsapp.com/send/?phone=5516996360424&text=Ol%C3%A1%2C+Quero+agendar+uma+conversa+com+o+consultor%21&type=phone_number&app_absent=0', '_blank');
+  };
+
   return (
     <section id="simulator" className="py-16 md:py-24 bg-gradient-to-b from-libra-light to-white">
       <div className="container mx-auto">
@@ -230,6 +234,7 @@ const LoanSimulator: React.FC = () => {
               <div className="mt-6 text-center">
                 <Button 
                   className="bg-libra-navy hover:bg-libra-blue text-white font-semibold"
+                  onClick={handleContactRequest}
                 >
                   Solicitar Contato
                 </Button>
