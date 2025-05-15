@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, Speed } from 'lucide-react';
+import { Play } from 'lucide-react';
 import ImageOptimizer from './ImageOptimizer';
 
 interface OptimizedYouTubeProps {

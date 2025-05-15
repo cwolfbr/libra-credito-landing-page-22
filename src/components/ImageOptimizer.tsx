@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { cn } from "@/lib/utils";
-import { accessibility } from "lucide-react";
+import { Accessibility } from "lucide-react";
 
 interface ImageOptimizerProps {
   src: string;
