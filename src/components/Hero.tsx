@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ChevronDown } from 'lucide-react';
+import OptimizedYouTube from './OptimizedYouTube';
 
 const Hero: React.FC = () => {
   const scrollToSimulator = () => {
@@ -47,14 +48,10 @@ const Hero: React.FC = () => {
             </div>
           </div>
           <div className="w-full aspect-video rounded-lg overflow-hidden shadow-xl animate-fade-in">
-            <iframe 
-              className="w-full h-full"
-              src="https://www.youtube.com/embed/E9lwL6R2l1s" 
+            <OptimizedYouTube 
+              videoId="E9lwL6R2l1s"
               title="Crédito com Garantia de Imóvel - Libra Crédito"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+            />
           </div>
         </div>
         <div className="flex justify-center mt-12">

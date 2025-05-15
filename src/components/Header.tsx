@@ -1,9 +1,10 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Info } from 'lucide-react';
+import ImageOptimizer from './ImageOptimizer';
 
-const Header: React.FC = () => {
+const Header: React.FC = memo(() => {
   const handleWhatsAppContact = () => {
     window.open('https://wa.me/5516996360424?text=Ol%C3%A1%2C%20Quero%20agendar%20uma%20conversa%20com%20o%20consultor!', '_blank');
   };
@@ -12,10 +13,12 @@ const Header: React.FC = () => {
     <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md py-3 md:py-4">
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center gap-3">
-          <img 
+          <ImageOptimizer 
             src="/lovable-uploads/75b290f8-4c51-45af-b45c-b737f5e1ca37.png" 
             alt="Libra Crédito" 
-            className="h-10 md:h-12"
+            className="h-10 md:h-12 w-auto"
+            aspectRatio={1}
+            priority={true}
           />
           <span className="text-libra-navy font-semibold text-lg md:text-xl">Libra Crédito</span>
         </div>
@@ -34,6 +37,8 @@ const Header: React.FC = () => {
       </div>
     </header>
   );
-};
+});
+
+Header.displayName = 'Header';
 
 export default Header;

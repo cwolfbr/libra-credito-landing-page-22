@@ -1,8 +1,9 @@
 
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { MessageSquare, User, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
+import OptimizedYouTube from './OptimizedYouTube';
 
 const testimonials = [
   {
@@ -22,7 +23,7 @@ const testimonials = [
   }
 ];
 
-const TestimonialCard: React.FC<{name: string, age: string, text: string, isMobile: boolean}> = ({ name, age, text, isMobile }) => {
+const TestimonialCard = memo(({ name, age, text, isMobile }: {name: string, age: string, text: string, isMobile: boolean}) => {
   return (
     <div className={`bg-white p-4 ${!isMobile && 'md:p-6'} rounded-lg shadow-md border border-gray-100 h-full`}>
       <div className="flex items-start gap-3 mb-3">
@@ -37,7 +38,9 @@ const TestimonialCard: React.FC<{name: string, age: string, text: string, isMobi
       <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 italic`}>{text}</p>
     </div>
   );
-};
+});
+
+TestimonialCard.displayName = 'TestimonialCard';
 
 const Testimonials: React.FC = () => {
   const isMobile = useIsMobile();
@@ -54,14 +57,10 @@ const Testimonials: React.FC = () => {
         
         <div className={`grid grid-cols-1 ${!isMobile && 'lg:grid-cols-2'} gap-6 items-center`}>
           <div className={`w-full aspect-[16/9] max-w-xl mx-auto rounded-lg overflow-hidden shadow-xl ${isMobile ? 'mb-4' : ''}`}>
-            <iframe 
-              className="w-full h-full"
-              src="https://www.youtube.com/embed/ETQRA4cvADk" 
+            <OptimizedYouTube 
+              videoId="ETQRA4cvADk" 
               title="Depoimento Cliente - Libra Crédito"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+            />
           </div>
           
           <div>
