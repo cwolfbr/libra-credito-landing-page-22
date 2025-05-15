@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 interface ImageOptimizerProps {
@@ -17,6 +17,30 @@ const ImageOptimizer: React.FC<ImageOptimizerProps> = ({
   aspectRatio = 16/9,
   priority = false
 }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    // Preload image if priority is true
+    if (priority) {
+      const img = new Image();
+      img.src = src;
+    }
+  }, [src, priority]);
+
+  // Generate responsive sizes for srcSet
+  const generateSrcSet = () => {
+    if (src.startsWith('http')) {
+      return undefined; // External images don't need srcSet
+    }
+    
+    const baseSrc = src.split('.').slice(0, -1).join('.');
+    const ext = src.split('.').pop();
+    
+    // We can't actually resize images in this implementation
+    // but this shows how it would be structured
+    return undefined;
+  };
+  
   return (
     <div className={`overflow-hidden ${className}`}>
       {aspectRatio ? (
@@ -25,7 +49,10 @@ const ImageOptimizer: React.FC<ImageOptimizerProps> = ({
             src={src}
             alt={alt}
             loading={priority ? "eager" : "lazy"}
-            className="object-cover w-full h-full"
+            className={`object-cover w-full h-full ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+            onLoad={() => setIsLoaded(true)}
+            decoding="async"
+            fetchPriority={priority ? "high" : "auto"}
           />
         </AspectRatio>
       ) : (
@@ -33,7 +60,10 @@ const ImageOptimizer: React.FC<ImageOptimizerProps> = ({
           src={src}
           alt={alt}
           loading={priority ? "eager" : "lazy"}
-          className={`object-cover w-full h-full ${className}`}
+          className={`object-cover w-full h-full ${className} ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+          onLoad={() => setIsLoaded(true)}
+          decoding="async"
+          fetchPriority={priority ? "high" : "auto"}
         />
       )}
     </div>

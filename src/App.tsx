@@ -7,8 +7,13 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 
-// Lazy load components
-const Index = lazy(() => import("./pages/Index"));
+// Lazy load components with prefetch
+const Index = lazy(() => {
+  // Prefetch Index dependencies while loading
+  import("./components/Hero").catch(() => {});
+  import("./components/Benefits").catch(() => {});
+  return import("./pages/Index");
+});
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const Loading = () => (
@@ -21,11 +26,15 @@ const Loading = () => (
   </div>
 );
 
+// Configure query client with optimized settings
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-      staleTime: 60 * 1000, // 1 minute
+      staleTime: 300 * 1000, // 5 minutes
+      cacheTime: 900 * 1000, // 15 minutes
+      retry: 1,
+      suspense: false,
     }
   }
 });
