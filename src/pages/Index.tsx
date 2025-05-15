@@ -19,20 +19,6 @@ const Index = () => {
     if (metaDescription) {
       metaDescription.setAttribute('content', 'Crédito com garantia de imóvel com as melhores taxas do mercado. Home Equity e empréstimo com garantia para consolidação de dívidas, capital de giro e mais.');
     }
-
-    // Adicionar preload para os recursos críticos
-    const preloadCriticalResources = () => {
-      const head = document.head;
-      
-      // Preload para a imagem logo
-      const logoPreload = document.createElement('link');
-      logoPreload.rel = 'preload';
-      logoPreload.as = 'image';
-      logoPreload.href = '/lovable-uploads/75b290f8-4c51-45af-b45c-b737f5e1ca37.png';
-      head.appendChild(logoPreload);
-    };
-    
-    preloadCriticalResources();
   }, []);
 
   return (

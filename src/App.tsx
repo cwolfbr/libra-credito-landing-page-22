@@ -21,37 +21,31 @@ const Loading = () => (
   </div>
 );
 
-// App component
-const App = () => {
-  // Create a client
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        refetchOnWindowFocus: false,
-        staleTime: 60 * 1000, // 1 minute
-        retry: 1, // Limitar tentativas de retry para melhorar performance
-        gcTime: 5 * 60 * 1000, // 5 minutos de garbage collection time
-      }
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      staleTime: 60 * 1000, // 1 minute
     }
-  });
+  }
+});
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Suspense fallback={<Loading />}>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
-  );
-};
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <Suspense fallback={<Loading />}>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
+      </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
+);
 
 export default App;
