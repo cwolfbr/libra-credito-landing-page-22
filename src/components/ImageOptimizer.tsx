@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { cn } from "@/lib/utils";
@@ -32,12 +33,18 @@ const ImageOptimizer: React.FC<ImageOptimizerProps> = ({
     }
     
     // For local images, we could use different formats
-    // Currently returning the original path as WebP conversion would require server-side processing
     return imagePath;
   };
 
+  // Implementar lazy loading e melhor performance de imagens
+  const handleLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const target = e.target as HTMLImageElement;
+    // Marcar como carregado para eventuais efeitos visuais
+    target.dataset.loaded = 'true';
+  };
+
   return (
-    <div className={cn("overflow-hidden", className)}>
+    <div className={cn("overflow-hidden", className)} aria-label={alt}>
       {aspectRatio ? (
         <AspectRatio ratio={aspectRatio} className="overflow-hidden">
           <img
@@ -46,11 +53,13 @@ const ImageOptimizer: React.FC<ImageOptimizerProps> = ({
             loading={priority ? "eager" : "lazy"}
             className={cn("object-cover w-full h-full", className)}
             decoding="async"
+            fetchPriority={priority ? "high" : "auto"}
             sizes={sizes}
             width={width}
             height={height}
+            onLoad={handleLoad}
             onError={(e) => {
-              // Fallback for images that fail to load
+              // Fallback para imagens que falham ao carregar
               const target = e.target as HTMLImageElement;
               if (!target.src.includes('placeholder.svg')) {
                 console.warn(`Image failed to load: ${target.src}`);
@@ -66,11 +75,13 @@ const ImageOptimizer: React.FC<ImageOptimizerProps> = ({
           loading={priority ? "eager" : "lazy"}
           className={cn("object-cover w-full h-full", className)}
           decoding="async"
+          fetchPriority={priority ? "high" : "auto"}
           sizes={sizes}
           width={width}
           height={height}
+          onLoad={handleLoad}
           onError={(e) => {
-            // Fallback for images that fail to load
+            // Fallback para imagens que falham ao carregar
             const target = e.target as HTMLImageElement;
             if (!target.src.includes('placeholder.svg')) {
               console.warn(`Image failed to load: ${target.src}`);

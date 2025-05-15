@@ -21,14 +21,16 @@ const Loading = () => (
   </div>
 );
 
-// Move the QueryClient inside the component to ensure hooks work properly
+// App component
 const App = () => {
-  // Create a client inside the function component
+  // Create a client
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
         refetchOnWindowFocus: false,
         staleTime: 60 * 1000, // 1 minute
+        retry: 1, // Limitar tentativas de retry para melhorar performance
+        gcTime: 5 * 60 * 1000, // 5 minutos de garbage collection time
       }
     }
   });

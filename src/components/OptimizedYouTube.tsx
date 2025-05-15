@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Play } from 'lucide-react';
 import ImageOptimizer from './ImageOptimizer';
@@ -22,18 +23,21 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/${thumbnailQuality}.jpg`;
 
-  // Use IntersectionObserver to load video when in viewport
+  // Usar IntersectionObserver para carregar vídeo quando estiver na viewport
   useEffect(() => {
     if (autoload) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          setShouldLoad(true);
-          observer.disconnect();
+          // Atraso intencional para melhorar o desempenho geral da página
+          setTimeout(() => {
+            setShouldLoad(true);
+            observer.disconnect();
+          }, 200);
         }
       },
-      { threshold: 0.1, rootMargin: '200px' } // Load when 10% visible or within 200px of viewport
+      { threshold: 0.1, rootMargin: '200px' } // Carregar quando 10% visível ou dentro de 200px da viewport
     );
     
     if (containerRef.current) {
@@ -77,7 +81,7 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
             height={360}
           />
           <div className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors">
-            <div className="w-16 h-16 md:w-20 md:h-20 bg-libra-blue rounded-full flex items-center justify-center">
+            <div className="w-16 h-16 md:w-20 md:h-20 bg-libra-blue rounded-full flex items-center justify-center" aria-hidden="true">
               <Play className="w-8 h-8 md:w-10 md:h-10 text-white fill-white" fill="currentColor" />
             </div>
           </div>
@@ -85,7 +89,7 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
       ) : (
         <iframe
           className="w-full h-full"
-          src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
+          src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`}
           title={title}
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
