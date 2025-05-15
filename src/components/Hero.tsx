@@ -19,6 +19,10 @@ const Hero: React.FC = () => {
     }
   };
 
+  const scrollToBenefits = () => {
+    document.getElementById('benefits')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <section className="pt-24 pb-16 md:pt-32 md:pb-24 bg-hero-pattern bg-cover bg-center relative">
       <div className="absolute inset-0 bg-libra-navy/70"></div>
@@ -35,13 +39,15 @@ const Hero: React.FC = () => {
               <Button 
                 onClick={scrollToSimulator}
                 className="bg-libra-blue hover:bg-white hover:text-libra-navy text-white font-semibold text-lg px-8 py-6"
+                aria-label="Simular crédito agora"
               >
                 Simular Agora
               </Button>
               <Button 
                 onClick={scrollToAgentChat}
                 variant="outline" 
-                className="border-white text-libra-blue hover:bg-white hover:text-libra-navy font-semibold text-lg px-8 py-6 bg-white/30"
+                className="border-white text-white bg-white hover:bg-libra-navy hover:text-white font-semibold text-lg px-8 py-6"
+                aria-label="Falar com um assistente"
               >
                 Fale com Assistente
               </Button>
@@ -56,8 +62,9 @@ const Hero: React.FC = () => {
         </div>
         <div className="flex justify-center mt-12">
           <button 
-            onClick={() => document.getElementById('benefits')?.scrollIntoView({ behavior: 'smooth' })}
-            className="animate-bounce bg-white/10 p-3 rounded-full"
+            onClick={scrollToBenefits}
+            className="bg-white/10 p-3 rounded-full hover:bg-white/20 transition-colors"
+            aria-label="Rolar para seção de benefícios"
           >
             <ChevronDown className="w-6 h-6 text-white" />
           </button>
