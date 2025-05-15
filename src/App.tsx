@@ -34,7 +34,7 @@ const queryClient = new QueryClient({
       staleTime: 300 * 1000, // 5 minutes
       gcTime: 900 * 1000, // 15 minutes (previously cacheTime)
       retry: 1,
-      suspense: false,
+      // suspense option has been removed as it's no longer supported in the global config
     }
   }
 });
