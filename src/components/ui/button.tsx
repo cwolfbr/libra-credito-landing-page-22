@@ -19,16 +19,20 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        // Nova variante para garantir melhor contraste
+        // Melhorando o contraste para acessibilidade
         white: "bg-white text-libra-navy hover:bg-libra-silver border border-white",
+        // Nova variante com alto contraste para garantir acessibilidade
+        highContrast: "bg-black text-white hover:bg-gray-800 border border-black",
+        goldContrast: "bg-[#D4AF37] text-black hover:bg-[#B8860B] border border-[#D4AF37] font-bold",
       },
       size: {
         default: "h-10 px-4 py-2",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
-        // Aumento do tamanho para melhor acessibilidade de toque
+        // Tamanho suficiente para áreas de toque acessíveis
         xl: "h-14 rounded-md px-8 py-4 text-lg",
-        icon: "h-12 w-12", // Aumentado para melhor área de toque
+        // Aumentado para melhor área de toque
+        icon: "h-12 w-12 min-w-12", 
       },
     },
     defaultVariants: {

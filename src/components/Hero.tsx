@@ -47,17 +47,18 @@ const Hero: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-4">
               <Button 
                 onClick={scrollToSimulator} 
-                className="bg-libra-blue hover:bg-white hover:text-libra-navy text-white font-semibold text-lg px-8 py-6" 
-                aria-label="Simular crédito agora"
+                className="min-h-[48px] min-w-[200px]"
+                variant="goldContrast"
                 size="xl"
+                aria-label="Simular crédito agora"
               >
                 Simular Agora
               </Button>
               <Button 
                 onClick={scrollToAgentChat} 
-                variant="white" 
+                variant="highContrast" 
                 aria-label="Falar com um assistente" 
-                className="font-semibold text-lg px-8 py-6"
+                className="font-semibold min-h-[48px] min-w-[200px]"
                 size="xl"
               >
                 Fale com Assistente
@@ -71,7 +72,7 @@ const Hero: React.FC = () => {
         <div className="flex justify-center mt-12">
           <button 
             onClick={scrollToBenefits} 
-            className="bg-white/20 p-4 rounded-full hover:bg-white/30 transition-colors" 
+            className="bg-black/40 p-4 rounded-full hover:bg-black/60 transition-colors min-h-[48px] min-w-[48px]" 
             aria-label="Rolar para seção de benefícios"
           >
             <ChevronDown className="w-8 h-8 text-white" />

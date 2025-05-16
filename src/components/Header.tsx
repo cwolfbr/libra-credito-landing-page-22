@@ -30,7 +30,9 @@ const Header: React.FC = memo(() => {
             A Libra não realiza nenhum tipo de cobrança até a liberação do crédito
           </p>
           <Button 
-            className="bg-libra-blue hover:bg-libra-navy text-white font-medium px-5 py-2.5 h-12"
+            className="min-h-[48px] min-w-[150px]"
+            variant="highContrast"
+            size="lg"
             onClick={handleWhatsAppContact}
             aria-label="Fale conosco pelo WhatsApp"
           >

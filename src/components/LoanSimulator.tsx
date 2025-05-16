@@ -111,7 +111,7 @@ const LoanSimulator: React.FC = () => {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1" id="loanAmountLabel">
+                    <label className="block text-sm font-medium text-black mb-1" id="loanAmountLabel">
                       Valor necessário: {formatCurrency(loanAmount)}
                     </label>
                     <Slider 
@@ -123,7 +123,7 @@ const LoanSimulator: React.FC = () => {
                       className="my-4"
                       aria-labelledby="loanAmountLabel" 
                     />
-                    <div className="flex justify-between text-sm text-gray-500">
+                    <div className="flex justify-between text-sm text-gray-700">
                       <span>R$ 100 mil</span>
                       <span>R$ 5 milhões</span>
                     </div>
@@ -172,7 +172,9 @@ const LoanSimulator: React.FC = () => {
             <div className="flex justify-center">
               <Button 
                 type="submit" 
-                className="bg-libra-gold hover:bg-libra-navy text-white font-semibold text-lg px-8 py-6"
+                className="min-h-[48px] min-w-[200px]"
+                variant="goldContrast"
+                size="xl"
                 aria-label="Simular empréstimo agora"
               >
                 Simular Agora
@@ -185,20 +187,20 @@ const LoanSimulator: React.FC = () => {
               
               <div className="grid grid-cols-1 gap-6">
                 <div className="bg-libra-light p-6 rounded-lg text-center">
-                  <p className="text-sm text-gray-600 mb-2">Parcela mensal estimada:</p>
+                  <p className="text-sm text-gray-700 mb-2">Parcela mensal estimada:</p>
                   <p className="text-3xl font-bold text-libra-navy">{formatCurrency(monthlyPayment)}</p>
-                  <p className="text-xs text-gray-500 mt-2">*Valores aproximados, sujeitos à análise de crédito</p>
-                  <p className="text-xs text-gray-500 mt-1">Taxa a partir de 1,09% a.m. + IPCA em até 180 meses</p>
+                  <p className="text-xs text-gray-700 mt-2">*Valores aproximados, sujeitos à análise de crédito</p>
+                  <p className="text-xs text-gray-700 mt-1">Taxa a partir de 1,09% a.m. + IPCA em até 180 meses</p>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="bg-libra-light p-6 rounded-lg text-center">
                     <div className="flex items-center justify-center gap-1 mb-2">
-                      <p className="text-sm text-gray-600" id="requiredIncomeLabel">Renda familiar necessária:</p>
+                      <p className="text-sm text-gray-700" id="requiredIncomeLabel">Renda familiar necessária:</p>
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger aria-label="Mais informações sobre renda necessária">
-                            <HelpCircle className="w-4 h-4 text-gray-400" aria-hidden="true" />
+                            <HelpCircle className="w-4 h-4 text-gray-600" aria-hidden="true" />
                           </TooltipTrigger>
                           <TooltipContent className="max-w-xs">
                             <p>A renda familiar necessária é calculada com base no comprometimento máximo de 30% da renda com a parcela, para evitar o superendividamento.</p>
@@ -207,16 +209,16 @@ const LoanSimulator: React.FC = () => {
                       </TooltipProvider>
                     </div>
                     <p className="text-3xl font-bold text-libra-navy" aria-labelledby="requiredIncomeLabel">{formatCurrency(requiredIncome)}</p>
-                    <p className="text-xs text-gray-500 mt-2">*Valores aproximados, sujeitos à análise de crédito</p>
+                    <p className="text-xs text-gray-700 mt-2">*Valores aproximados, sujeitos à análise de crédito</p>
                   </div>
                   
                   <div className="bg-libra-light p-6 rounded-lg text-center">
                     <div className="flex items-center justify-center gap-1 mb-2">
-                      <p className="text-sm text-gray-600" id="propertyValueLabel">Avaliação do imóvel mínima necessária:</p>
+                      <p className="text-sm text-gray-700" id="propertyValueLabel">Avaliação do imóvel mínima necessária:</p>
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger aria-label="Mais informações sobre avaliação do imóvel">
-                            <Info className="w-4 h-4 text-gray-400" aria-hidden="true" />
+                            <Info className="w-4 h-4 text-gray-600" aria-hidden="true" />
                           </TooltipTrigger>
                           <TooltipContent className="max-w-xs">
                             <p>Dependendo das características do imóvel (tipo, região e documentação), a avaliação mínima necessária pode ser até {formatCurrency(maxPropertyValue)}.</p>
@@ -225,14 +227,16 @@ const LoanSimulator: React.FC = () => {
                       </TooltipProvider>
                     </div>
                     <p className="text-3xl font-bold text-libra-navy" aria-labelledby="propertyValueLabel">{formatCurrency(minPropertyValue)}</p>
-                    <p className="text-xs text-gray-500 mt-2">*Dependendo das características do imóvel (tipo, região e documentação), pode ser necessário até {formatCurrency(maxPropertyValue)}</p>
+                    <p className="text-xs text-gray-700 mt-2">*Dependendo das características do imóvel (tipo, região e documentação), pode ser necessário até {formatCurrency(maxPropertyValue)}</p>
                   </div>
                 </div>
               </div>
               
               <div className="mt-6 text-center">
                 <Button 
-                  className="bg-libra-navy hover:bg-libra-blue text-white font-semibold" 
+                  className="min-h-[48px] min-w-[200px]"
+                  variant="highContrast"
+                  size="xl"
                   onClick={handleContactRequest}
                   aria-label="Solicitar contato com um consultor"
                 >
