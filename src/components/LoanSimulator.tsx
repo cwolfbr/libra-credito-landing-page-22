@@ -76,6 +76,8 @@ const LoanSimulator: React.FC = () => {
   
   // Cálculo do valor máximo necessário do imóvel (3x o valor do empréstimo)
   const maxPropertyValue = loanAmount * 3;
+  
+  const loanAmountLabelId = "loan-amount-label";
 
   return <section id="simulator" className="py-16 md:py-24 bg-gradient-to-b from-libra-light to-white">
       <div className="container mx-auto">
@@ -111,7 +113,7 @@ const LoanSimulator: React.FC = () => {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-black mb-1" id="loanAmountLabel">
+                    <label id={loanAmountLabelId} className="block text-sm font-medium text-black mb-1">
                       Valor necessário: {formatCurrency(loanAmount)}
                     </label>
                     <Slider 
@@ -121,7 +123,7 @@ const LoanSimulator: React.FC = () => {
                       step={50000} 
                       onValueChange={handleLoanAmountChange} 
                       className="my-4"
-                      aria-labelledby="loanAmountLabel" 
+                      aria-labelledby={loanAmountLabelId}
                     />
                     <div className="flex justify-between text-sm text-gray-700">
                       <span>R$ 100 mil</span>
@@ -136,6 +138,9 @@ const LoanSimulator: React.FC = () => {
                 
                 <div className="space-y-4">
                   <div>
+                    <label htmlFor="cep" className="block text-sm font-medium text-gray-700 mb-1">
+                      CEP do imóvel
+                    </label>
                     <Input 
                       id="cep" 
                       type="text" 
@@ -144,7 +149,6 @@ const LoanSimulator: React.FC = () => {
                       placeholder="00000-000" 
                       maxLength={9} 
                       className="w-full"
-                      label="CEP do imóvel"
                       aria-label="CEP do imóvel"
                     />
                   </div>
