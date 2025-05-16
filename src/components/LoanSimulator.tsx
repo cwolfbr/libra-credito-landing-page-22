@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,14 +7,17 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import { HelpCircle, AlertCircle, Info } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+
 type LoanPurpose = 'consolidacao' | 'capital' | 'investimento' | 'reforma';
 type PropertyType = 'casa' | 'apartamento' | 'comercial' | 'rural';
+
 const formatCurrency = (value: number): string => {
   return value.toLocaleString('pt-BR', {
     style: 'currency',
     currency: 'BRL'
   });
 };
+
 const LoanSimulator: React.FC = () => {
   const [loanPurpose, setLoanPurpose] = useState<LoanPurpose>('consolidacao');
   const [loanAmount, setLoanAmount] = useState<number>(500000);
@@ -91,27 +95,35 @@ const LoanSimulator: React.FC = () => {
                 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 mb-1" id="loanPurposeLabel">
                       Finalidade do empréstimo
                     </label>
                     <Select value={loanPurpose} onValueChange={value => setLoanPurpose(value as LoanPurpose)}>
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger className="w-full" aria-labelledby="loanPurposeLabel">
                         <SelectValue placeholder="Selecione a finalidade" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="consolidacao">Consolidação de dívidas</SelectItem>
-                        <SelectItem value="capital">Capital de giro</SelectItem>
-                        <SelectItem value="investimento">Investimento</SelectItem>
-                        <SelectItem value="reforma">Reforma</SelectItem>
+                        <SelectItem value="consolidacao" aria-label="Consolidação de dívidas">Consolidação de dívidas</SelectItem>
+                        <SelectItem value="capital" aria-label="Capital de giro">Capital de giro</SelectItem>
+                        <SelectItem value="investimento" aria-label="Investimento">Investimento</SelectItem>
+                        <SelectItem value="reforma" aria-label="Reforma">Reforma</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 mb-1" id="loanAmountLabel">
                       Valor necessário: {formatCurrency(loanAmount)}
                     </label>
-                    <Slider value={[loanAmount]} min={100000} max={5000000} step={50000} onValueChange={handleLoanAmountChange} className="my-4" />
+                    <Slider 
+                      value={[loanAmount]} 
+                      min={100000} 
+                      max={5000000} 
+                      step={50000} 
+                      onValueChange={handleLoanAmountChange} 
+                      className="my-4"
+                      aria-labelledby="loanAmountLabel" 
+                    />
                     <div className="flex justify-between text-sm text-gray-500">
                       <span>R$ 100 mil</span>
                       <span>R$ 5 milhões</span>
@@ -125,25 +137,31 @@ const LoanSimulator: React.FC = () => {
                 
                 <div className="space-y-4">
                   <div>
-                    <label htmlFor="cep" className="block text-sm font-medium text-gray-700 mb-1">
-                      CEP do imóvel
-                    </label>
-                    <Input id="cep" type="text" value={cep} onChange={handleCEPChange} placeholder="00000-000" maxLength={9} className="w-full" />
+                    <Input 
+                      id="cep" 
+                      type="text" 
+                      value={cep} 
+                      onChange={handleCEPChange} 
+                      placeholder="00000-000" 
+                      maxLength={9} 
+                      className="w-full"
+                      label="CEP do imóvel"
+                    />
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 mb-1" id="propertyTypeLabel">
                       Tipo de imóvel
                     </label>
                     <Select value={propertyType} onValueChange={value => setPropertyType(value as PropertyType)}>
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger className="w-full" aria-labelledby="propertyTypeLabel">
                         <SelectValue placeholder="Selecione o tipo" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="casa">Casa</SelectItem>
-                        <SelectItem value="apartamento">Apartamento</SelectItem>
-                        <SelectItem value="comercial">Comercial</SelectItem>
-                        <SelectItem value="rural">Rural Produtivo</SelectItem>
+                        <SelectItem value="casa" aria-label="Casa">Casa</SelectItem>
+                        <SelectItem value="apartamento" aria-label="Apartamento">Apartamento</SelectItem>
+                        <SelectItem value="comercial" aria-label="Comercial">Comercial</SelectItem>
+                        <SelectItem value="rural" aria-label="Rural Produtivo">Rural Produtivo</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -152,7 +170,11 @@ const LoanSimulator: React.FC = () => {
             </div>
             
             <div className="flex justify-center">
-              <Button type="submit" className="bg-libra-gold hover:bg-libra-navy text-white font-semibold text-lg px-8 py-6">
+              <Button 
+                type="submit" 
+                className="bg-libra-gold hover:bg-libra-navy text-white font-semibold text-lg px-8 py-6"
+                aria-label="Simular empréstimo agora"
+              >
                 Simular Agora
               </Button>
             </div>
@@ -175,8 +197,8 @@ const LoanSimulator: React.FC = () => {
                       <p className="text-sm text-gray-600">Renda familiar necessária:</p>
                       <TooltipProvider>
                         <Tooltip>
-                          <TooltipTrigger>
-                            <HelpCircle className="w-4 h-4 text-gray-400" />
+                          <TooltipTrigger aria-label="Mais informações sobre renda necessária">
+                            <HelpCircle className="w-4 h-4 text-gray-400" aria-hidden="true" />
                           </TooltipTrigger>
                           <TooltipContent className="max-w-xs">
                             <p>A renda familiar necessária é calculada com base no comprometimento máximo de 30% da renda com a parcela, para evitar o superendividamento.</p>
@@ -193,8 +215,8 @@ const LoanSimulator: React.FC = () => {
                       <p className="text-sm text-gray-600">Avaliação do imóvel mínima necessária:</p>
                       <TooltipProvider>
                         <Tooltip>
-                          <TooltipTrigger>
-                            <Info className="w-4 h-4 text-gray-400" />
+                          <TooltipTrigger aria-label="Mais informações sobre avaliação do imóvel">
+                            <Info className="w-4 h-4 text-gray-400" aria-hidden="true" />
                           </TooltipTrigger>
                           <TooltipContent className="max-w-xs">
                             <p>Dependendo das características do imóvel (tipo, região e documentação), a avaliação mínima necessária pode ser até {formatCurrency(maxPropertyValue)}.</p>
@@ -209,7 +231,11 @@ const LoanSimulator: React.FC = () => {
               </div>
               
               <div className="mt-6 text-center">
-                <Button className="bg-libra-navy hover:bg-libra-blue text-white font-semibold" onClick={handleContactRequest}>
+                <Button 
+                  className="bg-libra-navy hover:bg-libra-blue text-white font-semibold" 
+                  onClick={handleContactRequest}
+                  aria-label="Solicitar contato com um consultor"
+                >
                   Solicitar Contato
                 </Button>
               </div>
@@ -218,4 +244,5 @@ const LoanSimulator: React.FC = () => {
       </div>
     </section>;
 };
+
 export default LoanSimulator;
