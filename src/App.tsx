@@ -17,7 +17,7 @@ const Index = lazy(() => {
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const Loading = () => (
-  <div className="w-full h-screen flex items-center justify-center">
+  <div className="w-full h-screen flex items-center justify-center" aria-label="Carregando conteúdo">
     <div className="space-y-4 w-full max-w-3xl px-4">
       <Skeleton className="h-12 w-3/4 mx-auto" />
       <Skeleton className="h-80 w-full" />
@@ -46,11 +46,13 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Suspense fallback={<Loading />}>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <main id="main-content" tabIndex={-1} className="focus:outline-none">
+            <Routes>
+              <Route path="/" element={<Index />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </main>
         </Suspense>
       </BrowserRouter>
     </TooltipProvider>

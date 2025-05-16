@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -97,5 +98,83 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+  
+  /* Melhorar a acessibilidade de foco */
+  :focus {
+    @apply outline-2 outline-offset-2 outline-libra-blue;
+  }
+  
+  /* Aumentar o espaçamento e tamanho mínimo para áreas de toque */
+  button, 
+  [role="button"], 
+  a, 
+  input[type="submit"], 
+  input[type="button"], 
+  input[type="reset"] {
+    @apply min-h-[44px] min-w-[44px];
+  }
+  
+  /* Garantir que textos secundários tenham contraste suficiente */
+  .text-gray-500, 
+  .text-gray-400, 
+  .text-gray-600,
+  .text-muted-foreground {
+    @apply text-gray-700;
+  }
+  
+  /* Melhorar contraste para texto sobre fundos coloridos */
+  .text-libra-silver {
+    @apply text-white;
+  }
+}
+
+/* Ocultar elementos apenas visualmente, preservando acesso para leitores de tela */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Manter animações existentes */
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+/* Adicionar suporte para usuários que preferem movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
   }
 }

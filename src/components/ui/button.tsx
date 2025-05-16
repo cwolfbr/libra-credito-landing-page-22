@@ -19,12 +19,16 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        // Nova variante para garantir melhor contraste
+        white: "bg-white text-libra-navy hover:bg-libra-silver border border-white",
       },
       size: {
         default: "h-10 px-4 py-2",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
-        icon: "h-10 w-10",
+        // Aumento do tamanho para melhor acessibilidade de toque
+        xl: "h-14 rounded-md px-8 py-4 text-lg",
+        icon: "h-12 w-12", // Aumentado para melhor área de toque
       },
     },
     defaultVariants: {
@@ -42,6 +46,16 @@ export interface ButtonProps
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
+    // Garantir que o botão sempre tenha um aria-label se o conteúdo não for texto
+    const hasTextContent = typeof props.children === 'string';
+    const ariaLabel = props['aria-label'];
+    const title = props.title;
+    
+    // Se não houver conteúdo de texto, aria-label ou title, adicione uma mensagem de aviso no console
+    if (!hasTextContent && !ariaLabel && !title && process.env.NODE_ENV !== 'production') {
+      console.warn('Botão sem texto deve ter um aria-label ou title para acessibilidade');
+    }
+    
     const Comp = asChild ? Slot : "button"
     return (
       <Comp

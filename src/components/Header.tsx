@@ -10,26 +10,29 @@ const Header: React.FC = memo(() => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md py-3 md:py-4">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md py-4" role="banner">
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center gap-3">
-          <ImageOptimizer 
-            src="/lovable-uploads/75b290f8-4c51-45af-b45c-b737f5e1ca37.png" 
-            alt="Libra Crédito" 
-            className="h-10 md:h-12 w-auto"
-            aspectRatio={1}
-            priority={true}
-          />
+          <a href="/" aria-label="Página inicial da Libra Crédito">
+            <ImageOptimizer 
+              src="/lovable-uploads/75b290f8-4c51-45af-b45c-b737f5e1ca37.png" 
+              alt="Libra Crédito" 
+              className="h-12 w-auto"
+              aspectRatio={1}
+              priority={true}
+            />
+          </a>
           <span className="text-libra-navy font-semibold text-lg md:text-xl">Libra Crédito</span>
         </div>
         <div className="flex items-center gap-4">
           <p className="hidden md:flex items-center text-libra-navy font-medium text-sm">
-            <Info className="w-4 h-4 mr-2 text-libra-blue" />
+            <Info className="w-5 h-5 mr-2 text-libra-blue" aria-hidden="true" />
             A Libra não realiza nenhum tipo de cobrança até a liberação do crédito
           </p>
           <Button 
-            className="bg-libra-blue hover:bg-libra-navy text-white font-medium"
+            className="bg-libra-blue hover:bg-libra-navy text-white font-medium px-5 py-2.5 h-12"
             onClick={handleWhatsAppContact}
+            aria-label="Fale conosco pelo WhatsApp"
           >
             Fale Conosco
           </Button>

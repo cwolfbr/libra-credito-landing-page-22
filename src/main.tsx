@@ -3,8 +3,23 @@ import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 
+// Função para verificar necessidades de acessibilidade
+const setupAccessibility = () => {
+  // Adicionar Skip Link para navegação por teclado (pulando para o conteúdo principal)
+  const skipLink = document.createElement('a');
+  skipLink.href = '#main-content';
+  skipLink.className = 'sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-libra-navy focus:rounded';
+  skipLink.textContent = 'Pular para o conteúdo principal';
+  document.body.insertBefore(skipLink, document.body.firstChild);
+  
+  // Definir idioma da página para ajudar leitores de tela
+  document.documentElement.lang = 'pt-BR';
+};
+
 // Use a separate chunk for the app with improved loading strategy
 const renderApp = () => {
+  setupAccessibility();
+  
   const root = document.getElementById("root");
   if (root) {
     createRoot(root).render(<App />);
