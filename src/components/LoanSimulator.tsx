@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -146,6 +145,7 @@ const LoanSimulator: React.FC = () => {
                       maxLength={9} 
                       className="w-full"
                       label="CEP do imóvel"
+                      aria-label="CEP do imóvel"
                     />
                   </div>
                   
@@ -194,7 +194,7 @@ const LoanSimulator: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="bg-libra-light p-6 rounded-lg text-center">
                     <div className="flex items-center justify-center gap-1 mb-2">
-                      <p className="text-sm text-gray-600">Renda familiar necessária:</p>
+                      <p className="text-sm text-gray-600" id="requiredIncomeLabel">Renda familiar necessária:</p>
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger aria-label="Mais informações sobre renda necessária">
@@ -206,13 +206,13 @@ const LoanSimulator: React.FC = () => {
                         </Tooltip>
                       </TooltipProvider>
                     </div>
-                    <p className="text-3xl font-bold text-libra-navy">{formatCurrency(requiredIncome)}</p>
+                    <p className="text-3xl font-bold text-libra-navy" aria-labelledby="requiredIncomeLabel">{formatCurrency(requiredIncome)}</p>
                     <p className="text-xs text-gray-500 mt-2">*Valores aproximados, sujeitos à análise de crédito</p>
                   </div>
                   
                   <div className="bg-libra-light p-6 rounded-lg text-center">
                     <div className="flex items-center justify-center gap-1 mb-2">
-                      <p className="text-sm text-gray-600">Avaliação do imóvel mínima necessária:</p>
+                      <p className="text-sm text-gray-600" id="propertyValueLabel">Avaliação do imóvel mínima necessária:</p>
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger aria-label="Mais informações sobre avaliação do imóvel">
@@ -224,7 +224,7 @@ const LoanSimulator: React.FC = () => {
                         </Tooltip>
                       </TooltipProvider>
                     </div>
-                    <p className="text-3xl font-bold text-libra-navy">{formatCurrency(minPropertyValue)}</p>
+                    <p className="text-3xl font-bold text-libra-navy" aria-labelledby="propertyValueLabel">{formatCurrency(minPropertyValue)}</p>
                     <p className="text-xs text-gray-500 mt-2">*Dependendo das características do imóvel (tipo, região e documentação), pode ser necessário até {formatCurrency(maxPropertyValue)}</p>
                   </div>
                 </div>
