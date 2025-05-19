@@ -28,8 +28,9 @@ const renderApp = () => {
 
 // Execute when the document is ready - optimize for first contentful paint
 if (document.readyState === 'loading') {
-  // Fix: Use window.document instead of direct document to avoid type issues
-  window.document.addEventListener('DOMContentLoaded', renderApp);
+  // Define a function to add the event listener with correct typing
+  const documentWithCorrectType = document as Document;
+  documentWithCorrectType.addEventListener('DOMContentLoaded', renderApp);
 } else {
   renderApp();
 }
