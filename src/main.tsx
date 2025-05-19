@@ -28,8 +28,8 @@ const renderApp = () => {
 
 // Execute when the document is ready - optimize for first contentful paint
 if (document.readyState === 'loading') {
-  // Fix the TypeScript error by using window.document which has the correct typing
-  window.document.addEventListener('DOMContentLoaded', renderApp);
+  // TypeScript fix: explicitly cast document to Document type
+  (document as Document).addEventListener('DOMContentLoaded', renderApp);
 } else {
   renderApp();
 }
