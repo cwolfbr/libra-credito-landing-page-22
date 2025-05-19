@@ -28,7 +28,8 @@ const renderApp = () => {
 
 // Execute when the document is ready - optimize for first contentful paint
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', renderApp);
+  // Fix: Explicitly type document to ensure TypeScript recognizes addEventListener
+  (document as Document).addEventListener('DOMContentLoaded', renderApp);
 } else {
   renderApp();
 }
