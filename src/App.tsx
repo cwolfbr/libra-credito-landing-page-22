@@ -42,11 +42,9 @@ const queryClient = new QueryClient({
 
 const App = () => {
   return (
-    // The React context needs to be available to all components, so don't wrap in StrictMode here
     <BrowserRouter>
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <QueryClientProvider client={queryClient}>
-          {/* Move TooltipProvider inside after ThemeProvider and QueryClientProvider */}
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <TooltipProvider>
             <Suspense fallback={<Loading />}>
               <main id="main-content" tabIndex={-1} className="focus:outline-none">
@@ -60,8 +58,8 @@ const App = () => {
               </main>
             </Suspense>
           </TooltipProvider>
-        </QueryClientProvider>
-      </ThemeProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
     </BrowserRouter>
   );
 };
