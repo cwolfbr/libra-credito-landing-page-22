@@ -34,30 +34,30 @@ const queryClient = new QueryClient({
       staleTime: 300 * 1000, // 5 minutes
       gcTime: 900 * 1000, // 15 minutes (previously cacheTime)
       retry: 1,
-      // suspense option has been removed as it's no longer supported in the global config
     }
   }
 });
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    {/* Move TooltipProvider inside BrowserRouter to ensure React context is properly established */}
+const App = () => {
+  return (
     <BrowserRouter>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <Suspense fallback={<Loading />}>
-          <main id="main-content" tabIndex={-1} className="focus:outline-none">
-            <Routes>
-              <Route path="/" element={<Index />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </main>
-        </Suspense>
-      </TooltipProvider>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <Suspense fallback={<Loading />}>
+            <main id="main-content" tabIndex={-1} className="focus:outline-none">
+              <Routes>
+                <Route path="/" element={<Index />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </main>
+          </Suspense>
+        </TooltipProvider>
+      </QueryClientProvider>
     </BrowserRouter>
-  </QueryClientProvider>
-);
+  );
+};
 
 export default App;
