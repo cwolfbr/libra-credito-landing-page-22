@@ -3,14 +3,16 @@ import React, { useEffect, lazy, Suspense } from 'react';
 import Header from '@/components/Header';
 import { Skeleton } from "@/components/ui/skeleton";
 
+// Import critical components eagerly (for LCP)
+import Hero from '@/components/Hero';
+
 // Lazy load components that are below the fold
-const Hero = React.lazy(() => import('@/components/Hero'));
-const Benefits = React.lazy(() => import('@/components/Benefits'));
-const Testimonials = React.lazy(() => import('@/components/Testimonials'));
-const AgentChat = React.lazy(() => import('@/components/AgentChat'));
-const LoanSimulator = React.lazy(() => import('@/components/LoanSimulator'));
-const ContactSection = React.lazy(() => import('@/components/ContactSection'));
-const Footer = React.lazy(() => import('@/components/Footer'));
+const Benefits = lazy(() => import('@/components/Benefits'));
+const Testimonials = lazy(() => import('@/components/Testimonials'));
+const AgentChat = lazy(() => import('@/components/AgentChat'));
+const LoanSimulator = lazy(() => import('@/components/LoanSimulator'));
+const ContactSection = lazy(() => import('@/components/ContactSection'));
+const Footer = lazy(() => import('@/components/Footer'));
 
 // Simple loading component
 const SectionLoader = () => (
@@ -23,6 +25,40 @@ const SectionLoader = () => (
   </div>
 );
 
+// Component that loads when it becomes visible in viewport
+const LazyLoadOnVisible = ({ children, placeholder }) => {
+  const [isVisible, setIsVisible] = React.useState(false);
+  const sectionRef = React.useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px" } // Load component when it's 200px from viewport
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.disconnect();
+      }
+    };
+  }, []);
+
+  return (
+    <div ref={sectionRef}>
+      {isVisible ? children : placeholder}
+    </div>
+  );
+};
+
 const Index = () => {
   useEffect(() => {
     // Update page title for SEO
@@ -34,9 +70,8 @@ const Index = () => {
       metaDescription.setAttribute('content', 'Crédito com garantia de imóvel com as melhores taxas do mercado. Home Equity e empréstimo com garantia para consolidação de dívidas, capital de giro e mais.');
     }
     
-    // Preload critical sections
+    // Preload components that will be visible soon
     const preloadComponents = () => {
-      // Preload components that will be needed soon
       import('@/components/Benefits').catch(() => {});
       import('@/components/Testimonials').catch(() => {});
     };
@@ -53,35 +88,45 @@ const Index = () => {
       <Header />
       <main>
         {/* Hero section is critical and should load first */}
-        <Suspense fallback={<SectionLoader />}>
-          <Hero />
-        </Suspense>
+        <Hero />
         
-        {/* Use IntersectionObserver-based loading via Suspense for below-the-fold content */}
-        <Suspense fallback={<SectionLoader />}>
-          <Benefits />
-        </Suspense>
+        {/* Lazy load below-the-fold content */}
+        <LazyLoadOnVisible placeholder={<SectionLoader />}>
+          <Suspense fallback={<SectionLoader />}>
+            <Benefits />
+          </Suspense>
+        </LazyLoadOnVisible>
         
-        <Suspense fallback={<SectionLoader />}>
-          <Testimonials />
-        </Suspense>
+        <LazyLoadOnVisible placeholder={<SectionLoader />}>
+          <Suspense fallback={<SectionLoader />}>
+            <Testimonials />
+          </Suspense>
+        </LazyLoadOnVisible>
         
-        <Suspense fallback={<SectionLoader />}>
-          <AgentChat />
-        </Suspense>
+        <LazyLoadOnVisible placeholder={<SectionLoader />}>
+          <Suspense fallback={<SectionLoader />}>
+            <AgentChat />
+          </Suspense>
+        </LazyLoadOnVisible>
         
-        <Suspense fallback={<SectionLoader />}>
-          <LoanSimulator />
-        </Suspense>
+        <LazyLoadOnVisible placeholder={<SectionLoader />}>
+          <Suspense fallback={<SectionLoader />}>
+            <LoanSimulator />
+          </Suspense>
+        </LazyLoadOnVisible>
         
-        <Suspense fallback={<SectionLoader />}>
-          <ContactSection />
-        </Suspense>
+        <LazyLoadOnVisible placeholder={<SectionLoader />}>
+          <Suspense fallback={<SectionLoader />}>
+            <ContactSection />
+          </Suspense>
+        </LazyLoadOnVisible>
       </main>
       
-      <Suspense fallback={<div className="h-20 bg-gray-100" />}>
-        <Footer />
-      </Suspense>
+      <LazyLoadOnVisible placeholder={<div className="h-20 bg-gray-100" />}>
+        <Suspense fallback={<div className="h-20 bg-gray-100" />}>
+          <Footer />
+        </Suspense>
+      </LazyLoadOnVisible>
     </div>
   );
 };

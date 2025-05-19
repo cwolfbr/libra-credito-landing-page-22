@@ -5,14 +5,14 @@ import './index.css'
 
 // Identify critical elements and initialize immediately
 const setupAccessibility = () => {
-  // Adicionar Skip Link para navegação por teclado (pulando para o conteúdo principal)
+  // Add Skip Link for keyboard navigation (skipping to main content)
   const skipLink = document.createElement('a');
   skipLink.href = '#main-content';
   skipLink.className = 'sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-libra-navy focus:rounded';
   skipLink.textContent = 'Pular para o conteúdo principal';
   document.body.insertBefore(skipLink, document.body.firstChild);
   
-  // Definir idioma da página para ajudar leitores de tela
+  // Set page language to help screen readers
   document.documentElement.lang = 'pt-BR';
 };
 
@@ -35,68 +35,64 @@ if (document.readyState === 'loading') {
 
 // Register service worker for better performance and offline capabilities
 // Move to requestIdleCallback to avoid blocking rendering
-if ('serviceWorker' in navigator && 'requestIdleCallback' in window) {
-  window.requestIdleCallback(() => {
+if ('serviceWorker' in navigator) {
+  const registerSW = () => {
     navigator.serviceWorker.register('/service-worker.js')
-      .then(registration => {
-        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-      })
       .catch(error => {
         console.log('ServiceWorker registration failed: ', error);
       });
-  }, { timeout: 2000 });
-} else if ('serviceWorker' in navigator) {
-  // Fallback for browsers without requestIdleCallback
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      navigator.serviceWorker.register('/service-worker.js')
-        .catch(error => {
-          console.log('ServiceWorker registration failed: ', error);
-        });
-    }, 1000); // Delay to prioritize UI rendering
-  });
+  };
+  
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(registerSW, { timeout: 2000 });
+  } else {
+    // Fallback for browsers without requestIdleCallback
+    window.addEventListener('load', () => {
+      setTimeout(registerSW, 1000); // Delay to prioritize UI rendering
+    });
+  }
 }
 
-// Use intelligent preloading for key resources
+// Use intelligent preloading for key resources after initial render
 const preloadCriticalResources = () => {
-  // Preconnect to critical domains
-  const domains = [
+  // Preconnect to critical domains if not already preconnected
+  const preconnectDomains = [
     'https://fonts.googleapis.com',
     'https://fonts.gstatic.com',
     'https://img.youtube.com'
   ];
   
-  domains.forEach(domain => {
-    const link = document.createElement('link');
-    link.rel = 'preconnect';
-    link.href = domain;
-    link.crossOrigin = 'anonymous';
-    document.head.appendChild(link);
+  preconnectDomains.forEach(domain => {
+    if (!document.querySelector(`link[rel="preconnect"][href="${domain}"]`)) {
+      const link = document.createElement('link');
+      link.rel = 'preconnect';
+      link.href = domain;
+      link.crossOrigin = 'anonymous';
+      document.head.appendChild(link);
+    }
   });
-  
-  // Preload critical images
-  const preloadImage = (src: string) => {
-    if (document.querySelector(`link[rel="preload"][href="${src}"]`)) return;
-    const link = document.createElement('link');
-    link.rel = 'preload';
-    link.as = 'image';
-    link.href = src;
-    document.head.appendChild(link);
-  };
-  
-  preloadImage('/lovable-uploads/75b290f8-4c51-45af-b45c-b737f5e1ca37.png'); // Logo
 };
 
 // Defer non-critical operations
 if ('requestIdleCallback' in window) {
   // Very low priority operations
   window.requestIdleCallback(() => {
-    // Lazy load future pages
-    import('./pages/Index.tsx').catch(() => {});
-    
     preloadCriticalResources();
+    
+    // Prefetch other pages for faster navigation
+    const prefetchLinks = [
+      './pages/NotFound.tsx'
+    ];
+    
+    prefetchLinks.forEach(link => {
+      const linkElement = document.createElement('link');
+      linkElement.rel = 'prefetch';
+      linkElement.href = link;
+      linkElement.as = 'script';
+      document.head.appendChild(linkElement);
+    });
   }, { timeout: 3000 });
 } else {
-  // Fallback for browsers that don't support requestIdleCallback
+  // Fallback for browsers without requestIdleCallback
   setTimeout(preloadCriticalResources, 2000);
 }

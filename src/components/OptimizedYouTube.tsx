@@ -1,7 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Play } from 'lucide-react';
-import ImageOptimizer from './ImageOptimizer';
 
 interface OptimizedYouTubeProps {
   videoId: string;
@@ -22,9 +21,16 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
   const [thumbnailLoaded, setThumbnailLoaded] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   
-  // Use mqdefault for better initial load performance
-  const initialQuality = preload ? thumbnailQuality : 'mqdefault';
-  const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/${initialQuality}.jpg`;
+  // Use WebP format for better performance if supported
+  const generatePictureSources = () => {
+    const baseUrl = `https://img.youtube.com/vi_webp/${videoId}`;
+    return (
+      <>
+        <source type="image/webp" srcSet={`${baseUrl}/${thumbnailQuality}.webp`} />
+        <source type="image/jpeg" srcSet={`https://img.youtube.com/vi/${videoId}/${thumbnailQuality}.jpg`} />
+      </>
+    );
+  };
 
   // Preconnect to YouTube domain to speed up subsequent requests
   useEffect(() => {
@@ -65,13 +71,17 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
           tabIndex={0}
           aria-label={`Play video: ${title}`}
         >
-          <ImageOptimizer
-            src={thumbnailUrl}
-            alt={`Thumbnail for ${title}`}
-            className="w-full h-full"
-            priority={preload}
-            sizes="(max-width: 768px) 100vw, 50vw"
-          />
+          <picture onLoad={() => setThumbnailLoaded(true)}>
+            {generatePictureSources()}
+            <img
+              src={`https://img.youtube.com/vi/${videoId}/${thumbnailQuality}.jpg`}
+              alt={`Thumbnail for ${title}`}
+              className="w-full h-full object-cover"
+              fetchPriority={preload ? "high" : "auto"}
+              decoding="async"
+              onLoad={() => setThumbnailLoaded(true)}
+            />
+          </picture>
           <div className={`absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors ${thumbnailLoaded ? 'opacity-100' : 'opacity-0'}`}>
             <div className="w-16 h-16 md:w-20 md:h-20 bg-libra-blue rounded-full flex items-center justify-center">
               <Play className="w-8 h-8 md:w-10 md:h-10 text-white fill-white" fill="currentColor" />

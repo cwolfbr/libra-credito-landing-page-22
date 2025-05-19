@@ -11,9 +11,8 @@ import { Suspense, lazy } from 'react';
 
 // Lazy load components with prefetch
 const Index = lazy(() => {
-  // Prefetch Index dependencies while loading
+  // Prefetch only critical components for faster LCP
   import("./components/Hero").catch(() => {});
-  import("./components/Benefits").catch(() => {});
   return import("./pages/Index");
 });
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -42,10 +41,10 @@ const queryClient = new QueryClient({
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <TooltipProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <TooltipProvider>
+          <BrowserRouter>
             <Suspense fallback={<Loading />}>
               <main id="main-content" tabIndex={-1} className="focus:outline-none">
                 <Toaster />
@@ -57,10 +56,10 @@ const App = () => {
                 </Routes>
               </main>
             </Suspense>
-          </TooltipProvider>
-        </ThemeProvider>
-      </QueryClientProvider>
-    </BrowserRouter>
+          </BrowserRouter>
+        </TooltipProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 };
 
