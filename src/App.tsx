@@ -2,7 +2,6 @@
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -43,7 +42,6 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        {/* Fix: Provide TooltipProvider as a component, not a direct import reference */}
         <BrowserRouter>
           <Suspense fallback={<Loading />}>
             <main id="main-content" tabIndex={-1} className="focus:outline-none">

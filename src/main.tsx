@@ -36,8 +36,8 @@ const renderApp = () => {
 
 // Execute when the document is ready - optimize for first contentful paint
 if (document.readyState === 'loading') {
-  // Fix TypeScript error by using a type assertion
-  (document as Document).addEventListener('DOMContentLoaded', renderApp);
+  // Fix TypeScript error by using window.document explicitly
+  window.document.addEventListener('DOMContentLoaded', renderApp);
 } else {
   renderApp();
 }
