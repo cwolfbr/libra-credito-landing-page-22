@@ -43,21 +43,20 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <TooltipProvider>
-          <BrowserRouter>
-            <Suspense fallback={<Loading />}>
-              <main id="main-content" tabIndex={-1} className="focus:outline-none">
-                <Toaster />
-                <Sonner />
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </main>
-            </Suspense>
-          </BrowserRouter>
-        </TooltipProvider>
+        {/* Fix: Provide TooltipProvider as a component, not a direct import reference */}
+        <BrowserRouter>
+          <Suspense fallback={<Loading />}>
+            <main id="main-content" tabIndex={-1} className="focus:outline-none">
+              <Toaster />
+              <Sonner />
+              <Routes>
+                <Route path="/" element={<Index />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </main>
+          </Suspense>
+        </BrowserRouter>
       </ThemeProvider>
     </QueryClientProvider>
   );

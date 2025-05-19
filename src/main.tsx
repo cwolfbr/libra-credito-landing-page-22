@@ -2,6 +2,8 @@
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
+import React from 'react'
+import { TooltipProvider } from "@/components/ui/tooltip"
 
 // Identify critical elements and initialize immediately
 const setupAccessibility = () => {
@@ -22,13 +24,19 @@ const renderApp = () => {
   
   const root = document.getElementById("root");
   if (root) {
-    createRoot(root).render(<App />);
+    createRoot(root).render(
+      <React.StrictMode>
+        <TooltipProvider>
+          <App />
+        </TooltipProvider>
+      </React.StrictMode>
+    );
   }
 };
 
 // Execute when the document is ready - optimize for first contentful paint
 if (document.readyState === 'loading') {
-  // TypeScript fix: explicitly cast document to Document type
+  // Fix TypeScript error by using a type assertion
   (document as Document).addEventListener('DOMContentLoaded', renderApp);
 } else {
   renderApp();
