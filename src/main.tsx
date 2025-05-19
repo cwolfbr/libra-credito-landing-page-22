@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 
-// Função para verificar necessidades de acessibilidade
+// Identify critical elements and initialize immediately
 const setupAccessibility = () => {
   // Adicionar Skip Link para navegação por teclado (pulando para o conteúdo principal)
   const skipLink = document.createElement('a');
@@ -16,7 +16,7 @@ const setupAccessibility = () => {
   document.documentElement.lang = 'pt-BR';
 };
 
-// Use a separate chunk for the app with improved loading strategy
+// Optimized rendering setup
 const renderApp = () => {
   setupAccessibility();
   
@@ -26,7 +26,7 @@ const renderApp = () => {
   }
 };
 
-// Execute when the document is ready
+// Execute when the document is ready - optimize for first contentful paint
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', renderApp);
 } else {
@@ -34,8 +34,9 @@ if (document.readyState === 'loading') {
 }
 
 // Register service worker for better performance and offline capabilities
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
+// Move to requestIdleCallback to avoid blocking rendering
+if ('serviceWorker' in navigator && 'requestIdleCallback' in window) {
+  window.requestIdleCallback(() => {
     navigator.serviceWorker.register('/service-worker.js')
       .then(registration => {
         console.log('ServiceWorker registration successful with scope: ', registration.scope);
@@ -43,19 +44,59 @@ if ('serviceWorker' in navigator) {
       .catch(error => {
         console.log('ServiceWorker registration failed: ', error);
       });
+  }, { timeout: 2000 });
+} else if ('serviceWorker' in navigator) {
+  // Fallback for browsers without requestIdleCallback
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      navigator.serviceWorker.register('/service-worker.js')
+        .catch(error => {
+          console.log('ServiceWorker registration failed: ', error);
+        });
+    }, 1000); // Delay to prioritize UI rendering
   });
 }
 
-// Add preloading for key pages when idle
-if ('requestIdleCallback' in window) {
-  window.requestIdleCallback(() => {
-    // Preload key components that will be lazy-loaded
-    import('./pages/Index.tsx');
-    // Use link preloading for critical resources
-    const preloadLink = document.createElement('link');
-    preloadLink.rel = 'preload';
-    preloadLink.as = 'image';
-    preloadLink.href = '/lovable-uploads/75b290f8-4c51-45af-b45c-b737f5e1ca37.png';
-    document.head.appendChild(preloadLink);
+// Use intelligent preloading for key resources
+const preloadCriticalResources = () => {
+  // Preconnect to critical domains
+  const domains = [
+    'https://fonts.googleapis.com',
+    'https://fonts.gstatic.com',
+    'https://img.youtube.com'
+  ];
+  
+  domains.forEach(domain => {
+    const link = document.createElement('link');
+    link.rel = 'preconnect';
+    link.href = domain;
+    link.crossOrigin = 'anonymous';
+    document.head.appendChild(link);
   });
+  
+  // Preload critical images
+  const preloadImage = (src: string) => {
+    if (document.querySelector(`link[rel="preload"][href="${src}"]`)) return;
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'image';
+    link.href = src;
+    document.head.appendChild(link);
+  };
+  
+  preloadImage('/lovable-uploads/75b290f8-4c51-45af-b45c-b737f5e1ca37.png'); // Logo
+};
+
+// Defer non-critical operations
+if ('requestIdleCallback' in window) {
+  // Very low priority operations
+  window.requestIdleCallback(() => {
+    // Lazy load future pages
+    import('./pages/Index.tsx').catch(() => {});
+    
+    preloadCriticalResources();
+  }, { timeout: 3000 });
+} else {
+  // Fallback for browsers that don't support requestIdleCallback
+  setTimeout(preloadCriticalResources, 2000);
 }
