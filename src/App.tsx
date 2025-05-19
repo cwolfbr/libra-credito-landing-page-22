@@ -41,10 +41,11 @@ const queryClient = new QueryClient({
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
+    {/* Move TooltipProvider inside BrowserRouter to ensure React context is properly established */}
+    <BrowserRouter>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
         <Suspense fallback={<Loading />}>
           <main id="main-content" tabIndex={-1} className="focus:outline-none">
             <Routes>
@@ -54,8 +55,8 @@ const App = () => (
             </Routes>
           </main>
         </Suspense>
-      </BrowserRouter>
-    </TooltipProvider>
+      </TooltipProvider>
+    </BrowserRouter>
   </QueryClientProvider>
 );
 
