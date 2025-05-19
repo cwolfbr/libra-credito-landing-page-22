@@ -40,12 +40,12 @@ const queryClient = new QueryClient({
 });
 
 const App = () => (
-  <ThemeProvider attribute="class" defaultTheme="light">
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
+  <BrowserRouter>
+    <ThemeProvider attribute="class" defaultTheme="light">
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
           <Suspense fallback={<Loading />}>
             <main id="main-content" tabIndex={-1} className="focus:outline-none">
               <Routes>
@@ -55,10 +55,10 @@ const App = () => (
               </Routes>
             </main>
           </Suspense>
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
-  </ThemeProvider>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </ThemeProvider>
+  </BrowserRouter>
 );
 
 export default App;
