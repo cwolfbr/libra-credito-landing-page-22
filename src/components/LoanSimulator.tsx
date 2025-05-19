@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -205,7 +206,7 @@ const LoanSimulator: React.FC = () => {
                         <TooltipTrigger aria-label="Mais informações sobre renda necessária">
                           <HelpCircle className="w-4 h-4 text-gray-600" aria-hidden="true" />
                         </TooltipTrigger>
-                        <TooltipContent className="max-w-xs">
+                        <TooltipContent>
                           <p>A renda familiar necessária é calculada com base no comprometimento máximo de 30% da renda com a parcela, para evitar o superendividamento.</p>
                         </TooltipContent>
                       </Tooltip>
@@ -221,7 +222,7 @@ const LoanSimulator: React.FC = () => {
                         <TooltipTrigger aria-label="Mais informações sobre avaliação do imóvel">
                           <Info className="w-4 h-4 text-gray-600" aria-hidden="true" />
                         </TooltipTrigger>
-                        <TooltipContent className="max-w-xs">
+                        <TooltipContent>
                           <p>Dependendo das características do imóvel (tipo, região e documentação), a avaliação mínima necessária pode ser até {formatCurrency(maxPropertyValue)}.</p>
                         </TooltipContent>
                       </Tooltip>
