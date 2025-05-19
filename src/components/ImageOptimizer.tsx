@@ -39,19 +39,19 @@ const ImageOptimizer: React.FC<ImageOptimizerProps> = ({
   const isExternalImage = src.startsWith('http');
   
   // For external images like YouTube thumbnails, use fetchpriority to optimize loading
-  const fetchPriority = priority ? "high" : (isExternalImage ? "low" : "auto");
+  const fetchPriority = priority ? "high" as const : (isExternalImage ? "low" as const : "auto" as const);
   
   // Use WebP for local images if available (handle with picture element)
   const getImageElement = () => {
     const imgProps = {
       src,
       alt,
-      loading: priority ? "eager" : "lazy",
+      loading: priority ? "eager" as const : "lazy" as const,
       className: `object-cover w-full h-full transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'}`,
       onLoad: () => setIsLoaded(true),
       onError: () => setHasError(true),
-      decoding: "async",
-      fetchPriority: fetchPriority,
+      decoding: "async" as const,
+      fetchPriority,
       sizes
     };
 
