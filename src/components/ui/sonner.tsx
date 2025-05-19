@@ -3,6 +3,7 @@ import { toast, Toaster as Sonner } from "sonner";
 
 type ToasterProps = React.ComponentProps<typeof Sonner>;
 
+// Simplify the Toaster component to avoid potential hooks issues
 const Toaster = ({ ...props }: ToasterProps) => {
   return (
     <Sonner
