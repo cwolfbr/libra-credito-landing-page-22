@@ -1,5 +1,5 @@
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { Play } from 'lucide-react';
 import ImageOptimizer from './ImageOptimizer';
 
@@ -8,35 +8,17 @@ interface OptimizedYouTubeProps {
   title: string;
   className?: string;
   thumbnailQuality?: 'default' | 'hqdefault' | 'mqdefault' | 'sddefault' | 'maxresdefault';
-  preload?: boolean;
 }
 
 const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
   videoId,
   title,
   className = "",
-  thumbnailQuality = "hqdefault",
-  preload = false
+  thumbnailQuality = "hqdefault"
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [thumbnailLoaded, setThumbnailLoaded] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  
-  // Use mqdefault for better initial load performance
-  const initialQuality = preload ? thumbnailQuality : 'mqdefault';
-  const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/${initialQuality}.jpg`;
-
-  // Preconnect to YouTube domain to speed up subsequent requests
-  useEffect(() => {
-    const link = document.createElement('link');
-    link.rel = 'preconnect';
-    link.href = 'https://www.youtube-nocookie.com';
-    document.head.appendChild(link);
-    
-    return () => {
-      document.head.removeChild(link);
-    };
-  }, []);
+  const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/${thumbnailQuality}.jpg`;
 
   // Load YouTube iframe only when user interacts
   const loadVideo = () => {
@@ -69,10 +51,8 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
             src={thumbnailUrl}
             alt={`Thumbnail for ${title}`}
             className="w-full h-full"
-            priority={preload}
-            sizes="(max-width: 768px) 100vw, 50vw"
           />
-          <div className={`absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors ${thumbnailLoaded ? 'opacity-100' : 'opacity-0'}`}>
+          <div className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors">
             <div className="w-16 h-16 md:w-20 md:h-20 bg-libra-blue rounded-full flex items-center justify-center">
               <Play className="w-8 h-8 md:w-10 md:h-10 text-white fill-white" fill="currentColor" />
             </div>
@@ -94,4 +74,4 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
   );
 };
 
-export default React.memo(OptimizedYouTube);
+export default OptimizedYouTube;
