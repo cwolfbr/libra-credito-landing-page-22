@@ -28,62 +28,61 @@ const ImageOptimizer: React.FC<ImageOptimizerProps> = ({
     setHasError(false);
 
     // Preload image if priority is true
-    if (priority && !isLoaded) {
+    if (priority) {
       const img = new Image();
       img.src = src;
-      img.onload = () => setIsLoaded(true);
     }
-  }, [src, priority, isLoaded]);
+  }, [src, priority]);
 
   // Determine if image is external (YouTube thumbnails, etc.)
   const isExternalImage = src.startsWith('http');
   
   // For external images like YouTube thumbnails, use fetchpriority to optimize loading
-  const fetchPriority = priority ? "high" as const : (isExternalImage ? "low" as const : "auto" as const);
+  const fetchPriority = priority ? "high" : (isExternalImage ? "low" : "auto");
   
-  // Use WebP for local images if available (handle with picture element)
-  const getImageElement = () => {
-    const imgProps = {
-      src,
-      alt,
-      loading: priority ? "eager" as const : "lazy" as const,
-      className: `object-cover w-full h-full transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'}`,
-      onLoad: () => setIsLoaded(true),
-      onError: () => setHasError(true),
-      decoding: "async" as const,
-      fetchPriority,
-      sizes
-    };
-
+  // Generate responsive sizes for srcSet
+  const generateSrcSet = () => {
     if (isExternalImage) {
-      return <img {...imgProps} />;
+      return undefined; // External images don't need srcSet
     }
-
-    // For local images, try to use WebP if available
-    // Note: This is a simplified implementation. In a real project, you'd need a build process
-    // that generates WebP versions of your images
-    const webpSrc = src.replace(/\.(jpg|jpeg|png)$/i, '.webp');
     
-    return (
-      <picture>
-        <source type="image/webp" srcSet={webpSrc} />
-        <img {...imgProps} />
-      </picture>
-    );
+    // For local images we can't actually resize them in this implementation
+    // but we set the sizes attribute for browser optimization
+    return undefined;
   };
   
   return (
     <div className={`overflow-hidden ${className}`}>
       {aspectRatio ? (
         <AspectRatio ratio={aspectRatio} className="overflow-hidden">
-          {getImageElement()}
+          <img
+            src={src}
+            alt={alt}
+            loading={priority ? "eager" : "lazy"}
+            className={`object-cover w-full h-full transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+            onLoad={() => setIsLoaded(true)}
+            onError={() => setHasError(true)}
+            decoding="async"
+            fetchPriority={fetchPriority}
+            sizes={sizes}
+          />
           {!isLoaded && !hasError && (
             <div className="absolute inset-0 bg-gray-100 animate-pulse" />
           )}
         </AspectRatio>
       ) : (
         <>
-          {getImageElement()}
+          <img
+            src={src}
+            alt={alt}
+            loading={priority ? "eager" : "lazy"}
+            className={`object-cover w-full h-full ${className} transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+            onLoad={() => setIsLoaded(true)}
+            onError={() => setHasError(true)}
+            decoding="async"
+            fetchPriority={fetchPriority}
+            sizes={sizes}
+          />
           {!isLoaded && !hasError && (
             <div className="absolute inset-0 bg-gray-100 animate-pulse" />
           )}
