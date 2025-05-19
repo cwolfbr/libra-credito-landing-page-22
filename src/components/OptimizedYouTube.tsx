@@ -14,11 +14,12 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
   videoId,
   title,
   className = "",
-  thumbnailQuality = "hqdefault"
+  thumbnailQuality = "mqdefault"
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/${thumbnailQuality}.jpg`;
+  const isHeroVideo = videoId === "E9IwL6R2I1s"; // Identifica se é o vídeo principal do Hero
 
   // Load YouTube iframe only when user interacts
   const loadVideo = () => {
@@ -47,11 +48,23 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
           tabIndex={0}
           aria-label={`Play video: ${title}`}
         >
-          <ImageOptimizer
-            src={thumbnailUrl}
-            alt={`Thumbnail for ${title}`}
-            className="w-full h-full"
-          />
+          {isHeroVideo ? (
+            // Thumbnail do vídeo principal sem lazy loading
+            <img
+              src={thumbnailUrl}
+              alt={`Thumbnail for ${title}`}
+              className="w-full h-full object-cover"
+              fetchPriority="high"
+              decoding="async"
+            />
+          ) : (
+            // Outros vídeos com lazy loading
+            <ImageOptimizer
+              src={thumbnailUrl}
+              alt={`Thumbnail for ${title}`}
+              className="w-full h-full"
+            />
+          )}
           <div className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors">
             <div className="w-16 h-16 md:w-20 md:h-20 bg-libra-blue rounded-full flex items-center justify-center">
               <Play className="w-8 h-8 md:w-10 md:h-10 text-white fill-white" fill="currentColor" />
