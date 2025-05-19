@@ -5,7 +5,7 @@ import Hero from '@/components/Hero';
 import Benefits from '@/components/Benefits';
 import Testimonials from '@/components/Testimonials';
 import AgentChat from '@/components/AgentChat';
-import LoanSimulator from '@/components/LoanSimulator';
+import LoanSimulator from '@/components/loan-simulator';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 
