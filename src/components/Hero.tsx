@@ -66,7 +66,7 @@ const Hero: React.FC = () => {
             </div>
           </div>
           <div className="w-full aspect-video rounded-lg overflow-hidden shadow-xl animate-fade-in">
-            <OptimizedYouTube videoId="E9IwL6R2I1s" title="Crédito com Garantia de Imóvel - Libra Crédito" />
+            <OptimizedYouTube videoId="E9lwL6R2l1s" title="Crédito com Garantia de Imóvel - Libra Crédito" />
           </div>
         </div>
         <div className="flex justify-center mt-12">
