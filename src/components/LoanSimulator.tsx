@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import { HelpCircle, AlertCircle, Info } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
@@ -31,7 +31,6 @@ const LoanSimulator: React.FC = () => {
     const newLoanAmount = value[0];
     setLoanAmount(newLoanAmount);
   };
-  
   const calculateLoan = () => {
     // Simulação de cálculo - Será substituído pela chamada API
     const interest = 0.0109; // 1.09% ao mês
@@ -49,12 +48,10 @@ const LoanSimulator: React.FC = () => {
     setRequiredIncome(income);
     setShowResults(true);
   };
-  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     calculateLoan();
   };
-  
   const formatCEP = (value: string) => {
     // Remove tudo que não é número
     const numbers = value.replace(/\D/g, '');
@@ -66,12 +63,10 @@ const LoanSimulator: React.FC = () => {
       return `${numbers.slice(0, 5)}-${numbers.slice(5, 8)}`;
     }
   };
-  
   const handleCEPChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formattedCEP = formatCEP(e.target.value);
     setCep(formattedCEP);
   };
-  
   const handleContactRequest = () => {
     window.open('https://api.whatsapp.com/send/?phone=5516996360424&text=Ol%C3%A1%2C+Quero+agendar+uma+conversa+com+o+consultor%21&type=phone_number&app_absent=0', '_blank');
   };
@@ -84,8 +79,7 @@ const LoanSimulator: React.FC = () => {
   
   const loanAmountLabelId = "loan-amount-label";
 
-  return (
-    <section id="simulator" className="py-16 md:py-24 bg-gradient-to-b from-libra-light to-white">
+  return <section id="simulator" className="py-16 md:py-24 bg-gradient-to-b from-libra-light to-white">
       <div className="container mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-libra-navy mb-4">Simule seu empréstimo</h2>
@@ -192,8 +186,7 @@ const LoanSimulator: React.FC = () => {
             </div>
           </form>
           
-          {showResults && (
-            <div className="mt-8 pt-6 border-t border-gray-200 animate-fade-in">
+          {showResults && <div className="mt-8 pt-6 border-t border-gray-200 animate-fade-in">
               <h3 className="text-xl font-bold text-libra-navy mb-4 text-center">Resultado da Simulação</h3>
               
               <div className="grid grid-cols-1 gap-6">
@@ -208,16 +201,16 @@ const LoanSimulator: React.FC = () => {
                   <div className="bg-libra-light p-6 rounded-lg text-center">
                     <div className="flex items-center justify-center gap-1 mb-2">
                       <p className="text-sm text-gray-700" id="requiredIncomeLabel">Renda familiar necessária:</p>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <span className="cursor-help" aria-label="Mais informações sobre renda necessária">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger aria-label="Mais informações sobre renda necessária">
                             <HelpCircle className="w-4 h-4 text-gray-600" aria-hidden="true" />
-                          </span>
-                        </TooltipTrigger>
-                        <TooltipContent className="max-w-xs">
-                          <p>A renda familiar necessária é calculada com base no comprometimento máximo de 30% da renda com a parcela, para evitar o superendividamento.</p>
-                        </TooltipContent>
-                      </Tooltip>
+                          </TooltipTrigger>
+                          <TooltipContent className="max-w-xs">
+                            <p>A renda familiar necessária é calculada com base no comprometimento máximo de 30% da renda com a parcela, para evitar o superendividamento.</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                     </div>
                     <p className="text-3xl font-bold text-libra-navy" aria-labelledby="requiredIncomeLabel">{formatCurrency(requiredIncome)}</p>
                     <p className="text-xs text-gray-700 mt-2">*Valores aproximados, sujeitos à análise de crédito</p>
@@ -226,16 +219,16 @@ const LoanSimulator: React.FC = () => {
                   <div className="bg-libra-light p-6 rounded-lg text-center">
                     <div className="flex items-center justify-center gap-1 mb-2">
                       <p className="text-sm text-gray-700" id="propertyValueLabel">Avaliação do imóvel mínima necessária:</p>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <span className="cursor-help" aria-label="Mais informações sobre avaliação do imóvel">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger aria-label="Mais informações sobre avaliação do imóvel">
                             <Info className="w-4 h-4 text-gray-600" aria-hidden="true" />
-                          </span>
-                        </TooltipTrigger>
-                        <TooltipContent className="max-w-xs">
-                          <p>Dependendo das características do imóvel (tipo, região e documentação), a avaliação mínima necessária pode ser até {formatCurrency(maxPropertyValue)}.</p>
-                        </TooltipContent>
-                      </Tooltip>
+                          </TooltipTrigger>
+                          <TooltipContent className="max-w-xs">
+                            <p>Dependendo das características do imóvel (tipo, região e documentação), a avaliação mínima necessária pode ser até {formatCurrency(maxPropertyValue)}.</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                     </div>
                     <p className="text-3xl font-bold text-libra-navy" aria-labelledby="propertyValueLabel">{formatCurrency(minPropertyValue)}</p>
                     <p className="text-xs text-gray-700 mt-2">*Dependendo das características do imóvel (tipo, região e documentação), pode ser necessário até {formatCurrency(maxPropertyValue)}</p>
@@ -254,12 +247,10 @@ const LoanSimulator: React.FC = () => {
                   Solicitar Contato
                 </Button>
               </div>
-            </div>
-          )}
+            </div>}
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
 
 export default LoanSimulator;
