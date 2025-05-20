@@ -4,7 +4,6 @@ import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import Benefits from '@/components/Benefits';
 import Testimonials from '@/components/Testimonials';
-import AgentChat from '@/components/AgentChat';
 import LoanSimulator from '@/components/LoanSimulator';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
@@ -28,7 +27,6 @@ const Index = () => {
         <Hero />
         <Benefits />
         <Testimonials />
-        <AgentChat />
         <LoanSimulator />
         <ContactSection />
       </main>
