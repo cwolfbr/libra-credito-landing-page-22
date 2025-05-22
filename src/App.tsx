@@ -34,6 +34,7 @@ const queryClient = new QueryClient({
       staleTime: 300 * 1000, // 5 minutes
       gcTime: 900 * 1000, // 15 minutes (previously cacheTime)
       retry: 1,
+      // suspense option has been removed as it's no longer supported in the global config
     }
   }
 });
@@ -41,6 +42,8 @@ const queryClient = new QueryClient({
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
+      <Toaster />
+      <Sonner />
       <BrowserRouter>
         <Suspense fallback={<Loading />}>
           <main id="main-content" tabIndex={-1} className="focus:outline-none">
@@ -51,8 +54,6 @@ const App = () => (
             </Routes>
           </main>
         </Suspense>
-        <Toaster />
-        <Sonner />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
