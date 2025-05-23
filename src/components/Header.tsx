@@ -24,6 +24,25 @@ const Header: React.FC = memo(() => {
           </a>
           <span className="text-libra-navy font-semibold text-lg md:text-xl">Libra Crédito</span>
         </div>
+        <nav className="flex items-center">
+          <ul>
+            <li>
+              <a href="/portal-cliente-placeholder" className="text-libra-navy hover:text-libra-blue font-medium">Portal do Cliente</a>
+            </li>
+            <li>
+              <a href="/portal-parceiro-placeholder" className="text-libra-navy hover:text-libra-blue font-medium">Portal do Parceiro</a>
+            </li>
+            <li>
+              <a href="/blog-placeholder" className="text-libra-navy hover:text-libra-blue font-medium">Blog</a>
+            </li>
+            <li>
+              <a href="/credito-com-garantia-de-imovel" className="text-libra-navy hover:text-libra-blue font-medium">Entenda o Crédito Com Garantia de Imóvel</a>
+            </li>
+            <li>
+              <a href="/sobre-nos" className="text-libra-navy hover:text-libra-blue font-medium">Sobre Nós</a>
+            </li>
+          </ul>
+        </nav>
         <div className="flex items-center gap-4">
           <p className="hidden md:flex items-center text-libra-navy font-medium text-sm">
             <Info className="w-5 h-5 mr-2 text-libra-blue" aria-hidden="true" />
