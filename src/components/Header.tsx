@@ -70,7 +70,17 @@ const Header: React.FC = memo(() => {
             A Libra não realiza nenhum tipo de cobrança até a liberação do crédito
           </p>
           
-          {/* Mobile menu button */}
+          <Button 
+            className="min-h-[48px] min-w-[150px]"
+            style={{ backgroundColor: '#003399', color: 'white' }}
+            size="lg"
+            onClick={handleWhatsAppContact}
+            aria-label="Fale conosco pelo WhatsApp"
+          >
+            Fale Conosco
+          </Button>
+
+          {/* Mobile menu button - movido para depois do botão Fale Conosco */}
           <button
             className="lg:hidden p-2"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -78,16 +88,6 @@ const Header: React.FC = memo(() => {
           >
             {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
-
-          <Button 
-            className="min-h-[48px] min-w-[150px]"
-            variant="highContrast"
-            size="lg"
-            onClick={handleWhatsAppContact}
-            aria-label="Fale conosco pelo WhatsApp"
-          >
-            Fale Conosco
-          </Button>
         </div>
       </div>
 
