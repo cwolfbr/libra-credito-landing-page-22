@@ -14,9 +14,6 @@ const Index = lazy(() => {
   import("./components/Benefits").catch(() => {});
   return import("./pages/Index");
 });
-const Home = lazy(() => import("./pages/Home"));
-const HomeEquityExplainedPage = lazy(() => import("./pages/HomeEquityExplainedPage"));
-const AboutUsPage = lazy(() => import("./pages/AboutUsPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const Loading = () => (
@@ -50,10 +47,7 @@ const App = () => (
         <Suspense fallback={<Loading />}>
           <main id="main-content" tabIndex={-1} className="focus:outline-none">
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/simulacao" element={<Index />} />
-              <Route path="/credito-com-garantia-de-imovel" element={<HomeEquityExplainedPage />} />
-              <Route path="/sobre-nos" element={<AboutUsPage />} />
+              <Route path="/" element={<Index />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
