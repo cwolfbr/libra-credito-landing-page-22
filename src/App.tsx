@@ -14,6 +14,10 @@ const Index = lazy(() => {
   import("./components/Benefits").catch(() => {});
   return import("./pages/Index");
 });
+const Vantagens = lazy(() => import("./pages/Vantagens"));
+const QuemSomos = lazy(() => import("./pages/QuemSomos"));
+const Blog = lazy(() => import("./pages/Blog"));
+const Parceiros = lazy(() => import("./pages/Parceiros"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const Loading = () => (
@@ -48,6 +52,10 @@ const App = () => (
           <main id="main-content" tabIndex={-1} className="focus:outline-none">
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/vantagens" element={<Vantagens />} />
+              <Route path="/quem-somos" element={<QuemSomos />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/parceiros" element={<Parceiros />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
