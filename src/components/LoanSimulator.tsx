@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { HelpCircle, AlertCircle, Info } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
@@ -85,182 +85,180 @@ const LoanSimulator: React.FC = () => {
   const loanAmountLabelId = "loan-amount-label";
 
   return (
-    <TooltipProvider>
-      <section id="simulator" className="py-16 md:py-24 bg-gradient-to-b from-libra-light to-white">
-        <div className="container mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-libra-navy mb-4">Simule seu empréstimo</h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Descubra quanto você pode obter com a garantia do seu imóvel (até 50% do valor) e quais serão as condições de pagamento.
-            </p>
-          </div>
-          
-          <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-6 md:p-8 border border-gray-200">
-            <form onSubmit={handleSubmit}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <div>
-                  <h3 className="text-xl font-bold text-libra-navy mb-4">Sobre o empréstimo</h3>
-                  
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1" id="loanPurposeLabel">
-                        Finalidade do empréstimo
-                      </label>
-                      <Select value={loanPurpose} onValueChange={value => setLoanPurpose(value as LoanPurpose)}>
-                        <SelectTrigger className="w-full" aria-labelledby="loanPurposeLabel">
-                          <SelectValue placeholder="Selecione a finalidade" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="consolidacao" aria-label="Consolidação de dívidas">Consolidação de dívidas</SelectItem>
-                          <SelectItem value="capital" aria-label="Capital de giro">Capital de giro</SelectItem>
-                          <SelectItem value="investimento" aria-label="Investimento">Investimento</SelectItem>
-                          <SelectItem value="reforma" aria-label="Reforma">Reforma</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    <div>
-                      <label id={loanAmountLabelId} className="block text-sm font-medium text-black mb-1">
-                        Valor necessário: {formatCurrency(loanAmount)}
-                      </label>
-                      <Slider 
-                        value={[loanAmount]} 
-                        min={100000} 
-                        max={5000000} 
-                        step={50000} 
-                        onValueChange={handleLoanAmountChange} 
-                        className="my-4"
-                        aria-labelledby={loanAmountLabelId}
-                      />
-                      <div className="flex justify-between text-sm text-gray-700">
-                        <span>R$ 100 mil</span>
-                        <span>R$ 5 milhões</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+    <section id="simulator" className="py-16 md:py-24 bg-gradient-to-b from-libra-light to-white">
+      <div className="container mx-auto">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-libra-navy mb-4">Simule seu empréstimo</h2>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            Descubra quanto você pode obter com a garantia do seu imóvel (até 50% do valor) e quais serão as condições de pagamento.
+          </p>
+        </div>
+        
+        <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-6 md:p-8 border border-gray-200">
+          <form onSubmit={handleSubmit}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <div>
+                <h3 className="text-xl font-bold text-libra-navy mb-4">Sobre o empréstimo</h3>
                 
-                <div>
-                  <h3 className="text-xl font-bold text-libra-navy mb-4">Sobre a garantia</h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" id="loanPurposeLabel">
+                      Finalidade do empréstimo
+                    </label>
+                    <Select value={loanPurpose} onValueChange={value => setLoanPurpose(value as LoanPurpose)}>
+                      <SelectTrigger className="w-full" aria-labelledby="loanPurposeLabel">
+                        <SelectValue placeholder="Selecione a finalidade" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="consolidacao" aria-label="Consolidação de dívidas">Consolidação de dívidas</SelectItem>
+                        <SelectItem value="capital" aria-label="Capital de giro">Capital de giro</SelectItem>
+                        <SelectItem value="investimento" aria-label="Investimento">Investimento</SelectItem>
+                        <SelectItem value="reforma" aria-label="Reforma">Reforma</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                   
-                  <div className="space-y-4">
-                    <div>
-                      <label htmlFor="cep" className="block text-sm font-medium text-gray-700 mb-1">
-                        CEP do imóvel
-                      </label>
-                      <Input 
-                        id="cep" 
-                        type="text" 
-                        value={cep} 
-                        onChange={handleCEPChange} 
-                        placeholder="00000-000" 
-                        maxLength={9} 
-                        className="w-full"
-                        aria-label="CEP do imóvel"
-                      />
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1" id="propertyTypeLabel">
-                        Tipo de imóvel
-                      </label>
-                      <Select value={propertyType} onValueChange={value => setPropertyType(value as PropertyType)}>
-                        <SelectTrigger className="w-full" aria-labelledby="propertyTypeLabel">
-                          <SelectValue placeholder="Selecione o tipo" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="casa" aria-label="Casa">Casa</SelectItem>
-                          <SelectItem value="apartamento" aria-label="Apartamento">Apartamento</SelectItem>
-                          <SelectItem value="comercial" aria-label="Comercial">Comercial</SelectItem>
-                          <SelectItem value="rural" aria-label="Rural Produtivo">Rural Produtivo</SelectItem>
-                        </SelectContent>
-                      </Select>
+                  <div>
+                    <label id={loanAmountLabelId} className="block text-sm font-medium text-black mb-1">
+                      Valor necessário: {formatCurrency(loanAmount)}
+                    </label>
+                    <Slider 
+                      value={[loanAmount]} 
+                      min={100000} 
+                      max={5000000} 
+                      step={50000} 
+                      onValueChange={handleLoanAmountChange} 
+                      className="my-4"
+                      aria-labelledby={loanAmountLabelId}
+                    />
+                    <div className="flex justify-between text-sm text-gray-700">
+                      <span>R$ 100 mil</span>
+                      <span>R$ 5 milhões</span>
                     </div>
                   </div>
                 </div>
               </div>
               
-              <div className="flex justify-center">
-                <Button 
-                  type="submit" 
-                  className="min-h-[48px] min-w-[200px]"
-                  variant="goldContrast"
-                  size="xl"
-                  aria-label="Simular empréstimo agora"
-                >
-                  Simular Agora
-                </Button>
-              </div>
-            </form>
-            
-            {showResults && (
-              <div className="mt-8 pt-6 border-t border-gray-200 animate-fade-in">
-                <h3 className="text-xl font-bold text-libra-navy mb-4 text-center">Resultado da Simulação</h3>
+              <div>
+                <h3 className="text-xl font-bold text-libra-navy mb-4">Sobre a garantia</h3>
                 
-                <div className="grid grid-cols-1 gap-6">
-                  <div className="bg-libra-light p-6 rounded-lg text-center">
-                    <p className="text-sm text-gray-700 mb-2">Parcela mensal estimada:</p>
-                    <p className="text-3xl font-bold text-libra-navy">{formatCurrency(monthlyPayment)}</p>
-                    <p className="text-xs text-gray-700 mt-2">*Valores aproximados, sujeitos à análise de crédito</p>
-                    <p className="text-xs text-gray-700 mt-1">Taxa a partir de 1,09% a.m. + IPCA em até 180 meses</p>
+                <div className="space-y-4">
+                  <div>
+                    <label htmlFor="cep" className="block text-sm font-medium text-gray-700 mb-1">
+                      CEP do imóvel
+                    </label>
+                    <Input 
+                      id="cep" 
+                      type="text" 
+                      value={cep} 
+                      onChange={handleCEPChange} 
+                      placeholder="00000-000" 
+                      maxLength={9} 
+                      className="w-full"
+                      aria-label="CEP do imóvel"
+                    />
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="bg-libra-light p-6 rounded-lg text-center">
-                      <div className="flex items-center justify-center gap-1 mb-2">
-                        <p className="text-sm text-gray-700" id="requiredIncomeLabel">Renda familiar necessária:</p>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <button type="button" aria-label="Mais informações sobre renda necessária">
-                              <HelpCircle className="w-4 h-4 text-gray-600" aria-hidden="true" />
-                            </button>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>A renda familiar necessária é calculada com base no comprometimento máximo de 30% da renda com a parcela, para evitar o superendividamento.</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </div>
-                      <p className="text-3xl font-bold text-libra-navy" aria-labelledby="requiredIncomeLabel">{formatCurrency(requiredIncome)}</p>
-                      <p className="text-xs text-gray-700 mt-2">*Valores aproximados, sujeitos à análise de crédito</p>
-                    </div>
-                    
-                    <div className="bg-libra-light p-6 rounded-lg text-center">
-                      <div className="flex items-center justify-center gap-1 mb-2">
-                        <p className="text-sm text-gray-700" id="propertyValueLabel">Avaliação do imóvel mínima necessária:</p>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <button type="button" aria-label="Mais informações sobre avaliação do imóvel">
-                              <Info className="w-4 h-4 text-gray-600" aria-hidden="true" />
-                            </button>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Dependendo das características do imóvel (tipo, região e documentação), a avaliação mínima necessária pode ser até {formatCurrency(maxPropertyValue)}.</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </div>
-                      <p className="text-3xl font-bold text-libra-navy" aria-labelledby="propertyValueLabel">{formatCurrency(minPropertyValue)}</p>
-                      <p className="text-xs text-gray-700 mt-2">*Dependendo das características do imóvel (tipo, região e documentação), pode ser necessário até {formatCurrency(maxPropertyValue)}</p>
-                    </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" id="propertyTypeLabel">
+                      Tipo de imóvel
+                    </label>
+                    <Select value={propertyType} onValueChange={value => setPropertyType(value as PropertyType)}>
+                      <SelectTrigger className="w-full" aria-labelledby="propertyTypeLabel">
+                        <SelectValue placeholder="Selecione o tipo" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="casa" aria-label="Casa">Casa</SelectItem>
+                        <SelectItem value="apartamento" aria-label="Apartamento">Apartamento</SelectItem>
+                        <SelectItem value="comercial" aria-label="Comercial">Comercial</SelectItem>
+                        <SelectItem value="rural" aria-label="Rural Produtivo">Rural Produtivo</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
+              </div>
+            </div>
+            
+            <div className="flex justify-center">
+              <Button 
+                type="submit" 
+                className="min-h-[48px] min-w-[200px]"
+                variant="goldContrast"
+                size="xl"
+                aria-label="Simular empréstimo agora"
+              >
+                Simular Agora
+              </Button>
+            </div>
+          </form>
+          
+          {showResults && (
+            <div className="mt-8 pt-6 border-t border-gray-200 animate-fade-in">
+              <h3 className="text-xl font-bold text-libra-navy mb-4 text-center">Resultado da Simulação</h3>
+              
+              <div className="grid grid-cols-1 gap-6">
+                <div className="bg-libra-light p-6 rounded-lg text-center">
+                  <p className="text-sm text-gray-700 mb-2">Parcela mensal estimada:</p>
+                  <p className="text-3xl font-bold text-libra-navy">{formatCurrency(monthlyPayment)}</p>
+                  <p className="text-xs text-gray-700 mt-2">*Valores aproximados, sujeitos à análise de crédito</p>
+                  <p className="text-xs text-gray-700 mt-1">Taxa a partir de 1,09% a.m. + IPCA em até 180 meses</p>
+                </div>
                 
-                <div className="mt-6 text-center">
-                  <Button 
-                    className="min-h-[48px] min-w-[200px]"
-                    variant="highContrast"
-                    size="xl"
-                    onClick={handleContactRequest}
-                    aria-label="Solicitar contato com um consultor"
-                  >
-                    Solicitar Contato
-                  </Button>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="bg-libra-light p-6 rounded-lg text-center">
+                    <div className="flex items-center justify-center gap-1 mb-2">
+                      <p className="text-sm text-gray-700" id="requiredIncomeLabel">Renda familiar necessária:</p>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <button type="button" aria-label="Mais informações sobre renda necessária">
+                            <HelpCircle className="w-4 h-4 text-gray-600" aria-hidden="true" />
+                          </button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>A renda familiar necessária é calculada com base no comprometimento máximo de 30% da renda com a parcela, para evitar o superendividamento.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
+                    <p className="text-3xl font-bold text-libra-navy" aria-labelledby="requiredIncomeLabel">{formatCurrency(requiredIncome)}</p>
+                    <p className="text-xs text-gray-700 mt-2">*Valores aproximados, sujeitos à análise de crédito</p>
+                  </div>
+                  
+                  <div className="bg-libra-light p-6 rounded-lg text-center">
+                    <div className="flex items-center justify-center gap-1 mb-2">
+                      <p className="text-sm text-gray-700" id="propertyValueLabel">Avaliação do imóvel mínima necessária:</p>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <button type="button" aria-label="Mais informações sobre avaliação do imóvel">
+                            <Info className="w-4 h-4 text-gray-600" aria-hidden="true" />
+                          </button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Dependendo das características do imóvel (tipo, região e documentação), a avaliação mínima necessária pode ser até {formatCurrency(maxPropertyValue)}.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
+                    <p className="text-3xl font-bold text-libra-navy" aria-labelledby="propertyValueLabel">{formatCurrency(minPropertyValue)}</p>
+                    <p className="text-xs text-gray-700 mt-2">*Dependendo das características do imóvel (tipo, região e documentação), pode ser necessário até {formatCurrency(maxPropertyValue)}</p>
+                  </div>
                 </div>
               </div>
-            )}
-          </div>
+              
+              <div className="mt-6 text-center">
+                <Button 
+                  className="min-h-[48px] min-w-[200px]"
+                  variant="highContrast"
+                  size="xl"
+                  onClick={handleContactRequest}
+                  aria-label="Solicitar contato com um consultor"
+                >
+                  Solicitar Contato
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
-      </section>
-    </TooltipProvider>
+      </div>
+    </section>
   );
 };
 

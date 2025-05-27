@@ -137,21 +137,21 @@ const Header: React.FC = memo(() => {
       {/* Popup informativo para mobile */}
       {isMobile && (
         <Dialog open={isInfoPopupOpen} onOpenChange={setIsInfoPopupOpen}>
-          <DialogContent className="fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg">
+          <DialogContent className="fixed top-20 left-4 right-4 max-w-none w-auto mx-0 p-4">
             <DialogHeader>
-              <DialogTitle className="flex items-center text-libra-navy text-base font-semibold">
+              <DialogTitle className="flex items-center text-libra-navy text-sm">
                 <Info className="w-5 h-5 mr-2 text-libra-blue" aria-hidden="true" />
                 Informação Importante
               </DialogTitle>
             </DialogHeader>
-            <p className="text-sm text-libra-navy mt-2 leading-relaxed">
+            <p className="text-sm text-libra-navy">
               A Libra não realiza nenhum tipo de cobrança até a liberação do crédito
             </p>
             <DialogClose asChild>
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="mt-4 self-end"
+                className="mt-2 self-end"
                 onClick={() => setIsInfoPopupOpen(false)}
               >
                 Fechar

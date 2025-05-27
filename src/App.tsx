@@ -1,6 +1,8 @@
+
 import { Suspense, lazy } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -42,23 +44,25 @@ const queryClient = new QueryClient({
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <BrowserRouter>
-      <Toaster />
-      <Sonner />
-      <Suspense fallback={<Loading />}>
-        <main id="main-content" tabIndex={-1} className="focus:outline-none">
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/vantagens" element={<Vantagens />} />
-            <Route path="/quem-somos" element={<QuemSomos />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/parceiros" element={<Parceiros />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
-      </Suspense>
-    </BrowserRouter>
+    <TooltipProvider>
+      <BrowserRouter>
+        <Toaster />
+        <Sonner />
+        <Suspense fallback={<Loading />}>
+          <main id="main-content" tabIndex={-1} className="focus:outline-none">
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/vantagens" element={<Vantagens />} />
+              <Route path="/quem-somos" element={<QuemSomos />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/parceiros" element={<Parceiros />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </main>
+        </Suspense>
+      </BrowserRouter>
+    </TooltipProvider>
   </QueryClientProvider>
 );
 
