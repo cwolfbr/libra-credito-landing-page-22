@@ -1,5 +1,5 @@
 
-import React, { Suspense, lazy } from 'react';
+import { Suspense, lazy } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -42,10 +42,10 @@ const queryClient = new QueryClient({
   }
 });
 
-const App: React.FC = () => (
-  <BrowserRouter>
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <BrowserRouter>
         <Toaster />
         <Sonner />
         <Suspense fallback={<Loading />}>
@@ -61,9 +61,9 @@ const App: React.FC = () => (
             </Routes>
           </main>
         </Suspense>
-      </TooltipProvider>
-    </QueryClientProvider>
-  </BrowserRouter>
+      </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
 );
 
 export default App;
