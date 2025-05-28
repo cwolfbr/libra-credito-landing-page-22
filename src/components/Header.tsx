@@ -1,5 +1,4 @@
-
-import { memo, useState, useEffect } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Info, Menu, X } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
@@ -15,7 +14,7 @@ import {
 
 interface HeaderProps {}
 
-const Header = memo<HeaderProps>(() => {
+const Header: React.FC<HeaderProps> = memo(() => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isInfoPopupOpen, setIsInfoPopupOpen] = useState(false);
   const location = useLocation();
