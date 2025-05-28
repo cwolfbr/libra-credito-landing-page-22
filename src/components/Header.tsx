@@ -1,5 +1,5 @@
 
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Info, Menu, X } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
@@ -15,9 +15,24 @@ import {
 
 const Header: React.FC = memo(() => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isInfoPopupOpen, setIsInfoPopupOpen] = useState(true);
+  const [isInfoPopupOpen, setIsInfoPopupOpen] = useState(false);
   const location = useLocation();
   const isMobile = useIsMobile();
+
+  useEffect(() => {
+    // Só mostra o disclaimer na home page e se nunca foi mostrado antes
+    const hasSeenDisclaimer = localStorage.getItem('libra-disclaimer-seen');
+    const isHomePage = location.pathname === '/';
+    
+    if (isMobile && isHomePage && !hasSeenDisclaimer) {
+      setIsInfoPopupOpen(true);
+    }
+  }, [location.pathname, isMobile]);
+
+  const handleCloseDisclaimer = () => {
+    setIsInfoPopupOpen(false);
+    localStorage.setItem('libra-disclaimer-seen', 'true');
+  };
 
   const handleWhatsAppContact = () => {
     window.open('https://wa.me/5516996360424?text=Ol%C3%A1%2C%20Quero%20agendar%20uma%20conversa%20com%20o%20consultor!', '_blank');
@@ -134,27 +149,27 @@ const Header: React.FC = memo(() => {
         )}
       </header>
 
-      {/* Popup informativo para mobile */}
+      {/* Popup informativo para mobile - apenas na home e primeira vez */}
       {isMobile && (
-        <Dialog open={isInfoPopupOpen} onOpenChange={setIsInfoPopupOpen}>
-          <DialogContent className="fixed top-20 left-4 right-4 max-w-none w-auto mx-0 p-4">
+        <Dialog open={isInfoPopupOpen} onOpenChange={handleCloseDisclaimer}>
+          <DialogContent className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-sm w-[90%] p-6 z-[100]">
             <DialogHeader>
-              <DialogTitle className="flex items-center text-libra-navy text-sm">
+              <DialogTitle className="flex items-center text-libra-navy text-base">
                 <Info className="w-5 h-5 mr-2 text-libra-blue" aria-hidden="true" />
                 Informação Importante
               </DialogTitle>
             </DialogHeader>
-            <p className="text-sm text-libra-navy">
+            <p className="text-sm text-libra-navy leading-relaxed">
               A Libra não realiza nenhum tipo de cobrança até a liberação do crédito
             </p>
             <DialogClose asChild>
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="mt-2 self-end"
-                onClick={() => setIsInfoPopupOpen(false)}
+                className="mt-4 self-end"
+                onClick={handleCloseDisclaimer}
               >
-                Fechar
+                Entendi
               </Button>
             </DialogClose>
           </DialogContent>
