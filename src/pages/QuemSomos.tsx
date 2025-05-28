@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import ImageOptimizer from '@/components/ImageOptimizer';
 import { Users, Target, Award, Shield } from 'lucide-react';
 
 const QuemSomos = () => {
@@ -56,7 +57,7 @@ const QuemSomos = () => {
         {/* Nossa História */}
         <section className="py-16 md:py-24">
           <div className="container mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
               <div>
                 <h2 className="text-3xl md:text-4xl font-bold text-libra-navy mb-6">
                   Nossa História
@@ -91,6 +92,24 @@ const QuemSomos = () => {
                     <p className="text-sm text-gray-600">Tempo Médio de Análise</p>
                   </div>
                 </div>
+              </div>
+            </div>
+
+            {/* Imagem da Equipe */}
+            <div className="text-center mb-16">
+              <h3 className="text-2xl md:text-3xl font-bold text-libra-navy mb-8">
+                Nossa Equipe
+              </h3>
+              <div className="max-w-5xl mx-auto">
+                <ImageOptimizer 
+                  src="/lovable-uploads/0d3dbfe5-ac3f-4288-b736-f7e69ddc3722.png"
+                  alt="Equipe da Libra Crédito reunida em frente ao escritório"
+                  className="rounded-xl shadow-lg"
+                  aspectRatio={16/9}
+                />
+                <p className="text-gray-600 mt-4 text-lg">
+                  Nossa equipe dedicada trabalha todos os dias para oferecer o melhor atendimento e as melhores soluções em crédito com garantia de imóvel.
+                </p>
               </div>
             </div>
           </div>
