@@ -4,10 +4,11 @@ import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import Benefits from '@/components/Benefits';
 import Testimonials from '@/components/Testimonials';
-import LoanSimulator from '@/components/LoanSimulator';
 import MediaSection from '@/components/MediaSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
+import FAQ from '@/components/FAQ';
+import BlogSection from '@/components/BlogSection';
 
 const Index = () => {
   useEffect(() => {
@@ -29,7 +30,8 @@ const Index = () => {
         <Benefits />
         <Testimonials />
         <MediaSection />
-        <LoanSimulator />
+        <FAQ />
+        <BlogSection />
         <ContactSection />
       </main>
       <Footer />
