@@ -52,13 +52,13 @@ const Header: React.FC = memo(() => {
             <span className="text-libra-navy font-semibold text-lg md:text-xl">Libra Crédito</span>
           </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-6">
+          {/* Desktop Navigation - Melhor espaçamento e alinhamento */}
+          <nav className="hidden lg:flex items-center space-x-8">
             {navigationItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`text-sm font-medium transition-colors hover:text-libra-blue ${
+                className={`text-sm font-medium transition-colors hover:text-libra-blue px-2 py-1 ${
                   location.pathname === item.path ? 'text-libra-blue' : 'text-libra-navy'
                 }`}
               >
@@ -70,6 +70,7 @@ const Header: React.FC = memo(() => {
               size="sm"
               onClick={handlePortalClientes}
               aria-label="Acessar Portal de Clientes"
+              className="ml-4"
             >
               Portal de Clientes
             </Button>

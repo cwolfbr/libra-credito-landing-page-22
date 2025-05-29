@@ -6,6 +6,7 @@ import Benefits from '@/components/Benefits';
 import Testimonials from '@/components/Testimonials';
 import AgentChat from '@/components/AgentChat';
 import LoanSimulator from '@/components/LoanSimulator';
+import MediaSection from '@/components/MediaSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 
@@ -30,6 +31,7 @@ const Index = () => {
         <Testimonials />
         <AgentChat />
         <LoanSimulator />
+        <MediaSection />
         <ContactSection />
       </main>
       <Footer />
