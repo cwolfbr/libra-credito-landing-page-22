@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -71,10 +70,9 @@ const SimulationForm: React.FC = () => {
         throw new Error('API retornou estrutura de dados inválida');
       }
 
-      // Pular a primeira parcela (índice 0) que sempre tem valores zerados
-      // e usar a segunda parcela (índice 1) que tem os valores corretos
+      // Buscar a primeira parcela com valor válido em parcela_final
       const parcelaComValor = data.parcelas.find((p, index) => 
-        index > 0 && p.parcela_normal && p.parcela_normal[0] > 0
+        index > 0 && p.parcela_final && p.parcela_final[0] > 0
       );
 
       if (!parcelaComValor) {
@@ -82,15 +80,29 @@ const SimulationForm: React.FC = () => {
         throw new Error('API não retornou parcelas com valores válidos');
       }
 
-      const valorParcela = parcelaComValor.parcela_normal[0];
+      const valorParcela = parcelaComValor.parcela_final[0];
       console.log('Valor da parcela extraído:', valorParcela);
 
-      // Para SAC, tentar obter a última parcela
+      let primeiraParcela = undefined;
       let ultimaParcela = undefined;
-      if (amortizacao === 'SAC' && data.parcelas.length > 1) {
-        const ultimaParcelaObj = data.parcelas[data.parcelas.length - 1];
-        if (ultimaParcelaObj?.parcela_normal?.[0]) {
-          ultimaParcela = ultimaParcelaObj.parcela_normal[0];
+
+      if (amortizacao === 'SAC') {
+        // Para SAC, buscar primeira parcela não vazia
+        const primeiraParcelaObj = data.parcelas.find((p, index) => 
+          index > 0 && p.parcela_final && p.parcela_final[0] > 0
+        );
+        
+        if (primeiraParcelaObj?.parcela_final?.[0]) {
+          primeiraParcela = primeiraParcelaObj.parcela_final[0];
+        }
+
+        // Para SAC, buscar última parcela não vazia
+        const ultimaParcelaObj = data.parcelas.slice().reverse().find(p => 
+          p.parcela_final && p.parcela_final[0] > 0
+        );
+        
+        if (ultimaParcelaObj?.parcela_final?.[0]) {
+          ultimaParcela = ultimaParcelaObj.parcela_final[0];
         }
       }
 
@@ -98,7 +110,7 @@ const SimulationForm: React.FC = () => {
         valor: valorParcela,
         amortizacao: amortizacao,
         parcelas: parcelas,
-        primeiraParcela: amortizacao === 'SAC' ? valorParcela : undefined,
+        primeiraParcela: primeiraParcela,
         ultimaParcela: ultimaParcela
       });
 
