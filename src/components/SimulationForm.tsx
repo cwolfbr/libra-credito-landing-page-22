@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -70,36 +71,26 @@ const SimulationForm: React.FC = () => {
         throw new Error('API retornou estrutura de dados inválida');
       }
 
-      const primeiraParcela = data.parcelas[0];
-      if (!primeiraParcela || !primeiraParcela.parcela || !Array.isArray(primeiraParcela.parcela)) {
-        console.error('Dados da primeira parcela inválidos:', primeiraParcela);
-        throw new Error('Dados da parcela não encontrados na resposta');
+      // Pular a primeira parcela (índice 0) que sempre tem valores zerados
+      // e usar a segunda parcela (índice 1) que tem os valores corretos
+      const parcelaComValor = data.parcelas.find((p, index) => 
+        index > 0 && p.parcela_normal && p.parcela_normal[0] > 0
+      );
+
+      if (!parcelaComValor) {
+        console.error('Nenhuma parcela com valor válido encontrada:', data.parcelas);
+        throw new Error('API não retornou parcelas com valores válidos');
       }
 
-      let valorParcela = primeiraParcela.parcela[0];
+      const valorParcela = parcelaComValor.parcela_normal[0];
       console.log('Valor da parcela extraído:', valorParcela);
 
-      // Se o valor principal for zero ou inválido, tentar propriedades alternativas
-      if (!valorParcela || valorParcela <= 0) {
-        console.log('Valor da parcela principal é zero, tentando propriedades alternativas...');
-        
-        if (primeiraParcela.parcela_normal && primeiraParcela.parcela_normal[0] > 0) {
-          valorParcela = primeiraParcela.parcela_normal[0];
-          console.log('Usando parcela_normal:', valorParcela);
-        } else if (primeiraParcela.parcela_final && primeiraParcela.parcela_final[0] > 0) {
-          valorParcela = primeiraParcela.parcela_final[0];
-          console.log('Usando parcela_final:', valorParcela);
-        } else {
-          throw new Error('API retornou valor de parcela zero ou inválido');
-        }
-      }
-      
       // Para SAC, tentar obter a última parcela
       let ultimaParcela = undefined;
       if (amortizacao === 'SAC' && data.parcelas.length > 1) {
         const ultimaParcelaObj = data.parcelas[data.parcelas.length - 1];
-        if (ultimaParcelaObj?.parcela?.[0]) {
-          ultimaParcela = ultimaParcelaObj.parcela[0];
+        if (ultimaParcelaObj?.parcela_normal?.[0]) {
+          ultimaParcela = ultimaParcelaObj.parcela_normal[0];
         }
       }
 
