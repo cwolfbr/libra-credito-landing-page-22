@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -59,61 +58,80 @@ const SimulationForm: React.FC = () => {
         carencia: 1
       };
 
-      console.log('Payload enviado para a API:', payload);
+      console.log('Enviando payload:', payload);
 
       const data = await simulateCredit(payload);
 
-      console.log('Resposta completa da API:', JSON.stringify(data, null, 2));
-      console.log('Estrutura data.parcelas:', data.parcelas);
-      
-      if (data.parcelas && data.parcelas.length > 0) {
-        console.log('Primeira parcela completa:', data.parcelas[0]);
-        console.log('Array da primeira parcela:', data.parcelas[0].parcela);
+      console.log('Resposta recebida:', data);
+
+      // Verificar se a resposta tem dados válidos
+      if (!data || !data.parcelas || !Array.isArray(data.parcelas) || data.parcelas.length === 0) {
+        console.error('Estrutura de resposta inválida:', data);
+        throw new Error('API retornou estrutura de dados inválida');
+      }
+
+      const primeiraParcela = data.parcelas[0];
+      if (!primeiraParcela || !primeiraParcela.parcela || !Array.isArray(primeiraParcela.parcela)) {
+        console.error('Dados da primeira parcela inválidos:', primeiraParcela);
+        throw new Error('Dados da parcela não encontrados na resposta');
+      }
+
+      const valorParcela = primeiraParcela.parcela[0];
+      console.log('Valor da parcela extraído:', valorParcela);
+
+      if (!valorParcela || valorParcela <= 0) {
+        console.error('Valor da parcela inválido:', valorParcela);
+        // Tentar outros campos possíveis
+        const parcelaNormal = primeiraParcela.parcela_normal?.[0];
+        const parcelaFinal = primeiraParcela.parcela_final?.[0];
         
-        if (data.parcelas[0].parcela && data.parcelas[0].parcela.length > 0) {
-          console.log('Valor da primeira parcela [0]:', data.parcelas[0].parcela[0]);
+        console.log('Tentando parcela_normal:', parcelaNormal);
+        console.log('Tentando parcela_final:', parcelaFinal);
+        
+        if (parcelaNormal && parcelaNormal > 0) {
+          console.log('Usando parcela_normal:', parcelaNormal);
+          setResultado({
+            valor: parcelaNormal,
+            amortizacao: amortizacao,
+            parcelas: parcelas
+          });
+          return;
         }
-      }
-
-      // Verificar se a resposta tem a estrutura esperada
-      if (!data.parcelas || data.parcelas.length === 0) {
-        throw new Error('Resposta da API não contém dados de parcelas');
-      }
-
-      if (!data.parcelas[0].parcela || data.parcelas[0].parcela.length === 0) {
-        throw new Error('Dados de parcela não encontrados na resposta');
-      }
-
-      // Extração do valor da primeira parcela
-      const primeiraParcela = data.parcelas[0].parcela[0];
-      
-      console.log('Valor extraído da primeira parcela:', primeiraParcela);
-      
-      if (!primeiraParcela || primeiraParcela === 0) {
-        throw new Error('Valor da parcela é zero ou inválido');
+        
+        if (parcelaFinal && parcelaFinal > 0) {
+          console.log('Usando parcela_final:', parcelaFinal);
+          setResultado({
+            valor: parcelaFinal,
+            amortizacao: amortizacao,
+            parcelas: parcelas
+          });
+          return;
+        }
+        
+        throw new Error('API retornou valor de parcela zero ou inválido');
       }
       
-      // Para SAC, calcular a última parcela (se disponível)
+      // Para SAC, tentar obter a última parcela
       let ultimaParcela = undefined;
       if (amortizacao === 'SAC' && data.parcelas.length > 1) {
-        const ultimaParcelaArray = data.parcelas[data.parcelas.length - 1];
-        if (ultimaParcelaArray && ultimaParcelaArray.parcela && ultimaParcelaArray.parcela.length > 0) {
-          ultimaParcela = ultimaParcelaArray.parcela[0];
-          console.log('Valor da última parcela (SAC):', ultimaParcela);
+        const ultimaParcelaObj = data.parcelas[data.parcelas.length - 1];
+        if (ultimaParcelaObj?.parcela?.[0]) {
+          ultimaParcela = ultimaParcelaObj.parcela[0];
         }
       }
 
       setResultado({
-        valor: primeiraParcela,
+        valor: valorParcela,
         amortizacao: amortizacao,
         parcelas: parcelas,
-        primeiraParcela: amortizacao === 'SAC' ? primeiraParcela : undefined,
+        primeiraParcela: amortizacao === 'SAC' ? valorParcela : undefined,
         ultimaParcela: ultimaParcela
       });
 
     } catch (error) {
       console.error('Erro na simulação:', error);
-      setErro(`Erro ao realizar simulação: ${error instanceof Error ? error.message : 'Tente novamente.'}`);
+      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
+      setErro(`Erro ao realizar simulação: ${errorMessage}`);
     } finally {
       setLoading(false);
     }

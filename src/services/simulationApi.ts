@@ -1,6 +1,4 @@
 
-import axios from 'axios';
-
 export interface SimulationPayload {
   valor_solicitado: number;
   vlr_imovel: number;
@@ -17,10 +15,10 @@ export interface SimulationResponse {
 }
 
 export const simulateCredit = async (payload: SimulationPayload): Promise<SimulationResponse> => {
-  console.log('Payload antes do envio:', payload);
+  console.log('Payload original:', payload);
   
-  // Garantir que os valores numéricos estão corretos
-  const formattedPayload = {
+  // Formatar dados exatamente como no exemplo fornecido
+  const formattedData = {
     vlr_imovel: Number(payload.vlr_imovel),
     valor_solicitado: Number(payload.valor_solicitado),
     juros: Number(payload.juros),
@@ -29,17 +27,27 @@ export const simulateCredit = async (payload: SimulationPayload): Promise<Simula
     amortizacao: payload.amortizacao
   };
 
-  console.log('Payload formatado para envio:', formattedPayload);
+  console.log('Dados formatados para envio:', formattedData);
 
-  const { data } = await axios.post<SimulationResponse>(
-    'https://api-calculos.vercel.app/simulacao',
-    formattedPayload,
-    { 
-      headers: { 'Content-Type': 'application/json' },
-      timeout: 30000 // 30 segundos timeout
+  try {
+    const response = await fetch('https://api-calculos.vercel.app/simulacao', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formattedData)
+    });
+
+    if (!response.ok) {
+      throw new Error(`Erro HTTP ${response.status}: ${response.statusText}`);
     }
-  );
 
-  console.log('Resposta bruta da API:', data);
-  return data;
+    const data = await response.json();
+    console.log('Resposta completa da API:', JSON.stringify(data, null, 2));
+    
+    return data;
+  } catch (error) {
+    console.error('Erro na chamada da API:', error);
+    throw error;
+  }
 };
