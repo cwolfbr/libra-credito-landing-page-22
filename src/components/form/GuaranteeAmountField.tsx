@@ -31,9 +31,12 @@ const GuaranteeAmountField: React.FC<GuaranteeAmountFieldProps> = ({
         />
         {showError && (
           <p className="text-red-500 text-xs mt-1">
-            O empréstimo não pode exceder 80% do valor da garantia
+            O valor da garantia deve ser pelo menos 2x o valor do empréstimo
           </p>
         )}
+        <p className="text-xs text-gray-500 mt-1">
+          Mínimo 2x o valor do empréstimo
+        </p>
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ export interface FormValidation {
   garantiaValue: number;
   emprestimoExcedeGarantia: boolean;
   parcelasValidas: boolean;
+  emprestimoForaRange: boolean;
   formularioValido: boolean;
 }
 
@@ -18,22 +19,32 @@ export const validateForm = (
 ): FormValidation => {
   const emprestimoValue = norm(emprestimo);
   const garantiaValue = norm(garantia);
-  const emprestimoExcedeGarantia = emprestimoValue > (garantiaValue * 0.8);
-  const parcelasValidas = parcelas >= 12 && parcelas <= 240;
+  
+  // Empréstimo deve estar entre 100k e 5M
+  const emprestimoForaRange = emprestimoValue < 100000 || emprestimoValue > 5000000;
+  
+  // Garantia deve ser pelo menos 2x o empréstimo
+  const emprestimoExcedeGarantia = emprestimoValue > (garantiaValue / 2);
+  
+  // Parcelas devem estar entre 36 e 180
+  const parcelasValidas = parcelas >= 36 && parcelas <= 180;
   
   const formularioValido = 
-    emprestimoValue > 0 && 
+    emprestimoValue >= 100000 && 
+    emprestimoValue <= 5000000 &&
     garantiaValue > 0 && 
     parcelasValidas && 
     amortizacao && 
     cidade &&
-    !emprestimoExcedeGarantia;
+    !emprestimoExcedeGarantia &&
+    !emprestimoForaRange;
 
   return {
     emprestimoValue,
     garantiaValue,
     emprestimoExcedeGarantia,
     parcelasValidas,
+    emprestimoForaRange,
     formularioValido
   };
 };

@@ -59,7 +59,11 @@ const SimulationForm: React.FC = () => {
         carencia: 1
       };
 
+      console.log('Payload enviado para a API:', payload);
+
       const data = await simulateCredit(payload);
+
+      console.log('Resposta da API recebida:', data);
 
       // Extração do valor da primeira parcela
       const primeiraParcela = data.parcelas[0].parcela[0];
@@ -118,6 +122,12 @@ const SimulationForm: React.FC = () => {
               <CityField value={cidade} onChange={setCidade} />
 
               <LoanAmountField value={emprestimo} onChange={handleEmprestimoChange} />
+              
+              {validation.emprestimoForaRange && (
+                <div className="text-red-500 text-xs">
+                  O empréstimo deve estar entre R$ 100.000 e R$ 5.000.000
+                </div>
+              )}
 
               <GuaranteeAmountField 
                 value={garantia} 

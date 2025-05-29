@@ -20,14 +20,14 @@ const InstallmentsField: React.FC<InstallmentsFieldProps> = ({ value, onChange }
         <div className="relative">
           <input
             type="range"
-            min="12"
+            min="36"
             max="180"
             value={value}
             onChange={(e) => onChange(Number(e.target.value))}
             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
           />
           <div className="flex justify-between text-xs text-gray-500 mt-1">
-            <span>12</span>
+            <span>36</span>
             <span>60</span>
             <span>120</span>
             <span>180</span>
