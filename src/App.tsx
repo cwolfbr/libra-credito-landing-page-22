@@ -18,6 +18,7 @@ const Vantagens = lazy(() => import("./pages/Vantagens"));
 const QuemSomos = lazy(() => import("./pages/QuemSomos"));
 const Blog = lazy(() => import("./pages/Blog"));
 const Parceiros = lazy(() => import("./pages/Parceiros"));
+const Simulacao = lazy(() => import("./pages/Simulacao"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const Loading = () => (
@@ -56,6 +57,7 @@ const App = () => (
               <Route path="/quem-somos" element={<QuemSomos />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/parceiros" element={<Parceiros />} />
+              <Route path="/simulacao" element={<Simulacao />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

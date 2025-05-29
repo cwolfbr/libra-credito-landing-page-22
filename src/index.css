@@ -127,6 +127,32 @@
   .text-libra-silver {
     @apply text-white;
   }
+
+  /* Estilos para o slider customizado */
+  .slider {
+    background: linear-gradient(to right, #40E0D0 0%, #40E0D0 var(--value, 0%), #e5e7eb var(--value, 0%), #e5e7eb 100%);
+  }
+
+  .slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #40E0D0;
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #40E0D0;
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
 }
 
 /* Ocultar elementos apenas visualmente, preservando acesso para leitores de tela */
