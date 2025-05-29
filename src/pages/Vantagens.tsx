@@ -90,38 +90,38 @@ const Vantagens = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="pt-24">
-        {/* Hero Section - Mais compacto no mobile */}
-        <section className="py-8 md:py-16 bg-gradient-to-b from-libra-light to-white">
+        {/* Hero Section - Compacto */}
+        <section className="py-6 md:py-10 bg-gradient-to-b from-libra-light to-white">
           <div className="container mx-auto text-center px-4">
-            <h1 className="text-2xl md:text-5xl font-bold text-libra-navy mb-3 md:mb-6">
+            <h1 className="text-2xl md:text-4xl font-bold text-libra-navy mb-2 md:mb-4">
               Vantagens do Home Equity
             </h1>
-            <p className="text-base md:text-xl text-gray-600 max-w-3xl mx-auto mb-4 md:mb-8">
+            <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
               As melhores condições do mercado para suas necessidades financeiras.
             </p>
           </div>
         </section>
 
-        {/* Vantagens Grid - Layout compacto para mobile */}
-        <section className="py-8 md:py-16">
+        {/* Layout Desktop/Mobile otimizado */}
+        <section className="py-6 md:py-10">
           <div className="container mx-auto px-4">
             {/* Mobile: Grid 2x3 compacto */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-8">
+            <div className="md:hidden grid grid-cols-2 gap-3">
               {vantagens.map((vantagem, index) => {
                 const IconComponent = vantagem.icon;
                 return (
-                  <Card key={index} className="p-3 md:p-6 hover:shadow-lg transition-shadow">
+                  <Card key={index} className="p-3 hover:shadow-lg transition-shadow">
                     <CardContent className="p-0 text-center">
-                      <div className="flex items-center justify-center w-8 h-8 md:w-12 md:h-12 bg-libra-blue/10 rounded-full mb-2 md:mb-4 mx-auto">
-                        <IconComponent className="w-4 h-4 md:w-6 md:h-6 text-libra-blue" />
+                      <div className="flex items-center justify-center w-8 h-8 bg-libra-blue/10 rounded-full mb-2 mx-auto">
+                        <IconComponent className="w-4 h-4 text-libra-blue" />
                       </div>
-                      <h3 className="text-xs md:text-lg font-bold text-libra-navy mb-1 md:mb-3">
+                      <h3 className="text-xs font-bold text-libra-navy mb-1">
                         {vantagem.title}
                       </h3>
-                      <p className="text-xs md:text-sm text-gray-600 mb-2 md:mb-3 leading-tight">
+                      <p className="text-xs text-gray-600 mb-2 leading-tight">
                         {vantagem.description}
                       </p>
-                      <div className="bg-libra-gold/10 p-1 md:p-2 rounded text-xs md:text-sm">
+                      <div className="bg-libra-gold/10 p-1 rounded text-xs">
                         <p className="font-semibold text-libra-navy">
                           ✨ {vantagem.benefit}
                         </p>
@@ -131,18 +131,91 @@ const Vantagens = () => {
                 );
               })}
             </div>
+
+            {/* Desktop: Layout em duas colunas */}
+            <div className="hidden md:flex gap-8">
+              {/* Coluna esquerda - Vantagens em grid 2x3 */}
+              <div className="flex-1">
+                <h2 className="text-2xl font-bold text-libra-navy mb-6">
+                  Principais Vantagens
+                </h2>
+                <div className="grid grid-cols-2 gap-4">
+                  {vantagens.map((vantagem, index) => {
+                    const IconComponent = vantagem.icon;
+                    return (
+                      <Card key={index} className="p-4 hover:shadow-lg transition-shadow h-fit">
+                        <CardContent className="p-0">
+                          <div className="flex items-start gap-3">
+                            <div className="flex items-center justify-center w-10 h-10 bg-libra-blue/10 rounded-full flex-shrink-0">
+                              <IconComponent className="w-5 h-5 text-libra-blue" />
+                            </div>
+                            <div className="flex-1">
+                              <h3 className="text-sm font-bold text-libra-navy mb-1">
+                                {vantagem.title}
+                              </h3>
+                              <p className="text-xs text-gray-600 mb-2">
+                                {vantagem.description}
+                              </p>
+                              <div className="bg-libra-gold/10 p-1 rounded text-xs">
+                                <p className="font-semibold text-libra-navy">
+                                  ✨ {vantagem.benefit}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Coluna direita - Comparação */}
+              <div className="flex-1">
+                <h2 className="text-2xl font-bold text-libra-navy mb-6">
+                  Comparação com Outras Modalidades
+                </h2>
+                <Table className="bg-white rounded-xl shadow-lg">
+                  <TableHeader>
+                    <TableRow className="bg-libra-navy">
+                      <TableHead className="text-white font-semibold text-sm">Modalidade</TableHead>
+                      <TableHead className="text-white font-semibold text-center text-sm">Taxa</TableHead>
+                      <TableHead className="text-white font-semibold text-center text-sm">Prazo</TableHead>
+                      <TableHead className="text-white font-semibold text-center text-sm">Valor</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {comparacaoData.map((item, index) => (
+                      <TableRow key={index} className={item.destaque ? 'bg-libra-gold/5' : ''}>
+                        <TableCell className={`font-semibold text-sm ${item.destaque ? 'text-libra-navy' : 'text-gray-700'}`}>
+                          {item.modalidade}
+                        </TableCell>
+                        <TableCell className={`text-center font-semibold text-sm ${item.destaque ? 'text-green-600' : 'text-red-600'}`}>
+                          {item.taxa}
+                        </TableCell>
+                        <TableCell className={`text-center font-semibold text-sm ${item.destaque ? 'text-green-600' : 'text-gray-700'}`}>
+                          {item.prazo}
+                        </TableCell>
+                        <TableCell className={`text-center font-semibold text-sm ${item.destaque ? 'text-green-600' : 'text-gray-700'}`}>
+                          {item.valor}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* Comparação - Layout cards para mobile */}
-        <section className="py-8 md:py-16 bg-libra-light">
+        {/* Mobile: Comparação separada */}
+        <section className="md:hidden py-6 bg-libra-light">
           <div className="container mx-auto px-4">
-            <h2 className="text-xl md:text-4xl font-bold text-libra-navy mb-6 md:mb-12 text-center">
+            <h2 className="text-xl font-bold text-libra-navy mb-4 text-center">
               Comparação com Outras Modalidades
             </h2>
             
-            {/* Mobile: Cards empilhados */}
-            <div className="md:hidden space-y-3">
+            <div className="space-y-3">
               {comparacaoData.map((item, index) => (
                 <Card key={index} className={`p-4 ${item.destaque ? 'bg-libra-gold/10 border-libra-gold' : 'bg-white'}`}>
                   <CardContent className="p-0">
@@ -172,38 +245,6 @@ const Vantagens = () => {
                   </CardContent>
                 </Card>
               ))}
-            </div>
-
-            {/* Desktop: Tabela tradicional */}
-            <div className="hidden md:block">
-              <Table className="bg-white rounded-xl shadow-lg">
-                <TableHeader>
-                  <TableRow className="bg-libra-navy">
-                    <TableHead className="text-white font-semibold">Modalidade</TableHead>
-                    <TableHead className="text-white font-semibold text-center">Taxa de Juros</TableHead>
-                    <TableHead className="text-white font-semibold text-center">Prazo Máximo</TableHead>
-                    <TableHead className="text-white font-semibold text-center">Valor Máximo</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {comparacaoData.map((item, index) => (
-                    <TableRow key={index} className={item.destaque ? 'bg-libra-gold/5' : ''}>
-                      <TableCell className={`font-semibold ${item.destaque ? 'text-libra-navy' : 'text-gray-700'}`}>
-                        {item.modalidade}
-                      </TableCell>
-                      <TableCell className={`text-center font-semibold ${item.destaque ? 'text-green-600' : 'text-red-600'}`}>
-                        {item.taxa}
-                      </TableCell>
-                      <TableCell className={`text-center font-semibold ${item.destaque ? 'text-green-600' : 'text-gray-700'}`}>
-                        {item.prazo}
-                      </TableCell>
-                      <TableCell className={`text-center font-semibold ${item.destaque ? 'text-green-600' : 'text-gray-700'}`}>
-                        {item.valor}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
             </div>
           </div>
         </section>
