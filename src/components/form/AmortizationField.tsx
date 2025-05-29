@@ -8,8 +8,8 @@ interface AmortizationFieldProps {
 
 const AmortizationField: React.FC<AmortizationFieldProps> = ({ value, onChange }) => {
   return (
-    <div className="space-y-2">
-      <label className="block text-sm font-medium text-libra-navy">
+    <div className="space-y-1">
+      <label className="block text-xs font-medium text-libra-navy">
         Escolha a Amortização
       </label>
       <div className="flex gap-4">
@@ -21,7 +21,7 @@ const AmortizationField: React.FC<AmortizationFieldProps> = ({ value, onChange }
             onChange={(e) => onChange(e.target.value)}
             className="text-libra-blue"
           />
-          <span className="text-sm">PRICE</span>
+          <span className="text-xs">PRICE</span>
         </label>
         <label className="flex items-center gap-2 cursor-pointer">
           <input
@@ -31,7 +31,7 @@ const AmortizationField: React.FC<AmortizationFieldProps> = ({ value, onChange }
             onChange={(e) => onChange(e.target.value)}
             className="text-libra-blue"
           />
-          <span className="text-sm">SAC</span>
+          <span className="text-xs">SAC</span>
         </label>
       </div>
     </div>

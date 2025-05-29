@@ -10,16 +10,16 @@ interface CityFieldProps {
 
 const CityField: React.FC<CityFieldProps> = ({ value, onChange }) => {
   return (
-    <div className="flex items-start gap-3">
-      <div className="bg-libra-light p-2 rounded-full mt-1">
-        <MapPin className="w-5 h-5 text-libra-blue" />
+    <div className="flex items-start gap-2">
+      <div className="bg-libra-light p-1.5 rounded-full mt-0.5">
+        <MapPin className="w-4 h-4 text-libra-blue" />
       </div>
       <div className="flex-1">
-        <label className="block text-sm font-medium text-libra-navy mb-2">
+        <label className="block text-xs font-medium text-libra-navy mb-1">
           Selecione a cidade do imóvel a ser dado de garantia
         </label>
         <Select value={value} onValueChange={onChange}>
-          <SelectTrigger>
+          <SelectTrigger className="text-sm">
             <SelectValue placeholder="Cidade/UF do imóvel a ser dado em Garantia" />
           </SelectTrigger>
           <SelectContent>

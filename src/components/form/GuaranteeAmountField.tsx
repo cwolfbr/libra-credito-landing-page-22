@@ -15,22 +15,22 @@ const GuaranteeAmountField: React.FC<GuaranteeAmountFieldProps> = ({
   showError 
 }) => {
   return (
-    <div className="flex items-start gap-3">
-      <div className="bg-libra-light p-2 rounded-full mt-1">
-        <Home className="w-5 h-5 text-libra-blue" />
+    <div className="flex items-start gap-2">
+      <div className="bg-libra-light p-1.5 rounded-full mt-0.5">
+        <Home className="w-4 h-4 text-libra-blue" />
       </div>
       <div className="flex-1">
-        <label className="block text-sm font-medium text-libra-navy mb-2">
+        <label className="block text-xs font-medium text-libra-navy mb-1">
           Digite o valor do Imóvel em Garantia
         </label>
         <Input
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder="R$ 300.000,00"
-          className="text-lg"
+          className="text-sm"
         />
         {showError && (
-          <p className="text-red-500 text-sm mt-1">
+          <p className="text-red-500 text-xs mt-1">
             O empréstimo não pode exceder 80% do valor da garantia
           </p>
         )}

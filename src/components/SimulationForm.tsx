@@ -77,19 +77,19 @@ const SimulationForm: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-4 max-w-2xl min-h-[calc(100vh-5rem)]">
+    <div className="container mx-auto px-3 py-2 max-w-xl min-h-[calc(100vh-4rem)]">
       <Card className="shadow-lg">
-        <CardHeader className="text-center pb-4">
-          <CardTitle className="text-xl md:text-2xl font-bold text-libra-navy mb-2">
+        <CardHeader className="text-center pb-3">
+          <CardTitle className="text-lg md:text-xl font-bold text-libra-navy mb-1">
             Sua simulação em um clique!
           </CardTitle>
-          <p className="text-gray-600 text-sm">
+          <p className="text-gray-600 text-xs">
             Com apenas algumas informações você já encontrará a proposta ideal, com parcelas que cabem no seu bolso!
           </p>
         </CardHeader>
         
-        <CardContent className="p-4 md:p-6">
-          <form onSubmit={handleSubmit} className="space-y-4">
+        <CardContent className="p-3 md:p-4">
+          <form onSubmit={handleSubmit} className="space-y-3">
             
             <CityField value={cidade} onChange={setCidade} />
 
@@ -106,11 +106,11 @@ const SimulationForm: React.FC = () => {
             <AmortizationField value={amortizacao} onChange={setAmortizacao} />
 
             {/* Botões */}
-            <div className="flex gap-3 pt-3">
+            <div className="flex gap-2 pt-2">
               <Button
                 type="submit"
                 disabled={!validation.formularioValido || loading}
-                className="flex-1 bg-libra-blue hover:bg-libra-blue/90 text-white py-2.5 text-base font-semibold min-h-[48px]"
+                className="flex-1 bg-libra-blue hover:bg-libra-blue/90 text-white py-2 text-sm font-semibold min-h-[44px]"
               >
                 {loading ? (
                   <div className="flex items-center gap-2">
@@ -125,14 +125,14 @@ const SimulationForm: React.FC = () => {
                 type="button"
                 variant="outline"
                 onClick={handleClear}
-                className="px-6 py-2.5 text-libra-blue border-libra-blue hover:bg-libra-light min-h-[48px]"
+                className="px-4 py-2 text-libra-blue border-libra-blue hover:bg-libra-light min-h-[44px] text-sm"
               >
                 LIMPAR
               </Button>
             </div>
 
             {erro && (
-              <div className="text-red-500 text-center text-sm mt-3">
+              <div className="text-red-500 text-center text-xs mt-2">
                 {erro}
               </div>
             )}

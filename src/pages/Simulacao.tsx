@@ -19,7 +19,7 @@ const Simulacao = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 bg-libra-light pt-20">
+      <main className="flex-1 bg-libra-light pt-16">
         <SimulationForm />
       </main>
       <Footer />
