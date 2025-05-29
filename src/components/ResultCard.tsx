@@ -5,9 +5,17 @@ import { CheckCircle } from 'lucide-react';
 
 interface ResultCardProps {
   valor: number;
+  amortizacao?: string;
+  primeiraParcela?: number;
+  ultimaParcela?: number;
 }
 
-const ResultCard: React.FC<ResultCardProps> = ({ valor }) => {
+const ResultCard: React.FC<ResultCardProps> = ({ 
+  valor, 
+  amortizacao,
+  primeiraParcela,
+  ultimaParcela 
+}) => {
   const valorFormatado = valor.toLocaleString('pt-BR', {
     style: 'currency',
     currency: 'BRL'
@@ -24,10 +32,24 @@ const ResultCard: React.FC<ResultCardProps> = ({ valor }) => {
         </div>
         
         <div className="bg-white rounded-lg p-3 inline-block">
-          <p className="text-xs text-gray-600 mb-1">Primeira parcela:</p>
+          <p className="text-xs text-gray-600 mb-1">
+            {amortizacao === 'SAC' ? 'Primeira parcela:' : 'Valor da parcela:'}
+          </p>
           <p className="text-2xl font-bold text-libra-navy">
             {valorFormatado}
           </p>
+          
+          {amortizacao === 'SAC' && ultimaParcela && (
+            <div className="mt-2 pt-2 border-t border-gray-200">
+              <p className="text-xs text-gray-600 mb-1">Última parcela:</p>
+              <p className="text-lg font-bold text-libra-navy">
+                {ultimaParcela.toLocaleString('pt-BR', {
+                  style: 'currency',
+                  currency: 'BRL'
+                })}
+              </p>
+            </div>
+          )}
         </div>
         
         <p className="text-white/90 text-xs mt-3">

@@ -21,7 +21,7 @@ const InstallmentsField: React.FC<InstallmentsFieldProps> = ({ value, onChange }
           <input
             type="range"
             min="12"
-            max="240"
+            max="180"
             value={value}
             onChange={(e) => onChange(Number(e.target.value))}
             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
@@ -31,7 +31,6 @@ const InstallmentsField: React.FC<InstallmentsFieldProps> = ({ value, onChange }
             <span>60</span>
             <span>120</span>
             <span>180</span>
-            <span>240</span>
           </div>
           <div className="text-right mt-1">
             <span className="bg-libra-blue text-white px-2 py-0.5 rounded text-xs font-bold">
