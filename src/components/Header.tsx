@@ -134,32 +134,30 @@ const Header: React.FC = memo(() => {
         )}
       </header>
 
-      {/* Popup informativo para mobile */}
-      {isMobile && (
-        <Dialog open={isInfoPopupOpen} onOpenChange={setIsInfoPopupOpen}>
-          <DialogContent className="fixed top-20 left-4 right-4 max-w-none w-auto mx-0 p-4">
-            <DialogHeader>
-              <DialogTitle className="flex items-center text-libra-navy text-sm">
-                <Info className="w-5 h-5 mr-2 text-libra-blue" aria-hidden="true" />
-                Informação Importante
-              </DialogTitle>
-            </DialogHeader>
-            <p className="text-sm text-libra-navy">
-              A Libra não realiza nenhum tipo de cobrança até a liberação do crédito
-            </p>
-            <DialogClose asChild>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="mt-2 self-end"
-                onClick={() => setIsInfoPopupOpen(false)}
-              >
-                Fechar
-              </Button>
-            </DialogClose>
-          </DialogContent>
-        </Dialog>
-      )}
+      {/* Popup informativo centralizado - para todos os dispositivos */}
+      <Dialog open={isInfoPopupOpen} onOpenChange={setIsInfoPopupOpen}>
+        <DialogContent className="fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 sm:rounded-lg">
+          <DialogHeader>
+            <DialogTitle className="flex items-center text-libra-navy text-base">
+              <Info className="w-5 h-5 mr-2 text-libra-blue" aria-hidden="true" />
+              Informação Importante
+            </DialogTitle>
+          </DialogHeader>
+          <p className="text-sm text-libra-navy">
+            A Libra não realiza nenhum tipo de cobrança até a liberação do crédito
+          </p>
+          <DialogClose asChild>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="mt-2 self-end"
+              onClick={() => setIsInfoPopupOpen(false)}
+            >
+              Fechar
+            </Button>
+          </DialogClose>
+        </DialogContent>
+      </Dialog>
     </>
   );
 });
