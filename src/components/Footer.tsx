@@ -1,7 +1,5 @@
-
 import React from 'react';
 import { ChevronUp } from 'lucide-react';
-
 const Footer: React.FC = () => {
   const scrollToTop = () => {
     window.scrollTo({
@@ -9,7 +7,6 @@ const Footer: React.FC = () => {
       behavior: 'smooth'
     });
   };
-  
   return <footer className="bg-libra-navy text-white">
       <div className="container mx-auto py-8 md:py-12">
         <div className="flex flex-col md:flex-row justify-between items-center mb-8">
@@ -17,7 +14,7 @@ const Footer: React.FC = () => {
             <h2 className="text-2xl md:text-3xl font-bold">
               <span className="text-libra-gold">LIBRA</span> CRÉDITO
             </h2>
-            <p className="text-sm text-libra-silver mt-2">Vem que a gente equi</p>
+            <p className="text-sm text-libra-silver mt-2">Vem que a gente equiLIBRA</p>
           </div>
           
           <button onClick={scrollToTop} className="flex items-center gap-2 text-libra-silver hover:text-white transition-colors">
@@ -58,5 +55,4 @@ const Footer: React.FC = () => {
       </div>
     </footer>;
 };
-
 export default Footer;
