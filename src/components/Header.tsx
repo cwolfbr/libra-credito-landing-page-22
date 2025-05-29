@@ -1,5 +1,5 @@
 
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Info, Menu, X } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -15,10 +15,32 @@ import {
 
 const Header: React.FC = memo(() => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isInfoPopupOpen, setIsInfoPopupOpen] = useState(true);
+  const [isInfoPopupOpen, setIsInfoPopupOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+
+  // Controla quando mostrar o popup baseado na página atual
+  useEffect(() => {
+    const currentPath = location.pathname;
+    const allowedPaths = ['/', '/simulacao'];
+    
+    if (allowedPaths.includes(currentPath)) {
+      const storageKey = `popup_seen_${currentPath.replace('/', 'home')}`;
+      const hasSeenPopup = localStorage.getItem(storageKey);
+      
+      if (!hasSeenPopup) {
+        setIsInfoPopupOpen(true);
+      }
+    }
+  }, [location.pathname]);
+
+  const handleClosePopup = () => {
+    const currentPath = location.pathname;
+    const storageKey = `popup_seen_${currentPath.replace('/', 'home')}`;
+    localStorage.setItem(storageKey, 'true');
+    setIsInfoPopupOpen(false);
+  };
 
   const handleSimulateNow = () => {
     navigate('/simulacao');
@@ -136,7 +158,7 @@ const Header: React.FC = memo(() => {
         )}
       </header>
 
-      {/* Popup informativo centralizado - para todos os dispositivos */}
+      {/* Popup informativo centralizado - apenas para páginas específicas */}
       <Dialog open={isInfoPopupOpen} onOpenChange={setIsInfoPopupOpen}>
         <DialogContent className="fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 sm:rounded-lg">
           <DialogHeader>
@@ -153,7 +175,7 @@ const Header: React.FC = memo(() => {
               variant="outline" 
               size="sm" 
               className="mt-2 self-end"
-              onClick={() => setIsInfoPopupOpen(false)}
+              onClick={handleClosePopup}
             >
               Fechar
             </Button>
