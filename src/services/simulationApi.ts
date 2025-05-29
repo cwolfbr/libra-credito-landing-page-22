@@ -17,14 +17,29 @@ export interface SimulationResponse {
 }
 
 export const simulateCredit = async (payload: SimulationPayload): Promise<SimulationResponse> => {
-  console.log('Payload enviado:', payload);
+  console.log('Payload antes do envio:', payload);
+  
+  // Garantir que os valores numéricos estão corretos
+  const formattedPayload = {
+    vlr_imovel: Number(payload.vlr_imovel),
+    valor_solicitado: Number(payload.valor_solicitado),
+    juros: Number(payload.juros),
+    numero_parcelas: Number(payload.numero_parcelas),
+    carencia: Number(payload.carencia),
+    amortizacao: payload.amortizacao
+  };
+
+  console.log('Payload formatado para envio:', formattedPayload);
 
   const { data } = await axios.post<SimulationResponse>(
     'https://api-calculos.vercel.app/simulacao',
-    payload,
-    { headers: { 'Content-Type': 'application/json' } }
+    formattedPayload,
+    { 
+      headers: { 'Content-Type': 'application/json' },
+      timeout: 30000 // 30 segundos timeout
+    }
   );
 
-  console.log('Resposta da API:', data);
+  console.log('Resposta bruta da API:', data);
   return data;
 };

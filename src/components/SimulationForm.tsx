@@ -63,17 +63,43 @@ const SimulationForm: React.FC = () => {
 
       const data = await simulateCredit(payload);
 
-      console.log('Resposta da API recebida:', data);
+      console.log('Resposta completa da API:', JSON.stringify(data, null, 2));
+      console.log('Estrutura data.parcelas:', data.parcelas);
+      
+      if (data.parcelas && data.parcelas.length > 0) {
+        console.log('Primeira parcela completa:', data.parcelas[0]);
+        console.log('Array da primeira parcela:', data.parcelas[0].parcela);
+        
+        if (data.parcelas[0].parcela && data.parcelas[0].parcela.length > 0) {
+          console.log('Valor da primeira parcela [0]:', data.parcelas[0].parcela[0]);
+        }
+      }
+
+      // Verificar se a resposta tem a estrutura esperada
+      if (!data.parcelas || data.parcelas.length === 0) {
+        throw new Error('Resposta da API não contém dados de parcelas');
+      }
+
+      if (!data.parcelas[0].parcela || data.parcelas[0].parcela.length === 0) {
+        throw new Error('Dados de parcela não encontrados na resposta');
+      }
 
       // Extração do valor da primeira parcela
       const primeiraParcela = data.parcelas[0].parcela[0];
       
+      console.log('Valor extraído da primeira parcela:', primeiraParcela);
+      
+      if (!primeiraParcela || primeiraParcela === 0) {
+        throw new Error('Valor da parcela é zero ou inválido');
+      }
+      
       // Para SAC, calcular a última parcela (se disponível)
       let ultimaParcela = undefined;
-      if (amortizacao === 'SAC' && data.parcelas.length > 0) {
+      if (amortizacao === 'SAC' && data.parcelas.length > 1) {
         const ultimaParcelaArray = data.parcelas[data.parcelas.length - 1];
-        if (ultimaParcelaArray && ultimaParcelaArray.parcela.length > 0) {
+        if (ultimaParcelaArray && ultimaParcelaArray.parcela && ultimaParcelaArray.parcela.length > 0) {
           ultimaParcela = ultimaParcelaArray.parcela[0];
+          console.log('Valor da última parcela (SAC):', ultimaParcela);
         }
       }
 
@@ -87,7 +113,7 @@ const SimulationForm: React.FC = () => {
 
     } catch (error) {
       console.error('Erro na simulação:', error);
-      setErro('Erro ao realizar simulação. Tente novamente.');
+      setErro(`Erro ao realizar simulação: ${error instanceof Error ? error.message : 'Tente novamente.'}`);
     } finally {
       setLoading(false);
     }
