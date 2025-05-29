@@ -2,7 +2,7 @@
 import React, { memo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Info, Menu, X } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import ImageOptimizer from './ImageOptimizer';
 import { useIsMobile } from '@/hooks/use-mobile';
 import {
@@ -17,10 +17,11 @@ const Header: React.FC = memo(() => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isInfoPopupOpen, setIsInfoPopupOpen] = useState(true);
   const location = useLocation();
+  const navigate = useNavigate();
   const isMobile = useIsMobile();
 
-  const handleWhatsAppContact = () => {
-    window.open('https://wa.me/5516996360424?text=Ol%C3%A1%2C%20Quero%20agendar%20uma%20conversa%20com%20o%20consultor!', '_blank');
+  const handleSimulateNow = () => {
+    navigate('/simulacao');
   };
 
   const handlePortalClientes = () => {
@@ -85,13 +86,13 @@ const Header: React.FC = memo(() => {
             
             <Button 
               className="min-h-[48px] px-4 sm:px-6 lg:px-8 text-sm sm:text-base"
-              style={{ backgroundColor: '#00ccff', color: 'white' }}
+              variant="goldContrast"
               size="lg"
-              onClick={handleWhatsAppContact}
-              aria-label="Fale conosco pelo WhatsApp"
+              onClick={handleSimulateNow}
+              aria-label="Simular crédito agora"
             >
-              <span className="hidden sm:inline">Fale Conosco</span>
-              <span className="sm:hidden">Contato</span>
+              <span className="hidden sm:inline">Simule Agora</span>
+              <span className="sm:hidden">Simular</span>
             </Button>
 
             {/* Mobile menu button */}
