@@ -77,19 +77,19 @@ const SimulationForm: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-2xl">
+    <div className="container mx-auto px-4 py-4 max-w-2xl min-h-[calc(100vh-5rem)]">
       <Card className="shadow-lg">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl md:text-3xl font-bold text-libra-navy">
+        <CardHeader className="text-center pb-4">
+          <CardTitle className="text-xl md:text-2xl font-bold text-libra-navy mb-2">
             Sua simulação em um clique!
           </CardTitle>
-          <p className="text-gray-600 mt-2">
+          <p className="text-gray-600 text-sm">
             Com apenas algumas informações você já encontrará a proposta ideal, com parcelas que cabem no seu bolso!
           </p>
         </CardHeader>
         
-        <CardContent className="p-6">
-          <form onSubmit={handleSubmit} className="space-y-6">
+        <CardContent className="p-4 md:p-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
             
             <CityField value={cidade} onChange={setCidade} />
 
@@ -106,11 +106,11 @@ const SimulationForm: React.FC = () => {
             <AmortizationField value={amortizacao} onChange={setAmortizacao} />
 
             {/* Botões */}
-            <div className="flex gap-4 pt-4">
+            <div className="flex gap-3 pt-3">
               <Button
                 type="submit"
                 disabled={!validation.formularioValido || loading}
-                className="flex-1 bg-libra-blue hover:bg-libra-blue/90 text-white py-3 text-lg font-semibold"
+                className="flex-1 bg-libra-blue hover:bg-libra-blue/90 text-white py-2.5 text-base font-semibold min-h-[48px]"
               >
                 {loading ? (
                   <div className="flex items-center gap-2">
@@ -125,14 +125,14 @@ const SimulationForm: React.FC = () => {
                 type="button"
                 variant="outline"
                 onClick={handleClear}
-                className="px-6 py-3 text-libra-blue border-libra-blue hover:bg-libra-light"
+                className="px-6 py-2.5 text-libra-blue border-libra-blue hover:bg-libra-light min-h-[48px]"
               >
                 LIMPAR
               </Button>
             </div>
 
             {erro && (
-              <div className="text-red-500 text-center mt-4">
+              <div className="text-red-500 text-center text-sm mt-3">
                 {erro}
               </div>
             )}
