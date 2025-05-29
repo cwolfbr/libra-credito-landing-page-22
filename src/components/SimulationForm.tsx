@@ -76,39 +76,22 @@ const SimulationForm: React.FC = () => {
         throw new Error('Dados da parcela não encontrados na resposta');
       }
 
-      const valorParcela = primeiraParcela.parcela[0];
+      let valorParcela = primeiraParcela.parcela[0];
       console.log('Valor da parcela extraído:', valorParcela);
 
+      // Se o valor principal for zero ou inválido, tentar propriedades alternativas
       if (!valorParcela || valorParcela <= 0) {
-        console.error('Valor da parcela inválido:', valorParcela);
-        // Tentar outros campos possíveis
-        const parcelaNormal = primeiraParcela.parcela_normal?.[0];
-        const parcelaFinal = primeiraParcela.parcela_final?.[0];
+        console.log('Valor da parcela principal é zero, tentando propriedades alternativas...');
         
-        console.log('Tentando parcela_normal:', parcelaNormal);
-        console.log('Tentando parcela_final:', parcelaFinal);
-        
-        if (parcelaNormal && parcelaNormal > 0) {
-          console.log('Usando parcela_normal:', parcelaNormal);
-          setResultado({
-            valor: parcelaNormal,
-            amortizacao: amortizacao,
-            parcelas: parcelas
-          });
-          return;
+        if (primeiraParcela.parcela_normal && primeiraParcela.parcela_normal[0] > 0) {
+          valorParcela = primeiraParcela.parcela_normal[0];
+          console.log('Usando parcela_normal:', valorParcela);
+        } else if (primeiraParcela.parcela_final && primeiraParcela.parcela_final[0] > 0) {
+          valorParcela = primeiraParcela.parcela_final[0];
+          console.log('Usando parcela_final:', valorParcela);
+        } else {
+          throw new Error('API retornou valor de parcela zero ou inválido');
         }
-        
-        if (parcelaFinal && parcelaFinal > 0) {
-          console.log('Usando parcela_final:', parcelaFinal);
-          setResultado({
-            valor: parcelaFinal,
-            amortizacao: amortizacao,
-            parcelas: parcelas
-          });
-          return;
-        }
-        
-        throw new Error('API retornou valor de parcela zero ou inválido');
       }
       
       // Para SAC, tentar obter a última parcela

@@ -8,16 +8,20 @@ export interface SimulationPayload {
   carencia: number;
 }
 
+export interface ParcelaItem {
+  parcela: number[];
+  parcela_normal?: number[];
+  parcela_final?: number[];
+}
+
 export interface SimulationResponse {
-  parcelas: Array<{
-    parcela: number[];
-  }>;
+  parcelas: ParcelaItem[];
 }
 
 export const simulateCredit = async (payload: SimulationPayload): Promise<SimulationResponse> => {
-  console.log('Payload original:', payload);
+  console.log('Payload enviado:', payload);
   
-  // Formatar dados exatamente como no exemplo fornecido
+  // Formatar dados como números simples, não strings
   const formattedData = {
     vlr_imovel: Number(payload.vlr_imovel),
     valor_solicitado: Number(payload.valor_solicitado),
