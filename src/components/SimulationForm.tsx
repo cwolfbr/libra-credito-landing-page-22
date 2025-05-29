@@ -10,7 +10,7 @@ import ResultCard from './ResultCard';
 
 // Função para normalizar valores em formato brasileiro para Number
 const norm = (s: string) =>
-  Number(s.replaceAll('.', '').replaceAll(',', '.').replace(/[^0-9.]/g, ''));
+  Number(s.replace(/\./g, '').replace(/,/g, '.').replace(/[^0-9.]/g, ''));
 
 // Função para formatar valor em formato brasileiro
 const formatBRL = (value: string) => {
