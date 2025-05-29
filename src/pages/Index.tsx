@@ -9,8 +9,12 @@ import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 import FAQ from '@/components/FAQ';
 import BlogSection from '@/components/BlogSection';
+import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 const Index = () => {
+  const navigate = useNavigate();
+
   useEffect(() => {
     // Atualiza o título da página para SEO
     document.title = "Libra Crédito | Empréstimo com Garantia de Imóvel | Home Equity";
@@ -22,6 +26,10 @@ const Index = () => {
     }
   }, []);
 
+  const goToQuemSomos = () => {
+    navigate('/quem-somos');
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -31,6 +39,21 @@ const Index = () => {
         <Testimonials />
         <MediaSection />
         <FAQ />
+        
+        {/* Botão Conheça a Libra */}
+        <section className="py-8 bg-libra-light">
+          <div className="container mx-auto text-center">
+            <Button 
+              onClick={goToQuemSomos}
+              variant="goldContrast"
+              size="xl"
+              className="min-h-[48px] min-w-[200px]"
+            >
+              Conheça a Libra
+            </Button>
+          </div>
+        </section>
+        
         <BlogSection />
         <ContactSection />
       </main>

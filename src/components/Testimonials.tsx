@@ -70,8 +70,8 @@ const Testimonials: React.FC = () => {
             </div>
             
             {isMobile ? (
-              <div className="relative px-4">
-                <Carousel className="w-full">
+              <div className="relative">
+                <Carousel className="w-full max-w-xs mx-auto">
                   <CarouselContent>
                     {testimonials.map((testimonial, index) => (
                       <CarouselItem key={index}>
@@ -84,8 +84,8 @@ const Testimonials: React.FC = () => {
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious className="left-0 bg-white/80" />
-                  <CarouselNext className="right-0 bg-white/80" />
+                  <CarouselPrevious className="-left-12 bg-white/80" />
+                  <CarouselNext className="-right-12 bg-white/80" />
                 </Carousel>
               </div>
             ) : (

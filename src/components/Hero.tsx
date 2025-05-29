@@ -1,29 +1,27 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ChevronDown } from 'lucide-react';
 import OptimizedYouTube from './OptimizedYouTube';
+import { useNavigate } from 'react-router-dom';
+
 const Hero: React.FC = () => {
+  const navigate = useNavigate();
+
   const scrollToSimulator = () => {
-    const simulatorSection = document.getElementById('simulator');
-    if (simulatorSection) {
-      simulatorSection.scrollIntoView({
-        behavior: 'smooth'
-      });
-    }
+    navigate('/simulacao');
   };
-  const scrollToAgentChat = () => {
-    const agentChatSection = document.getElementById('agent-chat');
-    if (agentChatSection) {
-      agentChatSection.scrollIntoView({
-        behavior: 'smooth'
-      });
-    }
+
+  const goToVantagens = () => {
+    navigate('/vantagens');
   };
+
   const scrollToBenefits = () => {
     document.getElementById('benefits')?.scrollIntoView({
       behavior: 'smooth'
     });
   };
+
   return <section className="pt-24 pb-16 md:pt-32 md:pb-24 bg-hero-pattern bg-cover bg-center relative" aria-labelledby="hero-heading">
       <div className="absolute inset-0 bg-libra-navy/70"></div>
       <div className="container mx-auto relative z-10">
@@ -37,8 +35,8 @@ const Hero: React.FC = () => {
               <Button onClick={scrollToSimulator} className="min-h-[48px] min-w-[200px]" variant="goldContrast" size="xl" aria-label="Simular crédito agora">
                 Simular Agora
               </Button>
-              <Button onClick={scrollToAgentChat} variant="highContrast" aria-label="Falar com um assistente" className="font-semibold min-h-[48px] min-w-[200px]" size="xl">
-                Fale com Assistente
+              <Button onClick={goToVantagens} variant="highContrast" aria-label="Conheça as vantagens" className="font-semibold min-h-[48px] min-w-[200px]" size="xl">
+                Conheça as Vantagens
               </Button>
             </div>
           </div>
@@ -54,4 +52,5 @@ const Hero: React.FC = () => {
       </div>
     </section>;
 };
+
 export default Hero;
