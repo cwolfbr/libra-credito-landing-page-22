@@ -28,7 +28,7 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ onPortalClientes, onSimulat
         <div className="flex items-center gap-3">
           <Link to="/" aria-label="Página inicial da Libra Crédito">
             <ImageOptimizer 
-              src="/lovable-uploads/75b290f8-4c51-45af-b45c-b737f5e1ca37.png" 
+              src="/lovable-uploads/0be9e819-3b36-4075-944b-cf4835a76b3c.png" 
               alt="Libra Crédito" 
               className="h-12 w-auto"
               aspectRatio={1}

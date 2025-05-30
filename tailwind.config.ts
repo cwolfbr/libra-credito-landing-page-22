@@ -67,10 +67,10 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				libra: {
-					navy: '#003399',
+					navy: '#003399', // Cor principal
 					gold: '#D4AF37',
 					silver: '#F0F0F0',
-					blue: '#00ccff',
+					blue: '#00ccff', // Cor secundária
 					light: '#F8F9FA'
 				}
 			},
