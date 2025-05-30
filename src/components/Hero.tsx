@@ -22,7 +22,7 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-libra-navy via-libra-navy/95 to-libra-blue/80 overflow-hidden" aria-labelledby="hero-heading">
+    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-libra-navy via-libra-navy/95 to-libra-blue/80 overflow-hidden pt-16" aria-labelledby="hero-heading">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/20 via-transparent to-transparent"></div>
