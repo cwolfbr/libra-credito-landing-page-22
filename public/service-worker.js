@@ -1,58 +1,33 @@
 
-const CACHE_NAME = 'libra-credito-cache-v1';
+const CACHE_NAME = 'libra-credito-cache-v2';
+const STATIC_CACHE = 'static-cache-v2';
+const DYNAMIC_CACHE = 'dynamic-cache-v2';
+
+// Critical resources to cache immediately
 const urlsToCache = [
   '/',
   '/index.html',
   '/src/main.tsx',
   '/src/App.tsx',
   '/src/index.css',
-  '/lovable-uploads/75b290f8-4c51-45af-b45c-b737f5e1ca37.png',
-  '/lovable-uploads/a849c4f2-e269-4fc2-9379-4b7984dc93a7.png'
+  '/lovable-uploads/0be9e819-3b36-4075-944b-cf4835a76b3c.png'
 ];
 
+// Install event - cache critical resources
 self.addEventListener('install', event => {
-  // Perform install steps
   event.waitUntil(
-    caches.open(CACHE_NAME)
+    caches.open(STATIC_CACHE)
       .then(cache => {
         console.log('Opened cache');
         return cache.addAll(urlsToCache);
       })
+      .then(() => self.skipWaiting())
   );
 });
 
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        // Cache hit - return response
-        if (response) {
-          return response;
-        }
-        return fetch(event.request).then(
-          response => {
-            // Check if we received a valid response
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-
-            // Clone the response
-            const responseToCache = response.clone();
-
-            caches.open(CACHE_NAME)
-              .then(cache => {
-                cache.put(event.request, responseToCache);
-              });
-
-            return response;
-          }
-        );
-      })
-    );
-});
-
+// Activate event - clean old caches
 self.addEventListener('activate', event => {
-  const cacheWhitelist = [CACHE_NAME];
+  const cacheWhitelist = [STATIC_CACHE, DYNAMIC_CACHE];
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
@@ -62,6 +37,76 @@ self.addEventListener('activate', event => {
           }
         })
       );
-    })
+    }).then(() => self.clients.claim())
   );
+});
+
+// Fetch event - serve from cache with network fallback
+self.addEventListener('fetch', event => {
+  const { request } = event;
+  
+  // Handle different types of requests
+  if (request.url.includes('youtube.com') || request.url.includes('img.youtube.com')) {
+    // YouTube content - cache with short TTL
+    event.respondWith(
+      caches.open(DYNAMIC_CACHE).then(cache => {
+        return cache.match(request).then(response => {
+          if (response) {
+            // Check if cached version is still fresh (1 hour)
+            const cachedTime = new Date(response.headers.get('sw-cached-at') || 0);
+            const isExpired = Date.now() - cachedTime.getTime() > 3600000; // 1 hour
+            
+            if (!isExpired) {
+              return response;
+            }
+          }
+          
+          return fetch(request).then(fetchResponse => {
+            if (fetchResponse.status === 200) {
+              const responseToCache = fetchResponse.clone();
+              // Add timestamp header
+              const headers = new Headers(responseToCache.headers);
+              headers.set('sw-cached-at', new Date().toISOString());
+              
+              const modifiedResponse = new Response(responseToCache.body, {
+                status: responseToCache.status,
+                statusText: responseToCache.statusText,
+                headers: headers
+              });
+              
+              cache.put(request, modifiedResponse.clone());
+              return fetchResponse;
+            }
+            return fetchResponse;
+          }).catch(() => response || new Response('Offline content not available'));
+        });
+      })
+    );
+  } else {
+    // Regular content - cache-first strategy
+    event.respondWith(
+      caches.match(request).then(response => {
+        if (response) {
+          return response;
+        }
+        
+        return fetch(request).then(fetchResponse => {
+          if (!fetchResponse || fetchResponse.status !== 200 || fetchResponse.type !== 'basic') {
+            return fetchResponse;
+          }
+          
+          const responseToCache = fetchResponse.clone();
+          const cacheName = request.url.includes('/src/') || request.url.includes('/lovable-uploads/') 
+            ? STATIC_CACHE 
+            : DYNAMIC_CACHE;
+          
+          caches.open(cacheName).then(cache => {
+            cache.put(request, responseToCache);
+          });
+          
+          return fetchResponse;
+        });
+      })
+    );
+  }
 });

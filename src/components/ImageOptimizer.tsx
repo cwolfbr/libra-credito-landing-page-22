@@ -18,53 +18,69 @@ const ImageOptimizer: React.FC<ImageOptimizerProps> = ({
   priority = false
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    // Preload image if priority is true
     if (priority) {
+      // Preload critical images
       const img = new Image();
       img.src = src;
+      img.onload = () => setIsLoaded(true);
+      img.onerror = () => setError(true);
     }
   }, [src, priority]);
 
-  // Generate responsive sizes for srcSet
-  const generateSrcSet = () => {
-    if (src.startsWith('http')) {
-      return undefined; // External images don't need srcSet
+  // Generate WebP version for modern browsers
+  const getWebPSrc = (originalSrc: string) => {
+    if (originalSrc.startsWith('/lovable-uploads/')) {
+      return originalSrc.replace(/\.(png|jpg|jpeg)$/i, '.webp');
     }
-    
-    const baseSrc = src.split('.').slice(0, -1).join('.');
-    const ext = src.split('.').pop();
-    
-    // We can't actually resize images in this implementation
-    // but this shows how it would be structured
-    return undefined;
+    return originalSrc;
   };
+
+  const handleImageLoad = () => {
+    setIsLoaded(true);
+  };
+
+  const handleImageError = () => {
+    setError(true);
+    setIsLoaded(true);
+  };
+
+  const imageElement = (
+    <div className="relative w-full h-full">
+      {/* Placeholder */}
+      {!isLoaded && !error && (
+        <div className="absolute inset-0 bg-gray-200 animate-pulse rounded" />
+      )}
+      
+      {/* WebP with fallback */}
+      <picture>
+        <source srcSet={getWebPSrc(src)} type="image/webp" />
+        <img
+          src={src}
+          alt={alt}
+          loading={priority ? "eager" : "lazy"}
+          className={`object-cover w-full h-full transition-opacity duration-300 ${
+            isLoaded ? 'opacity-100' : 'opacity-0'
+          } ${className}`}
+          onLoad={handleImageLoad}
+          onError={handleImageError}
+          decoding="async"
+          fetchPriority={priority ? "high" : "auto"}
+        />
+      </picture>
+    </div>
+  );
   
   return (
     <div className={`overflow-hidden ${className}`}>
       {aspectRatio ? (
         <AspectRatio ratio={aspectRatio} className="overflow-hidden">
-          <img
-            src={src}
-            alt={alt}
-            loading={priority ? "eager" : "lazy"}
-            className={`object-cover w-full h-full ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
-            onLoad={() => setIsLoaded(true)}
-            decoding="async"
-            fetchPriority={priority ? "high" : "auto"}
-          />
+          {imageElement}
         </AspectRatio>
       ) : (
-        <img
-          src={src}
-          alt={alt}
-          loading={priority ? "eager" : "lazy"}
-          className={`object-cover w-full h-full ${className} ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
-          onLoad={() => setIsLoaded(true)}
-          decoding="async"
-          fetchPriority={priority ? "high" : "auto"}
-        />
+        imageElement
       )}
     </div>
   );

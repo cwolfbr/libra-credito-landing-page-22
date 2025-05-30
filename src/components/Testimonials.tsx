@@ -1,6 +1,6 @@
 
-import React, { useState, memo } from 'react';
-import { MessageSquare, User, ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { memo } from 'react';
+import { MessageSquare, User } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import OptimizedYouTube from './OptimizedYouTube';
@@ -49,7 +49,9 @@ const Testimonials: React.FC = () => {
     <section className={`${isMobile ? 'py-8' : 'py-16 md:py-24'} bg-white`}>
       <div className="container mx-auto">
         <div className="text-center mb-6 md:mb-12">
-          <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy mb-2 md:mb-4`}>O que nossos clientes dizem</h2>
+          <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy mb-2 md:mb-4`}>
+            O que nossos clientes dizem
+          </h2>
           <p className={`${isMobile ? 'text-sm px-4' : 'text-lg'} text-gray-600 max-w-3xl mx-auto`}>
             Veja como o crédito com garantia de imóvel transformou a vida financeira de nossos clientes com taxas a partir de 1,09% a.m. e prazo de até 180 meses.
           </p>
@@ -60,13 +62,16 @@ const Testimonials: React.FC = () => {
             <OptimizedYouTube 
               videoId="ETQRA4cvADk" 
               title="Depoimento Cliente - Libra Crédito"
+              priority={false}
             />
           </div>
           
           <div>
             <div className="flex items-center gap-2 mb-4 md:mb-6">
               <MessageSquare className="w-5 h-5 md:w-6 md:h-6 text-libra-blue" />
-              <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-libra-navy`}>Depoimentos de Clientes</h3>
+              <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-libra-navy`}>
+                Depoimentos de Clientes
+              </h3>
             </div>
             
             {isMobile ? (

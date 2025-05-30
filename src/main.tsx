@@ -16,7 +16,7 @@ const setupAccessibility = () => {
   document.documentElement.lang = 'pt-BR';
 };
 
-// Use a separate chunk for the app with improved loading strategy
+// Otimização para carregamento mais rápido
 const renderApp = () => {
   setupAccessibility();
   
@@ -26,16 +26,13 @@ const renderApp = () => {
   }
 };
 
-// Execute when the document is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', renderApp);
-} else {
-  renderApp();
-}
+// Execute immediately for faster loading
+renderApp();
 
 // Register service worker for better performance and offline capabilities
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
+  // Delay service worker registration to not block initial render
+  setTimeout(() => {
     navigator.serviceWorker.register('/service-worker.js')
       .then(registration => {
         console.log('ServiceWorker registration successful with scope: ', registration.scope);
@@ -43,19 +40,27 @@ if ('serviceWorker' in navigator) {
       .catch(error => {
         console.log('ServiceWorker registration failed: ', error);
       });
-  });
+  }, 2000);
 }
 
-// Add preloading for key pages when idle
+// Preload critical resources when browser is idle
 if ('requestIdleCallback' in window) {
-  window.requestIdleCallback(() => {
+  requestIdleCallback(() => {
     // Preload key components that will be lazy-loaded
-    import('./pages/Index.tsx');
-    // Use link preloading for critical resources
-    const preloadLink = document.createElement('link');
-    preloadLink.rel = 'preload';
-    preloadLink.as = 'image';
-    preloadLink.href = '/lovable-uploads/75b290f8-4c51-45af-b45c-b737f5e1ca37.png';
-    document.head.appendChild(preloadLink);
+    import('./pages/Index.tsx').catch(() => {});
+    import('./components/Hero.tsx').catch(() => {});
+    import('./components/Benefits.tsx').catch(() => {});
+    
+    // Preload critical YouTube thumbnails
+    const heroVideoId = 'E9lwL6R2l1s';
+    const testimonialVideoId = 'ETQRA4cvADk';
+    
+    [heroVideoId, testimonialVideoId].forEach(videoId => {
+      const preloadLink = document.createElement('link');
+      preloadLink.rel = 'preload';
+      preloadLink.as = 'image';
+      preloadLink.href = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+      document.head.appendChild(preloadLink);
+    });
   });
 }
