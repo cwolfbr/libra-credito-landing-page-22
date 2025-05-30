@@ -1,78 +1,123 @@
 
 import React from 'react';
-import { Check, TrendingUp, Building, Home } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
-
-const usageOptions = [
-  {
-    title: "Consolidação de Dívidas",
-    icon: TrendingUp,
-    description: "Quite suas dívidas com juros altos e tenha uma única parcela menor"
-  },
-  {
-    title: "Capital de Giro",
-    icon: Building,
-    description: "Invista no seu negócio e faça ele crescer com capital de giro"
-  },
-  {
-    title: "Investimentos/Reformas",
-    icon: Home,
-    description: "Reforme seu imóvel ou invista em novos projetos pessoais"
-  }
-];
-
-const UsageCard: React.FC<{title: string, description: string, icon: React.ComponentType<any>, isMobile: boolean}> = ({ title, description, icon: IconComponent, isMobile }) => {
-  return (
-    <div className={`bg-white rounded-lg shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300 ${isMobile ? 'p-4' : 'p-6'}`}>
-      <div className="text-center">
-        <div className="bg-libra-blue rounded-full p-3 w-fit mx-auto mb-4">
-          <IconComponent className={`${isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-white`} />
-        </div>
-        <h3 className={`${isMobile ? 'text-lg font-bold' : 'text-xl font-bold'} text-libra-navy mb-3`}>{title}</h3>
-        <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600`}>{description}</p>
-      </div>
-    </div>
-  );
-};
+import { Shield, TrendingUp, Clock, Users, CheckCircle, Award } from 'lucide-react';
 
 const Benefits: React.FC = () => {
-  const isMobile = useIsMobile();
-  
+  const benefits = [
+    {
+      icon: TrendingUp,
+      title: 'Taxas Competitivas',
+      description: 'A partir de 1,19% ao mês, as melhores condições do mercado',
+      highlight: '1,19% a.m.',
+      color: 'text-green-500'
+    },
+    {
+      icon: Clock,
+      title: 'Aprovação Rápida',
+      description: 'Análise em até 24h com documentação simplificada',
+      highlight: '24 horas',
+      color: 'text-blue-500'
+    },
+    {
+      icon: Shield,
+      title: '100% Seguro',
+      description: 'Processo totalmente seguro e regulamentado pelo Banco Central',
+      highlight: 'Regulamentado',
+      color: 'text-libra-gold'
+    },
+    {
+      icon: Users,
+      title: 'Atendimento Especializado',
+      description: 'Equipe dedicada para orientar você em cada etapa',
+      highlight: 'Suporte VIP',
+      color: 'text-purple-500'
+    },
+    {
+      icon: CheckCircle,
+      title: 'Sem Cobrança Prévia',
+      description: 'Não cobramos nenhuma taxa até a liberação do seu crédito',
+      highlight: 'Taxa Zero',
+      color: 'text-emerald-500'
+    },
+    {
+      icon: Award,
+      title: 'Até 180 Meses',
+      description: 'Prazo estendido para pagamento com parcelas que cabem no seu bolso',
+      highlight: '15 anos',
+      color: 'text-orange-500'
+    }
+  ];
+
   return (
-    <section id="benefits" className={`${isMobile ? 'py-8' : 'py-16 md:py-24'} bg-libra-light`}>
+    <section id="benefits" className="py-20 bg-gradient-to-b from-white to-libra-light">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-8 md:mb-12">
-          <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy mb-4`}>
-            Como usar o Crédito com Garantia de Imóvel
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold text-libra-navy mb-6">
+            Por que escolher a <span className="text-libra-gold">Libra?</span>
           </h2>
-          <p className={`${isMobile ? 'text-base' : 'text-lg'} text-gray-600 max-w-3xl mx-auto mb-8`}>
-            Descubra as principais formas de usar o crédito com garantia de imóvel para transformar sua vida financeira
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Mais de 15 anos de experiência no mercado financeiro, oferecendo as melhores soluções em crédito com garantia de imóvel
           </p>
         </div>
-        
-        <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-3 gap-8'} animate-slide-up max-w-6xl mx-auto`}>
-          {usageOptions.map((option, index) => (
-            <UsageCard 
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {benefits.map((benefit, index) => (
+            <div 
               key={index} 
-              title={option.title}
-              description={option.description}
-              icon={option.icon}
-              isMobile={isMobile} 
-            />
+              className="group relative bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100"
+            >
+              {/* Background Gradient */}
+              <div className="absolute inset-0 bg-gradient-to-br from-transparent to-libra-light/30 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              
+              <div className="relative z-10">
+                {/* Icon */}
+                <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-white to-gray-50 shadow-lg mb-6 ${benefit.color}`}>
+                  <benefit.icon className="w-8 h-8" />
+                </div>
+
+                {/* Content */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xl font-bold text-libra-navy group-hover:text-libra-blue transition-colors">
+                      {benefit.title}
+                    </h3>
+                    <span className={`text-sm font-bold px-3 py-1 rounded-full bg-gradient-to-r from-libra-gold/20 to-libra-gold/10 ${benefit.color} border border-current/20`}>
+                      {benefit.highlight}
+                    </span>
+                  </div>
+                  
+                  <p className="text-gray-600 leading-relaxed">
+                    {benefit.description}
+                  </p>
+                </div>
+
+                {/* Hover Effect Line */}
+                <div className="absolute bottom-0 left-8 right-8 h-1 bg-gradient-to-r from-libra-gold to-libra-blue rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+              </div>
+            </div>
           ))}
         </div>
-        
-        <div className="text-center mt-8 md:mt-12">
-          <Link to="/vantagens">
-            <Button 
-              size={isMobile ? "default" : "lg"} 
-              className="bg-libra-blue hover:bg-libra-blue/90 text-white px-8 py-3"
-            >
-              Conheça Mais Vantagens
-            </Button>
-          </Link>
+
+        {/* Stats Section */}
+        <div className="mt-20 bg-gradient-to-r from-libra-navy to-libra-blue rounded-3xl p-8 md:p-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-white">
+            <div>
+              <div className="text-3xl md:text-4xl font-bold text-libra-gold mb-2">15+</div>
+              <div className="text-sm md:text-base opacity-90">Anos de mercado</div>
+            </div>
+            <div>
+              <div className="text-3xl md:text-4xl font-bold text-libra-gold mb-2">5.000+</div>
+              <div className="text-sm md:text-base opacity-90">Clientes atendidos</div>
+            </div>
+            <div>
+              <div className="text-3xl md:text-4xl font-bold text-libra-gold mb-2">R$ 1B+</div>
+              <div className="text-sm md:text-base opacity-90">Em crédito liberado</div>
+            </div>
+            <div>
+              <div className="text-3xl md:text-4xl font-bold text-libra-gold mb-2">98%</div>
+              <div className="text-sm md:text-base opacity-90">Satisfação dos clientes</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
