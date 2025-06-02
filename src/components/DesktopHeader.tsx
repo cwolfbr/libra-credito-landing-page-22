@@ -36,9 +36,9 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
         </div>
       </div>
 
-      {/* Header principal - muito compacto */}
+      {/* Header principal - ultra compacto */}
       <div className="bg-white">
-        <div className="container mx-auto px-6 py-2">
+        <div className="container mx-auto px-6 py-1">
           <div className="flex items-center justify-between">
             {/* Logo e nome - compactos */}
             <Link to="/" className="flex items-center gap-2 group" aria-label="Página inicial da Libra Crédito">
