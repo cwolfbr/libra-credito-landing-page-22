@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -20,7 +19,7 @@ const Vantagens = () => {
     {
       icon: TrendingDown,
       title: "Menores Taxas",
-      description: "Taxa a partir de 1,09% a.m. + IPCA",
+      description: "Taxa a partir de 1,19% a.m. + IPCA",
       benefit: "Economia de até 70%"
     },
     {
@@ -58,7 +57,7 @@ const Vantagens = () => {
   const comparacaoData = [
     {
       modalidade: "Home Equity (Libra)",
-      taxa: "1,09% a.m. + IPCA",
+      taxa: "1,19% a.m. + IPCA",
       prazo: "180 meses",
       valor: "Até R$ 5MM",
       destaque: true

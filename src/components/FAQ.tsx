@@ -15,7 +15,7 @@ const FAQ: React.FC = () => {
     },
     {
       question: "Quais são as principais vantagens?",
-      answer: "As principais vantagens incluem: taxas de juros mais baixas do mercado (a partir de 1,19% a.m.), prazos de até 240 meses, valores altos liberados, e você continua morando no seu imóvel normalmente."
+      answer: "As principais vantagens incluem: taxas de juros mais baixas do mercado (a partir de 1,19% a.m.), prazos de até 180 meses, valores altos liberados, e você continua morando no seu imóvel normalmente."
     },
     {
       question: "Quais documentos são necessários?",

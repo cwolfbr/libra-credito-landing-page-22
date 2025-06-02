@@ -201,7 +201,7 @@ const LoanSimulator: React.FC = () => {
                   <p className="text-sm text-gray-700 mb-2">Parcela mensal estimada:</p>
                   <p className="text-3xl font-bold text-libra-navy">{formatCurrency(monthlyPayment)}</p>
                   <p className="text-xs text-gray-700 mt-2">*Valores aproximados, sujeitos à análise de crédito</p>
-                  <p className="text-xs text-gray-700 mt-1">Taxa a partir de 1,09% a.m. + IPCA em até 180 meses</p>
+                  <p className="text-xs text-gray-700 mt-1">Taxa a partir de 1,19% a.m. + IPCA em até 180 meses</p>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
