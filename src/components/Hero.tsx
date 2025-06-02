@@ -23,7 +23,7 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <section className="pt-28 lg:pt-20 pb-16 md:pb-24 bg-hero-pattern bg-cover bg-center relative" aria-labelledby="hero-heading">
+    <section className="pt-20 pb-16 md:pb-24 bg-hero-pattern bg-cover bg-center relative" aria-labelledby="hero-heading">
       <div className="absolute inset-0 bg-libra-navy/70"></div>
       <div className="container mx-auto relative z-10 px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
