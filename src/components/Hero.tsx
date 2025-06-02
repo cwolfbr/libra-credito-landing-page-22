@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ChevronDown } from 'lucide-react';
@@ -17,13 +16,22 @@ const Hero: React.FC = () => {
   };
 
   const scrollToBenefits = () => {
-    document.getElementById('benefits')?.scrollIntoView({
-      behavior: 'smooth'
-    });
+    const benefitsSection = document.getElementById('benefits');
+    if (benefitsSection) {
+      // Altura total do header = barra de info (24px) + header principal (48px) + margem de segurança (16px)
+      const headerOffset = 88;
+      const elementPosition = benefitsSection.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
   };
 
   return (
-    <section className="pt-24 md:pt-16 pb-16 md:pb-24 bg-hero-pattern bg-cover bg-center relative" aria-labelledby="hero-heading">
+    <section className="pt-32 md:pt-28 pb-8 bg-hero-pattern bg-cover bg-center relative" aria-labelledby="hero-heading">
       <div className="absolute inset-0 bg-libra-navy/70"></div>
       <div className="container mx-auto relative z-10 px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -68,13 +76,13 @@ const Hero: React.FC = () => {
           </div>
         </div>
         
-        <div className="flex justify-center mt-12">
+        <div className="flex justify-center mt-8">
           <button 
             onClick={scrollToBenefits} 
-            className="bg-black/40 p-4 rounded-full hover:bg-black/60 transition-colors min-h-[48px] min-w-[48px]" 
+            className="bg-black/40 p-3 rounded-full hover:bg-black/60 transition-colors min-h-[40px] min-w-[40px] hover:scale-110 transform duration-200" 
             aria-label="Rolar para seção de benefícios"
           >
-            <ChevronDown className="w-8 h-8 text-white" />
+            <ChevronDown className="w-6 h-6 text-white" />
           </button>
         </div>
       </div>
