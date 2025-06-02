@@ -23,39 +23,54 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ onPortalClientes, onSimulat
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md py-4" role="banner">
-      <div className="container mx-auto flex justify-between items-center px-4">
-        <div className="flex items-center gap-3">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md" role="banner">
+      {/* Barra superior compacta */}
+      <div className="bg-gray-50 border-b border-gray-100">
+        <div className="container mx-auto px-4 py-1">
+          <div className="flex items-center justify-center">
+            <div className="flex items-center text-libra-navy text-xs font-medium">
+              <Info className="w-3 h-3 mr-1 text-libra-blue" />
+              A Libra não realiza cobrança até a liberação
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Header principal */}
+      <div className="container mx-auto flex justify-between items-center px-4 py-3">
+        <div className="flex items-center gap-2">
           <Link to="/" aria-label="Página inicial da Libra Crédito">
             <ImageOptimizer 
               src="/lovable-uploads/0be9e819-3b36-4075-944b-cf4835a76b3c.png" 
               alt="Libra Crédito" 
-              className="h-12 w-auto"
+              className="h-8 w-auto"
               aspectRatio={1}
               priority={true}
             />
           </Link>
-          <span className="text-libra-navy font-semibold text-lg md:text-xl">Libra Crédito</span>
+          <div className="flex flex-col">
+            <span className="text-libra-navy font-bold text-base">Libra Crédito</span>
+            <span className="text-libra-blue text-xs font-medium">Vem que a gente equiLIBRA</span>
+          </div>
         </div>
 
-        <div className="flex items-center gap-2 sm:gap-4">
+        <div className="flex items-center gap-2">
           <Button 
-            className="min-h-[48px] px-4 sm:px-6 lg:px-8 text-sm sm:text-base"
+            className="min-h-[40px] px-3 text-xs"
             variant="goldContrast"
-            size="lg"
+            size="sm"
             onClick={onSimulateNow}
             aria-label="Simular crédito agora"
           >
-            <span className="hidden sm:inline">Simule Agora</span>
-            <span className="sm:hidden">Simular</span>
+            Simular
           </Button>
 
           <button
-            className="lg:hidden p-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
+            className="lg:hidden p-2 min-w-[40px] min-h-[40px] flex items-center justify-center"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Abrir menu de navegação"
           >
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
       </div>
@@ -85,12 +100,6 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ onPortalClientes, onSimulat
             >
               Portal de Clientes
             </Button>
-            
-            {/* Informação importante no mobile */}
-            <div className="flex items-center text-libra-navy text-sm pt-4 border-t border-gray-200">
-              <Info className="w-4 h-4 mr-2 text-libra-blue" />
-              A Libra não realiza nenhum tipo de cobrança até a liberação do crédito
-            </div>
           </div>
         </nav>
       )}

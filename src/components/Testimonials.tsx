@@ -47,7 +47,7 @@ const Testimonials: React.FC = () => {
   
   return (
     <section className={`${isMobile ? 'py-8' : 'py-16 md:py-24'} bg-white`}>
-      <div className="container mx-auto">
+      <div className="container mx-auto px-4">
         <div className="text-center mb-6 md:mb-12">
           <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy mb-2 md:mb-4`}>
             O que nossos clientes dizem
@@ -57,13 +57,16 @@ const Testimonials: React.FC = () => {
           </p>
         </div>
         
-        <div className={`grid grid-cols-1 ${!isMobile && 'lg:grid-cols-2'} gap-6 items-center`}>
-          <div className={`w-full aspect-[16/9] max-w-xl mx-auto rounded-lg overflow-hidden shadow-xl ${isMobile ? 'mb-4' : ''}`}>
-            <OptimizedYouTube 
-              videoId="ETQRA4cvADk" 
-              title="Depoimento Cliente - Libra Crédito"
-              priority={false}
-            />
+        <div className={`grid grid-cols-1 ${!isMobile && 'lg:grid-cols-2'} gap-6 lg:gap-8 items-center max-w-6xl mx-auto`}>
+          <div className={`w-full max-w-xl mx-auto ${isMobile ? 'mb-4' : ''}`}>
+            <div className="aspect-video rounded-lg overflow-hidden shadow-xl bg-black">
+              <OptimizedYouTube 
+                videoId="ETQRA4cvADk" 
+                title="Depoimento Cliente - Libra Crédito"
+                priority={false}
+                className="w-full h-full"
+              />
+            </div>
           </div>
           
           <div>
