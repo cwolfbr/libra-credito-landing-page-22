@@ -1,3 +1,4 @@
+
 import React, { memo } from 'react';
 import { MessageSquare, User } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -24,9 +25,9 @@ const testimonials = [
 
 const TestimonialCard = memo(({ name, age, text, isMobile }: {name: string, age: string, text: string, isMobile: boolean}) => {
   return (
-    <div className={`bg-white p-5 rounded-xl shadow-sm border border-gray-100 h-full transition-all hover:shadow-md`}>
+    <div className={`bg-white p-4 ${!isMobile && 'md:p-6'} rounded-lg shadow-md border border-gray-100 h-full`}>
       <div className="flex items-start gap-3 mb-3">
-        <div className="bg-gray-100 rounded-full p-2 flex-shrink-0">
+        <div className="bg-gray-100 rounded-full p-2">
           <User className="w-4 h-4 text-libra-navy" />
         </div>
         <div>
@@ -34,7 +35,7 @@ const TestimonialCard = memo(({ name, age, text, isMobile }: {name: string, age:
           <p className="text-sm text-gray-500">{age}</p>
         </div>
       </div>
-      <p className={`text-gray-600 ${isMobile ? 'text-sm' : 'text-base'}`}>{text}</p>
+      <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 italic`}>{text}</p>
     </div>
   );
 });
@@ -46,7 +47,7 @@ const Testimonials: React.FC = () => {
   
   return (
     <section className={`${isMobile ? 'py-8' : 'py-16 md:py-24'} bg-white`}>
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto">
         <div className="text-center mb-6 md:mb-12">
           <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy mb-2 md:mb-4`}>
             O que nossos clientes dizem
@@ -56,18 +57,17 @@ const Testimonials: React.FC = () => {
           </p>
         </div>
         
-        <div className={`grid grid-cols-1 ${!isMobile ? 'lg:grid-cols-2' : ''} gap-8 items-start`}>
-          <div className={`w-full max-w-2xl mx-auto ${isMobile ? 'mb-8' : 'sticky top-24'}`}>
+        <div className={`grid grid-cols-1 ${!isMobile && 'lg:grid-cols-2'} gap-6 items-center`}>
+          <div className={`w-full aspect-[16/9] max-w-xl mx-auto rounded-lg overflow-hidden shadow-xl ${isMobile ? 'mb-4' : ''}`}>
             <OptimizedYouTube 
               videoId="ETQRA4cvADk" 
               title="Depoimento Cliente - Libra Crédito"
               priority={false}
-              className="shadow-xl rounded-xl overflow-hidden"
             />
           </div>
           
           <div>
-            <div className="flex items-center gap-2 mb-6">
+            <div className="flex items-center gap-2 mb-4 md:mb-6">
               <MessageSquare className="w-5 h-5 md:w-6 md:h-6 text-libra-blue" />
               <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-libra-navy`}>
                 Depoimentos de Clientes
@@ -76,10 +76,10 @@ const Testimonials: React.FC = () => {
             
             {isMobile ? (
               <div className="relative">
-                <Carousel className="w-full">
+                <Carousel className="w-full max-w-xs mx-auto">
                   <CarouselContent>
                     {testimonials.map((testimonial, index) => (
-                      <CarouselItem key={index} className="px-2">
+                      <CarouselItem key={index}>
                         <TestimonialCard 
                           name={testimonial.name}
                           age={testimonial.age}
@@ -89,12 +89,12 @@ const Testimonials: React.FC = () => {
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious className="left-2 bg-white/80" />
-                  <CarouselNext className="right-2 bg-white/80" />
+                  <CarouselPrevious className="-left-12 bg-white/80" />
+                  <CarouselNext className="-right-12 bg-white/80" />
                 </Carousel>
               </div>
             ) : (
-              <div className="space-y-6 max-h-[600px] overflow-y-auto pr-4">
+              <div className="space-y-4">
                 {testimonials.map((testimonial, index) => (
                   <TestimonialCard 
                     key={index}

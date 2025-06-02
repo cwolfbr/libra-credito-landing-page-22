@@ -10,13 +10,12 @@
     <!-- Preconnect para recursos críticos -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://img.youtube.com" crossorigin>
     
-    <!-- Font otimizada -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font crítica -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Preload recursos críticos -->
-    <link rel="preload" href="https://img.youtube.com/vi/E9lwL6R2l1s/maxresdefault.jpg" as="image">
+    <!-- Preload da logo -->
+    <link rel="preload" href="/lovable-uploads/0be9e819-3b36-4075-944b-cf4835a76b3c.png" as="image">
 
     <!-- Open Graph -->
     <meta property="og:title" content="Libra Crédito | Empréstimo com Garantia de Imóvel" />
@@ -29,59 +28,12 @@
     
     <!-- Performance optimization -->
     <meta name="format-detection" content="telephone=no">
-    
-    <!-- Inline critical CSS -->
-    <style>
-      /* Critical CSS para evitar FOUC */
-      html { font-family: 'Montserrat', sans-serif; }
-      body { margin: 0; background: #ffffff; }
-      .loading { 
-        position: fixed; 
-        top: 0; 
-        left: 0; 
-        width: 100%; 
-        height: 100%; 
-        background: linear-gradient(135deg, #003399, #00ccff); 
-        display: flex; 
-        align-items: center; 
-        justify-content: center; 
-        z-index: 9999;
-      }
-      .spinner {
-        width: 40px;
-        height: 40px;
-        border: 4px solid rgba(255,255,255,0.3);
-        border-radius: 50%;
-        border-top-color: #D4AF37;
-        animation: spin 1s ease-in-out infinite;
-      }
-      @keyframes spin {
-        to { transform: rotate(360deg); }
-      }
-    </style>
   </head>
 
   <body>
-    <!-- Loading Screen -->
-    <div id="loading-screen" class="loading">
-      <div class="spinner"></div>
-    </div>
-    
     <div id="root"></div>
-    
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
-    
-    <!-- Remove loading screen após carregamento -->
-    <script>
-      window.addEventListener('load', () => {
-        const loading = document.getElementById('loading-screen');
-        if (loading) {
-          loading.style.opacity = '0';
-          setTimeout(() => loading.remove(), 300);
-        }
-      });
-    </script>
   </body>
 </html>
