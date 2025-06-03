@@ -1,7 +1,8 @@
-
-import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import './index.css';
+import { initializePerformanceOptimizations } from './lib/performance';
 
 // Função para verificar necessidades de acessibilidade
 const setupAccessibility = () => {
@@ -16,13 +17,20 @@ const setupAccessibility = () => {
   document.documentElement.lang = 'pt-BR';
 };
 
+// Inicializa otimizações de performance antes da renderização
+initializePerformanceOptimizations();
+
 // Renderização rápida
 const renderApp = () => {
   setupAccessibility();
   
   const root = document.getElementById("root");
   if (root) {
-    createRoot(root).render(<App />);
+    ReactDOM.createRoot(root).render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    );
   }
 };
 

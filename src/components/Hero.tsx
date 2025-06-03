@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ChevronDown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,22 @@ import { useIsMobile } from '@/hooks/use-mobile';
 const Hero: React.FC = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+
+  // Preload recursos críticos
+  useEffect(() => {
+    // Preload da thumbnail do vídeo
+    const preloadLink = document.createElement('link');
+    preloadLink.rel = 'preload';
+    preloadLink.as = 'image';
+    preloadLink.href = 'https://i.ytimg.com/vi_webp/E9lwL6R2l1s/hqdefault.webp';
+    preloadLink.type = 'image/webp';
+    document.head.appendChild(preloadLink);
+
+    // Cleanup
+    return () => {
+      document.head.removeChild(preloadLink);
+    };
+  }, []);
 
   const scrollToSimulator = () => {
     navigate('/simulacao');

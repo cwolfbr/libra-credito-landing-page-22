@@ -5,7 +5,7 @@
  * @description Implementa carregamento otimizado de vídeos YouTube com foco em performance
  */
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, memo } from 'react';
 import { Play } from 'lucide-react';
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 
@@ -16,7 +16,7 @@ interface OptimizedYouTubeProps {
   priority?: boolean;
 }
 
-const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
+const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = memo(({ 
   videoId,
   title,
   className = "",
@@ -24,56 +24,46 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [thumbnailError, setThumbnailError] = useState(false);
+  const [thumbnailLoaded, setThumbnailLoaded] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   
-  // Tenta primeiro a thumbnail de alta qualidade em WebP, depois JPG, e por fim a padrão
-  const thumbnails = [
-    `https://i.ytimg.com/vi_webp/${videoId}/hqdefault.webp`,
-    `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
-    `https://i.ytimg.com/vi/${videoId}/0.jpg`
-  ];
+  // Otimização: Pré-carrega a próxima thumbnail em WebP
+  const thumbnailUrl = `https://i.ytimg.com/vi_webp/${videoId}/hqdefault.webp`;
+  const fallbackThumbnailUrl = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
   
-  const [currentThumbnailIndex, setCurrentThumbnailIndex] = useState(0);
-  const currentThumbnail = thumbnails[currentThumbnailIndex];
-
   useEffect(() => {
-    // Adiciona preconnect para domínios do YouTube
-    const preconnectUrls = [
-      'https://www.youtube-nocookie.com',
-      'https://i.ytimg.com',
-      'https://www.google.com'
-    ];
+    // Preconnect otimizado apenas quando necessário
+    if (!isLoaded) {
+      const preconnectUrls = [
+        'https://www.youtube-nocookie.com',
+        'https://i.ytimg.com'
+      ];
 
-    preconnectUrls.forEach(url => {
-      const link = document.createElement('link');
-      link.rel = 'preconnect';
-      link.href = url;
-      document.head.appendChild(link);
+      const links = preconnectUrls.map(url => {
+        const link = document.createElement('link');
+        link.rel = 'preconnect';
+        link.href = url;
+        link.crossOrigin = 'anonymous';
+        return link;
+      });
 
-      // DNS-prefetch como fallback
-      const dns = document.createElement('link');
-      dns.rel = 'dns-prefetch';
-      dns.href = url;
-      document.head.appendChild(dns);
-    });
+      links.forEach(link => document.head.appendChild(link));
+      return () => links.forEach(link => link.remove());
+    }
+  }, [isLoaded]);
 
-    // Cleanup
-    return () => {
-      const links = document.querySelectorAll('link[rel="preconnect"], link[rel="dns-prefetch"]');
-      links.forEach(link => link.remove());
-    };
-  }, []);
+  const handleThumbnailLoad = () => {
+    setThumbnailLoaded(true);
+  };
 
   const handleThumbnailError = () => {
-    if (currentThumbnailIndex < thumbnails.length - 1) {
-      setCurrentThumbnailIndex(prev => prev + 1);
-    } else {
-      setThumbnailError(true);
-    }
+    setThumbnailError(true);
   };
 
   const loadVideo = () => {
-    setIsLoaded(true);
+    if (thumbnailLoaded) {
+      setIsLoaded(true);
+    }
   };
 
   return (
@@ -90,26 +80,30 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
               }
             }}
             aria-label={`Play video: ${title}`}
+            disabled={!thumbnailLoaded}
           >
             {!thumbnailError ? (
               <img
-                src={currentThumbnail}
+                src={thumbnailUrl}
                 alt={`Thumbnail for ${title}`}
-                className="absolute inset-0 w-full h-full object-cover"
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${thumbnailLoaded ? 'opacity-100' : 'opacity-0'}`}
                 loading={priority ? "eager" : "lazy"}
                 decoding="async"
+                onLoad={handleThumbnailLoad}
                 onError={handleThumbnailError}
               />
             ) : (
-              <div className="absolute inset-0 bg-gray-900 flex items-center justify-center">
-                <div className="text-white text-center p-4">
-                  <Play className="w-12 h-12 mx-auto mb-2" />
-                  <p className="text-sm">Clique para reproduzir o vídeo</p>
-                </div>
-              </div>
+              <img
+                src={fallbackThumbnailUrl}
+                alt={`Thumbnail for ${title}`}
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${thumbnailLoaded ? 'opacity-100' : 'opacity-0'}`}
+                loading={priority ? "eager" : "lazy"}
+                decoding="async"
+                onLoad={handleThumbnailLoad}
+              />
             )}
             
-            <div className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors">
+            <div className={`absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors ${thumbnailLoaded ? 'opacity-100' : 'opacity-0'}`}>
               <div className="w-16 h-16 md:w-20 md:h-20 bg-red-600 rounded-full flex items-center justify-center shadow-lg hover:bg-red-700 transition-colors group">
                 <Play className="w-8 h-8 md:w-10 md:h-10 text-white fill-white ml-1 group-hover:scale-110 transition-transform" fill="currentColor" />
               </div>
@@ -130,6 +124,8 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
       </AspectRatio>
     </div>
   );
-};
+});
+
+OptimizedYouTube.displayName = 'OptimizedYouTube';
 
 export default OptimizedYouTube;
