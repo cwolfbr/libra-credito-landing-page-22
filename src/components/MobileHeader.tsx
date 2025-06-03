@@ -1,3 +1,28 @@
+/**
+ * Componente de cabeçalho para dispositivos móveis
+ * 
+ * @component MobileHeader
+ * @description Implementa a versão mobile do cabeçalho com menu hamburguer e navegação adaptada
+ * 
+ * @features
+ * - Menu hamburguer com animação
+ * - Navegação responsiva
+ * - Botões de ação adaptados para mobile
+ * - Integração com localStorage para estado do menu
+ * 
+ * @param {MobileHeaderProps} props
+ * @param {() => void} props.onPortalClientes - Callback para acesso ao portal de clientes
+ * @param {() => void} props.onSimulateNow - Callback para iniciar simulação
+ * 
+ * @example
+ * ```tsx
+ * <MobileHeader 
+ *   onPortalClientes={() => window.open('https://portal.com')}
+ *   onSimulateNow={() => navigate('/simulacao')}
+ * />
+ * ```
+ */
+
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';

@@ -1,3 +1,28 @@
+/**
+ * Componente de cabeçalho para desktop
+ * 
+ * @component DesktopHeader
+ * @description Implementa a versão desktop do cabeçalho com navegação horizontal e botões de ação
+ * 
+ * @features
+ * - Navegação horizontal com indicador de página atual
+ * - Botões de ação com hover effects
+ * - Logo e slogan da Libra Crédito
+ * - Aviso informativo integrado
+ * 
+ * @param {DesktopHeaderProps} props
+ * @param {() => void} props.onPortalClientes - Callback para acesso ao portal de clientes
+ * @param {() => void} props.onSimulateNow - Callback para iniciar simulação
+ * 
+ * @example
+ * ```tsx
+ * <DesktopHeader 
+ *   onPortalClientes={() => window.open('https://portal.com')}
+ *   onSimulateNow={() => navigate('/simulacao')}
+ * />
+ * ```
+ */
+
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
