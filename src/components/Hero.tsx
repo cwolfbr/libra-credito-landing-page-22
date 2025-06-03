@@ -3,9 +3,11 @@ import { Button } from '@/components/ui/button';
 import { ChevronDown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import OptimizedYouTube from './OptimizedYouTube';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Hero: React.FC = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   const scrollToSimulator = () => {
     navigate('/simulacao');
@@ -32,34 +34,34 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <section className="pt-40 md:pt-48 pb-16 bg-libra-navy relative" aria-labelledby="hero-heading">
-      <div className="container mx-auto relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+    <section className="min-h-[100vh] pt-20 md:pt-24 pb-4 bg-libra-navy relative flex flex-col justify-center" aria-labelledby="hero-heading">
+      <div className="container mx-auto px-4 relative z-10 flex-grow flex flex-col justify-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center">
           {/* Lado Esquerdo */}
-          <div className="text-white space-y-6">
-            <div className="mb-8">
-              <h1 id="hero-heading" className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+          <div className="text-white space-y-4 md:space-y-6">
+            <div>
+              <h1 id="hero-heading" className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
                 Crédito com<br />
                 Garantia de Imóvel
               </h1>
-              <div className="space-y-6">
-                <p className="text-xl text-white/90 leading-relaxed font-medium">
+              <div className="space-y-3 md:space-y-4">
+                <p className="text-lg md:text-xl text-white/90 leading-relaxed font-medium">
                   A Libra Crédito está a 5 anos auxiliando os clientes à encontrar capital dentro de casa e sem sair de casa!
                 </p>
-                <p className="text-lg text-white/90 leading-relaxed">
+                <p className="text-base md:text-lg text-white/90 leading-relaxed">
                   Taxas à partir de 1,19% a.m. e até 180 meses de prazo.
                 </p>
-                <p className="text-lg text-white/90 leading-relaxed">
+                <p className="text-base md:text-lg text-white/90 leading-relaxed">
                   Simule agora e veja como a parcela encaixa no orçamento!
                 </p>
               </div>
             </div>
 
             {/* Botões */}
-            <div className="flex flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <Button 
                 onClick={scrollToSimulator} 
-                className="min-h-[48px] text-base font-bold bg-[#00D1FF] text-white hover:bg-[#00D1FF]/90" 
+                className="h-12 md:h-14 text-base font-bold bg-[#00D1FF] text-white hover:bg-[#00D1FF]/90 w-full sm:w-auto" 
                 size="lg"
               >
                 Simular Agora
@@ -67,7 +69,7 @@ const Hero: React.FC = () => {
               <Button 
                 onClick={goToVantagens} 
                 variant="outline" 
-                className="min-h-[48px] text-base font-medium bg-transparent text-white border-2 border-white hover:bg-white/10" 
+                className="h-12 md:h-14 text-base font-medium bg-transparent text-white border-2 border-white hover:bg-white/10 w-full sm:w-auto" 
                 size="lg"
               >
                 Conheça as Vantagens
@@ -76,8 +78,8 @@ const Hero: React.FC = () => {
           </div>
 
           {/* Vídeo */}
-          <div className="relative h-full flex items-center">
-            <div className="w-full aspect-video rounded-xl overflow-hidden shadow-2xl">
+          <div className="w-full max-w-2xl mx-auto lg:max-w-none">
+            <div className="aspect-video rounded-xl overflow-hidden shadow-2xl">
               <OptimizedYouTube 
                 videoId="E9lwL6R2l1s"
                 title="Vídeo institucional Libra Crédito"
@@ -89,14 +91,14 @@ const Hero: React.FC = () => {
         </div>
 
         {/* Botão Saiba Mais */}
-        <div className="flex justify-center mt-12">
+        <div className="flex justify-center mt-6 md:mt-8">
           <button
             onClick={scrollToBenefits}
-            className="text-white flex flex-col items-center gap-2 opacity-70 hover:opacity-100 transition-opacity"
+            className="text-white flex flex-col items-center gap-1 opacity-70 hover:opacity-100 transition-opacity"
             aria-label="Rolar para benefícios"
           >
             <span className="text-sm font-medium">Saiba mais</span>
-            <ChevronDown className="w-6 h-6 animate-bounce" />
+            <ChevronDown className="w-5 h-5 animate-bounce" />
           </button>
         </div>
       </div>
