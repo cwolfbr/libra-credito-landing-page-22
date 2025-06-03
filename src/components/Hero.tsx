@@ -85,7 +85,6 @@ const Hero: React.FC = () => {
                 title="Vídeo institucional Libra Crédito"
                 priority={true}
                 className="w-full h-full"
-                fetchPriority="high"
               />
             </div>
           </div>

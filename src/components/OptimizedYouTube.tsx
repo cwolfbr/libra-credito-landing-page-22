@@ -6,15 +6,13 @@ interface OptimizedYouTubeProps {
   title: string;
   className?: string;
   priority?: boolean;
-  fetchPriority?: "high" | "low" | "auto";
 }
 
 const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
   videoId,
   title,
   className = "",
-  priority = false,
-  fetchPriority
+  priority = false
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [thumbnailError, setThumbnailError] = useState(false);
@@ -60,8 +58,8 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
               alt={`Thumbnail for ${title}`}
               className="absolute inset-0 w-full h-full object-cover"
               loading={priority ? "eager" : "lazy"}
+              fetchPriority={priority ? "high" : "auto"}
               decoding="async"
-              fetchPriority={fetchPriority || (priority ? "high" : "auto")}
               onError={handleThumbnailError}
             />
           ) : (
