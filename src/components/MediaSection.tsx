@@ -18,7 +18,7 @@ const mediaLinks = [
   },
   {
     name: 'A Cidade ON',
-    logo: '/images/media/acidadeon-logo.svg',
+    logo: '/images/media/acidadeon-logo.png',
     title: 'Libra Crédito oferece empréstimo de baixo custo e personalizado',
     url: 'https://www.acidadeon.com/ribeiraopreto/conteudo-patrocinado/libracredito/libra-credito-oferece-emprestimo-de-baixo-custo-e-personalizado/'
   },

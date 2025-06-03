@@ -1,8 +1,8 @@
 import React from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Info } from 'lucide-react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import ImageOptimizer from './ImageOptimizer';
+import ImageOptimizer from '@/components/ImageOptimizer';
 
 interface DesktopHeaderProps {
   onPortalClientes: () => void;
@@ -41,10 +41,17 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
           <div className="flex items-center justify-between h-20">
             {/* Logo e slogan */}
             <div className="flex items-center gap-6">
-              <Link to="/" className="flex items-center">
-                <div className="text-libra-navy font-bold text-2xl">
-                  Libra
-                  <div className="text-sm font-normal text-gray-600">crédito</div>
+              <Link to="/" className="flex items-center gap-3">
+                <ImageOptimizer 
+                  src="/images/logos/libra-logo.png" 
+                  alt="Libra Crédito" 
+                  className="h-10 w-auto"
+                  aspectRatio={1}
+                  priority={true}
+                />
+                <div className="text-libra-navy">
+                  <span className="font-bold text-xl">Libra</span>
+                  <span className="text-sm font-medium block -mt-1">crédito</span>
                 </div>
               </Link>
               <span className="text-libra-blue text-sm font-medium">
@@ -76,7 +83,7 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
                 size="default"
                 onClick={onPortalClientes}
                 aria-label="Acessar Portal de Clientes"
-                className="bg-libra-navy text-white border-2 border-white hover:bg-libra-navy/90"
+                className="bg-transparent text-libra-navy border-2 border-libra-navy hover:bg-libra-navy hover:text-white transition-colors"
               >
                 Portal de Clientes
               </Button>

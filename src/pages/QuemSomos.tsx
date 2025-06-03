@@ -73,7 +73,7 @@ const QuemSomos = () => {
               </div>
               <div className="relative">
                 <ImageOptimizer
-                  src="/lovable-uploads/quem-somos-historia.jpg"
+                  src="/images/media/quem-somos-historia.jpg"
                   alt="História da Libra Crédito"
                   className="rounded-lg shadow-xl"
                   aspectRatio={16/9}
@@ -84,7 +84,7 @@ const QuemSomos = () => {
         </section>
 
         {/* Nossos Valores */}
-        <section className="page-section bg-libra-light">
+        <section className="page-section bg-gray-50">
           <div className="container mx-auto">
             <h2 className="page-section-title">Nossos Valores</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
