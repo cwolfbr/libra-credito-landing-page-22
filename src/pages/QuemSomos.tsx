@@ -3,6 +3,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ImageOptimizer from '@/components/ImageOptimizer';
 import { Users, Target, Award, Shield, TrendingUp } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const QuemSomos = () => {
   useEffect(() => {
@@ -45,36 +46,53 @@ const QuemSomos = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="pt-32">
+      <main className="pt-20 md:pt-32">
         {/* Hero Section */}
-        <section className="page-section">
-          <div className="container mx-auto">
-            <h1 className="page-title">
+        <section className="py-4 md:py-12">
+          <div className="container mx-auto px-4">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-libra-navy text-center mb-2 md:mb-4">
               Quem Somos
             </h1>
-            <p className="page-subtitle">
+            <p className="text-base md:text-xl text-gray-600 max-w-4xl mx-auto text-center">
               A Libra Crédito é uma fintech que nasceu para criar oportunidades de crédito justo, sustentável e equilibrado.
             </p>
           </div>
         </section>
 
+        {/* Imagem Institucional */}
+        <section className="py-4 md:py-12">
+          <div className="container mx-auto px-4">
+            <div className="relative w-full max-w-3xl mx-auto">
+              <ImageOptimizer
+                src="/images/media/quemsomos.png"
+                alt="Libra Crédito - Quem Somos"
+                className="rounded-xl shadow-lg w-full"
+                aspectRatio={16/9}
+              />
+            </div>
+          </div>
+        </section>
+
         {/* Nossa História */}
-        <section className="page-section">
-          <div className="container mx-auto">
-            <h2 className="page-section-title">Nossa História</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-              <div>
-                <p className="text-lg text-gray-600 mb-6">
-                  Nascemos da visão de transformar o mercado de crédito no Brasil, tornando-o mais acessível e justo para todos.
+        <section className="py-4 md:py-12">
+          <div className="container mx-auto px-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-libra-navy text-center mb-4 md:mb-8">Nossa História</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 items-center">
+              <div className="space-y-4">
+                <p className="text-base md:text-lg text-gray-600">
+                  Somos do <a href="https://www.construtorastefani.com.br/" target="_blank" rel="noopener noreferrer" className="text-libra-blue hover:text-libra-navy transition-colors">Grupo Construtora Stéfani</a> e agregamos em nossos serviços todo o know-how, experiência e solidez adquiridos ao longo de mais de 40 anos de história no mercado imobiliário.
                 </p>
-                <p className="text-lg text-gray-600">
-                  Com anos de experiência no mercado imobiliário através do Grupo Construtora Stéfani, identificamos a necessidade de oferecer soluções de crédito mais flexíveis e transparentes.
+                <p className="text-base md:text-lg text-gray-600">
+                  Clique aqui e entenda as <Link to="/vantagens" className="text-libra-blue hover:text-libra-navy transition-colors">vantagens</Link> que oferecemos para equiLIBRAr a sua vida financeira.
+                </p>
+                <p className="text-base md:text-lg text-gray-600">
+                  Faça uma <Link to="/simulacao" className="text-libra-blue hover:text-libra-navy transition-colors">simulação</Link> e fale com um consultor!
                 </p>
               </div>
               <div className="relative">
                 <ImageOptimizer
-                  src="/images/media/quem-somos-historia.jpg"
-                  alt="História da Libra Crédito"
+                  src="/images/media/timelibra.png"
+                  alt="Time Libra Crédito"
                   className="rounded-lg shadow-xl"
                   aspectRatio={16/9}
                 />
@@ -84,19 +102,19 @@ const QuemSomos = () => {
         </section>
 
         {/* Nossos Valores */}
-        <section className="page-section bg-gray-50">
-          <div className="container mx-auto">
-            <h2 className="page-section-title">Nossos Valores</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <section className="py-4 md:py-12 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-libra-navy text-center mb-4 md:mb-8">Nossos Valores</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
               {valores.map((valor, index) => {
                 const Icon = valor.icon;
                 return (
-                  <div key={index} className="bg-white p-6 rounded-lg shadow-lg">
-                    <div className="flex items-center mb-4">
-                      <Icon className="w-8 h-8 text-libra-blue mr-3" />
-                      <h3 className="text-xl font-bold text-libra-navy">{valor.title}</h3>
+                  <div key={index} className="bg-white p-4 md:p-6 rounded-lg shadow-lg">
+                    <div className="flex items-center mb-3 md:mb-4">
+                      <Icon className="w-6 h-6 md:w-8 md:h-8 text-libra-blue mr-2 md:mr-3" />
+                      <h3 className="text-lg md:text-xl font-bold text-libra-navy">{valor.title}</h3>
                     </div>
-                    <p className="text-gray-600">{valor.description}</p>
+                    <p className="text-sm md:text-base text-gray-600">{valor.description}</p>
                   </div>
                 );
               })}
@@ -105,11 +123,11 @@ const QuemSomos = () => {
         </section>
 
         {/* Nossa Missão */}
-        <section className="page-section">
-          <div className="container mx-auto">
-            <h2 className="page-section-title">Nossa Missão</h2>
+        <section className="py-4 md:py-12">
+          <div className="container mx-auto px-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-libra-navy text-center mb-4 md:mb-8">Nossa Missão</h2>
             <div className="max-w-3xl mx-auto text-center">
-              <p className="text-xl text-gray-600 leading-relaxed">
+              <p className="text-base md:text-xl text-gray-600 leading-relaxed">
                 Democratizar o acesso ao crédito no Brasil, oferecendo soluções financeiras justas e transparentes que ajudem nossos clientes a realizarem seus sonhos e alcançarem a liberdade financeira.
               </p>
             </div>
