@@ -9,7 +9,6 @@ const Hero = lazy(() => import('@/components/Hero'));
 const Benefits = lazy(() => import('@/components/Benefits'));
 const Testimonials = lazy(() => import('@/components/Testimonials'));
 const MediaSection = lazy(() => import('@/components/MediaSection'));
-const ContactSection = lazy(() => import('@/components/ContactSection'));
 const Footer = lazy(() => import('@/components/Footer'));
 const FAQ = lazy(() => import('@/components/FAQ'));
 const BlogSection = lazy(() => import('@/components/BlogSection'));
@@ -25,23 +24,12 @@ const Index: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // SEO Optimizations
-    document.title = "Libra Crédito | Empréstimo com Garantia de Imóvel | Home Equity";
+    document.title = "Libra Crédito | Empréstimo com Garantia de Imóvel";
     
-    // Meta tags para SEO
-    const updateMetaTag = (name: string, content: string) => {
-      let tag = document.querySelector(`meta[name="${name}"]`);
-      if (!tag) {
-        tag = document.createElement('meta');
-        tag.setAttribute('name', name);
-        document.head.appendChild(tag);
-      }
-      tag.setAttribute('content', content);
-    };
-
-    updateMetaTag('description', 'Crédito com garantia de imóvel com as melhores taxas do mercado. Home Equity e empréstimo com garantia para consolidação de dívidas, capital de giro e mais.');
-    updateMetaTag('keywords', 'home equity, empréstimo com garantia, crédito imobiliário, financiamento, libra crédito');
-    updateMetaTag('robots', 'index, follow');
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Empréstimo com garantia de imóvel com as melhores taxas do mercado. Simule agora e descubra quanto você pode obter com seu imóvel como garantia.');
+    }
   }, []);
 
   const goToQuemSomos = () => {
@@ -80,9 +68,8 @@ const Index: React.FC = () => {
           <div className="container mx-auto text-center">
             <Button 
               onClick={goToQuemSomos}
-              variant="goldContrast"
+              className="min-h-[48px] min-w-[200px] bg-libra-navy text-white hover:bg-libra-navy/90"
               size="xl"
-              className="min-h-[48px] min-w-[200px]"
               aria-label="Clique para conhecer mais sobre a Libra Crédito"
             >
               Conheça a Libra
@@ -92,10 +79,6 @@ const Index: React.FC = () => {
         
         <Suspense fallback={<SectionLoader />}>
           <BlogSection />
-        </Suspense>
-        
-        <Suspense fallback={<SectionLoader />}>
-          <ContactSection />
         </Suspense>
       </main>
       

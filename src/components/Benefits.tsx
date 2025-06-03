@@ -40,10 +40,13 @@ const Benefits: React.FC = () => {
   const isMobile = useIsMobile();
   
   return (
-    <section id="benefits" className={`${isMobile ? 'pt-2 pb-6' : 'pt-3 pb-8'} bg-libra-light scroll-mt-[88px]`}>
+    <section id="benefits" className={`${isMobile ? 'pt-16 pb-12' : 'pt-24 pb-16'} bg-libra-light scroll-mt-[88px]`}>
       <div className="container mx-auto px-4">
-        <div className="text-center mb-5">
-          <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy mb-3`}>
+        <div className="text-center mb-12">
+          <p className={`${isMobile ? 'text-sm' : 'text-lg'} text-libra-blue font-semibold uppercase tracking-wider mb-6`}>
+            Soluções para cada necessidade
+          </p>
+          <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy mb-4`}>
             Como usar o Crédito com Garantia de Imóvel
           </h2>
           <p className={`${isMobile ? 'text-base' : 'text-lg'} text-gray-600 max-w-3xl mx-auto`}>
@@ -51,7 +54,7 @@ const Benefits: React.FC = () => {
           </p>
         </div>
         
-        <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-3 gap-5'} animate-slide-up max-w-6xl mx-auto mb-5`}>
+        <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-3 gap-5'} animate-slide-up max-w-6xl mx-auto mb-8`}>
           {usageOptions.map((option, index) => (
             <UsageCard 
               key={index} 
@@ -67,7 +70,7 @@ const Benefits: React.FC = () => {
           <Link to="/vantagens">
             <Button 
               size={isMobile ? "default" : "lg"} 
-              className="bg-libra-blue hover:bg-libra-blue/90 text-white px-8 py-3"
+              className="bg-libra-navy hover:bg-libra-navy/90 text-white px-8 py-3"
             >
               Conheça Mais Vantagens
             </Button>

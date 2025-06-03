@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -46,9 +45,8 @@ const BlogSection: React.FC = () => {
           
           <Button 
             onClick={handleGoToBlog}
-            variant="goldContrast"
             size="lg"
-            className="mb-12"
+            className="mb-12 bg-libra-navy hover:bg-libra-navy/90 text-white"
           >
             Ver Todos os Posts
             <ArrowRight className="ml-2 h-4 w-4" />
@@ -74,7 +72,7 @@ const BlogSection: React.FC = () => {
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="p-0 h-auto text-libra-blue hover:text-libra-blue/80"
+                  className="p-0 h-auto text-libra-navy hover:text-libra-navy/80"
                   onClick={handleGoToBlog}
                 >
                   Ler mais

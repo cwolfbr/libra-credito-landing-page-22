@@ -1,8 +1,6 @@
-
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { MessageSquare, User } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import OptimizedYouTube from './OptimizedYouTube';
 
 const testimonials = [
@@ -23,19 +21,44 @@ const testimonials = [
   }
 ];
 
-const TestimonialCard = memo(({ name, age, text, isMobile }: {name: string, age: string, text: string, isMobile: boolean}) => {
+const TestimonialCard = memo(({ name, age, text, isMobile, isActive, currentIndex, totalTestimonials, onNavigate }: {
+  name: string, 
+  age: string, 
+  text: string, 
+  isMobile: boolean, 
+  isActive: boolean,
+  currentIndex: number,
+  totalTestimonials: number,
+  onNavigate: (index: number) => void
+}) => {
   return (
-    <div className={`bg-white p-4 ${!isMobile && 'md:p-6'} rounded-lg shadow-md border border-gray-100 h-full`}>
-      <div className="flex items-start gap-3 mb-3">
-        <div className="bg-gray-100 rounded-full p-2">
-          <User className="w-4 h-4 text-libra-navy" />
+    <div className={`absolute inset-0 transition-opacity duration-500 ${isActive ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+      <div className="bg-white p-4 md:p-6 rounded-lg shadow-md border border-gray-100 h-full flex flex-col">
+        <div className="flex items-start gap-3 mb-2">
+          <div className="bg-gray-100 rounded-full p-2">
+            <User className="w-4 h-4 text-libra-navy" />
+          </div>
+          <div>
+            <h4 className="font-bold text-libra-navy">{name}</h4>
+            <p className="text-sm text-gray-500">{age}</p>
+          </div>
         </div>
-        <div>
-          <h4 className="font-bold text-libra-navy">{name}</h4>
-          <p className="text-sm text-gray-500">{age}</p>
+        <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 italic flex-grow mb-2`}>{text}</p>
+        
+        {/* Navegação dentro do card */}
+        <div className="flex justify-center gap-1 pt-2 border-t border-gray-100">
+          {Array.from({ length: totalTestimonials }).map((_, index) => (
+            <button
+              key={index}
+              className={`w-1 h-1 rounded-full transition-all duration-300 ${
+                currentIndex === index ? 'bg-libra-navy' : 'bg-gray-200'
+              }`}
+              onClick={() => onNavigate(index)}
+              aria-label={`Ver depoimento ${index + 1}`}
+            />
+          ))}
         </div>
       </div>
-      <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 italic`}>{text}</p>
     </div>
   );
 });
@@ -44,6 +67,15 @@ TestimonialCard.displayName = 'TestimonialCard';
 
 const Testimonials: React.FC = () => {
   const isMobile = useIsMobile();
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+    }, 5000); // Troca a cada 5 segundos
+    
+    return () => clearInterval(interval);
+  }, []);
   
   return (
     <section className={`${isMobile ? 'py-8' : 'py-16 md:py-24'} bg-white`}>
@@ -57,8 +89,8 @@ const Testimonials: React.FC = () => {
           </p>
         </div>
         
-        <div className={`grid grid-cols-1 ${!isMobile && 'lg:grid-cols-2'} gap-6 lg:gap-8 items-center max-w-6xl mx-auto`}>
-          <div className={`w-full max-w-xl mx-auto ${isMobile ? 'mb-4' : ''}`}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center max-w-6xl mx-auto">
+          <div className="w-full max-w-xl mx-auto">
             <div className="aspect-video rounded-lg overflow-hidden shadow-xl bg-black">
               <OptimizedYouTube 
                 videoId="ETQRA4cvADk" 
@@ -69,46 +101,29 @@ const Testimonials: React.FC = () => {
             </div>
           </div>
           
-          <div>
-            <div className="flex items-center gap-2 mb-4 md:mb-6">
+          <div className="relative">
+            <div className="flex items-center gap-2 mb-4">
               <MessageSquare className="w-5 h-5 md:w-6 md:h-6 text-libra-blue" />
               <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-libra-navy`}>
                 Depoimentos de Clientes
               </h3>
             </div>
             
-            {isMobile ? (
-              <div className="relative">
-                <Carousel className="w-full max-w-xs mx-auto">
-                  <CarouselContent>
-                    {testimonials.map((testimonial, index) => (
-                      <CarouselItem key={index}>
-                        <TestimonialCard 
-                          name={testimonial.name}
-                          age={testimonial.age}
-                          text={testimonial.text}
-                          isMobile={isMobile}
-                        />
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                  <CarouselPrevious className="-left-12 bg-white/80" />
-                  <CarouselNext className="-right-12 bg-white/80" />
-                </Carousel>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {testimonials.map((testimonial, index) => (
-                  <TestimonialCard 
-                    key={index}
-                    name={testimonial.name}
-                    age={testimonial.age}
-                    text={testimonial.text}
-                    isMobile={isMobile}
-                  />
-                ))}
-              </div>
-            )}
+            <div className="relative h-[300px] md:h-[260px]">
+              {testimonials.map((testimonial, index) => (
+                <TestimonialCard 
+                  key={index}
+                  name={testimonial.name}
+                  age={testimonial.age}
+                  text={testimonial.text}
+                  isMobile={isMobile}
+                  isActive={currentTestimonial === index}
+                  currentIndex={currentTestimonial}
+                  totalTestimonials={testimonials.length}
+                  onNavigate={setCurrentTestimonial}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>

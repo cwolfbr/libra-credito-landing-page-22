@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Info, Menu, X } from 'lucide-react';
@@ -56,8 +55,7 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ onPortalClientes, onSimulat
 
         <div className="flex items-center gap-2">
           <Button 
-            className="min-h-[40px] px-3 text-xs"
-            variant="goldContrast"
+            className="min-h-[40px] px-3 text-xs bg-libra-navy text-white hover:bg-libra-navy/90"
             size="sm"
             onClick={onSimulateNow}
             aria-label="Simular crédito agora"
@@ -96,7 +94,7 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ onPortalClientes, onSimulat
               size="sm"
               onClick={onPortalClientes}
               aria-label="Acessar Portal de Clientes"
-              className="self-start"
+              className="self-start bg-libra-navy text-white border-2 border-white hover:bg-libra-navy/90"
             >
               Portal de Clientes
             </Button>
