@@ -1,35 +1,29 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
-import './index.css';
 
-// Preconnect com domínios críticos
-const preconnectDomains = [
-  'https://www.youtube-nocookie.com',
-  'https://i.ytimg.com'
-];
+import { createRoot } from 'react-dom/client'
+import App from './App.tsx'
+import './index.css'
 
-preconnectDomains.forEach(domain => {
-  const link = document.createElement('link');
-  link.rel = 'preconnect';
-  link.href = domain;
-  link.crossOrigin = 'anonymous';
-  document.head.appendChild(link);
-});
+// Função para verificar necessidades de acessibilidade
+const setupAccessibility = () => {
+  // Adicionar Skip Link para navegação por teclado
+  const skipLink = document.createElement('a');
+  skipLink.href = '#main-content';
+  skipLink.className = 'sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-libra-navy focus:rounded';
+  skipLink.textContent = 'Pular para o conteúdo principal';
+  document.body.insertBefore(skipLink, document.body.firstChild);
+  
+  // Definir idioma da página
+  document.documentElement.lang = 'pt-BR';
+};
 
-// Preload da thumbnail principal
-const preloadLink = document.createElement('link');
-preloadLink.rel = 'preload';
-preloadLink.as = 'image';
-preloadLink.href = 'https://i.ytimg.com/vi/E9lwL6R2l1s/hqdefault.jpg';
-document.head.appendChild(preloadLink);
+// Renderização rápida
+const renderApp = () => {
+  setupAccessibility();
+  
+  const root = document.getElementById("root");
+  if (root) {
+    createRoot(root).render(<App />);
+  }
+};
 
-// Renderização
-const root = document.getElementById('root');
-if (root) {
-  ReactDOM.createRoot(root).render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  );
-}
+renderApp();

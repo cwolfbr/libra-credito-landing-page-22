@@ -10,8 +10,8 @@ import ScrollToTop from '@/components/ScrollToTop';
 // Lazy load components with prefetch
 const Index = lazy(() => {
   // Prefetch Index dependencies while loading
-  import("./components/Hero").catch(() => {});
   import("./components/Benefits").catch(() => {});
+  import("./components/Testimonials").catch(() => {});
   return import("./pages/Index");
 });
 const Vantagens = lazy(() => import("./pages/Vantagens"));

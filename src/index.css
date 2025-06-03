@@ -1,69 +1,3 @@
-/* Estilos críticos para first paint */
-:root {
-  --libra-navy: #003399;
-  --libra-blue: #00ccff;
-  --libra-gold: #D4AF37;
-  --libra-light: #F8F9FA;
-  --libra-silver: #F0F0F0;
-}
-
-/* Reset básico */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* Estilos base críticos */
-body {
-  font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: var(--libra-light);
-  color: #333;
-}
-
-/* Layout crítico */
-#root {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-/* Utilitários críticos */
-.container {
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-@media (min-width: 640px) {
-  .container {
-    max-width: 640px;
-  }
-}
-
-@media (min-width: 768px) {
-  .container {
-    max-width: 768px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .container {
-    max-width: 1024px;
-  }
-}
-
-@media (min-width: 1280px) {
-  .container {
-    max-width: 1280px;
-  }
-}
-
-/* Importação do Tailwind após os estilos críticos */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -288,4 +222,9 @@ body {
 
 .page-section-title {
   @apply text-3xl md:text-4xl font-bold text-libra-navy mb-8 text-center;
+}
+
+/* Container padrão com padding responsivo */
+.container {
+  @apply px-4 md:px-6 lg:px-8;
 }
