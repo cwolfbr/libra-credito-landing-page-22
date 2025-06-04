@@ -84,10 +84,11 @@ const Hero: React.FC = () => {
           {/* Vídeo - com loading=lazy em mobile */}
           <div className="w-full max-w-2xl mx-auto lg:max-w-none">
             <div className="aspect-video rounded-xl overflow-hidden shadow-2xl">
-              <OptimizedYouTube 
+              <OptimizedYouTube
                 videoId="E9lwL6R2l1s"
                 title="Vídeo institucional Libra Crédito"
                 priority={!isMobile}
+                thumbnailSrc="/images/media/video-cgi-libra.jpg"
                 className="w-full h-full"
               />
             </div>
