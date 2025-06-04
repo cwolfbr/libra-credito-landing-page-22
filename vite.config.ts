@@ -29,8 +29,9 @@ export default defineConfig(({ mode }) => ({
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: false,
-        drop_debugger: false,
+        drop_console: true,
+        drop_debugger: true,
+        pure_funcs: ['console.log']
       }
     },
     // Melhora o code splitting
@@ -38,25 +39,12 @@ export default defineConfig(({ mode }) => ({
     // Otimiza o tamanho dos chunks
     rollupOptions: {
       output: {
-        manualChunks: (id) => {
-          // Separa vendors em chunks específicos
-          if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
-              return 'react-vendor';
-            }
-            if (id.includes('@radix-ui') || id.includes('tailwind')) {
-              return 'ui-vendor';
-            }
-            if (id.includes('@tanstack')) {
-              return 'query-vendor';
-            }
-            if (id.includes('lucide-react')) {
-              return 'icons-vendor';
-            }
-            return 'vendor';
-          }
-        },
-      },
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-ui': ['@radix-ui/react-dialog', '@radix-ui/react-select'],
+          'vendor-utils': ['clsx', 'tailwind-merge', 'lucide-react']
+        }
+      }
     },
     // Otimiza o tamanho dos assets
     assetsInlineLimit: 4096,
