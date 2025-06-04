@@ -89,7 +89,7 @@ const Hero: React.FC = () => {
                 title="Vídeo institucional Libra Crédito"
                 priority={true}
                 className="w-full h-full"
-                thumbnailSrc="/images/media/video-cgi-libra.png"
+                thumbnailSrc="/images/media/video-cgi-libra.jpg"
               />
             </div>
           </div>
