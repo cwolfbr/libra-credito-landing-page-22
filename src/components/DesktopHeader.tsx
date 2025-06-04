@@ -73,6 +73,8 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
                   className="h-10 w-auto"
                   aspectRatio={1}
                   priority={true}
+                  width={40}
+                  height={40}
                 />
                 <div className="text-libra-navy">
                   <span className="font-bold text-xl">Libra</span>

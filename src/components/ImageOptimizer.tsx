@@ -54,6 +54,8 @@ interface ImageOptimizerProps {
   className?: string;
   aspectRatio?: number;
   priority?: boolean;
+  width?: number;
+  height?: number;
 }
 
 const ImageOptimizer: React.FC<ImageOptimizerProps> = ({ 
@@ -61,13 +63,22 @@ const ImageOptimizer: React.FC<ImageOptimizerProps> = ({
   alt, 
   className = "", 
   aspectRatio = 16/9,
-  priority = false
+  priority = false,
+  width,
+  height
 }) => {
+  // Calcular dimensões se não fornecidas
+  const calculatedWidth = width || 800;
+  const calculatedHeight = height || Math.round(calculatedWidth / aspectRatio);
+
   const imageElement = (
     <img
       src={src}
       alt={alt}
       loading={priority ? "eager" : "lazy"}
+      fetchPriority={priority ? "high" : "auto"}
+      width={calculatedWidth}
+      height={calculatedHeight}
       className={`object-cover w-full h-full ${className}`}
       decoding="async"
     />

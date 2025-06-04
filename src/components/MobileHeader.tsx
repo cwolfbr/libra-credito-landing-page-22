@@ -71,6 +71,8 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ onPortalClientes, onSimulat
                 className="h-8 w-auto"
                 aspectRatio={1}
                 priority={true}
+                width={32}
+                height={32}
               />
             </Link>
             <div className="flex flex-col">

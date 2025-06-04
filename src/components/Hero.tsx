@@ -87,7 +87,7 @@ const Hero: React.FC = () => {
               <OptimizedYouTube 
                 videoId="E9lwL6R2l1s"
                 title="Vídeo institucional Libra Crédito"
-                priority={!isMobile}
+                priority={true}
                 className="w-full h-full"
               />
             </div>
