@@ -9,12 +9,19 @@
     <!-- Preconnect para recursos críticos -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://img.youtube.com">
+    <link rel="preconnect" href="https://i.ytimg.com">
+    <link rel="dns-prefetch" href="https://www.youtube.com">
     
     <!-- Font crítica -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Preload da logo -->
+    <!-- Preload dos recursos críticos -->
     <link rel="preload" href="/images/logos/libra-logo.png" as="image">
+    <!-- Preload do thumbnail do YouTube (LCP) -->
+    <link rel="preload" href="https://i.ytimg.com/vi/E9lwL6R2l1s/hqdefault.jpg" as="image" fetchpriority="high">
+    <!-- Preload da fonte crítica -->
+    <link rel="preload" href="https://fonts.gstatic.com/s/montserrat/v26/JTUSjIg1_i6t8kCHKm459WRhyyTh89ZNpQ.woff2" as="font" type="font/woff2" crossorigin>
 
     <!-- Open Graph -->
     <meta property="og:title" content="Libra Crédito | Empréstimo com Garantia de Imóvel" />
@@ -27,6 +34,36 @@
     
     <!-- Performance optimization -->
     <meta name="format-detection" content="telephone=no">
+    
+    <!-- Schema.org markup para SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FinancialService",
+      "name": "Libra Crédito",
+      "description": "Empréstimo com garantia de imóvel com as melhores taxas do mercado. Home Equity para consolidação de dívidas, capital de giro e realização de projetos.",
+      "url": "https://libracredito.com.br",
+      "logo": "https://libracredito.com.br/images/logos/libra-logo.png",
+      "telephone": "+55-11-4003-4818",
+      "priceRange": "R$ 100.000 - R$ 5.000.000",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Brasil"
+      },
+      "serviceType": ["Home Equity", "Empréstimo com Garantia de Imóvel", "Crédito Imobiliário"],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "1250",
+        "bestRating": "5"
+      },
+      "sameAs": [
+        "https://www.facebook.com/libracredito",
+        "https://www.instagram.com/libracredito",
+        "https://www.linkedin.com/company/libracredito"
+      ]
+    }
+    </script>
   </head>
 
   <body>

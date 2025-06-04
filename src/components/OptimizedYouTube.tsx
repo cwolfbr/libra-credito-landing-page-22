@@ -58,6 +58,9 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
               alt={`Thumbnail for ${title}`}
               className="absolute inset-0 w-full h-full object-cover"
               loading={priority ? "eager" : "lazy"}
+              fetchPriority={priority ? "high" : "auto"}
+              width="480"
+              height="360"
               decoding="async"
               onError={handleThumbnailError}
             />

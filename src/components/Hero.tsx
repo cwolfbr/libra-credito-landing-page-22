@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ChevronDown } from 'lucide-react';
+import PremiumButton from '@/components/ui/PremiumButton';
+import { ChevronDown, Shield } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import OptimizedYouTube from './OptimizedYouTube';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -41,39 +42,42 @@ const Hero: React.FC = () => {
           <div className="text-white space-y-4 md:space-y-6">
             <div>
               <h1 id="hero-heading" className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
-                Crédito com<br />
-                Garantia de Imóvel
+                Transforme seu Patrimônio<br />
+                em Oportunidades
               </h1>
               <div className="space-y-3 md:space-y-4">
                 <p className="text-lg md:text-xl text-white/90 leading-relaxed font-medium">
-                  A Libra Crédito está a 5 anos auxiliando os clientes à encontrar capital dentro de casa e sem sair de casa!
+                  Crédito inteligente para quem construiu história.
+                  Até R$ 5 milhões com as menores taxas do mercado.
                 </p>
+                <div className="flex items-center gap-3">
+                  <Shield className="w-5 h-5 text-white/80 flex-shrink-0" />
+                  <p className="text-base md:text-lg text-white/90 leading-relaxed">
+                    Regulamentado pelo Banco Central - Segurança e transparência
+                  </p>
+                </div>
                 <p className="text-base md:text-lg text-white/90 leading-relaxed">
-                  Taxas à partir de 1,19% a.m. e até 180 meses de prazo.
-                </p>
-                <p className="text-base md:text-lg text-white/90 leading-relaxed">
-                  Simule agora e veja como a parcela encaixa no orçamento!
+                  Taxas a partir de 1,19% a.m. • Até 180 meses • 100% online
                 </p>
               </div>
             </div>
 
             {/* Botões */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <Button 
+              <PremiumButton 
                 onClick={scrollToSimulator} 
-                className="h-12 md:h-14 text-base font-bold bg-[#00D1FF] text-white hover:bg-[#00D1FF]/90 w-full sm:w-auto" 
-                size="lg"
+                variant="primary"
+                className="w-full sm:w-auto"
               >
                 Simular Agora
-              </Button>
-              <Button 
+              </PremiumButton>
+              <PremiumButton 
                 onClick={goToVantagens} 
-                variant="outline" 
-                className="h-12 md:h-14 text-base font-medium bg-transparent text-white border-2 border-white hover:bg-white/10 w-full sm:w-auto" 
-                size="lg"
+                variant="secondary"
+                className="w-full sm:w-auto"
               >
                 Conheça as Vantagens
-              </Button>
+              </PremiumButton>
             </div>
           </div>
 
