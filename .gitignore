@@ -26,6 +26,7 @@ dist-ssr
 # Backup files
 *.backup
 0.backup
+*.old
 
 # Bun
 bun.lockb
