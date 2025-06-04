@@ -25,6 +25,9 @@ const InstallmentsField: React.FC<InstallmentsFieldProps> = ({ value, onChange }
             value={value}
             onChange={(e) => onChange(Number(e.target.value))}
             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+            style={{
+              "--value": ((value - 36) / (180 - 36)) * 100 + "%",
+            } as React.CSSProperties}
           />
           <div className="flex justify-between text-xs text-gray-500 mt-1">
             <span>36</span>
