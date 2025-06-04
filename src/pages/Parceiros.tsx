@@ -1,223 +1,187 @@
-
 import React, { useEffect } from 'react';
+import { HandshakeIcon, LockKeyhole } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { Handshake, Shield, Award, Users } from 'lucide-react';
 
 const Parceiros = () => {
   useEffect(() => {
-    document.title = "Parceiros | Libra Crédito | Rede de Instituições Financeiras";
+    document.title = "Seja Parceiro | Libra Crédito";
     
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Conheça nossa rede de parceiros: instituições financeiras autorizadas pelo Banco Central que garantem segurança e as melhores condições.');
+      metaDescription.setAttribute('content', 'Torne-se um parceiro da Libra Crédito e cresça conosco. Acesse também a área exclusiva para parceiros.');
     }
   }, []);
 
-  const parceiros = [
-    {
-      nome: "Banco Pine",
-      descricao: "Especialista em crédito imobiliário com soluções inovadoras para pessoas físicas e jurídicas.",
-      categoria: "Banco de Investimento"
-    },
-    {
-      nome: "Creditas",
-      descricao: "Fintech líder em empréstimos com garantia de veículos e imóveis no Brasil.",
-      categoria: "Fintech"
-    },
-    {
-      nome: "Banco BMG",
-      descricao: "Banco com ampla experiência em crédito pessoal e soluções financeiras diversificadas.",
-      categoria: "Banco Múltiplo"
-    },
-    {
-      nome: "Banco BV",
-      descricao: "Instituição focada em soluções de crédito e financiamento para diversos segmentos.",
-      categoria: "Banco Múltiplo"
-    },
-    {
-      nome: "Itaú Unibanco",
-      descricao: "Um dos maiores bancos do Brasil, oferecendo soluções completas em crédito imobiliário.",
-      categoria: "Banco Múltiplo"
-    },
-    {
-      nome: "Banco Safra",
-      descricao: "Banco tradicional com forte atuação em crédito especializado e soluções personalizadas.",
-      categoria: "Banco Múltiplo"
-    }
-  ];
-
-  const beneficios = [
-    {
-      icon: Shield,
-      titulo: "Segurança Garantida",
-      descricao: "Todos os nossos parceiros são instituições financeiras autorizadas e regulamentadas pelo Banco Central do Brasil."
-    },
-    {
-      icon: Award,
-      titulo: "Melhores Condições",
-      descricao: "Nossa rede de parceiros permite oferecermos as melhores taxas e condições do mercado para nossos clientes."
-    },
-    {
-      icon: Users,
-      titulo: "Diversidade de Opções",
-      descricao: "Com múltiplos parceiros, conseguimos atender diferentes perfis e necessidades de crédito."
-    },
-    {
-      icon: Handshake,
-      titulo: "Relacionamento de Confiança",
-      descricao: "Mantemos relacionamentos sólidos e de longa data com instituições renomadas do mercado financeiro."
-    }
-  ];
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Implementar lógica de envio do formulário
+  };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-[#F8F9FF]">
       <Header />
-      <main className="pt-24">
-        {/* Hero Section */}
-        <section className="py-16 md:py-24 bg-gradient-to-b from-libra-light to-white">
-          <div className="container mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-libra-navy mb-6">
-              Nossos Parceiros
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Trabalhamos com uma rede selecionada de instituições financeiras autorizadas pelo Banco Central, garantindo segurança e as melhores condições para nossos clientes.
-            </p>
-          </div>
-        </section>
+      
+      <main className="flex-1 py-16 md:py-24">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+            {/* Formulário para Novos Parceiros */}
+            <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
+              <h2 className="text-2xl md:text-3xl font-bold text-libra-navy mb-8">Seja um parceiro</h2>
 
-        {/* Benefícios da Parceria */}
-        <section className="py-16 md:py-24">
-          <div className="container mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-libra-navy mb-12 text-center">
-              Por que Trabalhamos com Parceiros
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {beneficios.map((beneficio, index) => {
-                const IconComponent = beneficio.icon;
-                return (
-                  <div key={index} className="text-center">
-                    <div className="flex items-center justify-center w-20 h-20 bg-libra-blue/10 rounded-full mb-6 mx-auto">
-                      <IconComponent className="w-10 h-10 text-libra-blue" />
-                    </div>
-                    <h3 className="text-xl font-bold text-libra-navy mb-4">{beneficio.titulo}</h3>
-                    <p className="text-gray-600">{beneficio.descricao}</p>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Input
+                      type="text"
+                      placeholder="Nome"
+                      required
+                    />
                   </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* Lista de Parceiros */}
-        <section className="py-16 md:py-24 bg-libra-light">
-          <div className="container mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-libra-navy mb-12 text-center">
-              Instituições Parceiras
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {parceiros.map((parceiro, index) => (
-                <div key={index} className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
-                  <div className="mb-4">
-                    <span className="bg-libra-blue/10 text-libra-blue px-3 py-1 rounded-full text-sm font-medium">
-                      {parceiro.categoria}
-                    </span>
+                  <div>
+                    <Input
+                      type="email"
+                      placeholder="E-mail"
+                      required
+                    />
                   </div>
-                  <h3 className="text-2xl font-bold text-libra-navy mb-4">{parceiro.nome}</h3>
-                  <p className="text-gray-600">{parceiro.descricao}</p>
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
 
-        {/* Como Funciona */}
-        <section className="py-16 md:py-24">
-          <div className="container mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-libra-navy mb-12 text-center">
-              Como Funciona a Parceria
-            </h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <div className="space-y-8">
-                  <div className="flex items-start gap-4">
-                    <div className="flex items-center justify-center w-8 h-8 bg-libra-blue text-white rounded-full font-bold text-sm">
-                      1
+                    <Input
+                      type="tel"
+                      placeholder="Telefone"
+                      required
+                    />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold text-libra-navy mb-2">Análise do Perfil</h3>
-                      <p className="text-gray-600">Analisamos seu perfil e necessidades para identificar o parceiro ideal para sua situação.</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <div className="flex items-center justify-center w-8 h-8 bg-libra-blue text-white rounded-full font-bold text-sm">
-                      2
+                    <Input
+                      type="text"
+                      placeholder="Cidade"
+                      required
+                    />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold text-libra-navy mb-2">Seleção do Parceiro</h3>
-                      <p className="text-gray-600">Direcionamos sua solicitação para a instituição financeira que oferece as melhores condições.</p>
-                    </div>
+                    <Input
+                      type="text"
+                      placeholder="CNPJ"
+                      required
+                    />
                   </div>
-                  <div className="flex items-start gap-4">
-                    <div className="flex items-center justify-center w-8 h-8 bg-libra-blue text-white rounded-full font-bold text-sm">
-                      3
                     </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-libra-navy mb-2">Acompanhamento</h3>
-                      <p className="text-gray-600">Acompanhamos todo o processo até a liberação do crédito, garantindo transparência total.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-libra-navy p-8 rounded-xl text-white">
-                <h3 className="text-2xl font-bold mb-6">Vantagens da Nossa Rede</h3>
-                <ul className="space-y-4">
-                  <li className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-libra-gold rounded-full"></div>
-                    <span>Taxas competitivas negociadas especialmente</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-libra-gold rounded-full"></div>
-                    <span>Processo de aprovação otimizado</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-libra-gold rounded-full"></div>
-                    <span>Suporte especializado da Libra Crédito</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-libra-gold rounded-full"></div>
-                    <span>Segurança jurídica garantida</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-libra-gold rounded-full"></div>
-                    <span>Transparência em todas as etapas</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
 
-        {/* CTA */}
-        <section className="py-16 md:py-24 bg-gradient-to-r from-libra-blue to-libra-navy">
-          <div className="container mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-              Quer Fazer Parte da Nossa Rede?
-            </h2>
-            <p className="text-libra-silver mb-8 max-w-3xl mx-auto">
-              Se sua instituição financeira tem interesse em fazer parte da nossa rede de parceiros, entre em contato conosco para conhecer nossas condições de parceria.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-libra-gold text-black px-8 py-4 rounded-lg font-semibold hover:bg-libra-gold/90 transition-colors">
-                Seja um Parceiro
-              </button>
-              <button className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-libra-navy transition-colors">
-                Fale Conosco
-              </button>
+                    <div>
+                  <p className="text-gray-700 mb-2">Trabalha a quanto tempo com Home Equity (empréstimo com garantia de imóvel)?</p>
+                  <Select>
+                    <SelectTrigger>
+                      <SelectValue placeholder="selecione" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="menos-1">Menos de 1 ano</SelectItem>
+                      <SelectItem value="1-2">1 a 2 anos</SelectItem>
+                      <SelectItem value="2-5">2 a 5 anos</SelectItem>
+                      <SelectItem value="mais-5">Mais de 5 anos</SelectItem>
+                    </SelectContent>
+                  </Select>
+                    </div>
+
+                <div>
+                  <p className="text-gray-700 mb-2">Qual perfil de cliente?</p>
+                  <Select>
+                    <SelectTrigger>
+                      <SelectValue placeholder="selecione" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="pf">Pessoa Física</SelectItem>
+                      <SelectItem value="pj">Pessoa Jurídica</SelectItem>
+                      <SelectItem value="ambos">Ambos</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  </div>
+
+                <div>
+                  <p className="text-gray-700 mb-2">Ramo de atuação?</p>
+                  <Select>
+                    <SelectTrigger>
+                      <SelectValue placeholder="selecione" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="correspondente">Correspondente Bancário</SelectItem>
+                      <SelectItem value="corretor">Corretor de Imóveis</SelectItem>
+                      <SelectItem value="consultor">Consultor Financeiro</SelectItem>
+                      <SelectItem value="outro">Outro</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <p className="text-gray-700 mb-2">Como chegou até nós?</p>
+                  <Select>
+                    <SelectTrigger>
+                      <SelectValue placeholder="selecione" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="google">Google</SelectItem>
+                      <SelectItem value="redes-sociais">Redes Sociais</SelectItem>
+                      <SelectItem value="indicacao">Indicação</SelectItem>
+                      <SelectItem value="outro">Outro</SelectItem>
+                    </SelectContent>
+                  </Select>
+              </div>
+
+                <div>
+                  <Textarea
+                    placeholder="Mensagem"
+                    className="min-h-[120px]"
+                  />
+              </div>
+
+                <Button 
+                  type="submit"
+                  className="w-full bg-libra-navy hover:bg-libra-navy/90 text-white"
+                >
+                  Enviar Solicitação
+                </Button>
+              </form>
+            </div>
+
+            {/* Área de Acesso para Parceiros */}
+            <div className="lg:flex lg:items-center">
+              <div className="bg-libra-navy rounded-xl p-6 md:p-8 text-white text-center w-full">
+                <div className="flex justify-center mb-6">
+                  <LockKeyhole className="w-16 h-16 text-libra-blue" />
+          </div>
+                
+                <h2 className="text-2xl md:text-3xl font-bold mb-4">Área do Parceiro</h2>
+                
+                <p className="text-libra-silver mb-8">
+                  Já é nosso parceiro? Acesse a área exclusiva para ter acesso a materiais, 
+                  relatórios e ferramentas especiais.
+                </p>
+
+                <Button 
+                  onClick={() => window.location.href = "https://portal.libracredito.com.br"}
+                  className="w-full bg-libra-blue hover:bg-libra-blue/90 text-white"
+                >
+                  Acessar Portal do Parceiro
+                </Button>
+              </div>
             </div>
           </div>
-        </section>
+        </div>
       </main>
+
       <Footer />
     </div>
   );

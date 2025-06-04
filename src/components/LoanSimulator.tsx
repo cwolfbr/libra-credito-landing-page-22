@@ -1,3 +1,43 @@
+/**
+ * Componente de simulação de empréstimo com garantia de imóvel
+ * 
+ * @component LoanSimulator
+ * @description Implementa o formulário principal de simulação de crédito com garantia de imóvel,
+ * permitindo ao usuário calcular valores de parcelas e condições do empréstimo.
+ * 
+ * @features
+ * - Cálculo de empréstimo com base no valor do imóvel
+ * - Validação de CEP e tipo de imóvel
+ * - Cálculo automático de renda necessária
+ * - Suporte a diferentes finalidades de empréstimo
+ * - Integração com WhatsApp para contato
+ * 
+ * @businessRules
+ * - Valor mínimo do empréstimo: R$ 100.000
+ * - Valor máximo do empréstimo: R$ 5.000.000
+ * - Taxa de juros: 1.09% a.m.
+ * - Prazo máximo: 180 meses (15 anos)
+ * - Comprometimento máximo de renda: 30%
+ * - Renda mínima necessária: R$ 7.000
+ * - Valor do imóvel: 2x a 3x o valor do empréstimo
+ * 
+ * @accessibility
+ * - Labels e aria-labels em todos os campos
+ * - Tooltips informativos
+ * - Feedback visual de estados
+ * - Mensagens de erro claras
+ * 
+ * @performance
+ * - Cálculos otimizados
+ * - Formatação de moeda eficiente
+ * - Validações em tempo real
+ * 
+ * @example
+ * ```tsx
+ * <LoanSimulator />
+ * ```
+ */
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

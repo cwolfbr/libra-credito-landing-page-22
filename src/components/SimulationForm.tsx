@@ -1,3 +1,45 @@
+/**
+ * Formulário avançado de simulação de crédito
+ * 
+ * @component SimulationForm
+ * @description Implementa o formulário completo de simulação de crédito com garantia de imóvel,
+ * incluindo validações avançadas, cálculos precisos e integração com API.
+ * 
+ * @features
+ * - Integração com API de simulação
+ * - Suporte a diferentes sistemas de amortização (SAC/PRICE)
+ * - Validações em tempo real
+ * - Feedback visual de erros
+ * - Loading states
+ * - Formulário de contato pós-simulação
+ * 
+ * @businessRules
+ * - Validação de valores mínimos e máximos
+ * - Verificação de proporção empréstimo/garantia
+ * - Cálculo de parcelas com juros + IPCA
+ * - Tratamento de casos especiais (carência, etc)
+ * 
+ * @errorHandling
+ * - Validação de entrada de dados
+ * - Tratamento de erros da API
+ * - Feedback visual de erros
+ * - Logs de depuração
+ * 
+ * @integration
+ * - Integração com serviço simulationApi
+ * - Formatação de dados para API
+ * - Parsing de resposta
+ * 
+ * @example
+ * ```tsx
+ * <SimulationForm />
+ * ```
+ * 
+ * @see {@link simulateCredit} para detalhes da integração com API
+ * @see {@link validateForm} para regras de validação
+ * @see {@link formatBRL} para formatação de valores
+ */
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';

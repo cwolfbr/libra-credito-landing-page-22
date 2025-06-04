@@ -1,11 +1,14 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ChevronDown } from 'lucide-react';
-import OptimizedYouTube from './OptimizedYouTube';
+import PremiumButton from '@/components/ui/PremiumButton';
+import { ChevronDown, Shield } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import OptimizedYouTube from './OptimizedYouTube';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Hero: React.FC = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   const scrollToSimulator = () => {
     navigate('/simulacao');
@@ -18,8 +21,9 @@ const Hero: React.FC = () => {
   const scrollToBenefits = () => {
     const benefitsSection = document.getElementById('benefits');
     if (benefitsSection) {
-      // Altura total do header = barra de info (24px) + header principal (48px) + margem de segurança (16px)
-      const headerOffset = 88;
+      // Altura total do header: faixa superior (py-3 = 24px) + header principal (h-20 = 80px) = 104px
+      // Adicionando um pequeno padding extra (16px) para garantir espaço visual
+      const headerOffset = 120;
       const elementPosition = benefitsSection.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
       
@@ -31,58 +35,74 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <section className="pt-32 md:pt-28 pb-8 bg-hero-pattern bg-cover bg-center relative" aria-labelledby="hero-heading">
-      <div className="absolute inset-0 bg-libra-navy/70"></div>
-      <div className="container mx-auto relative z-10 px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          <div className="text-white animate-fade-in">
-            <h1 id="hero-heading" className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
-              Crédito com Garantia de Imóvel
-            </h1>
-            <p className="text-lg md:text-xl mb-6 text-white leading-relaxed">
-              Taxas a partir de 1,19% ao mês, as melhores condições do mercado para você realizar seus projetos.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button 
+    <section className="min-h-[100vh] pt-20 md:pt-24 pb-4 bg-gradient-to-br from-[#003399] via-[#0066cc] to-[#00ccff] relative flex flex-col justify-center" aria-labelledby="hero-heading">
+      <div className="container mx-auto px-4 relative z-10 flex-grow flex flex-col justify-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center">
+          {/* Lado Esquerdo */}
+          <div className="text-white space-y-4 md:space-y-6">
+            <div>
+              <h1 id="hero-heading" className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
+                Transforme seu Patrimônio<br />
+                em Oportunidades
+              </h1>
+              <div className="space-y-3 md:space-y-4">
+                <p className="text-lg md:text-xl text-white/90 leading-relaxed font-medium">
+                  Crédito inteligente para quem construiu história.
+                  Até R$ 5 milhões com as menores taxas do mercado.
+                </p>
+                <div className="flex items-center gap-3">
+                  <Shield className="w-5 h-5 text-white/80 flex-shrink-0" />
+                  <p className="text-base md:text-lg text-white/90 leading-relaxed">
+                    Regulamentado pelo Banco Central - Segurança e transparência
+                  </p>
+                </div>
+                <p className="text-base md:text-lg text-white/90 leading-relaxed">
+                  Taxas a partir de 1,19% a.m. • Até 180 meses • 100% online
+                </p>
+              </div>
+            </div>
+
+            {/* Botões */}
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <PremiumButton 
                 onClick={scrollToSimulator} 
-                className="min-h-[48px] min-w-[200px]" 
-                variant="goldContrast" 
-                size="xl" 
-                aria-label="Simular crédito agora"
+                variant="primary"
+                className="w-full sm:w-auto"
               >
                 Simular Agora
-              </Button>
-              <Button 
+              </PremiumButton>
+              <PremiumButton 
                 onClick={goToVantagens} 
-                variant="highContrast" 
-                aria-label="Conheça as vantagens" 
-                className="font-semibold min-h-[48px] min-w-[200px]" 
-                size="xl"
+                variant="secondary"
+                className="w-full sm:w-auto"
               >
                 Conheça as Vantagens
-              </Button>
+              </PremiumButton>
             </div>
           </div>
-          
-          <div className="w-full max-w-xl mx-auto lg:max-w-none">
-            <div className="aspect-video rounded-lg overflow-hidden shadow-xl animate-fade-in bg-black">
+
+          {/* Vídeo */}
+          <div className="w-full max-w-2xl mx-auto lg:max-w-none">
+            <div className="aspect-video rounded-xl overflow-hidden shadow-2xl">
               <OptimizedYouTube 
-                videoId="E9lwL6R2l1s" 
-                title="Crédito com Garantia de Imóvel - Libra Crédito"
+                videoId="E9lwL6R2l1s"
+                title="Vídeo institucional Libra Crédito"
                 priority={true}
                 className="w-full h-full"
               />
             </div>
           </div>
         </div>
-        
-        <div className="flex justify-center mt-8">
-          <button 
-            onClick={scrollToBenefits} 
-            className="bg-black/40 p-3 rounded-full hover:bg-black/60 transition-colors min-h-[40px] min-w-[40px] hover:scale-110 transform duration-200" 
-            aria-label="Rolar para seção de benefícios"
+
+        {/* Botão Saiba Mais */}
+        <div className="flex justify-center mt-6 md:mt-8">
+          <button
+            onClick={scrollToBenefits}
+            className="text-white flex flex-col items-center gap-1 opacity-70 hover:opacity-100 transition-opacity"
+            aria-label="Rolar para benefícios"
           >
-            <ChevronDown className="w-6 h-6 text-white" />
+            <span className="text-sm font-medium">Saiba mais</span>
+            <ChevronDown className="w-5 h-5 animate-bounce" />
           </button>
         </div>
       </div>

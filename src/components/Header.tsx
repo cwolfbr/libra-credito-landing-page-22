@@ -1,3 +1,25 @@
+/**
+ * Componente de cabeçalho principal da aplicação Libra Crédito
+ * 
+ * @component Header
+ * @description Implementa um cabeçalho responsivo que se adapta entre versões mobile e desktop.
+ * Inclui funcionalidades de navegação, acesso ao portal de clientes e popup informativo.
+ * 
+ * @features
+ * - Responsividade automática via useIsMobile hook
+ * - Popup informativo com persistência via localStorage
+ * - Integração com React Router para navegação
+ * - Portal de clientes em nova aba
+ * 
+ * @example
+ * ```tsx
+ * <Header />
+ * ```
+ * 
+ * @memoperformance
+ * Componente memorizado via React.memo para evitar re-renders desnecessários
+ */
+
 import React, { memo, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';

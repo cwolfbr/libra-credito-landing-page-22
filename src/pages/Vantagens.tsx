@@ -1,17 +1,20 @@
 import React, { useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { CheckCircle, TrendingDown, Clock, Shield, Calculator, Heart } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
+import { TrendingDown, Clock, Calculator, ShieldCheck, Wallet, BadgeCheck } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-const Vantagens = () => {
+const Vantagens: React.FC = () => {
+  const navigate = useNavigate();
+
   useEffect(() => {
-    document.title = "Vantagens | Libra Crédito | Empréstimo com Garantia de Imóvel";
+    document.title = "Vantagens | Libra Crédito | Benefícios do Crédito com Garantia";
     
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Descubra todas as vantagens do empréstimo com garantia de imóvel da Libra Crédito: menores taxas, prazos maiores e mais flexibilidade.');
+      metaDescription.setAttribute('content', 'Conheça as vantagens do crédito com garantia de imóvel: taxas mais baixas, prazos maiores e aprovação facilitada.');
     }
   }, []);
 
@@ -20,231 +23,167 @@ const Vantagens = () => {
       icon: TrendingDown,
       title: "Menores Taxas",
       description: "Taxa a partir de 1,19% a.m. + IPCA",
-      benefit: "Economia de até 70%"
+      benefit: "Economia de até 90%"
     },
     {
       icon: Clock,
-      title: "Prazos Estendidos",
-      description: "Até 180 meses (15 anos)",
+      title: "Prazo Estendido",
+      description: "Até 180 meses para pagar",
       benefit: "Parcelas menores"
     },
     {
       icon: Calculator,
-      title: "Valores Altos",
+      title: "Valores Maiores",
       description: "Até 50% do valor do imóvel",
-      benefit: "Até R$ 5 milhões"
+      benefit: "Realize grandes projetos"
     },
     {
-      icon: Shield,
-      title: "Maior Segurança",
-      description: "Regulamentado pelo Bacen",
-      benefit: "Segurança garantida"
+      icon: ShieldCheck,
+      title: "Aprovação Facilitada",
+      description: "Análise personalizada",
+      benefit: "Maior Flexibilidade"
     },
     {
-      icon: Heart,
-      title: "Sem Comprovação",
-      description: "Renda não obrigatória",
-      benefit: "Processo ágil"
+      icon: Wallet,
+      title: "Uso Livre",
+      description: "Dinheiro na conta",
+      benefit: "Liberdade financeira"
     },
     {
-      icon: CheckCircle,
-      title: "Total Flexibilidade",
-      description: "Use para qualquer finalidade",
-      benefit: "Liberdade total"
+      icon: BadgeCheck,
+      title: "Credibilidade",
+      description: "40 anos de mercado",
+      benefit: <a href="https://www.construtorastefani.com.br/" target="_blank" rel="noopener noreferrer" className="text-libra-blue hover:underline">Grupo Stéfani</a>
     }
   ];
 
-  const comparacaoData = [
+  const taxasJuros = [
     {
-      modalidade: "Home Equity (Libra)",
-      taxa: "1,19% a.m. + IPCA",
-      prazo: "180 meses",
-      valor: "Até R$ 5MM",
+      nome: "Libra Crédito",
+      taxa: 1.19,
       destaque: true
     },
     {
-      modalidade: "Empréstimo Pessoal",
-      taxa: "3% a 15% a.m.",
-      prazo: "60 meses",
-      valor: "Até R$ 300k",
+      nome: "Crédito Consignado",
+      taxa: 2.24,
       destaque: false
     },
     {
-      modalidade: "Cartão de Crédito",
-      taxa: "10% a 20% a.m.",
-      prazo: "12 meses",
-      valor: "Limitado",
+      nome: "Crédito Pessoal",
+      taxa: 6.72,
       destaque: false
     },
     {
-      modalidade: "Cheque Especial",
-      taxa: "8% a 12% a.m.",
-      prazo: "30 dias",
-      valor: "Limitado",
+      nome: "Cheque Especial",
+      taxa: 6.74,
+      destaque: false
+    },
+    {
+      nome: "Cartão de Crédito Rotativo",
+      taxa: 14.84,
       destaque: false
     }
   ];
+
+  const handleSimular = () => {
+    navigate('/simulacao');
+  };
+
+  const maxTaxa = Math.max(...taxasJuros.map(item => item.taxa));
 
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="pt-24">
-        {/* Hero Section - Compacto */}
-        <section className="py-6 md:py-10 bg-gradient-to-b from-libra-light to-white">
-          <div className="container mx-auto text-center px-4">
-            <h1 className="text-2xl md:text-4xl font-bold text-libra-navy mb-2 md:mb-4">
-              Vantagens do Home Equity
+      <main className="pt-24 md:pt-32 bg-gray-50">
+        {/* Hero Section */}
+        <section className="py-6 md:py-12">
+          <div className="container mx-auto px-4">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-libra-navy text-center mb-2 md:mb-4">
+              Vantagens do Crédito com Garantia
             </h1>
-            <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
-              As melhores condições do mercado para suas necessidades financeiras.
+            <p className="text-lg md:text-xl text-gray-600 max-w-4xl mx-auto text-center">
+              Descubra por que o crédito com garantia de imóvel é a melhor opção para realizar seus projetos com as melhores condições do mercado.
             </p>
           </div>
         </section>
 
-        {/* Layout Desktop/Mobile otimizado */}
-        <section className="py-6 md:py-10">
+        {/* Grid de Vantagens e Comparativo */}
+        <section className="py-6 md:py-12">
           <div className="container mx-auto px-4">
-            {/* Mobile: Grid 2x3 compacto */}
-            <div className="md:hidden grid grid-cols-2 gap-3">
-              {vantagens.map((vantagem, index) => {
-                const IconComponent = vantagem.icon;
-                return (
-                  <Card key={index} className="p-3 hover:shadow-lg transition-shadow">
-                    <CardContent className="p-0 text-center">
-                      <div className="flex items-center justify-center w-8 h-8 bg-libra-blue/10 rounded-full mb-2 mx-auto">
-                        <IconComponent className="w-4 h-4 text-libra-blue" />
-                      </div>
-                      <h3 className="text-xs font-bold text-libra-navy mb-1">
-                        {vantagem.title}
-                      </h3>
-                      <p className="text-xs text-gray-600 mb-2 leading-tight">
-                        {vantagem.description}
-                      </p>
-                      <div className="bg-libra-gold/10 p-1 rounded text-xs">
-                        <p className="font-semibold text-libra-navy">
-                          ✨ {vantagem.benefit}
-                        </p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-
-            {/* Desktop: Layout em duas colunas */}
-            <div className="hidden md:flex gap-8">
-              {/* Coluna esquerda - Vantagens em grid 2x3 */}
-              <div className="flex-1">
-                <h2 className="text-2xl font-bold text-libra-navy mb-6">
-                  Principais Vantagens
-                </h2>
-                <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+              {/* Vantagens */}
+              <div className="lg:col-span-5">
+                <div className="grid grid-cols-2 sm:grid-cols-2 gap-3 md:gap-4">
                   {vantagens.map((vantagem, index) => {
-                    const IconComponent = vantagem.icon;
+                    const Icon = vantagem.icon;
                     return (
-                      <Card key={index} className="p-4 hover:shadow-lg transition-shadow h-fit">
-                        <CardContent className="p-0">
-                          <div className="flex items-start gap-3">
-                            <div className="flex items-center justify-center w-10 h-10 bg-libra-blue/10 rounded-full flex-shrink-0">
-                              <IconComponent className="w-5 h-5 text-libra-blue" />
-                            </div>
-                            <div className="flex-1">
-                              <h3 className="text-sm font-bold text-libra-navy mb-1">
-                                {vantagem.title}
-                              </h3>
-                              <p className="text-xs text-gray-600 mb-2">
-                                {vantagem.description}
-                              </p>
-                              <div className="bg-libra-gold/10 p-1 rounded text-xs">
-                                <p className="font-semibold text-libra-navy">
-                                  ✨ {vantagem.benefit}
-                                </p>
-                              </div>
-                            </div>
+                      <div key={index} className="bg-white p-3 md:p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                        <div className="flex items-center mb-2 md:mb-3">
+                          <div className="bg-libra-blue/10 p-1.5 md:p-2 rounded-lg">
+                            <Icon className="w-4 h-4 md:w-6 md:h-6 text-libra-blue" />
                           </div>
-                        </CardContent>
-                      </Card>
+                          <h3 className="text-base md:text-lg font-bold text-libra-navy ml-2 md:ml-3">{vantagem.title}</h3>
+                        </div>
+                        <p className="text-xs md:text-sm text-gray-600 mb-1.5 md:mb-2">{vantagem.description}</p>
+                        <div className="bg-libra-light rounded-lg p-1.5 md:p-2">
+                          <p className="text-libra-navy font-medium text-xs md:text-sm">{vantagem.benefit}</p>
+                        </div>
+                      </div>
                     );
                   })}
                 </div>
               </div>
 
-              {/* Coluna direita - Comparação */}
-              <div className="flex-1">
-                <h2 className="text-2xl font-bold text-libra-navy mb-6">
-                  Comparação com Outras Modalidades
-                </h2>
-                <Table className="bg-white rounded-xl shadow-lg">
-                  <TableHeader>
-                    <TableRow className="bg-libra-navy">
-                      <TableHead className="text-white font-semibold text-sm">Modalidade</TableHead>
-                      <TableHead className="text-white font-semibold text-center text-sm">Taxa</TableHead>
-                      <TableHead className="text-white font-semibold text-center text-sm">Prazo</TableHead>
-                      <TableHead className="text-white font-semibold text-center text-sm">Valor</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {comparacaoData.map((item, index) => (
-                      <TableRow key={index} className={item.destaque ? 'bg-libra-gold/5' : ''}>
-                        <TableCell className={`font-semibold text-sm ${item.destaque ? 'text-libra-navy' : 'text-gray-700'}`}>
-                          {item.modalidade}
-                        </TableCell>
-                        <TableCell className={`text-center font-semibold text-sm ${item.destaque ? 'text-green-600' : 'text-red-600'}`}>
-                          {item.taxa}
-                        </TableCell>
-                        <TableCell className={`text-center font-semibold text-sm ${item.destaque ? 'text-green-600' : 'text-gray-700'}`}>
-                          {item.prazo}
-                        </TableCell>
-                        <TableCell className={`text-center font-semibold text-sm ${item.destaque ? 'text-green-600' : 'text-gray-700'}`}>
-                          {item.valor}
-                        </TableCell>
-                      </TableRow>
+              {/* Comparativo de Taxas */}
+              <div className="lg:col-span-7">
+                <div className="bg-white rounded-lg shadow-lg p-4 md:p-8">
+                  <h2 className="text-xl md:text-2xl font-bold text-libra-navy mb-2">Comparativo de Taxas de Juros</h2>
+                  <p className="text-xs md:text-sm text-gray-500 mb-6 md:mb-8">Fonte: Dados abertos do BACEN - Janeiro 2025</p>
+                  <div className="space-y-4 md:space-y-6">
+                    {taxasJuros.map((item, index) => (
+                      <div key={index} className="space-y-1.5 md:space-y-2">
+                        <div className="flex justify-between items-center">
+                          <span className={`font-medium text-sm md:text-base ${item.destaque ? 'text-libra-navy font-bold' : 'text-gray-700'}`}>
+                            {item.nome}
+                          </span>
+                          <span className={`font-bold text-sm md:text-base ${item.destaque ? 'text-libra-navy' : 'text-gray-700'}`}>
+                            {item.taxa.toFixed(2)}% a.m.
+                          </span>
+                        </div>
+                        <Progress 
+                          value={(item.taxa / maxTaxa) * 100} 
+                          className={`h-3 md:h-4 rounded-full bg-gray-100 [&>div]:transition-all ${
+                            item.destaque 
+                              ? '[&>div]:bg-libra-navy' 
+                              : '[&>div]:bg-red-400/70'
+                          }`}
+                        />
+                      </div>
                     ))}
-                  </TableBody>
-                </Table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Mobile: Comparação separada */}
-        <section className="md:hidden py-6 bg-libra-light">
-          <div className="container mx-auto px-4">
-            <h2 className="text-xl font-bold text-libra-navy mb-4 text-center">
-              Comparação com Outras Modalidades
+        {/* CTA Section */}
+        <section className="py-8 md:py-12 bg-gradient-to-r from-libra-navy to-libra-blue text-white">
+          <div className="container mx-auto px-4 text-center">
+            <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4">
+              Pronto para começar?
             </h2>
-            
-            <div className="space-y-3">
-              {comparacaoData.map((item, index) => (
-                <Card key={index} className={`p-4 ${item.destaque ? 'bg-libra-gold/10 border-libra-gold' : 'bg-white'}`}>
-                  <CardContent className="p-0">
-                    <h3 className={`font-bold mb-3 ${item.destaque ? 'text-libra-navy' : 'text-gray-700'}`}>
-                      {item.modalidade}
-                    </h3>
-                    <div className="grid grid-cols-3 gap-2 text-sm">
-                      <div>
-                        <p className="text-xs text-gray-500 mb-1">Taxa de Juros</p>
-                        <p className={`font-semibold ${item.destaque ? 'text-green-600' : 'text-red-600'}`}>
-                          {item.taxa}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-gray-500 mb-1">Prazo Máximo</p>
-                        <p className={`font-semibold ${item.destaque ? 'text-green-600' : 'text-gray-700'}`}>
-                          {item.prazo}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-gray-500 mb-1">Valor Máximo</p>
-                        <p className={`font-semibold ${item.destaque ? 'text-green-600' : 'text-gray-700'}`}>
-                          {item.valor}
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            <p className="text-base md:text-lg mb-4 md:mb-6 max-w-2xl mx-auto opacity-90">
+              Faça uma simulação agora mesmo e descubra quanto você pode obter com seu imóvel como garantia.
+            </p>
+            <Button 
+              onClick={handleSimular}
+              variant="goldContrast" 
+              size="xl"
+              className="min-h-[40px] md:min-h-[48px] min-w-[180px] md:min-w-[200px] bg-white text-libra-navy hover:bg-white/90"
+            >
+              Simular Agora
+            </Button>
           </div>
         </section>
       </main>

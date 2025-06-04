@@ -1,62 +1,101 @@
-
 import React from 'react';
-import { ExternalLink, Newspaper } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Newspaper } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
+
+const mediaLinks = [
+  {
+    name: 'G1 Globo',
+    logo: '/images/media/g1-logo.png',
+    title: 'A Libra Crédito tem soluções financeiras com as menores taxas no pós-pandemia',
+    url: 'https://g1.globo.com/sp/ribeirao-preto-franca/especial-publicitario/libra-credito-solucoes-financeiras/noticia/2022/10/28/a-libra-credito-tem-solucoes-financeiras-com-as-menores-taxas-no-pos-pandemia.ghtml'
+  },
+  {
+    name: 'Estadão',
+    logo: '/images/media/estadao-logo.png',
+    title: 'Libra simplifica processo para empréstimo com garantia de imóvel',
+    url: 'https://bluestudioexpress.estadao.com.br/conteudo/2023/08/24/libra-simplifica-processo-para-emprestimo-com-garantia-de-imovel/'
+  },
+  {
+    name: 'A Cidade ON',
+    logo: '/images/media/acidadeon-logo.png',
+    title: 'Libra Crédito oferece empréstimo de baixo custo e personalizado',
+    url: 'https://www.acidadeon.com/ribeiraopreto/conteudo-patrocinado/libracredito/libra-credito-oferece-emprestimo-de-baixo-custo-e-personalizado/'
+  },
+  {
+    name: 'Revide',
+    logo: '/images/media/revide-logo.png',
+    title: 'A revolução do crédito',
+    url: 'https://www.revide.com.br/noticias/revista/a-revolucao-do-credito/'
+  }
+];
 
 const MediaSection: React.FC = () => {
-  const mediaLinks = [
-    {
-      name: 'G1 Globo',
-      url: 'https://g1.globo.com/sp/ribeirao-preto-franca/especial-publicitario/libra-credito-solucoes-financeiras/noticia/2022/10/28/a-libra-credito-tem-solucoes-financeiras-com-as-menores-taxas-no-pos-pandemia.ghtml',
-      icon: '🌐'
-    },
-    {
-      name: 'Estadão',
-      url: 'https://bluestudioexpress.estadao.com.br/conteudo/2023/08/24/libra-simplifica-processo-para-emprestimo-com-garantia-de-imovel/',
-      icon: '📰'
-    },
-    {
-      name: 'A Cidade ON',
-      url: 'https://www.acidadeon.com/ribeiraopreto/conteudo-patrocinado/libracredito/libra-credito-oferece-emprestimo-de-baixo-custo-e-personalizado/',
-      icon: '🏙️'
-    },
-    {
-      name: 'Revide',
-      url: 'https://www.revide.com.br/noticias/revista/a-revolucao-do-credito/',
-      icon: '📝'
-    }
-  ];
-
-  const handleLinkClick = (url: string) => {
-    window.open(url, '_blank', 'noopener,noreferrer');
-  };
+  const isMobile = useIsMobile();
 
   return (
-    <section className="py-12 bg-gray-50" aria-labelledby="media-section-title">
+    <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-8">
-          <h2 id="media-section-title" className="text-2xl md:text-3xl font-bold text-libra-navy mb-2 flex items-center justify-center gap-2">
-            <Newspaper className="w-8 h-8 text-libra-blue" />
-            A Libra na Mídia
-          </h2>
-          <p className="text-gray-600">Confira as principais matérias sobre a Libra Crédito</p>
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <Newspaper className="w-6 h-6 text-libra-blue" />
+            <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-libra-navy`}>
+              A Libra na Mídia
+            </h2>
+          </div>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Confira as principais matérias sobre a Libra Crédito
+          </p>
         </div>
-        
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-          {mediaLinks.map((link, index) => (
-            <button
-              key={index}
-              onClick={() => handleLinkClick(link.url)}
-              className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 group"
-              aria-label={`Ler matéria no ${link.name}`}
-            >
-              <div className="text-center">
-                <div className="text-4xl mb-3">{link.icon}</div>
-                <h3 className="font-semibold text-libra-navy text-sm mb-2">{link.name}</h3>
-                <ExternalLink className="w-4 h-4 text-libra-blue mx-auto group-hover:scale-110 transition-transform" />
+
+        {isMobile ? (
+          // Layout Mobile - Grid 2x2 apenas com logos
+          <div className="grid grid-cols-2 gap-4 max-w-sm mx-auto">
+            {mediaLinks.map((media) => (
+              <a 
+                key={media.name}
+                href={media.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 flex items-center justify-center aspect-video"
+                aria-label={`Ver matéria da ${media.name}`}
+              >
+                <img
+                  src={media.logo}
+                  alt={`Logo ${media.name}`}
+                  className="max-w-full max-h-[40px] object-contain"
+                  loading="lazy"
+                />
+              </a>
+            ))}
+          </div>
+        ) : (
+          // Layout Desktop - Cards completos
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {mediaLinks.map((media) => (
+              <div key={media.name} className="bg-white rounded-lg shadow-sm p-6 flex flex-col">
+                <div className="h-12 mb-4 flex items-center">
+                  <img
+                    src={media.logo}
+                    alt={`Logo ${media.name}`}
+                    className="max-h-full object-contain"
+                    loading="lazy"
+                  />
+                </div>
+                <p className="text-libra-navy font-medium mb-4 flex-grow">
+                  {media.title}
+                </p>
+                <Button
+                  onClick={() => window.open(media.url, '_blank')}
+                  variant="outline"
+                  className="w-full border-libra-navy text-libra-navy hover:bg-libra-navy hover:text-white transition-colors"
+                >
+                  ACESSAR
+                </Button>
               </div>
-            </button>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
