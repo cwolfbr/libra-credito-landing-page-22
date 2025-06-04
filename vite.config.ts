@@ -4,10 +4,13 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 import { createRequire } from 'module'
 const require = createRequire(import.meta.url)
-const prerender = require('vite-plugin-prerender')
+const vitePrerender = require('vite-plugin-prerender')
+const chromium = require('@sparticuz/chromium')
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
+export default defineConfig(async ({ mode }) => {
+  const executablePath = await chromium.executablePath();
+  return {
   server: {
     host: "::",
     port: 8080,
@@ -16,10 +19,13 @@ export default defineConfig(({ mode }) => ({
     react(),
     mode === 'development' &&
     componentTagger(),
-    prerender({
+    vitePrerender({
       staticDir: path.join(__dirname, 'dist'),
       routes: ['/'],
-      renderer: new prerender.PuppeteerRenderer({
+      renderer: new vitePrerender.PuppeteerRenderer({
+        executablePath,
+        args: chromium.args,
+        headless: true,
         renderAfterElementExists: '.hero'
       })
     }),
@@ -53,4 +59,5 @@ export default defineConfig(({ mode }) => ({
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],
   },
-}));
+  };
+});
