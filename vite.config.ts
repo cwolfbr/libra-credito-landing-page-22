@@ -11,13 +11,17 @@ export default defineConfig(({ mode }) => ({
     historyApiFallback: true
   },
   plugins: [
-    react(),
+    react({
+      jsxRuntime: 'automatic',
+      jsxImportSource: 'react',
+    }),
     mode === 'development' &&
     componentTagger(),
   ].filter(Boolean),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "react": path.resolve(__dirname, "node_modules/react"),
     },
   },
   build: {
@@ -64,5 +68,8 @@ export default defineConfig(({ mode }) => ({
   // Otimizações de performance
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],
+    esbuildOptions: {
+      jsx: 'automatic',
+    },
   },
 }));
