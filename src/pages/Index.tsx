@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import Header from '@/components/Header';
 import LoadingSpinner from '@/components/ui/loading-spinner';
-import Hero from '@/components/Hero';
 
 // Lazy loading dos componentes pesados
+const Hero = lazy(() => import('@/components/Hero'));
 const Benefits = lazy(() => import('@/components/Benefits'));
 const Testimonials = lazy(() => import('@/components/Testimonials'));
 const MediaSection = lazy(() => import('@/components/MediaSection'));
@@ -40,7 +40,9 @@ const Index: React.FC = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main role="main" className="flex-grow">
-        <Hero />
+        <Suspense fallback={<SectionLoader />}>
+          <Hero />
+        </Suspense>
         
         <Suspense fallback={<SectionLoader />}>
           <Benefits />
