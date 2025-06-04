@@ -78,9 +78,10 @@ const ContactForm: React.FC<ContactFormProps> = ({ simulationResult }) => {
           
           <div className="text-xs space-y-1">
             <p>
-              Parcela calculada pela tabela {simulationResult.amortizacao.toUpperCase()} com taxa de juros de 1,19% a.m. + PCA. Esta taxa pode 
-              sofre alterações de acordo com a análise de crédito. Já estão inclusos custos com 
-              avaliação do imóvel, cartório e impostos.
+              Parcela calculada pela tabela {simulationResult.amortizacao.toUpperCase()} com
+              taxa de juros de 1,19% a.m. + IPCA. Esta taxa pode sofrer alterações de acordo
+              com a análise de crédito. Já estão inclusos custos com avaliação do imóvel,
+              cartório e impostos.
             </p>
             
             {simulationResult.amortizacao === 'SAC' && simulationResult.primeiraParcela && simulationResult.ultimaParcela && (
