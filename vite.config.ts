@@ -25,9 +25,8 @@ export default defineConfig(({ mode }) => ({
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: true,
-        drop_debugger: true,
-        pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.trace']
+        drop_console: false,
+        drop_debugger: false,
       }
     },
     // Melhora o code splitting
@@ -57,10 +56,10 @@ export default defineConfig(({ mode }) => ({
     },
     // Otimiza o tamanho dos assets
     assetsInlineLimit: 4096,
-    // Desabilita source maps em produção
-    sourcemap: false,
+    // Habilita source maps em produção para debug
+    sourcemap: true,
     // Melhora o tree shaking
-    reportCompressedSize: false,
+    reportCompressedSize: true,
   },
   // Otimizações de performance
   optimizeDeps: {
