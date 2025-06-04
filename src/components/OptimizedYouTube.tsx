@@ -110,3 +110,5 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
     </div>
   );
 };
+
+export default OptimizedYouTube;

@@ -90,7 +90,7 @@ const QuemSomos = () => {
                 </p>
               </div>
               <div className="relative">
-                <ImageOptimizer
+              <ImageOptimizer
                   src="/images/media/timelibra.png"
                   alt="Time Libra Crédito"
                   className="rounded-lg shadow-xl"
