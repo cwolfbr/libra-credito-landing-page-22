@@ -5,7 +5,6 @@ import Header from '@/components/Header';
 import LoadingSpinner from '@/components/ui/loading-spinner';
 
 // Hero não deve ser lazy loaded pois contém o LCP
-import Hero from '@/components/Hero';
 import TrustBar from '@/components/TrustBar';
 
 // Lazy loading dos componentes pesados
@@ -43,8 +42,6 @@ const Index: React.FC = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main role="main" className="flex-grow">
-        <Hero />
-        
         <TrustBar />
         
         <Suspense fallback={<SectionLoader />}>

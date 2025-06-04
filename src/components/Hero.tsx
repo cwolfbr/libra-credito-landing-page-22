@@ -35,7 +35,7 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <section className="min-h-[100vh] pt-20 md:pt-24 pb-4 bg-gradient-to-br from-[#003399] via-[#0066cc] to-[#00ccff] relative flex flex-col justify-center" aria-labelledby="hero-heading">
+    <section className="hero min-h-[100vh] pt-20 md:pt-24 pb-4 bg-gradient-to-br from-[#003399] via-[#0066cc] to-[#00ccff] relative flex flex-col justify-center" aria-labelledby="hero-heading">
       <div className="container mx-auto px-4 relative z-10 flex-grow flex flex-col justify-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center">
           {/* Lado Esquerdo */}
