@@ -34,15 +34,19 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
   );
 
   const handleThumbnailError = () => {
-    if (thumbnailSrc) {
-      setThumbnailError(true);
+    // When a custom thumbnail is provided, fall back to the YouTube
+    // high-quality image first, then the low-quality one on subsequent errors
+    if (thumbnailSrc && currentThumbnail === thumbnailSrc) {
+      setCurrentThumbnail(defaultHighQualityThumbnail);
       return;
     }
-    if (currentThumbnail !== defaultFallbackThumbnail) {
+
+    if (currentThumbnail === defaultHighQualityThumbnail) {
       setCurrentThumbnail(defaultFallbackThumbnail);
-    } else {
-      setThumbnailError(true);
+      return;
     }
+
+    setThumbnailError(true);
   };
 
   const loadVideo = () => {
@@ -63,12 +67,12 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
           }}
           role="button"
           tabIndex={0}
-          aria-label={`Play video: ${title}`}
+          aria-label={`Reproduzir vídeo: ${title}`}
         >
           {!thumbnailError ? (
             <img
               src={currentThumbnail}
-              alt={`Thumbnail for ${title}`}
+              alt={`Miniatura do ${title}`}
               className="absolute inset-0 w-full h-full object-cover"
               loading={priority ? "eager" : "lazy"}
               fetchPriority={priority ? "high" : "auto"}
@@ -81,7 +85,7 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
             <div className="absolute inset-0 bg-gray-900 flex items-center justify-center">
               <div className="text-white text-center p-4">
                 <Play className="w-12 h-12 mx-auto mb-2" />
-                <p className="text-sm">Clique para reproduzir o vídeo</p>
+                <p className="text-sm">Clique para assistir ao vídeo</p>
               </div>
             </div>
           )}
@@ -104,6 +108,10 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
         />
       )}
     </div>
+  );
+};
+
+
   );
 };
 
