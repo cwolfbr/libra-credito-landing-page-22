@@ -3,6 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -61,9 +64,6 @@
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.9.3",
     "zod": "^3.23.8"
-  },
-  "overrides": {
-    "rollup": "^4.9.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
