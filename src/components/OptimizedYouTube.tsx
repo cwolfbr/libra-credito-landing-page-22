@@ -6,26 +6,35 @@ interface OptimizedYouTubeProps {
   title: string;
   className?: string;
   priority?: boolean;
+  /**
+   * Optional custom thumbnail to display before the iframe loads.
+   */
+  thumbnailSrc?: string;
 }
 
 const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
   videoId,
   title,
   className = "",
-  priority = false
+  priority = false,
+  thumbnailSrc
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [thumbnailError, setThumbnailError] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   
-  // Tenta primeiro a thumbnail de alta qualidade, se falhar usa a padrão
-  const highQualityThumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+  // Usa thumbnail customizada se fornecida, senão a do YouTube
+  const remoteThumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
   const fallbackThumbnail = `https://img.youtube.com/vi/${videoId}/0.jpg`;
-  
-  const [currentThumbnail, setCurrentThumbnail] = useState(highQualityThumbnail);
+
+  const [currentThumbnail, setCurrentThumbnail] = useState(
+    thumbnailSrc ?? remoteThumbnail
+  );
 
   const handleThumbnailError = () => {
-    if (currentThumbnail !== fallbackThumbnail) {
+    if (currentThumbnail === thumbnailSrc) {
+      setCurrentThumbnail(remoteThumbnail);
+    } else if (currentThumbnail !== fallbackThumbnail) {
       setCurrentThumbnail(fallbackThumbnail);
     } else {
       setThumbnailError(true);
