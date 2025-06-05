@@ -12,8 +12,7 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
-    mode === 'development' &&
-    componentTagger(),
+    mode === 'development' && componentTagger(),
   ].filter(Boolean),
   resolve: {
     alias: {
@@ -23,23 +22,14 @@ export default defineConfig(({ mode }) => ({
   build: {
     target: 'esnext',
     minify: 'esbuild',
-    sourcemap: mode === 'development',
     reportCompressedSize: false,
-    chunkSizeWarningLimit: 1000,
-    rollupOptions: {
-      output: {
-        manualChunks: undefined
-      }
-    }
+    chunkSizeWarningLimit: 1000
   },
   optimizeDeps: {
     include: [
       'react',
       'react-dom',
-      'react-router-dom',
-      'lucide-react',
-      'clsx',
-      'tailwind-merge'
+      'react-router-dom'
     ]
   }
 }));

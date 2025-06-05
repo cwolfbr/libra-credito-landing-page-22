@@ -11,6 +11,7 @@
     "dev": "vite",
     "build": "vite build",
     "build:dev": "vite build --mode development",
+    "build:prod": "npm install && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -47,9 +48,13 @@
     "tailwindcss": "^3.4.11",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
-    "vite": "^5.0.0"
+    "vite": "^4.5.3"
   },
   "optionalDependencies": {
-    "@rollup/rollup-win32-x64-msvc": "^4.41.1"
+    "@rollup/rollup-linux-x64-gnu": "^4.0.0",
+    "@rollup/rollup-win32-x64-msvc": "^4.0.0",
+    "@rollup/rollup-linux-x64-musl": "^4.0.0",
+    "@rollup/rollup-darwin-x64": "^4.0.0",
+    "@rollup/rollup-darwin-arm64": "^4.0.0"
   }
 }
