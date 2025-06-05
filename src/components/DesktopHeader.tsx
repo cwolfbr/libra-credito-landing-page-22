@@ -49,11 +49,11 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white" role="banner">
       {/* Faixa superior com aviso */}
-      <div className="bg-gray-50">
+      <div className="bg-libra-navy">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center py-3">
-            <div className="flex items-center text-libra-navy text-sm">
-              <Info className="w-4 h-4 mr-2 text-libra-blue" />
+            <div className="flex items-center text-white text-sm font-semibold">
+              <Info className="w-4 h-4 mr-2 text-white" />
               A Libra não realiza nenhum tipo de cobrança até a liberação do crédito
             </div>
           </div>

@@ -49,11 +49,11 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ onPortalClientes, onSimulat
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md" role="banner">
       {/* Barra superior compacta */}
-      <div className="bg-gray-50 border-b border-gray-100">
-        <div className="container mx-auto px-4 py-1">
+      <div className="bg-libra-navy border-b border-blue-800">
+        <div className="container mx-auto px-4 py-2">
           <div className="flex items-center justify-center">
-            <div className="flex items-center text-libra-navy text-xs font-medium">
-              <Info className="w-3 h-3 mr-1 text-libra-blue" />
+            <div className="flex items-center text-white text-xs font-semibold">
+              <Info className="w-3 h-3 mr-1 text-white" />
               A Libra não realiza cobrança até a liberação
             </div>
           </div>
