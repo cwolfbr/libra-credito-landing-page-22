@@ -48,10 +48,17 @@ const CityAutocomplete = ({ value = '', onCityChange }) => {
           return res.json();
         })
         .then((data) => {
-          const mapped = data.map(
-            (c) => `${c.nome} - ${c.microrregiao.mesorregiao.UF.sigla}`
+          const filtered = data.filter((c) =>
+            c.nome.toLowerCase().includes(inputValue.toLowerCase())
           );
-          setSuggestions(mapped);
+          const mapped = filtered.map((c) => {
+            const uf =
+              c.microrregiao?.mesorregiao?.UF?.sigla ||
+              c['regiao-imediata']?.['regiao-intermediaria']?.UF?.sigla ||
+              '';
+            return `${c.nome} - ${uf}`;
+          });
+          setSuggestions(mapped.slice(0, 10));
           setIsLoading(false);
         })
         .catch((err) => {
