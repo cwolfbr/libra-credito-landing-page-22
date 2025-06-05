@@ -1,6 +1,5 @@
 import React, { memo, useEffect, useState } from 'react';
 import { MessageSquare, User } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
 import OptimizedYouTube from './OptimizedYouTube';
 
 const testimonials = [
@@ -21,11 +20,10 @@ const testimonials = [
   }
 ];
 
-const TestimonialCard = memo(({ name, age, text, isMobile, isActive, currentIndex, totalTestimonials, onNavigate }: {
-  name: string, 
-  age: string, 
-  text: string, 
-  isMobile: boolean, 
+const TestimonialCard = memo(({ name, age, text, isActive, currentIndex, totalTestimonials, onNavigate }: {
+  name: string,
+  age: string,
+  text: string,
   isActive: boolean,
   currentIndex: number,
   totalTestimonials: number,
@@ -43,7 +41,7 @@ const TestimonialCard = memo(({ name, age, text, isMobile, isActive, currentInde
             <p className="text-sm text-gray-500">{age}</p>
           </div>
         </div>
-        <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 italic flex-grow mb-2`}>{text}</p>
+        <p className="text-sm md:text-base text-gray-600 italic flex-grow mb-2">{text}</p>
         
         {/* Navegação dentro do card */}
         <div className="flex justify-center gap-1 pt-2 border-t border-gray-100">
@@ -66,7 +64,6 @@ const TestimonialCard = memo(({ name, age, text, isMobile, isActive, currentInde
 TestimonialCard.displayName = 'TestimonialCard';
 
 const Testimonials: React.FC = () => {
-  const isMobile = useIsMobile();
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   
   useEffect(() => {
@@ -78,19 +75,19 @@ const Testimonials: React.FC = () => {
   }, []);
   
   return (
-    <section className={`${isMobile ? 'py-8' : 'py-16 md:py-24'} bg-white`}>
+    <section className="py-8 md:py-16 lg:py-24 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-6 md:mb-12">
-          <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy mb-2 md:mb-4`}>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-libra-navy mb-2 md:mb-4">
             O que nossos clientes dizem
           </h2>
-          <p className={`${isMobile ? 'text-sm px-4' : 'text-lg'} text-gray-600 max-w-3xl mx-auto`}>
+          <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-3xl mx-auto px-4 md:px-0">
             Veja como o crédito com garantia de imóvel transformou a vida financeira de nossos clientes com taxas a partir de 1,19% a.m. e prazo de até 180 meses.
           </p>
         </div>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center max-w-6xl mx-auto">
-          <div className="w-full max-w-xl mx-auto">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-center max-w-6xl mx-auto">
+          <div className="w-full sm:w-3/4 md:w-2/3 lg:w-full max-w-xl mx-auto">
             <div className="aspect-video rounded-lg overflow-hidden shadow-xl bg-black">
               <OptimizedYouTube 
                 videoId="ETQRA4cvADk" 
@@ -104,7 +101,7 @@ const Testimonials: React.FC = () => {
           <div className="relative">
             <div className="flex items-center gap-2 mb-4">
               <MessageSquare className="w-5 h-5 md:w-6 md:h-6 text-libra-blue" />
-              <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-libra-navy`}>
+              <h3 className="text-xl sm:text-2xl font-bold text-libra-navy">
                 Depoimentos de Clientes
               </h3>
             </div>
@@ -116,7 +113,6 @@ const Testimonials: React.FC = () => {
                   name={testimonial.name}
                   age={testimonial.age}
                   text={testimonial.text}
-                  isMobile={isMobile}
                   isActive={currentTestimonial === index}
                   currentIndex={currentTestimonial}
                   totalTestimonials={testimonials.length}

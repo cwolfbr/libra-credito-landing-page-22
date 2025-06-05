@@ -63,7 +63,7 @@ const MediaSection: React.FC = () => {
                 <img
                   src={media.logo}
                   alt={`Logo ${media.name}`}
-                  className="max-w-full max-h-[40px] object-contain"
+                  className="max-w-full h-auto max-h-[40px] object-contain"
                   loading="lazy"
                 />
               </a>
@@ -78,7 +78,7 @@ const MediaSection: React.FC = () => {
                   <img
                     src={media.logo}
                     alt={`Logo ${media.name}`}
-                    className="max-h-full object-contain"
+                    className="max-w-full h-auto max-h-full object-contain"
                     loading="lazy"
                   />
                 </div>

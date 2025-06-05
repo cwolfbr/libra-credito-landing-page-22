@@ -10,15 +10,20 @@ export default {
 		"./src/**/*.{ts,tsx}",
 	],
 	prefix: "",
-	theme: {
-		container: {
-			center: true,
-			padding: '2rem',
-			screens: {
-				'2xl': '1400px'
-			}
-		},
-		extend: {
+       theme: {
+               container: {
+                       center: true,
+                       padding: '2rem',
+                       screens: {
+                               '2xl': '1400px'
+                       }
+               },
+               screens: {
+                       sm: '480px',
+                       md: '768px',
+                       lg: '1024px',
+               },
+               extend: {
 			fontFamily: {
 				sans: ['Montserrat', 'sans-serif'],
 			},
