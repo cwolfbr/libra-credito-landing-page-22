@@ -94,10 +94,10 @@ const Blog = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       
-      <main className="flex-1 py-16 md:py-24">
+      <main className="flex-1 pt-header pb-8 md:pb-12">
         <div className="container mx-auto px-4">
           {/* Hero Section */}
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 mt-8">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-libra-navy mb-4">
               Blog Libra Crédito
             </h1>

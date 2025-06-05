@@ -21,9 +21,12 @@ const Hero: React.FC = () => {
   const scrollToBenefits = () => {
     const benefitsSection = document.getElementById('benefits');
     if (benefitsSection) {
-      // Altura total do header: faixa superior (py-3 = 24px) + header principal (h-20 = 80px) = 104px
-      // Adicionando um pequeno padding extra (16px) para garantir espaço visual
-      const headerOffset = 120;
+      // Usar valores CSS dinâmicos para offset
+      const headerOffsetMobile = 96; // var(--header-offset-mobile)
+      const headerOffsetDesktop = 120; // var(--header-offset-desktop)
+      const isMobileScreen = window.innerWidth < 768;
+      const headerOffset = isMobileScreen ? headerOffsetMobile : headerOffsetDesktop;
+      
       const elementPosition = benefitsSection.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
       
@@ -35,7 +38,7 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <section className="min-h-[100vh] pt-20 md:pt-24 pb-4 bg-gradient-to-br from-[#003399] via-[#0066cc] to-[#00ccff] relative flex flex-col justify-center" aria-labelledby="hero-heading">
+    <section className="min-h-[100vh] pt-header pb-4 bg-gradient-to-br from-[#003399] via-[#0066cc] to-[#00ccff] relative flex flex-col justify-center" aria-labelledby="hero-heading">
       <div className="container mx-auto px-4 relative z-10 flex-grow flex flex-col justify-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center">
           {/* Lado Esquerdo */}

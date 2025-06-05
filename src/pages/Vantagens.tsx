@@ -94,7 +94,7 @@ const Vantagens: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="pt-24 md:pt-32 bg-gray-50">
+      <main className="pt-header bg-gray-50">
         {/* Hero Section */}
         <section className="py-6 md:py-12">
           <div className="container mx-auto px-4">

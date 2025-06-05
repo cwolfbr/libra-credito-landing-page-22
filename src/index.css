@@ -2,6 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  /* Classes utilitárias para compensar header fixo */
+  .pt-header {
+    padding-top: var(--header-offset-mobile);
+  }
+  
+  @media (min-width: 768px) {
+    .pt-header {
+      padding-top: var(--header-offset-desktop);
+    }
+  }
+  
+  /* Para páginas que precisam de espaçamento específico */
+  .mt-header {
+    margin-top: var(--header-offset-mobile);
+  }
+  
+  @media (min-width: 768px) {
+    .mt-header {
+      margin-top: var(--header-offset-desktop);
+    }
+  }
+  
+  /* Para Hero sections que ocupam viewport completo */
+  .min-h-screen-header {
+    min-height: calc(100vh - var(--header-offset-mobile));
+  }
+  
+  @media (min-width: 768px) {
+    .min-h-screen-header {
+      min-height: calc(100vh - var(--header-offset-desktop));
+    }
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -49,6 +84,12 @@
     --sidebar-border: 220 13% 91%;
 
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Header Heights - Calculadas com base nos componentes */
+    --header-height-mobile: 80px; /* py-2 (16px) + h-16 (64px) = 80px */
+    --header-height-desktop: 104px; /* py-3 (24px) + h-20 (80px) = 104px */
+    --header-offset-mobile: 96px; /* altura + 16px de segurança */
+    --header-offset-desktop: 120px; /* altura + 16px de segurança */
   }
 
   .dark {
