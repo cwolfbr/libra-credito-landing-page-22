@@ -94,9 +94,9 @@ const Vantagens: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="pt-header bg-gray-50">
+      <main className="pt-header bg-gray-50 px-4 py-12 sm:px-6 md:px-8 lg:px-16 lg:py-20">
         {/* Hero Section */}
-        <section className="py-6 md:py-12">
+        <section className="py-20 sm:py-24 md:py-32">
           <div className="container mx-auto px-4">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-libra-navy text-center mb-2 md:mb-4">
               Vantagens do Crédito com Garantia
@@ -168,7 +168,7 @@ const Vantagens: React.FC = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="py-8 md:py-12 bg-gradient-to-r from-libra-navy to-libra-blue text-white">
+        <section className="py-20 sm:py-24 md:py-32 bg-gradient-to-r from-libra-navy to-libra-blue text-white">
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4">
               Pronto para começar?

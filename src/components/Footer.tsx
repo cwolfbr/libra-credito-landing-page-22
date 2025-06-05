@@ -10,8 +10,8 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="bg-libra-navy text-white">
-      <div className="container mx-auto py-6 md:py-12 px-4">
+    <footer className="bg-libra-navy text-gray-300">
+      <div className="container mx-auto py-12 px-8 sm:px-12 md:px-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-6 md:mb-8">
           {/* Logo e Menu de Produtos */}
           <div className="text-center md:text-left">
@@ -68,19 +68,19 @@ const Footer: React.FC = () => {
               <h4 className="font-bold text-base md:text-lg mb-3 md:mb-4 text-center md:text-right">Acompanhe nas redes sociais</h4>
               <div className="flex items-center justify-center md:justify-end">
                 <div className="grid grid-flow-col gap-6 md:gap-8">
-                  <a href="https://www.facebook.com/LibraCreditoOficial/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-libra-blue transition-colors" aria-label="Facebook">
+                  <a href="https://www.facebook.com/LibraCreditoOficial/" target="_blank" rel="noopener noreferrer" className="text-libra-gold hover:text-white transition-colors" aria-label="Facebook">
                     <Facebook className="w-5 h-5 md:w-6 md:h-6" />
                   </a>
-                  <a href="https://www.instagram.com/libracredito/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-libra-blue transition-colors" aria-label="Instagram">
+                  <a href="https://www.instagram.com/libracredito/" target="_blank" rel="noopener noreferrer" className="text-libra-gold hover:text-white transition-colors" aria-label="Instagram">
                     <Instagram className="w-5 h-5 md:w-6 md:h-6" />
                   </a>
-                  <a href="https://www.linkedin.com/company/libracredito/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-libra-blue transition-colors" aria-label="LinkedIn">
+                  <a href="https://www.linkedin.com/company/libracredito/" target="_blank" rel="noopener noreferrer" className="text-libra-gold hover:text-white transition-colors" aria-label="LinkedIn">
                     <Linkedin className="w-5 h-5 md:w-6 md:h-6" />
                   </a>
-                  <a href="https://www.youtube.com/channel/UCXpuj7LlTLT_kdbwwJHS0qA" target="_blank" rel="noopener noreferrer" className="text-white hover:text-libra-blue transition-colors" aria-label="YouTube">
+                  <a href="https://www.youtube.com/channel/UCXpuj7LlTLT_kdbwwJHS0qA" target="_blank" rel="noopener noreferrer" className="text-libra-gold hover:text-white transition-colors" aria-label="YouTube">
                     <Youtube className="w-5 h-5 md:w-6 md:h-6" />
                   </a>
-                  <a href="https://www.reclameaqui.com.br/empresa/libra-credito-solucoes-financeiras/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-libra-blue transition-colors" aria-label="Reclame Aqui">
+                  <a href="https://www.reclameaqui.com.br/empresa/libra-credito-solucoes-financeiras/" target="_blank" rel="noopener noreferrer" className="text-libra-gold hover:text-white transition-colors" aria-label="Reclame Aqui">
                     <ExternalLink className="w-5 h-5 md:w-6 md:h-6" />
                   </a>
                 </div>

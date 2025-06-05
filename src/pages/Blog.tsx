@@ -94,7 +94,7 @@ const Blog = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       
-      <main className="flex-1 pt-header pb-8 md:pb-12">
+      <main className="flex-1 pt-header px-4 py-12 sm:px-6 md:px-8 lg:px-16 lg:py-20">
         <div className="container mx-auto px-4">
           {/* Hero Section */}
           <div className="text-center mb-12 mt-8">

@@ -32,7 +32,7 @@ const Parceiros = () => {
     <div className="min-h-screen flex flex-col bg-[#F8F9FF]">
       <Header />
       
-      <main className="flex-1 pt-header pb-8 md:pb-12">
+      <main className="flex-1 pt-header px-4 py-12 sm:px-6 md:px-8 lg:px-16 lg:py-20">
         <div className="container mx-auto px-4 mt-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
             {/* Formulário para Novos Parceiros */}

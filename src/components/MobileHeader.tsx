@@ -47,13 +47,13 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ onPortalClientes, onSimulat
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md" role="banner">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-libra-navy text-white shadow-md" role="banner">
       {/* Barra superior compacta */}
       <div className="bg-libra-navy border-b border-blue-800">
         <div className="container mx-auto px-4 py-2">
           <div className="flex items-center justify-center">
             <div className="flex items-center text-white text-xs font-semibold">
-              <Info className="w-3 h-3 mr-1 text-white" />
+              <Info className="w-3 h-3 mr-1 text-libra-gold" />
               A Libra não realiza cobrança até a liberação
             </div>
           </div>
@@ -80,8 +80,8 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ onPortalClientes, onSimulat
           </div>
 
           <div className="flex items-center gap-2">
-            <Button 
-              className="min-h-[40px] px-3 text-xs bg-libra-navy text-white hover:bg-libra-navy/90"
+            <Button
+              className="min-h-[40px] px-3 text-xs bg-libra-gold text-libra-navy font-semibold rounded-full shadow-lg hover:shadow-2xl transition duration-300"
               size="sm"
               onClick={onSimulateNow}
               aria-label="Simular crédito agora"
@@ -127,7 +127,7 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ onPortalClientes, onSimulat
                     setIsMenuOpen(false);
                   }}
                   variant="outline"
-                  className="w-full justify-center text-base font-medium"
+                  className="w-full justify-center text-base font-medium border-libra-gold text-libra-gold hover:bg-libra-gold hover:text-libra-navy rounded-full"
                 >
                   Portal de Clientes
                 </Button>
