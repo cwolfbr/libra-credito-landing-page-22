@@ -1,5 +1,6 @@
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { MapPin } from 'lucide-react';
 import { fetchCities, City } from '@/services/ibgeApi';
@@ -10,24 +11,10 @@ interface CityFieldProps {
 }
 
 const CityField: React.FC<CityFieldProps> = ({ value, onChange }) => {
-  const [cities, setCities] = useState<City[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-    const loadCities = async () => {
-      setLoading(true);
-      try {
-        const data = await fetchCities();
-        setCities(data);
-      } catch (error) {
-        console.error('Erro ao buscar cidades:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadCities();
-  }, []);
+  const { data: cities = [], isLoading } = useQuery({
+    queryKey: ['ibge-cities'],
+    queryFn: fetchCities
+  });
 
   return (
     <div className="flex items-start gap-2">
@@ -43,7 +30,7 @@ const CityField: React.FC<CityFieldProps> = ({ value, onChange }) => {
             <SelectValue placeholder="Cidade/UF do imóvel a ser dado em Garantia" />
           </SelectTrigger>
           <SelectContent>
-            {loading && (
+            {isLoading && (
               <SelectItem value="" disabled>
                 Carregando...
               </SelectItem>

@@ -3,11 +3,14 @@ export interface City {
   uf: string;
 }
 
+import axios from 'axios';
+
 /**
  * Busca a lista de cidades do Brasil via API do IBGE
  *
  * @returns {Promise<City[]>} Array com nome da cidade e sigla do estado
  */
+
 interface IBGECityResponse {
   nome: string;
   microrregiao: {
@@ -20,15 +23,9 @@ interface IBGECityResponse {
 }
 
 export const fetchCities = async (): Promise<City[]> => {
-  const response = await fetch(
-    'https://servicodados.ibge.gov.br/api/v1/localidades/municipios?orderBy=nome'
+  const { data } = await axios.get<IBGECityResponse[]>(
+    'https://servicodados.ibge.gov.br/api/v1/localidades/estados/SP/municipios'
   );
-
-  if (!response.ok) {
-    throw new Error('Falha ao buscar cidades');
-  }
-
-  const data: IBGECityResponse[] = await response.json();
 
   return data.map((cidade) => ({
     nome: cidade.nome,
