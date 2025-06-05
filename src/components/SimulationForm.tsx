@@ -46,7 +46,7 @@ import { Button } from '@/components/ui/button';
 import { formatBRL } from '@/utils/formatters';
 import { validateForm } from '@/utils/validations';
 import { simulateCredit } from '@/services/simulationApi';
-import CityField from './form/CityField';
+import CityAutocomplete from './form/CityAutocomplete';
 import LoanAmountField from './form/LoanAmountField';
 import GuaranteeAmountField from './form/GuaranteeAmountField';
 import InstallmentsField from './form/InstallmentsField';
@@ -191,7 +191,7 @@ const SimulationForm: React.FC = () => {
           {!resultado ? (
             <form onSubmit={handleSubmit} className="space-y-2">
               
-              <CityField value={cidade} onChange={setCidade} />
+              <CityAutocomplete value={cidade} onCityChange={setCidade} />
 
               <LoanAmountField value={emprestimo} onChange={handleEmprestimoChange} />
               
