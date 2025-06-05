@@ -68,7 +68,7 @@ const ImageOptimizer: React.FC<ImageOptimizerProps> = ({
       src={src}
       alt={alt}
       loading={priority ? "eager" : "lazy"}
-      className={`object-cover w-full h-full ${className}`}
+      className={`object-cover w-full max-w-full h-auto ${className}`}
       decoding="async"
     />
   );

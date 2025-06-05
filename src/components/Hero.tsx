@@ -45,7 +45,7 @@ const Hero: React.FC = () => {
       {/* Sobreposição para melhor contraste do texto */}
       <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-black/10 to-black/40"></div>
       <div className="container mx-auto px-4 relative z-10 flex-grow flex flex-col justify-center">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-center">
           {/* Lado Esquerdo */}
           <div className="text-white space-y-4 md:space-y-6">
             <div>
@@ -89,7 +89,7 @@ const Hero: React.FC = () => {
             </div>
           </div>
 
-            <div className="w-full max-w-2xl mx-auto lg:max-w-none">
+          <div className="w-full sm:w-3/4 md:w-2/3 lg:w-full max-w-2xl lg:max-w-none mx-auto">
             <div className="hero-video">
               <OptimizedYouTube
                 videoId="E9lwL6R2l1s"

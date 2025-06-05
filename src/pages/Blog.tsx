@@ -153,7 +153,7 @@ const Blog = () => {
                 <img
                   src={post.imageUrl}
                   alt={post.title}
-                  className="w-full h-48 object-cover rounded-t-xl"
+                  className="w-full h-48 object-cover rounded-t-xl max-w-full h-auto"
                   loading="lazy"
                 />
                 <div className="p-6">
