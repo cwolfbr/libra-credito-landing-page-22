@@ -97,7 +97,8 @@ const SimulationForm: React.FC = () => {
         numero_parcelas: parcelas,
         amortizacao: amortizacao,
         juros: 1.19,
-        carencia: 1
+        carencia: 1,
+        cidade: cidade
       };
 
       console.log('Enviando payload:', payload);
