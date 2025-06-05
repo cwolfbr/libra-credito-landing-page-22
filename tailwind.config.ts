@@ -70,7 +70,7 @@ export default {
 					navy: '#003399', // Cor principal
 					gold: '#D4AF37',
 					silver: '#F0F0F0',
-					blue: '#00ccff', // Cor secundária
+					blue: '#003399', // Cor de enfase alterada
 					light: '#F8F9FA'
 				}
 			},

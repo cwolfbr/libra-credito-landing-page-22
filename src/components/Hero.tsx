@@ -39,9 +39,11 @@ const Hero: React.FC = () => {
 
   return (
     <section 
-      className="min-h-[100vh] pt-header pb-4 bg-gradient-to-br from-[#003399] via-[#0066cc] to-[#00ccff] relative flex flex-col justify-center" 
+      className="min-h-[100vh] pt-header pb-4 bg-gradient-to-br from-white to-[#003399] relative flex flex-col justify-center" 
       aria-labelledby="hero-heading"
     >
+      {/* Sobreposição para melhor contraste do texto */}
+      <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-black/10 to-black/40"></div>
       <div className="container mx-auto px-4 relative z-10 flex-grow flex flex-col justify-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center">
           {/* Lado Esquerdo */}
