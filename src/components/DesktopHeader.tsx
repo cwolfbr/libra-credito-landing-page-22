@@ -47,13 +47,13 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white" role="banner">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-libra-navy text-white" role="banner">
       {/* Faixa superior com aviso */}
       <div className="bg-libra-navy">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center py-3">
             <div className="flex items-center text-white text-sm font-semibold">
-              <Info className="w-4 h-4 mr-2 text-white" />
+              <Info className="w-4 h-4 mr-2 text-libra-gold" />
               A Libra não realiza nenhum tipo de cobrança até a liberação do crédito
             </div>
           </div>
@@ -61,7 +61,7 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
       </div>
 
       {/* Faixa principal */}
-      <div className="border-b border-gray-100">
+      <div className="border-b border-libra-gold/20">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             {/* Logo e slogan */}
@@ -108,16 +108,16 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
                 size="default"
                 onClick={onPortalClientes}
                 aria-label="Acessar Portal de Clientes"
-                className="bg-transparent text-libra-navy border-2 border-libra-navy hover:bg-libra-navy hover:text-white transition-colors"
+                className="bg-transparent border-libra-gold text-libra-gold hover:bg-libra-gold hover:text-libra-navy transition-colors rounded-full"
               >
                 Portal de Clientes
               </Button>
               
-              <Button 
+              <Button
                 onClick={onSimulateNow}
                 size="default"
                 aria-label="Simular crédito agora"
-                className="px-6 font-bold bg-libra-navy text-white hover:bg-libra-navy/90 shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5"
+                className="bg-libra-gold text-libra-navy font-semibold rounded-full py-3 px-8 shadow-lg hover:shadow-2xl transition duration-300"
               >
                 Simule Agora
               </Button>

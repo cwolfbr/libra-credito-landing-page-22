@@ -46,7 +46,7 @@ const QuemSomos = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="pt-header">
+      <main className="pt-header px-4 py-12 sm:px-6 md:px-8 lg:px-16 lg:py-20">
         {/* Hero Section */}
         <section className="py-4 md:py-12">
           <div className="container mx-auto px-4">

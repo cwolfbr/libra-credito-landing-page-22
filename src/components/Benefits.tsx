@@ -24,10 +24,10 @@ const usageOptions = [
 
 const UsageCard: React.FC<{title: string, description: string, icon: React.ComponentType<any>, isMobile: boolean}> = ({ title, description, icon: IconComponent, isMobile }) => {
   return (
-    <div className={`bg-white rounded-lg shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300 ${isMobile ? 'p-4' : 'p-5'}`}>
+    <div className={`bg-white shadow-lg rounded-2xl p-6 hover:shadow-xl transition-shadow duration-300`}>
       <div className="text-center">
-        <div className="bg-libra-blue rounded-full p-3 w-fit mx-auto mb-3">
-          <IconComponent className={`${isMobile ? 'w-6 h-6' : 'w-7 h-7'} text-white`} />
+        <div className="bg-libra-gray rounded-full p-3 w-fit mx-auto mb-3">
+          <IconComponent className={`${isMobile ? 'w-6 h-6' : 'w-7 h-7'} text-libra-gold`} />
         </div>
         <h3 className={`${isMobile ? 'text-lg font-bold' : 'text-xl font-bold'} text-libra-navy mb-2`}>{title}</h3>
         <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600`}>{description}</p>
@@ -46,10 +46,10 @@ const Benefits: React.FC = () => {
           <p className={`${isMobile ? 'text-sm' : 'text-lg'} text-libra-blue font-semibold uppercase tracking-wider mb-6`}>
             Soluções para cada necessidade
           </p>
-          <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy mb-4`}>
+          <h2 className="text-3xl sm:text-4xl font-bold text-libra-navy mb-8">
             Como usar o Crédito com Garantia de Imóvel
           </h2>
-          <p className={`${isMobile ? 'text-base' : 'text-lg'} text-gray-600 max-w-3xl mx-auto`}>
+          <p className="text-lg sm:text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto mt-6 mb-6">
             Descubra as principais formas de usar o crédito com garantia de imóvel para transformar sua vida financeira
           </p>
         </div>

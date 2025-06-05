@@ -42,7 +42,7 @@ const Index: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main role="main" className="flex-grow">
+      <main role="main" className="flex-grow px-4 py-12 sm:px-6 md:px-8 lg:px-16 lg:py-20">
         <Hero />
         
         <TrustBar />

@@ -22,8 +22,11 @@ export default {
 			fontFamily: {
 				sans: ['Montserrat', 'sans-serif'],
 			},
-			colors: {
-				border: 'hsl(var(--border))',
+                        colors: {
+                                'libra-navy': '#0A174E',
+                                'libra-gold': '#D4AF37',
+                                'libra-gray': '#F5F5F5',
+                                border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
 				background: 'hsl(var(--background))',

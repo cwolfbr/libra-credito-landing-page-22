@@ -33,7 +33,7 @@ const TestimonialCard = memo(({ name, age, text, isMobile, isActive, currentInde
 }) => {
   return (
     <div className={`absolute inset-0 transition-opacity duration-500 ${isActive ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-      <div className="bg-white p-4 md:p-6 rounded-lg shadow-md border border-gray-100 h-full flex flex-col">
+      <div className="bg-libra-gray border border-gray-200 rounded-2xl p-8 shadow-md h-full flex flex-col">
         <div className="flex items-start gap-3 mb-2">
           <div className="bg-gray-100 rounded-full p-2">
             <User className="w-4 h-4 text-libra-navy" />
@@ -78,13 +78,13 @@ const Testimonials: React.FC = () => {
   }, []);
   
   return (
-    <section className={`${isMobile ? 'py-8' : 'py-16 md:py-24'} bg-white`}>
+    <section className="py-20 sm:py-24 md:py-32 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-6 md:mb-12">
-          <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy mb-2 md:mb-4`}>
+          <h2 className="text-3xl sm:text-4xl font-bold text-libra-navy mb-8">
             O que nossos clientes dizem
           </h2>
-          <p className={`${isMobile ? 'text-sm px-4' : 'text-lg'} text-gray-600 max-w-3xl mx-auto`}>
+          <p className="text-lg sm:text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto mt-6 mb-6">
             Veja como o crédito com garantia de imóvel transformou a vida financeira de nossos clientes com taxas a partir de 1,19% a.m. e prazo de até 180 meses.
           </p>
         </div>

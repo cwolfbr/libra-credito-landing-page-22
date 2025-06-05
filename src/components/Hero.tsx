@@ -38,8 +38,8 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <section 
-      className="min-h-[100vh] pt-header pb-4 bg-gradient-to-br from-white to-[#003399] relative flex flex-col justify-center" 
+    <section
+      className="min-h-[100vh] pt-header py-20 sm:py-24 md:py-32 bg-gradient-to-br from-white to-[#003399] relative flex flex-col justify-center"
       aria-labelledby="hero-heading"
     >
       {/* Sobreposição para melhor contraste do texto */}
@@ -47,24 +47,24 @@ const Hero: React.FC = () => {
       <div className="container mx-auto px-4 relative z-10 flex-grow flex flex-col justify-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center">
           {/* Lado Esquerdo */}
-          <div className="text-white space-y-4 md:space-y-6">
+          <div className="space-y-4 md:space-y-6">
             <div>
-              <h1 id="hero-heading" className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
+              <h1 id="hero-heading" className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-libra-navy mb-4">
                 Transforme seu Patrimônio<br />
                 em Oportunidades
               </h1>
               <div className="space-y-3 md:space-y-4">
-                <p className="text-lg md:text-xl text-white/90 leading-relaxed font-medium">
+                <p className="text-lg md:text-xl text-gray-600 leading-relaxed font-medium">
                   Crédito inteligente para quem construiu história.
                   Até R$ 5 milhões com as menores taxas do mercado.
                 </p>
                 <div className="flex items-center gap-3">
-                  <Shield className="w-5 h-5 text-white/80 flex-shrink-0" />
-                  <p className="text-base md:text-lg text-white/90 leading-relaxed">
+                  <Shield className="w-5 h-5 text-libra-gold flex-shrink-0" />
+                  <p className="text-base md:text-lg text-gray-600 leading-relaxed">
                     Regulamentado pelo Banco Central - Segurança e transparência
                   </p>
                 </div>
-                <p className="text-base md:text-lg text-white/90 leading-relaxed">
+                <p className="text-base md:text-lg text-gray-600 leading-relaxed">
                   Taxas a partir de 1,19% a.m. • Até 180 meses • 100% online
                 </p>
               </div>
