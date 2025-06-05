@@ -11,7 +11,11 @@ interface CityFieldProps {
 }
 
 const CityField: React.FC<CityFieldProps> = ({ value, onChange }) => {
-  const { data: cities = [], isLoading } = useQuery({
+  const {
+    data: cities = [],
+    isLoading,
+    isError
+  } = useQuery({
     queryKey: ['ibge-cities'],
     queryFn: fetchCities
   });
@@ -33,6 +37,11 @@ const CityField: React.FC<CityFieldProps> = ({ value, onChange }) => {
             {isLoading && (
               <SelectItem value="" disabled>
                 Carregando...
+              </SelectItem>
+            )}
+            {isError && !isLoading && (
+              <SelectItem value="" disabled>
+                Erro ao carregar cidades
               </SelectItem>
             )}
             {cities.map((c) => (
