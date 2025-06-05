@@ -35,6 +35,20 @@
       min-height: calc(100vh - var(--header-offset-desktop));
     }
   }
+  
+  /* Otimizações críticas para LCP */
+  .lcp-image {
+    content-visibility: auto;
+    contain-intrinsic-size: 480px 360px;
+    transform: translateZ(0); /* Força GPU acceleration */
+    will-change: auto;
+  }
+  
+  /* Otimização de rendering para elemento LCP */
+  .lcp-container {
+    contain: layout style paint;
+    isolation: isolate;
+  }
 }
 
 @layer base {
