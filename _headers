@@ -26,6 +26,12 @@
     Cross-Origin-Resource-Policy = "cross-origin"
 
 [[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    X-Content-Type-Options = "nosniff"
+
+[[headers]]
   for = "/index.html"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
@@ -46,5 +52,10 @@
 
 [[headers]]
   for = "/*.webp"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.avif"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"

@@ -12,14 +12,105 @@
     <link rel="preconnect" href="https://img.youtube.com">
     <link rel="dns-prefetch" href="https://www.youtube-nocookie.com">
     
-    <!-- Preload LCP Image (YouTube Thumbnail) -->
-    <link rel="preload" href="https://img.youtube.com/vi/E9lwL6R2l1s/hqdefault.jpg" as="image" fetchpriority="high">
+    <!-- Preload LCP Image (Local Optimized) -->
+    <link rel="preload" href="/images/video-thumbnail.webp" as="image" fetchpriority="high">
+    <link rel="preload" href="/images/video-thumbnail.jpg" as="image" fetchpriority="high">
     
     <!-- Preload Critical Font -->
     <link rel="preload" href="https://fonts.gstatic.com/s/montserrat/v26/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtr6Hw5aXp-obK4.woff2" as="font" type="font/woff2" crossorigin>
     
-    <!-- Font Display Optimized -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS Crítico Inline -->
+    <style>
+      /* CSS Crítico Above-the-Fold */
+      *, *::before, *::after { box-sizing: border-box; }
+      * { margin: 0; }
+      body { line-height: 1.5; -webkit-font-smoothing: antialiased; }
+      
+      :root {
+        --libra-blue: #003399;
+        --libra-navy: #001166;
+        --libra-gold: #D4AF37;
+        --header-height: 80px;
+      }
+      
+      html, body { height: 100%; font-family: 'Montserrat', system-ui, sans-serif; }
+      #root { height: 100%; }
+      
+      .hero-section {
+        min-height: 100vh;
+        padding-top: var(--header-height);
+        background: linear-gradient(135deg, #003399 0%, #0066cc 50%, #00ccff 100%);
+        color: white;
+        display: flex;
+        align-items: center;
+      }
+      
+      .hero-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        align-items: center;
+      }
+      
+      @media (min-width: 1024px) {
+        .hero-container {
+          grid-template-columns: 1fr 1fr;
+          gap: 3rem;
+        }
+      }
+      
+      .hero-h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 1rem;
+      }
+      
+      @media (min-width: 768px) {
+        .hero-h1 { font-size: 3rem; }
+      }
+      
+      @media (min-width: 1024px) {
+        .hero-h1 { font-size: 3.5rem; }
+      }
+      
+      .hero-video {
+        aspect-ratio: 16/9;
+        border-radius: 0.75rem;
+        overflow: hidden;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        position: relative;
+        background: #000;
+      }
+      
+      .video-thumbnail {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      
+      .loading-spinner {
+        width: 3rem;
+        height: 3rem;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-top: 3px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
+    
+    <!-- Font Display Optimized (Async) -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"></noscript>
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />

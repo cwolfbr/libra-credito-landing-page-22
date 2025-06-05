@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Play } from 'lucide-react';
+import OptimizedImage from './OptimizedImage';
 
 interface OptimizedYouTubeProps {
   videoId: string;
@@ -7,9 +8,7 @@ interface OptimizedYouTubeProps {
   className?: string;
   priority?: boolean;
   /**
-   * Optional path to a custom thumbnail image. When provided the
-   * component skips fetching the default YouTube thumbnails and
-   * uses this image instead.
+   * Path to a custom optimized thumbnail image.
    */
   thumbnailSrc?: string;
 }
@@ -24,8 +23,9 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
   const [isLoaded, setIsLoaded] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   
-  // Para LCP, usar sempre a imagem customizada se disponível, senão YouTube HQ
-  const thumbnailUrl = thumbnailSrc || `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+  // Use local optimized image or fallback to YouTube
+  const localThumbnail = thumbnailSrc || '/images/video-thumbnail.jpg';
+  const youtubeThumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
   const loadVideo = () => {
     setIsLoaded(true);
@@ -35,7 +35,7 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
     <div className={`relative w-full h-full overflow-hidden ${className}`}>
       {!isLoaded ? (
         <div 
-          className="w-full h-full cursor-pointer relative bg-black flex items-center justify-center" 
+          className="w-full h-full cursor-pointer relative bg-black flex items-center justify-center hero-video" 
           onClick={loadVideo}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -47,19 +47,17 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
           tabIndex={0}
           aria-label={`Reproduzir vídeo: ${title}`}
         >
-          <img
-            src={thumbnailUrl}
+          {/* Imagem otimizada como LCP */}
+          <OptimizedImage
+            src={thumbnailSrc ? localThumbnail : youtubeThumbnail}
+            webpSrc={thumbnailSrc ? '/images/video-thumbnail.webp' : undefined}
+            avifSrc={thumbnailSrc ? '/images/video-thumbnail.avif' : undefined}
             alt={`Miniatura do ${title}`}
-            className="absolute inset-0 w-full h-full object-cover"
-            loading={priority ? "eager" : "lazy"}
-            fetchPriority={priority ? "high" : "auto"}
-            width="480"
-            height="360"
-            decoding="async"
-            style={{
-              contentVisibility: priority ? 'visible' : 'auto',
-              containIntrinsicSize: '480px 360px'
-            }}
+            width={480}
+            height={360}
+            className="video-thumbnail"
+            priority={priority}
+            placeholder="#000000"
           />
           
           <div className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors">

@@ -87,15 +87,14 @@ const Hero: React.FC = () => {
             </div>
           </div>
 
-          {/* Vídeo */}
-          <div className="w-full max-w-2xl mx-auto lg:max-w-none">
-            <div className="aspect-video rounded-xl overflow-hidden shadow-2xl">
+            <div className="w-full max-w-2xl mx-auto lg:max-w-none">
+            <div className="hero-video">
               <OptimizedYouTube
                 videoId="E9lwL6R2l1s"
                 title="Vídeo institucional Libra Crédito"
                 priority={true}
                 className="w-full h-full"
-                thumbnailSrc="/images/media/video-cgi-libra.jpg"
+                thumbnailSrc="/images/video-thumbnail.jpg"
               />
             </div>
           </div>
