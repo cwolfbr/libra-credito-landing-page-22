@@ -17,5 +17,9 @@ export const fetchCities = async (query: string): Promise<City[]> => {
   if (!response.ok) {
     throw new Error('Erro ao buscar cidades');
   }
-  return response.json();
+  const data: City[] = await response.json();
+  // A API retorna todas as cidades correspondentes, que podem ser mais de 5 mil
+  // Entradas. Para evitar travamentos no navegador, limitamos as primeiras 20
+  // opções.
+  return data.slice(0, 20);
 };
