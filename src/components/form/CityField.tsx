@@ -1,7 +1,8 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { MapPin } from 'lucide-react';
+import { fetchCities, City } from '@/services/ibgeApi';
 
 interface CityFieldProps {
   value: string;
@@ -9,6 +10,25 @@ interface CityFieldProps {
 }
 
 const CityField: React.FC<CityFieldProps> = ({ value, onChange }) => {
+  const [cities, setCities] = useState<City[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    const loadCities = async () => {
+      setLoading(true);
+      try {
+        const data = await fetchCities();
+        setCities(data);
+      } catch (error) {
+        console.error('Erro ao buscar cidades:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCities();
+  }, []);
+
   return (
     <div className="flex items-start gap-2">
       <div className="bg-libra-light p-1.5 rounded-full mt-0.5">
@@ -23,10 +43,19 @@ const CityField: React.FC<CityFieldProps> = ({ value, onChange }) => {
             <SelectValue placeholder="Cidade/UF do imóvel a ser dado em Garantia" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="ribeirao-preto-sp">Ribeirão Preto/SP</SelectItem>
-            <SelectItem value="sao-paulo-sp">São Paulo/SP</SelectItem>
-            <SelectItem value="campinas-sp">Campinas/SP</SelectItem>
-            <SelectItem value="santos-sp">Santos/SP</SelectItem>
+            {loading && (
+              <SelectItem value="" disabled>
+                Carregando...
+              </SelectItem>
+            )}
+            {cities.map((c) => (
+              <SelectItem
+                key={`${c.nome}-${c.uf}`}
+                value={`${c.nome}-${c.uf}`}
+              >
+                {c.nome}/{c.uf}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>
