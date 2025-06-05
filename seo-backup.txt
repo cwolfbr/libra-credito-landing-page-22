@@ -1,0 +1,27 @@
+<!-- BACKUP SEO SEGURO - PARA REIMPLEMENTAR APÓS RESTAURAÇÃO -->
+
+<!-- META TAGS BÁSICAS (SEGUROS) -->
+<title>Libra Crédito | Empréstimo com Garantia de Imóvel | Home Equity</title>
+<meta name="description" content="Crédito com garantia de imóvel com as melhores taxas do mercado. Home Equity e empréstimo com garantia para consolidação de dívidas, capital de giro e mais." />
+
+<!-- OPEN GRAPH BÁSICO (SEGURO) -->
+<meta property="og:title" content="Libra Crédito | Empréstimo com Garantia de Imóvel" />
+<meta property="og:description" content="Crédito com garantia de imóvel com as melhores taxas do mercado." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="/images/logos/libra-logo.png" />
+
+<!-- SCHEMA.ORG BÁSICO (SEGURO) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FinancialService",
+  "name": "Libra Crédito",
+  "description": "Empréstimo com garantia de imóvel com as melhores taxas do mercado.",
+  "url": "https://libracredito.com.br",
+  "priceRange": "R$ 100.000 - R$ 5.000.000",
+  "areaServed": {
+    "@type": "Country",
+    "name": "Brasil"
+  }
+}
+</script>
