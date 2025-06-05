@@ -1,15 +1,11 @@
 import React, { useState, useRef } from 'react';
 import { Play } from 'lucide-react';
-import OptimizedImage from './OptimizedImage';
 
 interface OptimizedYouTubeProps {
   videoId: string;
   title: string;
   className?: string;
   priority?: boolean;
-  /**
-   * Path to a custom optimized thumbnail image.
-   */
   thumbnailSrc?: string;
 }
 
@@ -21,14 +17,25 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
   thumbnailSrc
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   
-  // Use local optimized image or fallback to YouTube
-  const localThumbnail = thumbnailSrc || '/images/video-thumbnail.jpg';
-  const youtubeThumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+  // Determinar qual imagem usar
+  const getImageSrc = () => {
+    if (thumbnailSrc && !imageError) {
+      return thumbnailSrc;
+    }
+    // Fallback para YouTube se a imagem local falhar
+    return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+  };
 
   const loadVideo = () => {
     setIsLoaded(true);
+  };
+
+  const handleImageError = () => {
+    console.log('Erro ao carregar imagem local, usando YouTube fallback');
+    setImageError(true);
   };
 
   return (
@@ -47,18 +54,36 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
           tabIndex={0}
           aria-label={`Reproduzir vídeo: ${title}`}
         >
-          {/* Imagem otimizada como LCP */}
-          <OptimizedImage
-            src={thumbnailSrc ? localThumbnail : youtubeThumbnail}
-            webpSrc={thumbnailSrc ? '/images/video-thumbnail.webp' : undefined}
-            avifSrc={thumbnailSrc ? '/images/video-thumbnail.avif' : undefined}
-            alt={`Miniatura do ${title}`}
-            width={480}
-            height={360}
-            className="video-thumbnail"
-            priority={priority}
-            placeholder="#000000"
-          />
+          {/* Usar picture element para melhor suporte */}
+          <picture className="video-thumbnail">
+            {/* WebP se disponível e não houve erro */}
+            {thumbnailSrc && !imageError && (
+              <source 
+                srcSet="/images/video-thumbnail.webp" 
+                type="image/webp"
+              />
+            )}
+            
+            {/* Imagem principal */}
+            <img
+              src={getImageSrc()}
+              alt={`Miniatura do ${title}`}
+              width={480}
+              height={360}
+              className="video-thumbnail"
+              loading={priority ? "eager" : "lazy"}
+              fetchPriority={priority ? "high" : "auto"}
+              decoding="async"
+              onError={handleImageError}
+              style={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover'
+              }}
+            />
+          </picture>
           
           <div className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors">
             <div className="w-16 h-16 md:w-20 md:h-20 bg-red-600 rounded-full flex items-center justify-center shadow-lg hover:bg-red-700 transition-colors group">
