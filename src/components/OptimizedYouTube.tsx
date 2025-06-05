@@ -51,10 +51,15 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
             src={thumbnailUrl}
             alt={`Miniatura do ${title}`}
             className="absolute inset-0 w-full h-full object-cover"
-            loading="eager"
+            loading={priority ? "eager" : "lazy"}
+            fetchPriority={priority ? "high" : "auto"}
             width="480"
             height="360"
             decoding="async"
+            style={{
+              contentVisibility: priority ? 'visible' : 'auto',
+              containIntrinsicSize: '480px 360px'
+            }}
           />
           
           <div className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors">
@@ -67,11 +72,12 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
         <iframe
           ref={iframeRef}
           className="absolute inset-0 w-full h-full"
-          src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`}
+          src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&preload=metadata`}
           title={title}
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
+          loading="lazy"
         />
       )}
     </div>
