@@ -41,10 +41,6 @@ const Hero: React.FC = () => {
     <section 
       className="min-h-[100vh] pt-header pb-4 bg-gradient-to-br from-[#003399] via-[#0066cc] to-[#00ccff] relative flex flex-col justify-center" 
       aria-labelledby="hero-heading"
-      style={{ 
-        contain: 'layout',
-        willChange: 'auto'
-      }}
     >
       <div className="container mx-auto px-4 relative z-10 flex-grow flex flex-col justify-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center">
@@ -92,7 +88,7 @@ const Hero: React.FC = () => {
           </div>
 
           {/* Vídeo */}
-          <div className="w-full max-w-2xl mx-auto lg:max-w-none lcp-container">
+          <div className="w-full max-w-2xl mx-auto lg:max-w-none">
             <div className="aspect-video rounded-xl overflow-hidden shadow-2xl">
               <OptimizedYouTube
                 videoId="E9lwL6R2l1s"

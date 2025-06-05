@@ -50,16 +50,11 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
           <img
             src={thumbnailUrl}
             alt={`Miniatura do ${title}`}
-            className="absolute inset-0 w-full h-full object-cover lcp-image"
-            loading={priority ? "eager" : "lazy"}
-            fetchPriority={priority ? "high" : "auto"}
+            className="absolute inset-0 w-full h-full object-cover"
+            loading="eager"
             width="480"
             height="360"
-            decoding={priority ? "sync" : "async"}
-            style={{
-              contentVisibility: 'auto',
-              containIntrinsicSize: '480px 360px'
-            }}
+            decoding="async"
           />
           
           <div className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors">
