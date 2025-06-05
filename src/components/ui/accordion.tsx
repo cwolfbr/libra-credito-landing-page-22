@@ -1,56 +1,141 @@
-import * as React from "react"
-import * as AccordionPrimitive from "@radix-ui/react-accordion"
-import { ChevronDown } from "lucide-react"
+import React, { useState } from 'react';
+import { ChevronDown } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-import { cn } from "@/lib/utils"
+interface AccordionProps {
+  type?: 'single' | 'multiple';
+  collapsible?: boolean;
+  children: React.ReactNode;
+  className?: string;
+}
 
-const Accordion = AccordionPrimitive.Root
+interface AccordionItemProps {
+  value: string;
+  children: React.ReactNode;
+  className?: string;
+}
 
-const AccordionItem = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
->(({ className, ...props }, ref) => (
-  <AccordionPrimitive.Item
-    ref={ref}
-    className={cn("border-b", className)}
-    {...props}
-  />
-))
-AccordionItem.displayName = "AccordionItem"
+interface AccordionTriggerProps {
+  children: React.ReactNode;
+  className?: string;
+}
 
-const AccordionTrigger = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
-  <AccordionPrimitive.Header className="flex">
-    <AccordionPrimitive.Trigger
-      ref={ref}
+interface AccordionContentProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+// Context para gerenciar estado do accordion
+const AccordionContext = React.createContext<{
+  openItems: string[];
+  toggleItem: (value: string) => void;
+  type: 'single' | 'multiple';
+}>({
+  openItems: [],
+  toggleItem: () => {},
+  type: 'single'
+});
+
+const AccordionItemContext = React.createContext<{
+  value: string;
+  isOpen: boolean;
+}>({
+  value: '',
+  isOpen: false
+});
+
+// Componente principal Accordion
+const Accordion: React.FC<AccordionProps> = ({ 
+  type = 'single', 
+  collapsible = true, 
+  children, 
+  className 
+}) => {
+  const [openItems, setOpenItems] = useState<string[]>([]);
+
+  const toggleItem = (value: string) => {
+    if (type === 'single') {
+      // No modo single, só um item pode estar aberto
+      if (openItems.includes(value)) {
+        setOpenItems(collapsible ? [] : [value]);
+      } else {
+        setOpenItems([value]);
+      }
+    } else {
+      // No modo multiple, múltiplos itens podem estar abertos
+      setOpenItems(prev => 
+        prev.includes(value) 
+          ? prev.filter(item => item !== value)
+          : [...prev, value]
+      );
+    }
+  };
+
+  return (
+    <AccordionContext.Provider value={{ openItems, toggleItem, type }}>
+      <div className={className}>
+        {children}
+      </div>
+    </AccordionContext.Provider>
+  );
+};
+
+// Componente AccordionItem
+const AccordionItem: React.FC<AccordionItemProps> = ({ value, children, className }) => {
+  const { openItems } = React.useContext(AccordionContext);
+  const isOpen = openItems.includes(value);
+
+  return (
+    <AccordionItemContext.Provider value={{ value, isOpen }}>
+      <div className={cn('border rounded-lg', className)}>
+        {children}
+      </div>
+    </AccordionItemContext.Provider>
+  );
+};
+
+// Componente AccordionTrigger
+const AccordionTrigger: React.FC<AccordionTriggerProps> = ({ children, className }) => {
+  const { toggleItem } = React.useContext(AccordionContext);
+  const { value, isOpen } = React.useContext(AccordionItemContext);
+
+  return (
+    <button
+      onClick={() => toggleItem(value)}
       className={cn(
-        "flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180",
+        'flex justify-between items-center w-full text-left',
+        'hover:bg-gray-50 transition-colors duration-200',
+        'focus:outline-none focus:ring-2 focus:ring-libra-blue focus:ring-offset-2',
         className
       )}
-      {...props}
     >
       {children}
-      <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
-    </AccordionPrimitive.Trigger>
-  </AccordionPrimitive.Header>
-))
-AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName
+      <ChevronDown 
+        className={cn(
+          'w-5 h-5 transition-transform duration-200 text-gray-500',
+          isOpen && 'transform rotate-180'
+        )}
+      />
+    </button>
+  );
+};
 
-const AccordionContent = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>
->(({ className, children, ...props }, ref) => (
-  <AccordionPrimitive.Content
-    ref={ref}
-    className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
-    {...props}
-  >
-    <div className={cn("pb-4 pt-0", className)}>{children}</div>
-  </AccordionPrimitive.Content>
-))
+// Componente AccordionContent
+const AccordionContent: React.FC<AccordionContentProps> = ({ children, className }) => {
+  const { isOpen } = React.useContext(AccordionItemContext);
 
-AccordionContent.displayName = AccordionPrimitive.Content.displayName
+  return (
+    <div
+      className={cn(
+        'overflow-hidden transition-all duration-200 ease-in-out',
+        isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+      )}
+    >
+      <div className={className}>
+        {children}
+      </div>
+    </div>
+  );
+};
 
-export { Accordion, AccordionItem, AccordionTrigger, AccordionContent }
+export { Accordion, AccordionItem, AccordionTrigger, AccordionContent };
