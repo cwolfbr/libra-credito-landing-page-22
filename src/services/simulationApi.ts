@@ -18,6 +18,7 @@ export interface SimulationPayload {
   amortizacao: string;
   juros: number;
   carencia: number;
+  cidade: string;
 }
 
 /**
@@ -74,7 +75,8 @@ export const simulateCredit = async (payload: SimulationPayload): Promise<Simula
     juros: Number(payload.juros),
     numero_parcelas: Number(payload.numero_parcelas),
     carencia: Number(payload.carencia),
-    amortizacao: payload.amortizacao
+    amortizacao: payload.amortizacao,
+    cidade: payload.cidade
   };
 
   console.log('Dados formatados para envio:', formattedData);
