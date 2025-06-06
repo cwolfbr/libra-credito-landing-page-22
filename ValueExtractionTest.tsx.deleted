@@ -1,0 +1,55 @@
+import React from 'react';
+import { extractMonetaryValue } from '@/utils/apiMessageAnalyzer';
+
+/**
+ * Componente temporário para testar a extração de valores
+ */
+const ValueExtractionTest: React.FC = () => {
+  const testCases = [
+    { input: '600000.0', expected: 600000, description: 'Formato API simples' },
+    { input: '600.000,00', expected: 600000, description: 'Formato brasileiro' },
+    { input: '600,000.00', expected: 600000, description: 'Formato americano' },
+    { input: 'R$ 600000.0', expected: 600000, description: 'Com símbolo R$' },
+    { input: '1500000.0', expected: 1500000, description: 'Valor maior' },
+    { input: '60000.0', expected: 60000, description: 'Valor menor' },
+  ];
+
+  return (
+    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-4">
+      <h3 className="font-bold text-yellow-800 mb-3">🧪 Teste de Extração de Valores</h3>
+      
+      <div className="space-y-2">
+        {testCases.map((test, index) => {
+          const result = extractMonetaryValue(test.input);
+          const isCorrect = result === test.expected;
+          
+          return (
+            <div key={index} className={`p-2 rounded text-sm ${
+              isCorrect ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+            }`}>
+              <div className="font-mono">
+                <strong>Input:</strong> "{test.input}" → <strong>Result:</strong> {result.toLocaleString('pt-BR')} 
+                <span className="ml-2">
+                  {isCorrect ? '✅' : `❌ (esperado: ${test.expected.toLocaleString('pt-BR')})`}
+                </span>
+              </div>
+              <div className="text-xs opacity-75">{test.description}</div>
+            </div>
+          );
+        })}
+      </div>
+      
+      <div className="mt-3 p-2 bg-white rounded border text-xs">
+        <strong>Teste com seu cenário:</strong>
+        <div className="font-mono">
+          extractMonetaryValue("600000.0") = {extractMonetaryValue("600000.0").toLocaleString('pt-BR')}
+        </div>
+        <div className="text-green-700">
+          ✅ Deveria ser: 600.000 (30% de R$ 2.000.000)
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ValueExtractionTest;

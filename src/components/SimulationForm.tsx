@@ -43,7 +43,6 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { formatBRL } from '@/utils/formatters';
 import { validateForm } from '@/utils/validations';
 import { simulateCredit } from '@/services/simulationApi';
 import CityAutocomplete from './form/CityAutocomplete';
@@ -53,6 +52,11 @@ import InstallmentsField from './form/InstallmentsField';
 import AmortizationField from './form/AmortizationField';
 import ResultCard from './ResultCard';
 import ContactForm from './ContactForm';
+import ApiMessageDisplay from './ApiMessageDisplay';
+import SmartApiMessage from './messages/SmartApiMessage';
+import SimulationResultDisplay from './SimulationResultDisplay';
+import { analyzeApiMessage, ApiMessageAnalysis } from '@/utils/apiMessageAnalyzer';
+import { formatBRL, norm } from '@/utils/formatters';
 
 const SimulationForm: React.FC = () => {
   const [emprestimo, setEmprestimo] = useState('');
@@ -69,6 +73,8 @@ const SimulationForm: React.FC = () => {
     ultimaParcela?: number;
   } | null>(null);
   const [erro, setErro] = useState('');
+  const [apiMessage, setApiMessage] = useState<ApiMessageAnalysis | null>(null);
+  const [isRuralProperty, setIsRuralProperty] = useState(false);
 
   // Validações
   const validation = validateForm(emprestimo, garantia, parcelas, amortizacao, cidade);
@@ -96,8 +102,9 @@ const SimulationForm: React.FC = () => {
         vlr_imovel: validation.garantiaValue,
         numero_parcelas: parcelas,
         amortizacao: amortizacao,
-        juros: 1.19,
-        carencia: 1
+        juros: 1.09,
+        carencia: 2,
+        cidade: cidade
       };
 
       console.log('Enviando payload:', payload);
@@ -158,8 +165,32 @@ const SimulationForm: React.FC = () => {
 
     } catch (error) {
       console.error('Erro na simulação:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
-      setErro(`Erro ao realizar simulação: ${errorMessage}`);
+      
+      if (error instanceof Error) {
+        // Analisar a mensagem para ver se é um dos padrões conhecidos
+        const analysis = analyzeApiMessage(error.message);
+        
+        if (analysis.type !== 'unknown_error') {
+          // É uma mensagem estruturada da API
+          setApiMessage(analysis);
+          setErro(''); // Limpar erro genérico
+        } else {
+          // É um erro genérico
+          let errorMessage = 'Erro desconhecido ao realizar simulação';
+          
+          if (error.message.includes('HTTP') || error.message.includes('fetch')) {
+            errorMessage = 'Erro de conexão com o servidor. Verifique sua internet e tente novamente.';
+          } else {
+            errorMessage = error.message;
+          }
+          
+          setErro(errorMessage);
+          setApiMessage(null);
+        }
+      } else {
+        setErro('Erro desconhecido ao realizar simulação');
+        setApiMessage(null);
+      }
     } finally {
       setLoading(false);
     }
@@ -173,22 +204,51 @@ const SimulationForm: React.FC = () => {
     setCidade('');
     setResultado(null);
     setErro('');
+    setApiMessage(null);
+    setIsRuralProperty(false);
+  };
+
+  // Função para ajustar valores automaticamente (30%)
+  const handleAdjustValues = (novoEmprestimo: number, isRural: boolean = false) => {
+    setEmprestimo(formatBRL(novoEmprestimo.toString()));
+    setIsRuralProperty(isRural);
+    setApiMessage(null);
+    setErro('');
+  };
+
+  // Função para tentar novamente
+  const handleTryAgain = () => {
+    setApiMessage(null);
+    setErro('');
+    setResultado(null);
+    // Manter os valores preenchidos para facilitar nova tentativa
+  };
+
+  // Função para nova simulação (limpa resultado mas mantém valores)
+  const handleNewSimulation = () => {
+    setResultado(null);
+    setApiMessage(null);
+    setErro('');
+    // Manter valores para facilitar nova simulação
   };
 
   return (
-    <div className="container mx-auto px-3 py-2 max-w-xl min-h-[calc(100vh-4rem)]">
-      <Card className="shadow-lg">
-        <CardHeader className="text-center pb-2">
-          <CardTitle className="text-lg md:text-xl font-bold text-libra-navy mb-1">
-            Sua simulação em um clique!
-          </CardTitle>
-          <p className="text-gray-600 text-xs">
-            Com apenas algumas informações você já encontrará a proposta ideal, com parcelas que cabem no seu bolso!
-          </p>
-        </CardHeader>
-        
-        <CardContent className="p-3 md:p-4">
-          {!resultado ? (
+    <div className={`container mx-auto px-3 py-2 min-h-[calc(100vh-4rem)] ${
+      resultado ? 'max-w-6xl' : 'max-w-xl'
+    }`}>
+      <div className={`${resultado ? 'grid grid-cols-1 lg:grid-cols-2 gap-6' : ''}`}>
+        {/* Formulário de Simulação */}
+        <Card className="shadow-lg">
+          <CardHeader className="text-center pb-2">
+            <CardTitle className="text-lg md:text-xl font-bold text-libra-navy mb-1">
+              Sua simulação em um clique!
+            </CardTitle>
+            <p className="text-gray-600 text-xs">
+              Com apenas algumas informações você já encontrará a proposta ideal, com parcelas que cabem no seu bolso!
+            </p>
+          </CardHeader>
+          
+          <CardContent className="p-3 md:p-4">
             <form onSubmit={handleSubmit} className="space-y-2">
               
               <CityAutocomplete value={cidade} onCityChange={setCidade} />
@@ -237,17 +297,49 @@ const SimulationForm: React.FC = () => {
                 </Button>
               </div>
 
-              {erro && (
-                <div className="text-red-500 text-center text-xs mt-2">
-                  {erro}
+              {/* Mensagem inteligente da API */}
+              {apiMessage && (
+                <div className="mt-3">
+                  <SmartApiMessage
+                    analysis={apiMessage}
+                    valorImovel={validation.garantiaValue}
+                    onAdjustValues={handleAdjustValues}
+                    onTryAgain={handleTryAgain}
+                  />
+                </div>
+              )}
+              
+              {/* Erro genérico */}
+              {erro && !apiMessage && (
+                <div className="mt-3">
+                  <ApiMessageDisplay 
+                    message={erro}
+                    type="error"
+                    onRetry={() => {
+                      setErro('');
+                      if (validation.formularioValido) {
+                        handleSubmit(new Event('submit') as any);
+                      }
+                    }}
+                    showRetryButton={validation.formularioValido}
+                  />
                 </div>
               )}
             </form>
-          ) : (
-            <ContactForm simulationResult={resultado} />
-          )}
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+
+        {/* Resultado da Simulação */}
+        {resultado && (
+          <SimulationResultDisplay
+            resultado={resultado}
+            valorEmprestimo={validation.emprestimoValue}
+            valorImovel={validation.garantiaValue}
+            cidade={cidade}
+            onNewSimulation={handleNewSimulation}
+          />
+        )}
+      </div>
     </div>
   );
 };

@@ -14,9 +14,19 @@ interface ContactFormProps {
     primeiraParcela?: number;
     ultimaParcela?: number;
   };
+  className?: string;
+  inputClassName?: string;
+  buttonClassName?: string;
+  compact?: boolean;
 }
 
-const ContactForm: React.FC<ContactFormProps> = ({ simulationResult }) => {
+const ContactForm: React.FC<ContactFormProps> = ({ 
+  simulationResult, 
+  className = '',
+  inputClassName = '',
+  buttonClassName = '',
+  compact = false 
+}) => {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [telefone, setTelefone] = useState('');
@@ -65,6 +75,72 @@ const ContactForm: React.FC<ContactFormProps> = ({ simulationResult }) => {
     style: 'currency',
     currency: 'BRL'
   });
+
+  // Versão compacta para uso no resultado visual
+  if (compact) {
+    return (
+      <form onSubmit={handleSubmit} className={`space-y-3 ${className}`}>
+        <Input
+          value={nome}
+          onChange={(e) => setNome(e.target.value)}
+          placeholder="Nome Completo"
+          className={inputClassName}
+          required
+        />
+        
+        <Input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="E-mail"
+          className={inputClassName}
+          required
+        />
+        
+        <Input
+          type="tel"
+          value={telefone}
+          onChange={(e) => setTelefone(e.target.value)}
+          placeholder="Telefone (99) 99999-9999"
+          className={inputClassName}
+          required
+        />
+
+        <div className="flex items-start gap-2">
+          <Checkbox
+            id="aceite-compact"
+            checked={aceitePrivacidade}
+            onCheckedChange={(checked) => setAceitePrivacidade(checked as boolean)}
+          />
+          <label htmlFor="aceite-compact" className="text-xs text-white/90 leading-tight">
+            Concordo com a{' '}
+            <Link 
+              to="/politica-privacidade" 
+              className="underline hover:text-white"
+              target="_blank"
+            >
+              Política de Privacidade
+            </Link>
+          </label>
+        </div>
+
+        <Button
+          type="submit"
+          disabled={loading || !aceitePrivacidade}
+          className={`w-full py-3 text-sm font-semibold ${buttonClassName}`}
+        >
+          {loading ? (
+            <div className="flex items-center gap-2">
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
+              Enviando...
+            </div>
+          ) : (
+            'SOLICITAR ANÁLISE'
+          )}
+        </Button>
+      </form>
+    );
+  }
 
   return (
     <div className="space-y-4">
