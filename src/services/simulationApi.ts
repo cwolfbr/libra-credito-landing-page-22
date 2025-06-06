@@ -92,16 +92,16 @@ export const simulateCredit = async (payload: SimulationPayload): Promise<Simula
       body: JSON.stringify(formattedData)
     });
 
-    if (!response.ok) {
-      throw new Error(`Erro HTTP ${response.status}: ${response.statusText}`);
-    }
-
     const data = await response.json();
     console.log('Resposta completa da API:', JSON.stringify(data, null, 2));
 
     // Se a API retornou apenas { mensagem: "texto de erro" }
     if (data && typeof data === 'object' && 'mensagem' in data && Object.keys(data).length === 1) {
       return { mensagem: data.mensagem } as SimulationError;
+    }
+
+    if (!response.ok) {
+      throw new Error(`Erro HTTP ${response.status}: ${response.statusText}`);
     }
 
     const resultadoFormatado: SimulationResponse = {
