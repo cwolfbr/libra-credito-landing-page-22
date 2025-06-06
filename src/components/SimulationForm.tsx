@@ -106,6 +106,12 @@ const SimulationForm: React.FC = () => {
 
       console.log('Resposta recebida:', data);
 
+      // Se a API retornar um objeto contendo apenas { mensagem }
+      if ('mensagem' in data) {
+        setErro(data.mensagem);
+        return;
+      }
+
       // Verificar se a resposta tem dados válidos
       if (!data || !data.parcelas || !Array.isArray(data.parcelas) || data.parcelas.length === 0) {
         console.error('Estrutura de resposta inválida:', data);
@@ -188,6 +194,9 @@ const SimulationForm: React.FC = () => {
         </CardHeader>
         
         <CardContent className="p-3 md:p-4">
+          {erro && (
+            <div className="text-red-500 text-center text-xs mb-2">{erro}</div>
+          )}
           {!resultado ? (
             <form onSubmit={handleSubmit} className="space-y-2">
               
@@ -236,12 +245,6 @@ const SimulationForm: React.FC = () => {
                   LIMPAR
                 </Button>
               </div>
-
-              {erro && (
-                <div className="text-red-500 text-center text-xs mt-2">
-                  {erro}
-                </div>
-              )}
             </form>
           ) : (
             <ContactForm simulationResult={resultado} />

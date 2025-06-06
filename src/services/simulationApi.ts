@@ -40,6 +40,10 @@ export interface SimulationResponse {
   parcelas: ParcelaItem[];
 }
 
+export interface SimulationError {
+  mensagem: string;
+}
+
 /**
  * Realiza simulação de crédito com garantia de imóvel
  * 
@@ -64,7 +68,7 @@ export interface SimulationResponse {
  * });
  * ```
  */
-export const simulateCredit = async (payload: SimulationPayload): Promise<SimulationResponse> => {
+export const simulateCredit = async (payload: SimulationPayload): Promise<SimulationResponse | SimulationError> => {
   console.log('Payload enviado:', payload);
   
   // Formatar dados como números simples, não strings
@@ -88,14 +92,23 @@ export const simulateCredit = async (payload: SimulationPayload): Promise<Simula
       body: JSON.stringify(formattedData)
     });
 
+    const data = await response.json();
+    console.log('Resposta completa da API:', JSON.stringify(data, null, 2));
+
+    // Se a API retornou apenas { mensagem: "texto de erro" }
+    if (data && typeof data === 'object' && 'mensagem' in data && Object.keys(data).length === 1) {
+      return { mensagem: data.mensagem } as SimulationError;
+    }
+
     if (!response.ok) {
       throw new Error(`Erro HTTP ${response.status}: ${response.statusText}`);
     }
 
-    const data = await response.json();
-    console.log('Resposta completa da API:', JSON.stringify(data, null, 2));
-    
-    return data;
+    const resultadoFormatado: SimulationResponse = {
+      parcelas: data.parcelas
+    };
+
+    return resultadoFormatado;
   } catch (error) {
     console.error('Erro na chamada da API:', error);
     throw error;
