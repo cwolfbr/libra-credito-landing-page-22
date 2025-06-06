@@ -44,6 +44,26 @@ export interface SimulacaoData {
   status?: string;
 }
 
+export interface ParceiroData {
+  id?: string;
+  session_id: string;
+  nome: string;
+  email: string;
+  telefone: string;
+  cidade: string;
+  cnpj?: string;
+  tempo_home_equity: string;
+  perfil_cliente: string;
+  ramo_atuacao: string;
+  origem: string;
+  mensagem?: string;
+  ip_address?: string;
+  user_agent?: string;
+  status?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
 export interface UserJourneyData {
   id?: string;
   session_id: string;
@@ -85,6 +105,11 @@ export interface Database {
         Row: SimulacaoData;
         Insert: Omit<SimulacaoData, 'id' | 'created_at'>;
         Update: Partial<Omit<SimulacaoData, 'id' | 'created_at'>>;
+      };
+      parceiros: {
+        Row: ParceiroData;
+        Insert: Omit<ParceiroData, 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Omit<ParceiroData, 'id' | 'created_at'>>;
       };
       user_journey: {
         Row: UserJourneyData;
@@ -130,6 +155,41 @@ export const supabaseApi = {
   async updateSimulacaoStatus(id: string, status: string) {
     const { data, error } = await supabase
       .from('simulacoes')
+      .update({ status })
+      .eq('id', id)
+      .select()
+      .single();
+    
+    if (error) throw error;
+    return data;
+  },
+
+  // Parceiros
+  async createParceiro(data: Database['public']['Tables']['parceiros']['Insert']) {
+    const { data: result, error } = await supabase
+      .from('parceiros')
+      .insert(data)
+      .select()
+      .single();
+    
+    if (error) throw error;
+    return result;
+  },
+
+  async getParceiros(limit = 50) {
+    const { data, error } = await supabase
+      .from('parceiros')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(limit);
+    
+    if (error) throw error;
+    return data;
+  },
+
+  async updateParceiroStatus(id: string, status: string) {
+    const { data, error } = await supabase
+      .from('parceiros')
       .update({ status })
       .eq('id', id)
       .select()

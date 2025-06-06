@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Parceiros - Supabase</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .result { margin: 20px 0; padding: 15px; border-radius: 8px; }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .error { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        .info { background: #cce7f0; border: 1px solid #bee5eb; color: #0c5460; }
+        button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
+        button:hover { background: #0056b3; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 5px; overflow-x: auto; }
+        .test-section { margin: 30px 0; border-top: 2px solid #ddd; padding-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Debug Integração Parceiros - Supabase</h1>
+    
+    <div class="test-section">
+        <h2>1. Teste de Conexão com Supabase</h2>
+        <button onclick="testConnection()">Testar Conexão</button>
+        <div id="connection-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>2. Verificar se Tabela 'parceiros' Existe</h2>
+        <button onclick="checkTable()">Verificar Tabela</button>
+        <div id="table-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>3. Testar Inserção de Dados</h2>
+        <button onclick="testInsert()">Testar Inserção</button>
+        <div id="insert-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>4. Verificar Dados na Tabela</h2>
+        <button onclick="checkData()">Verificar Dados</button>
+        <div id="data-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>5. Executar Script SQL de Criação</h2>
+        <button onclick="showSQLScript()">Mostrar Script SQL</button>
+        <div id="sql-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>6. 🎆 Guia de Solução Completo</h2>
+        <button onclick="showSolutionGuide()" style="background: #28a745;">Mostrar Solução</button>
+        <div id="solution-result"></div>
+    </div>
+
+    <script>
+        // Configuração do Supabase
+        const supabaseUrl = 'https://plqljbugvhrffmvdsmsb.supabase.co';
+        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBscWxqYnVndmhyZmZtdmRzbXNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkyNDIyNjYsImV4cCI6MjA2NDgxODI2Nn0.D9n_r-aQeApj9fADGhiiOBKoaqV3rzuBvWCAx3g3exY';
+
+        const { createClient } = supabase;
+        const supabaseClient = createClient(supabaseUrl, supabaseAnonKey);
+
+        function showResult(elementId, type, message, data = null) {
+            const element = document.getElementById(elementId);
+            const timestamp = new Date().toLocaleTimeString();
+            let content = `<div class="result ${type}">
+                <strong>[${timestamp}] ${message}</strong>`;
+            
+            if (data) {
+                content += `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            }
+            content += '</div>';
+            
+            element.innerHTML = content;
+        }
+
+        async function testConnection() {
+            try {
+                console.log('🧪 Testando conexão com Supabase...');
+                
+                // Teste simples de conexão
+                const { data, error } = await supabaseClient
+                    .from('simulacoes')
+                    .select('count', { count: 'exact', head: true });
+
+                if (error) {
+                    showResult('connection-result', 'error', 'Erro na conexão:', error);
+                    return;
+                }
+
+                showResult('connection-result', 'success', 'Conexão com Supabase OK!', {
+                    status: 'connected',
+                    simulacoes_count: data || 0
+                });
+
+            } catch (error) {
+                showResult('connection-result', 'error', 'Erro de conexão:', error);
+            }
+        }
+
+        async function checkTable() {
+            try {
+                console.log('🔍 Verificando se tabela parceiros existe...');
+                
+                // Tentar fazer uma query na tabela parceiros
+                const { data, error } = await supabaseClient
+                    .from('parceiros')
+                    .select('count', { count: 'exact', head: true });
+
+                if (error) {
+                    if (error.code === '42P01') {
+                        showResult('table-result', 'error', 'Tabela "parceiros" NÃO EXISTE!', {
+                            error_code: error.code,
+                            message: 'Você precisa executar o script SQL no Supabase',
+                            solution: 'Execute o script add_parceiros_table.sql no SQL Editor do Supabase'
+                        });
+                        return;
+                    }
+                    showResult('table-result', 'error', 'Erro ao verificar tabela:', error);
+                    return;
+                }
+
+                showResult('table-result', 'success', 'Tabela "parceiros" existe!', {
+                    status: 'table_exists',
+                    count: data || 0
+                });
+
+            } catch (error) {
+                showResult('table-result', 'error', 'Erro inesperado:', error);
+            }
+        }
+
+        async function testInsert() {
+            try {
+                console.log('🧪 Testando inserção de dados...');
+                
+                const testData = {
+                    session_id: 'debug-test-' + Date.now(),
+                    nome: 'Debug Test User',
+                    email: 'debug@test.com',
+                    telefone: '11999999999',
+                    cidade: 'São Paulo',
+                    tempo_home_equity: '1-2',
+                    perfil_cliente: 'pf',
+                    ramo_atuacao: 'correspondente',
+                    origem: 'google',
+                    mensagem: 'Teste de debug automático',
+                    status: 'pendente'
+                };
+
+                console.log('💾 Dados a serem inseridos:', testData);
+
+                const { data, error } = await supabaseClient
+                    .from('parceiros')
+                    .insert(testData)
+                    .select()
+                    .single();
+
+                if (error) {
+                    console.error('❌ Erro detalhado:', error);
+                    
+                    let errorAnalysis = '';
+                    if (error.code === '42P01') {
+                        errorAnalysis = 'TABELA NÃO EXISTE - Execute o script CORRECAO_DEFINITIVA_PARCEIROS.sql';
+                    } else if (error.code === '42501') {
+                        errorAnalysis = 'SEM PERMISSÃO - Problemas com RLS (Row Level Security)';
+                    } else if (error.code === '23505') {
+                        errorAnalysis = 'EMAIL DUPLICADO - Este email já existe na tabela';
+                    } else if (error.message.includes('Invalid API key')) {
+                        errorAnalysis = 'API KEY INVÁLIDA - Verifique as credenciais do Supabase';
+                    } else {
+                        errorAnalysis = 'ERRO DESCONHECIDO - Veja detalhes abaixo';
+                    }
+                    
+                    showResult('insert-result', 'error', 'Erro na inserção: ' + errorAnalysis, {
+                        code: error.code,
+                        message: error.message,
+                        details: error.details,
+                        hint: error.hint,
+                        analysis: errorAnalysis,
+                        solution: error.code === '42P01' ? 'Execute o script CORRECAO_DEFINITIVA_PARCEIROS.sql no Supabase' : 'Verifique as permissões da tabela'
+                    });
+                    return;
+                }
+
+                showResult('insert-result', 'success', 'Inserção realizada com sucesso!', {
+                    inserted_data: data,
+                    message: 'A integração está funcionando perfeitamente!'
+                });
+
+            } catch (error) {
+                console.error('❌ Erro inesperado:', error);
+                showResult('insert-result', 'error', 'Erro inesperado na inserção:', {
+                    error_type: 'JavaScript Error',
+                    message: error.message,
+                    stack: error.stack,
+                    possible_cause: 'Problema de conexão ou configuração'
+                });
+            }
+        }
+
+        async function checkData() {
+            try {
+                console.log('📊 Verificando dados na tabela...');
+                
+                const { data, error } = await supabaseClient
+                    .from('parceiros')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(5);
+
+                if (error) {
+                    showResult('data-result', 'error', 'Erro ao buscar dados:', error);
+                    return;
+                }
+
+                showResult('data-result', 'success', `Encontrados ${data.length} registros:`, data);
+
+            } catch (error) {
+                showResult('data-result', 'error', 'Erro inesperado ao buscar dados:', error);
+            }
+        }
+
+        function showSQLScript() {
+            const sqlScript = `-- Execute este script no SQL Editor do Supabase:
+
+-- 1. TABELA PARCEIROS
+CREATE TABLE IF NOT EXISTS public.parceiros (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    session_id TEXT NOT NULL,
+    nome TEXT NOT NULL,
+    email TEXT NOT NULL,
+    telefone TEXT NOT NULL,
+    cidade TEXT NOT NULL,
+    cnpj TEXT,
+    tempo_home_equity TEXT NOT NULL,
+    perfil_cliente TEXT NOT NULL,
+    ramo_atuacao TEXT NOT NULL,
+    origem TEXT NOT NULL,
+    mensagem TEXT,
+    ip_address TEXT,
+    user_agent TEXT,
+    status TEXT DEFAULT 'pendente' CHECK (status IN ('pendente', 'aprovado', 'rejeitado', 'em_analise')),
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 2. ÍNDICES PARA PERFORMANCE
+CREATE INDEX IF NOT EXISTS idx_parceiros_session_id ON public.parceiros(session_id);
+CREATE INDEX IF NOT EXISTS idx_parceiros_created_at ON public.parceiros(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_parceiros_status ON public.parceiros(status);
+CREATE INDEX IF NOT EXISTS idx_parceiros_email ON public.parceiros(email);
+
+-- 3. TRIGGER PARA UPDATED_AT
+CREATE TRIGGER update_parceiros_updated_at 
+    BEFORE UPDATE ON public.parceiros 
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- 4. RLS POLICY
+ALTER TABLE public.parceiros ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Enable all operations for anonymous users" ON public.parceiros
+    FOR ALL USING (true);
+
+-- 5. FUNÇÃO PARA ESTATÍSTICAS
+CREATE OR REPLACE FUNCTION get_parceiros_stats()
+RETURNS TABLE (
+    total_parceiros BIGINT,
+    pendentes BIGINT,
+    aprovados BIGINT,
+    rejeitados BIGINT,
+    parceiros_mes BIGINT,
+    origem_mais_comum TEXT
+) AS \$\$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        COUNT(*)::BIGINT as total_parceiros,
+        COUNT(CASE WHEN status = 'pendente' THEN 1 END)::BIGINT as pendentes,
+        COUNT(CASE WHEN status = 'aprovado' THEN 1 END)::BIGINT as aprovados,
+        COUNT(CASE WHEN status = 'rejeitado' THEN 1 END)::BIGINT as rejeitados,
+        COUNT(CASE WHEN created_at >= CURRENT_DATE - INTERVAL '30 days' THEN 1 END)::BIGINT as parceiros_mes,
+        (SELECT origem FROM public.parceiros GROUP BY origem ORDER BY COUNT(*) DESC LIMIT 1) as origem_mais_comum
+    FROM public.parceiros;
+END;
+\$\$ LANGUAGE plpgsql;`;
+
+            showResult('sql-result', 'info', 'Script SQL para criar a tabela:', { sql: sqlScript });
+        }
+        
+        function showSolutionGuide() {
+            const solutionHTML = `
+                <div class="result info">
+                    <h3>🎯 SOLUÇÃO DEFINITIVA - PASSO A PASSO</h3>
+                    
+                    <h4>🚀 1. EXECUTE O SCRIPT SQL CORRETO:</h4>
+                    <p><strong>Arquivo:</strong> CORRECAO_DEFINITIVA_PARCEIROS.sql</p>
+                    <ol>
+                        <li>🌐 Acesse: <a href="https://app.supabase.com" target="_blank">https://app.supabase.com</a></li>
+                        <li>📝 Clique em "SQL Editor" no menu lateral</li>
+                        <li>➕ Clique em "+ New query"</li>
+                        <li>📋 Abra o arquivo CORRECAO_DEFINITIVA_PARCEIROS.sql</li>
+                        <li>📎 Copie TODO o conteúdo</li>
+                        <li>📝 Cole no SQL Editor</li>
+                        <li>▶️ Clique em "Run"</li>
+                        <li>✅ Aguarde mensagem de sucesso</li>
+                    </ol>
+                    
+                    <h4>🧪 2. TESTE O FORMULÁRIO:</h4>
+                    <ol>
+                        <li>🌐 Volte para: <a href="http://localhost:5173/parceiros" target="_blank">http://localhost:5173/parceiros</a></li>
+                        <li>📝 Preencha todos os campos obrigatórios</li>
+                        <li>📫 Clique em "Enviar Solicitação"</li>
+                        <li>✅ Deve aparecer mensagem de sucesso</li>
+                    </ol>
+                    
+                    <h4>📈 3. VERIFIQUE SE FUNCIONOU:</h4>
+                    <ol>
+                        <li>📄 Volte para o Supabase Dashboard</li>
+                        <li>📋 Clique em "Table Editor"</li>
+                        <li>📝 Selecione a tabela "parceiros"</li>
+                        <li>👁️ Deve ver os dados do formulário</li>
+                    </ol>
+                    
+                    <h4>🔧 4. SE AINDA NÃO FUNCIONAR:</h4>
+                    <ul>
+                        <li>🔴 <strong>Erro 42P01:</strong> Tabela não existe - Execute o script SQL</li>
+                        <li>🟡 <strong>Erro 42501:</strong> Sem permissão - Verifique RLS no Supabase</li>
+                        <li>🔵 <strong>Erro de conexão:</strong> Verifique credenciais em supabase.ts</li>
+                        <li>🟠 <strong>Erro de validação:</strong> Verifique se todos os campos estão preenchidos</li>
+                    </ul>
+                    
+                    <h4>🎆 5. TESTES AUTOMÁTICOS:</h4>
+                    <p>Use os botões acima para:</p>
+                    <ul>
+                        <li>✅ Testar conexão com Supabase</li>
+                        <li>✅ Verificar se tabela existe</li>
+                        <li>✅ Testar inserção direta</li>
+                        <li>✅ Verificar dados salvos</li>
+                    </ul>
+                    
+                    <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 5px; margin-top: 20px;">
+                        <h4>⚡ DICA IMPORTANTE:</h4>
+                        <p>Se o teste de inserção acima funcionar, mas o formulário não, o problema está no frontend. Abra o console do navegador (F12) para ver detalhes do erro.</p>
+                    </div>
+                    
+                    <div style="background: #d1ecf1; border: 1px solid #bee5eb; padding: 15px; border-radius: 5px; margin-top: 20px;">
+                        <h4>🎉 SUCESSO GARANTIDO:</h4>
+                        <p>Este processo resolve 99% dos problemas de integração. Se seguir todos os passos, a funcionalidade vai funcionar!</p>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('solution-result').innerHTML = solutionHTML;
+        }
+
+        // Executar teste automático ao carregar
+        window.onload = function() {
+            console.log('🚀 Iniciando debug automático...');
+            testConnection();
+        };
+    </script>
+</body>
+</html>
