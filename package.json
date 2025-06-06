@@ -21,6 +21,7 @@
     "@radix-ui/react-select": "^2.1.1",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tooltip": "^1.1.4",
+    "@supabase/supabase-js": "^2.39.0",
     "@tanstack/react-query": "^5.56.2",
     "axios": "^1.9.0",
     "class-variance-authority": "^0.7.1",
@@ -30,13 +31,15 @@
     "react-dom": "18.2.0",
     "react-router-dom": "^6.26.2",
     "tailwind-merge": "^2.5.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
     "@types/node": "^22.5.5",
     "@types/react": "^18.3.23",
     "@types/react-dom": "^18.3.7",
+    "@types/uuid": "^9.0.7",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "autoprefixer": "^10.4.20",
     "cssnano": "^6.0.0",
@@ -52,10 +55,10 @@
     "vite": "^4.5.3"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "^4.0.0",
-    "@rollup/rollup-win32-x64-msvc": "^4.0.0",
-    "@rollup/rollup-linux-x64-musl": "^4.0.0",
+    "@rollup/rollup-darwin-arm64": "^4.0.0",
     "@rollup/rollup-darwin-x64": "^4.0.0",
-    "@rollup/rollup-darwin-arm64": "^4.0.0"
+    "@rollup/rollup-linux-x64-gnu": "^4.0.0",
+    "@rollup/rollup-linux-x64-musl": "^4.0.0",
+    "@rollup/rollup-win32-x64-msvc": "^4.0.0"
   }
 }

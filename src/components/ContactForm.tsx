@@ -5,9 +5,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Link } from 'react-router-dom';
+import { SimulationService } from '@/services/simulationService';
+import { useUserJourney } from '@/hooks/useUserJourney';
 
 interface ContactFormProps {
   simulationResult: {
+    id?: string;
     valor: number;
     amortizacao: string;
     parcelas: number;
@@ -27,44 +30,76 @@ const ContactForm: React.FC<ContactFormProps> = ({
   buttonClassName = '',
   compact = false 
 }) => {
+  const { sessionId } = useUserJourney();
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [telefone, setTelefone] = useState('');
+  const [tipoImovel, setTipoImovel] = useState<'proprio' | 'terceiro' | ''>('');
   const [aceitePrivacidade, setAceitePrivacidade] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    console.log('🔍 Debug dados da simulação:', {
+      simulationResult,
+      simulationId: simulationResult.id,
+      sessionId,
+      hasId: !!simulationResult.id,
+      hasSessionId: !!sessionId
+    });
+    
     if (!aceitePrivacidade) {
       alert('É necessário aceitar a Política de Privacidade para continuar.');
+      return;
+    }
+
+    if (!simulationResult.id) {
+      console.error('❌ ID da simulação não encontrado:', simulationResult);
+      alert('Erro: ID da simulação não encontrado. Tente simular novamente.');
+      return;
+    }
+    
+    if (!sessionId) {
+      console.error('❌ Session ID não encontrado');
+      alert('Erro: Session ID não encontrado. Tente recarregar a página.');
       return;
     }
 
     setLoading(true);
     
     try {
-      // Aqui você pode implementar o envio dos dados para sua API
-      console.log('Dados do contato:', {
+      console.log('📋 Enviando formulário de contato:', {
+        simulationId: simulationResult.id,
+        sessionId,
         nome,
         email,
         telefone,
-        simulacao: simulationResult
+        tipoImovel
       });
       
-      // Simular envio
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Usar o serviço integrado
+      await SimulationService.submitContactForm({
+        simulationId: simulationResult.id,
+        sessionId,
+        nomeCompleto: nome,
+        email,
+        telefone,
+        tipoImovel,
+        observacoes: `Simulação: ${simulationResult.amortizacao} - ${simulationResult.parcelas}x - R$ ${simulationResult.valor.toLocaleString('pt-BR')}`
+      });
       
-      alert('Solicitação enviada com sucesso! Nossa equipe entrará em contato em breve.');
+      alert('🎉 Solicitação enviada com sucesso! Nossa equipe entrará em contato em breve.');
       
       // Limpar formulário
       setNome('');
       setEmail('');
       setTelefone('');
+      setTipoImovel('');
       setAceitePrivacidade(false);
       
     } catch (error) {
-      console.error('Erro ao enviar solicitação:', error);
+      console.error('❌ Erro ao enviar solicitação:', error);
       alert('Erro ao enviar solicitação. Tente novamente.');
     } finally {
       setLoading(false);
@@ -209,11 +244,25 @@ const ContactForm: React.FC<ContactFormProps> = ({
               <p className="text-sm font-medium text-libra-navy">O imóvel em garantia é:</p>
               <div className="flex gap-4">
                 <label className="flex items-center gap-2 text-sm">
-                  <input type="radio" name="tipoImovel" value="proprio" className="text-libra-blue" />
+                  <input 
+                    type="radio" 
+                    name="tipoImovel" 
+                    value="proprio" 
+                    checked={tipoImovel === 'proprio'}
+                    onChange={(e) => setTipoImovel(e.target.value as 'proprio')}
+                    className="text-libra-blue" 
+                  />
                   Próprio
                 </label>
                 <label className="flex items-center gap-2 text-sm">
-                  <input type="radio" name="tipoImovel" value="terceiro" className="text-libra-blue" />
+                  <input 
+                    type="radio" 
+                    name="tipoImovel" 
+                    value="terceiro" 
+                    checked={tipoImovel === 'terceiro'}
+                    onChange={(e) => setTipoImovel(e.target.value as 'terceiro')}
+                    className="text-libra-blue" 
+                  />
                   De terceiro
                 </label>
               </div>

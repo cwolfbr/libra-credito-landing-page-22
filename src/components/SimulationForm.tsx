@@ -43,8 +43,10 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { validateForm } from '@/utils/validations';
-import { simulateCredit } from '@/services/simulationApi';
+import { SimulationService, SimulationResult } from '@/services/simulationService';
+import { useUserJourney } from '@/hooks/useUserJourney';
 import CityAutocomplete from './form/CityAutocomplete';
 import LoanAmountField from './form/LoanAmountField';
 import GuaranteeAmountField from './form/GuaranteeAmountField';
@@ -59,19 +61,14 @@ import { analyzeApiMessage, ApiMessageAnalysis } from '@/utils/apiMessageAnalyze
 import { formatBRL, norm } from '@/utils/formatters';
 
 const SimulationForm: React.FC = () => {
+  const { sessionId, trackSimulation } = useUserJourney();
   const [emprestimo, setEmprestimo] = useState('');
   const [garantia, setGarantia] = useState('');
   const [parcelas, setParcelas] = useState<number>(36);
   const [amortizacao, setAmortizacao] = useState('');
   const [cidade, setCidade] = useState('');
   const [loading, setLoading] = useState(false);
-  const [resultado, setResultado] = useState<{
-    valor: number;
-    amortizacao: string;
-    parcelas: number;
-    primeiraParcela?: number;
-    ultimaParcela?: number;
-  } | null>(null);
+  const [resultado, setResultado] = useState<SimulationResult | null>(null);
   const [erro, setErro] = useState('');
   const [apiMessage, setApiMessage] = useState<ApiMessageAnalysis | null>(null);
   const [isRuralProperty, setIsRuralProperty] = useState(false);
@@ -90,78 +87,45 @@ const SimulationForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!validation.formularioValido) return;
+    if (!validation.formularioValido || !sessionId) return;
 
     setLoading(true);
     setErro('');
     setResultado(null);
 
     try {
-      const payload = {
-        valor_solicitado: validation.emprestimoValue,
-        vlr_imovel: validation.garantiaValue,
-        numero_parcelas: parcelas,
-        amortizacao: amortizacao,
-        juros: 1.09,
-        carencia: 2,
-        cidade: cidade
+      // Preparar dados para o serviço (sem dados pessoais ainda)
+      const simulationInput = {
+        sessionId,
+        nomeCompleto: 'Lead Anônimo', // Temporário até preenchimento do contato
+        email: 'nao-informado@temp.com',
+        telefone: '(00) 00000-0000',
+        cidade: cidade,
+        valorEmprestimo: validation.emprestimoValue,
+        valorImovel: validation.garantiaValue,
+        parcelas: parcelas,
+        tipoAmortizacao: amortizacao,
+        userAgent: navigator.userAgent,
+        ipAddress: undefined
       };
 
-      console.log('Enviando payload:', payload);
+      console.log('🎯 Iniciando simulação:', simulationInput);
 
-      const data = await simulateCredit(payload);
+      // Usar o novo serviço integrado
+      const result = await SimulationService.performSimulation(simulationInput);
 
-      console.log('Resposta recebida:', data);
+      console.log('✅ Simulação realizada com sucesso:', result);
 
-      // Verificar se a resposta tem dados válidos
-      if (!data || !data.parcelas || !Array.isArray(data.parcelas) || data.parcelas.length === 0) {
-        console.error('Estrutura de resposta inválida:', data);
-        throw new Error('API retornou estrutura de dados inválida');
-      }
-
-      // Buscar a primeira parcela com valor válido em parcela_final
-      const parcelaComValor = data.parcelas.find((p, index) => 
-        index > 0 && p.parcela_final && p.parcela_final[0] > 0
-      );
-
-      if (!parcelaComValor) {
-        console.error('Nenhuma parcela com valor válido encontrada:', data.parcelas);
-        throw new Error('API não retornou parcelas com valores válidos');
-      }
-
-      const valorParcela = parcelaComValor.parcela_final[0];
-      console.log('Valor da parcela extraído:', valorParcela);
-
-      let primeiraParcela = undefined;
-      let ultimaParcela = undefined;
-
-      if (amortizacao === 'SAC') {
-        // Para SAC, buscar primeira parcela não vazia
-        const primeiraParcelaObj = data.parcelas.find((p, index) => 
-          index > 0 && p.parcela_final && p.parcela_final[0] > 0
-        );
-        
-        if (primeiraParcelaObj?.parcela_final?.[0]) {
-          primeiraParcela = primeiraParcelaObj.parcela_final[0];
-        }
-
-        // Para SAC, buscar última parcela não vazia
-        const ultimaParcelaObj = data.parcelas.slice().reverse().find(p => 
-          p.parcela_final && p.parcela_final[0] > 0
-        );
-        
-        if (ultimaParcelaObj?.parcela_final?.[0]) {
-          ultimaParcela = ultimaParcelaObj.parcela_final[0];
-        }
-      }
-
-      setResultado({
-        valor: valorParcela,
-        amortizacao: amortizacao,
-        parcelas: parcelas,
-        primeiraParcela: primeiraParcela,
-        ultimaParcela: ultimaParcela
+      // Rastrear simulação na jornada do usuário
+      trackSimulation({
+        simulationId: result.id,
+        valorEmprestimo: result.valorEmprestimo,
+        valorImovel: result.valorImovel,
+        parcelas: result.parcelas,
+        cidade: result.cidade
       });
+
+      setResultado(result);
 
     } catch (error) {
       console.error('Erro na simulação:', error);
@@ -274,9 +238,9 @@ const SimulationForm: React.FC = () => {
               {/* Botões */}
               <div className="flex gap-2 pt-2">
                 <Button
-                  type="submit"
-                  disabled={!validation.formularioValido || loading}
-                  className="flex-1 bg-libra-blue hover:bg-libra-blue/90 text-white py-2 text-sm font-semibold min-h-[44px]"
+                type="submit"
+                disabled={!validation.formularioValido || loading}
+                className="flex-1 bg-libra-blue hover:bg-libra-blue/90 text-white py-2 text-sm font-semibold min-h-[44px]"
                 >
                   {loading ? (
                     <div className="flex items-center gap-2">

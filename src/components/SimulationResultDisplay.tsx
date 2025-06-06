@@ -5,6 +5,7 @@ import ContactForm from './ContactForm';
 
 interface SimulationResultDisplayProps {
   resultado: {
+    id: string;
     valor: number;
     amortizacao: string;
     parcelas: number;

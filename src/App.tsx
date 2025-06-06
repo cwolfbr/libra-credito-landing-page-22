@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ScrollToTop from '@/components/ScrollToTop';
+import GlobalTracker from '@/components/GlobalTracker';
 
 // Lazy load components
 const Index = lazy(() => import("./pages/Index"));
@@ -14,6 +15,8 @@ const Blog = lazy(() => import("./pages/Blog"));
 const Parceiros = lazy(() => import("./pages/Parceiros"));
 const Simulacao = lazy(() => import("./pages/Simulacao"));
 const PoliticaPrivacidade = lazy(() => import("./pages/PoliticaPrivacidade"));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+const SupabaseTestPage = lazy(() => import("./pages/SupabaseTestPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const Loading = () => (
@@ -33,6 +36,7 @@ const App = () => (
     <TooltipProvider>
       <BrowserRouter>
         <ScrollToTop />
+        <GlobalTracker />
         <Toaster />
         <Sonner />
         <Suspense fallback={<Loading />}>
@@ -44,6 +48,8 @@ const App = () => (
             <Route path="/parceiros" element={<Parceiros />} />
             <Route path="/simulacao" element={<Simulacao />} />
             <Route path="/politica-privacidade" element={<PoliticaPrivacidade />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/test-supabase" element={<SupabaseTestPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
