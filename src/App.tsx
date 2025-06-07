@@ -20,6 +20,7 @@ const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const SupabaseTestPage = lazy(() => import("./pages/SupabaseTestPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const MobileDemo = lazy(() => import("./pages/MobileDemo"));
+const MobileNavDemo = lazy(() => import("./pages/MobileNavDemo"));
 
 const Loading = () => (
   <div className="w-full h-screen flex items-center justify-center">
@@ -54,6 +55,7 @@ const App = () => (
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/test-supabase" element={<SupabaseTestPage />} />
               <Route path="/mobile-demo" element={<MobileDemo />} />
+              <Route path="/mobile-nav" element={<MobileNavDemo />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
