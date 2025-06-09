@@ -40,6 +40,7 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ onPortalClientes, onSimulat
 
   const navigationItems = [
     { name: 'Home', path: '/' },
+    { name: 'Simulação', path: '/simulacao', highlight: true },
     { name: 'Vantagens', path: '/vantagens' },
     { name: 'Quem Somos', path: '/quem-somos' },
     { name: 'Blog', path: '/blog' },
@@ -81,16 +82,16 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ onPortalClientes, onSimulat
 
           <div className="flex items-center gap-2">
             <Button 
-              className="min-h-[40px] px-3 text-xs bg-libra-navy text-white hover:bg-libra-navy/90"
+              className="min-h-[40px] px-4 text-sm font-semibold bg-libra-navy text-white hover:bg-libra-navy/90 shadow-md"
               size="sm"
               onClick={onSimulateNow}
               aria-label="Simular crédito agora"
             >
-              Simular
+              Simular Agora
             </Button>
 
             <button
-              className="lg:hidden p-2 min-w-[40px] min-h-[40px] flex items-center justify-center"
+              className="lg:hidden p-2 min-w-[40px] min-h-[40px] flex items-center justify-center hover:bg-gray-100 rounded-md transition-colors"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Abrir menu de navegação"
             >
@@ -104,15 +105,17 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ onPortalClientes, onSimulat
       {isMenuOpen && (
         <nav className="bg-white border-t border-gray-100 shadow-lg">
           <div className="container mx-auto px-4 py-4">
-            <ul className="space-y-4">
+            <ul className="space-y-3">
               {navigationItems.map((item) => (
                 <li key={item.path}>
                   <Link
                     to={item.path}
-                    className={`block py-2 text-base font-medium ${
-                      location.pathname === item.path 
-                        ? 'text-libra-blue' 
-                        : 'text-libra-navy hover:text-libra-blue'
+                    className={`block py-3 px-3 text-base font-medium rounded-md transition-colors ${
+                      item.highlight 
+                        ? 'bg-libra-navy text-white hover:bg-libra-navy/90 font-semibold' 
+                        : location.pathname === item.path 
+                          ? 'text-libra-blue bg-blue-50' 
+                          : 'text-libra-navy hover:text-libra-blue hover:bg-gray-50'
                     }`}
                     onClick={() => setIsMenuOpen(false)}
                   >
