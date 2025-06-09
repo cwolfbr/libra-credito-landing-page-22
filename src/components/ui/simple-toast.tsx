@@ -29,26 +29,26 @@ const Toast: React.FC<ToastProps> = ({ id, title, description, variant = 'defaul
   return (
     <div
       className={cn(
-        'fixed top-4 right-4 z-50 w-96 p-4 border rounded-lg shadow-lg',
+        'fixed top-4 right-4 z-50 max-w-sm sm:w-96 w-[calc(100vw-2rem)] p-3 sm:p-4 border rounded-lg shadow-lg',
         'transform transition-transform duration-300 ease-out',
         'animate-in slide-in-from-right-full',
         variantStyles[variant]
       )}
     >
       <div className="flex justify-between items-start">
-        <div className="flex-1">
+        <div className="flex-1 min-w-0 pr-2">
           {title && (
-            <h4 className="text-sm font-semibold mb-1">{title}</h4>
+            <h4 className="text-xs sm:text-sm font-semibold mb-1 break-words">{title}</h4>
           )}
           {description && (
-            <p className="text-sm opacity-90">{description}</p>
+            <p className="text-xs sm:text-sm opacity-90 break-words leading-relaxed">{description}</p>
           )}
         </div>
         <button
           onClick={() => onClose(id)}
-          className="ml-3 p-1 hover:bg-black/10 rounded-full transition-colors"
+          className="ml-2 p-1 hover:bg-black/10 rounded-full transition-colors flex-shrink-0"
         >
-          <X className="w-4 h-4" />
+          <X className="w-3 h-3 sm:w-4 sm:h-4" />
         </button>
       </div>
     </div>

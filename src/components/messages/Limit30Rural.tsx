@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Wheat, Calculator, MapPin, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface Limit30RuralProps {
   cidade: string;
@@ -20,6 +21,7 @@ const Limit30Rural: React.FC<Limit30RuralProps> = ({
   onAdjustValues,
   onTryAgain
 }) => {
+  const isMobile = useIsMobile();
   const [isRuralConfirmed, setIsRuralConfirmed] = useState(false);
   
   // CORRIGIDO: Calcular 30% do valor do IMÓVEL, não do empréstimo
@@ -35,50 +37,50 @@ const Limit30Rural: React.FC<Limit30RuralProps> = ({
   };
 
   return (
-    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-      <div className="flex items-start gap-3">
-        <div className="bg-green-100 p-2 rounded-full">
-          <Wheat className="w-5 h-5 text-green-600" />
+    <div className={`bg-green-50 border border-green-200 rounded-lg ${isMobile ? 'p-3 mx-2' : 'p-4'} max-w-full overflow-hidden`}>
+      <div className={`flex items-start ${isMobile ? 'gap-2' : 'gap-3'}`}>
+        <div className={`bg-green-100 ${isMobile ? 'p-1.5' : 'p-2'} rounded-full flex-shrink-0`}>
+          <Wheat className={`${isMobile ? 'w-4 h-4' : 'w-5 h-5'} text-green-600`} />
         </div>
         
-        <div className="flex-1">
-          <h3 className="font-semibold text-green-900 mb-2 flex items-center gap-2">
-            <MapPin className="w-4 h-4" />
-            Empréstimo Rural em {cidade}
+        <div className="flex-1 min-w-0">
+          <h3 className={`font-semibold text-green-900 ${isMobile ? 'mb-1' : 'mb-2'} flex items-center gap-2 ${isMobile ? 'text-sm' : 'text-base'}`}>
+            <MapPin className={`${isMobile ? 'w-3 h-3' : 'w-4 h-4'} flex-shrink-0`} />
+            <span className="truncate">Empréstimo Rural em {cidade}</span>
           </h3>
           
-          <div className="text-green-800 text-sm mb-3">
-            <p className="mb-2">
+          <div className={`text-green-800 ${isMobile ? 'text-xs' : 'text-sm'} mb-3`}>
+            <p className={`${isMobile ? 'mb-1' : 'mb-2'} leading-relaxed`}>
               Na cidade de <strong>{cidade}</strong>, aceitamos apenas <strong>imóveis rurais 
               produtivos e georreferenciados</strong> como garantia, com limite de 
               <strong> 30% do valor do imóvel</strong>.
             </p>
             
-            <div className="bg-white rounded p-3 border border-green-100 mb-3">
-              <div className="flex items-center gap-2 mb-2">
-                <Calculator className="w-4 h-4 text-green-600" />
-                <span className="font-medium">Cálculo para seu imóvel:</span>
+            <div className={`bg-white rounded ${isMobile ? 'p-2' : 'p-3'} border border-green-100 mb-3`}>
+              <div className={`flex items-center gap-2 ${isMobile ? 'mb-1' : 'mb-2'}`}>
+                <Calculator className={`${isMobile ? 'w-3 h-3' : 'w-4 h-4'} text-green-600 flex-shrink-0`} />
+                <span className={`font-medium ${isMobile ? 'text-xs' : 'text-sm'}`}>Cálculo para seu imóvel:</span>
               </div>
-              <div className="text-sm space-y-1">
-                <div>Valor do imóvel: <strong>R$ {valorImovel.toLocaleString('pt-BR')}</strong></div>
-                <div>Máximo para empréstimo (30%): <strong>R$ {valorMaximoEmprestimo.toLocaleString('pt-BR')}</strong></div>
+              <div className={`${isMobile ? 'text-xs' : 'text-sm'} space-y-1`}>
+                <div className="break-words">Valor do imóvel: <strong>R$ {valorImovel.toLocaleString('pt-BR')}</strong></div>
+                <div className="break-words">Máximo para empréstimo (30%): <strong>R$ {valorMaximoEmprestimo.toLocaleString('pt-BR')}</strong></div>
               </div>
             </div>
             
             {/* Checkbox para confirmar imóvel rural */}
-            <div className="bg-green-100 rounded p-3 border border-green-200">
-              <label className="flex items-start gap-3 cursor-pointer">
+            <div className={`bg-green-100 rounded ${isMobile ? 'p-2' : 'p-3'} border border-green-200`}>
+              <label className={`flex items-start ${isMobile ? 'gap-2' : 'gap-3'} cursor-pointer`}>
                 <input
                   type="checkbox"
                   checked={isRuralConfirmed}
                   onChange={(e) => setIsRuralConfirmed(e.target.checked)}
-                  className="mt-1 w-4 h-4 text-green-600 rounded focus:ring-green-500"
+                  className={`mt-1 ${isMobile ? 'w-3 h-3' : 'w-4 h-4'} text-green-600 rounded focus:ring-green-500 flex-shrink-0`}
                 />
-                <div className="text-sm">
-                  <div className="font-medium text-green-900 mb-1">
+                <div className={`${isMobile ? 'text-xs' : 'text-sm'}`}>
+                  <div className={`font-medium text-green-900 ${isMobile ? 'mb-0.5' : 'mb-1'}`}>
                     Confirmo que meu imóvel é rural
                   </div>
-                  <div className="text-green-700">
+                  <div className="text-green-700 leading-relaxed">
                     O imóvel é <strong>rural, produtivo e georreferenciado</strong>, 
                     atendendo aos requisitos para empréstimo nesta cidade.
                   </div>
@@ -87,34 +89,36 @@ const Limit30Rural: React.FC<Limit30RuralProps> = ({
             </div>
           </div>
           
-          <div className="flex gap-2">
+          <div className={`flex ${isMobile ? 'flex-col space-y-2' : 'gap-2'}`}>
             <Button
               onClick={handleAdjustClick}
               disabled={!isRuralConfirmed}
-              className={`flex items-center gap-2 ${
+              className={`flex items-center justify-center gap-2 ${isMobile ? 'w-full text-xs' : ''} ${
                 isRuralConfirmed 
                   ? 'bg-green-600 hover:bg-green-700 text-white' 
                   : 'bg-gray-300 text-gray-500 cursor-not-allowed'
               }`}
-              size="sm"
+              size={isMobile ? "sm" : "sm"}
             >
-              {isRuralConfirmed && <CheckCircle className="w-4 h-4" />}
-              <Calculator className="w-4 h-4" />
-              Continuar com R$ {valorMaximoEmprestimo.toLocaleString('pt-BR')}
+              {isRuralConfirmed && <CheckCircle className={`${isMobile ? 'w-3 h-3' : 'w-4 h-4'} flex-shrink-0`} />}
+              <Calculator className={`${isMobile ? 'w-3 h-3' : 'w-4 h-4'} flex-shrink-0`} />
+              <span className="truncate">
+                {isMobile ? `Continuar com R$ ${(valorMaximoEmprestimo / 1000).toFixed(0)}k` : `Continuar com R$ ${valorMaximoEmprestimo.toLocaleString('pt-BR')}`}
+              </span>
             </Button>
             
             <Button
               onClick={onTryAgain}
               variant="outline"
-              className="border-green-300 text-green-700 hover:bg-green-50"
-              size="sm"
+              className={`border-green-300 text-green-700 hover:bg-green-50 ${isMobile ? 'w-full text-xs' : ''}`}
+              size={isMobile ? "sm" : "sm"}
             >
               Tentar Outra Cidade
             </Button>
           </div>
           
           {!isRuralConfirmed && (
-            <div className="text-xs text-green-600 mt-2">
+            <div className={`${isMobile ? 'text-xs' : 'text-xs'} text-green-600 mt-2`}>
               É necessário confirmar que o imóvel é rural para continuar
             </div>
           )}
