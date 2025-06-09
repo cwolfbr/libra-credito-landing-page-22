@@ -64,20 +64,21 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ onPortalClientes, onSimulat
       {/* Header principal */}
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center">
             <Link to="/" aria-label="Página inicial da Libra Crédito">
-              <ImageOptimizer 
-                src="/images/logos/libra-logo.png" 
-                alt="Libra Crédito" 
-                className="h-8 w-auto"
-                aspectRatio={1}
-                priority={true}
-              />
+              <div className="h-12 overflow-hidden flex items-center">
+                <ImageOptimizer 
+                  src="/images/logos/libra-logo.png" 
+                  alt="Libra Crédito" 
+                  className="h-16 w-auto transform scale-105"
+                  aspectRatio={1}
+                  priority={true}
+                  style={{
+                    clipPath: 'inset(30% 0 30% 0)'
+                  }}
+                />
+              </div>
             </Link>
-            <div className="flex flex-col">
-              <span className="text-libra-navy font-bold text-base">Libra Crédito</span>
-              <span className="text-libra-blue text-xs font-medium">Vem que a gente equiLIBRA</span>
-            </div>
           </div>
 
           <div className="flex items-center gap-2">

@@ -33,11 +33,16 @@ const SimpleMobileHeader: React.FC<SimpleMobileHeaderProps> = ({ onPortalCliente
       <div className="h-16 px-4 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center">
-          <img 
-            src="/logo-libra.png" 
-            alt="Libra Crédito" 
-            className="h-10 w-auto"
-          />
+          <div className="h-12 overflow-hidden flex items-center">
+            <img 
+              src="/logo-libra.png" 
+              alt="Libra Crédito" 
+              className="h-16 w-auto transform scale-105"
+              style={{
+                clipPath: 'inset(30% 0 30% 0)'
+              }}
+            />
+          </div>
         </Link>
 
         {/* Right side buttons */}

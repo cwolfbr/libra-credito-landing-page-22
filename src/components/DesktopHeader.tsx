@@ -66,17 +66,18 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
           <div className="flex items-center justify-between h-20">
             {/* Logo e slogan */}
             <div className="flex items-center gap-6">
-              <Link to="/" className="flex items-center gap-3">
-                <ImageOptimizer 
-                  src="/images/logos/libra-logo.png" 
-                  alt="Libra Crédito" 
-                  className="h-10 w-auto"
-                  aspectRatio={1}
-                  priority={true}
-                />
-                <div className="text-libra-navy">
-                  <span className="font-bold text-xl">Libra</span>
-                  <span className="text-sm font-medium block -mt-1">crédito</span>
+              <Link to="/" className="flex items-center">
+                <div className="h-16 overflow-hidden flex items-center">
+                  <ImageOptimizer 
+                    src="/images/logos/libra-logo.png" 
+                    alt="Libra Crédito" 
+                    className="h-20 w-auto transform scale-110"
+                    aspectRatio={1}
+                    priority={true}
+                    style={{
+                      clipPath: 'inset(25% 0 25% 0)'
+                    }}
+                  />
                 </div>
               </Link>
               <span className="text-libra-blue text-sm font-medium">
