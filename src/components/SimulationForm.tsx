@@ -172,12 +172,100 @@ const SimulationForm: React.FC = () => {
     setIsRuralProperty(false);
   };
 
-  // Função para ajustar valores automaticamente (30%)
-  const handleAdjustValues = (novoEmprestimo: number, isRural: boolean = false) => {
+  // Função para ajustar valores automaticamente (30%) e executar simulação
+  const handleAdjustValues = async (novoEmprestimo: number, isRural: boolean = false) => {
+    // Ajustar os valores
     setEmprestimo(formatBRL(novoEmprestimo.toString()));
     setIsRuralProperty(isRural);
     setApiMessage(null);
     setErro('');
+
+    // Aguardar um pouco para garantir que os estados sejam atualizados
+    setTimeout(async () => {
+      // Verificar se temos todos os dados necessários para simular
+      if (!sessionId || !cidade || !amortizacao) {
+        console.log('⚠️ Dados insuficientes para simulação automática');
+        return;
+      }
+
+      // Recalcular validação com novos valores
+      const newValidation = validateForm(
+        formatBRL(novoEmprestimo.toString()), 
+        garantia, 
+        parcelas, 
+        amortizacao, 
+        cidade
+      );
+
+      if (!newValidation.formularioValido) {
+        console.log('⚠️ Formulário inválido após ajuste');
+        return;
+      }
+
+      // Executar simulação automaticamente
+      setLoading(true);
+
+      try {
+        const simulationInput = {
+          sessionId,
+          nomeCompleto: 'Lead Anônimo',
+          email: 'nao-informado@temp.com',
+          telefone: '(00) 00000-0000',
+          cidade: cidade,
+          valorEmprestimo: newValidation.emprestimoValue,
+          valorImovel: newValidation.garantiaValue,
+          parcelas: parcelas,
+          tipoAmortizacao: amortizacao,
+          userAgent: navigator.userAgent,
+          ipAddress: undefined
+        };
+
+        console.log('🎯 Executando simulação automática após ajuste:', simulationInput);
+
+        const result = await SimulationService.performSimulation(simulationInput);
+
+        console.log('✅ Simulação automática realizada com sucesso:', result);
+
+        // Rastrear simulação na jornada do usuário
+        trackSimulation({
+          simulationId: result.id,
+          valorEmprestimo: result.valorEmprestimo,
+          valorImovel: result.valorImovel,
+          parcelas: result.parcelas,
+          cidade: result.cidade
+        });
+
+        setResultado(result);
+
+      } catch (error) {
+        console.error('Erro na simulação automática:', error);
+        
+        if (error instanceof Error) {
+          const analysis = analyzeApiMessage(error.message);
+          
+          if (analysis.type !== 'unknown_error') {
+            setApiMessage(analysis);
+            setErro('');
+          } else {
+            let errorMessage = 'Erro ao processar simulação automática';
+            
+            if (error.message.includes('HTTP') || error.message.includes('fetch')) {
+              errorMessage = 'Erro de conexão. Tente novamente.';
+            } else {
+              errorMessage = error.message;
+            }
+            
+            setErro(errorMessage);
+            setApiMessage(null);
+          }
+        } else {
+          setErro('Erro desconhecido na simulação automática');
+          setApiMessage(null);
+        }
+      } finally {
+        setLoading(false);
+      }
+    }, 100); // Pequeno delay para garantir que os estados sejam atualizados
   };
 
   // Função para tentar novamente
