@@ -15,7 +15,7 @@ const SimpleMobileHeader: React.FC<SimpleMobileHeaderProps> = ({ onPortalCliente
         {/* Logo */}
         <Link to="/" className="flex items-center">
           <img 
-            src="/images/logo-libra.png" 
+            src="/logo-libra.png" 
             alt="Libra Crédito" 
             className="h-10 w-auto"
           />
