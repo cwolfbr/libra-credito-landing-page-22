@@ -220,18 +220,6 @@ const CityAutocomplete = ({ value = '', onCityChange }) => {
           </div>
         )}
         
-        {/* Mobile overlay to prevent scrolling behind suggestions */}
-        {showSuggestions && window.innerWidth < 768 && (
-          <div 
-            className="fixed inset-0 bg-black bg-opacity-20 z-40"
-            onTouchStart={(e) => {
-              e.preventDefault();
-              if (inputRef.current) {
-                inputRef.current.blur();
-              }
-            }}
-          />
-        )}
       </div>
     </div>
   );
