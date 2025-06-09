@@ -285,23 +285,23 @@ const SimulationForm: React.FC = () => {
   };
 
   return (
-    <div className={`container mx-auto px-3 py-2 min-h-[calc(100vh-4rem)] ${
-      resultado ? 'max-w-6xl' : 'max-w-xl'
+    <div className={`container mx-auto px-4 py-12 min-h-[calc(100vh-4rem)] ${
+      resultado ? 'max-w-7xl' : 'max-w-2xl'
     }`}>
-      <div className={`${resultado ? 'grid grid-cols-1 lg:grid-cols-2 gap-6' : ''}`}>
-        {/* Formulário de Simulação */}
-        <Card className="shadow-lg">
-          <CardHeader className="text-center pb-2">
-            <CardTitle className="text-lg md:text-xl font-bold text-libra-navy mb-1">
-              Sua simulação em um clique!
+      <div className={`${resultado ? 'grid grid-cols-1 lg:grid-cols-2 gap-8' : ''}`}>
+        {/* Formulário de Simulação Premium */}
+        <Card className="bg-white/90 backdrop-blur-lg shadow-2xl border-0 rounded-2xl overflow-hidden">
+          <CardHeader className="bg-gradient-to-r from-blue-600 to-blue-700 text-white text-center py-8">
+            <CardTitle className="text-2xl md:text-3xl font-bold mb-3">
+              💰 Sua simulação em um clique!
             </CardTitle>
-            <p className="text-gray-600 text-xs">
+            <p className="text-blue-100 text-base md:text-lg max-w-md mx-auto leading-relaxed">
               Com apenas algumas informações você já encontrará a proposta ideal, com parcelas que cabem no seu bolso!
             </p>
           </CardHeader>
           
-          <CardContent className="p-3 md:p-4">
-            <form onSubmit={handleSubmit} className="space-y-2">
+          <CardContent className="p-6 md:p-8">
+            <form onSubmit={handleSubmit} className="space-y-6">
               
               <CityAutocomplete value={cidade} onCityChange={setCidade} />
 
@@ -323,30 +323,32 @@ const SimulationForm: React.FC = () => {
 
               <AmortizationField value={amortizacao} onChange={setAmortizacao} />
 
-              {/* Botões */}
-              <div className="flex gap-2 pt-2">
-                <Button
-                type="submit"
-                disabled={!validation.formularioValido || loading}
-                className="flex-1 bg-libra-blue hover:bg-libra-blue/90 text-white py-2 text-sm font-semibold min-h-[44px]"
+              {/* Botões Premium */}
+              <div className="flex gap-4 pt-4">
+                <button
+                  type="submit"
+                  disabled={!validation.formularioValido || loading}
+                  className="flex-1 px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-bold text-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 hover:-translate-y-1 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:transform-none min-h-[56px]"
                 >
                   {loading ? (
-                    <div className="flex items-center gap-2">
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                      Calculando...
+                    <div className="flex items-center justify-center gap-3">
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                      <span>Calculando...</span>
                     </div>
                   ) : (
-                    'CALCULAR'
+                    <div className="flex items-center justify-center gap-2">
+                      <span>📊</span>
+                      <span>CALCULAR AGORA</span>
+                    </div>
                   )}
-                </Button>
-                <Button
+                </button>
+                <button
                   type="button"
-                  variant="outline"
                   onClick={handleClear}
-                  className="px-4 py-2 text-libra-blue border-libra-blue hover:bg-libra-light min-h-[44px] text-sm"
+                  className="px-6 py-4 text-blue-600 border-2 border-blue-200 rounded-xl font-semibold hover:bg-blue-50 hover:border-blue-300 transition-all duration-300 hover:-translate-y-1 min-h-[56px]"
                 >
                   LIMPAR
-                </Button>
+                </button>
               </div>
 
               {/* Mensagem inteligente da API */}

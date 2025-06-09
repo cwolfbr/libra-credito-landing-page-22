@@ -31,19 +31,22 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				sans: ['Montserrat', 'sans-serif'],
+				sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+				heading: ['Playfair Display', 'Georgia', 'serif'],
+				body: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
 			},
-			// Tamanhos de fonte otimizados para mobile
+			// Sistema tipográfico premium com line-height otimizado
 			fontSize: {
-				'xs': ['0.75rem', { lineHeight: '1rem' }],
-				'sm': ['0.875rem', { lineHeight: '1.25rem' }],
-				'base': ['1rem', { lineHeight: '1.5rem' }],      // 16px base
-				'lg': ['1.125rem', { lineHeight: '1.75rem' }],
-				'xl': ['1.25rem', { lineHeight: '1.75rem' }],
-				'2xl': ['1.5rem', { lineHeight: '2rem' }],       // 24px mobile h1
-				'3xl': ['1.875rem', { lineHeight: '2.25rem' }],  // 30px desktop h1
-				'4xl': ['2.25rem', { lineHeight: '2.5rem' }],
-				'5xl': ['3rem', { lineHeight: '1' }],
+				'xs': ['0.75rem', { lineHeight: '1.125rem', letterSpacing: '0.025em' }],
+				'sm': ['0.875rem', { lineHeight: '1.375rem', letterSpacing: '0.015em' }],
+				'base': ['1rem', { lineHeight: '1.625rem', letterSpacing: '0.01em' }],
+				'lg': ['1.125rem', { lineHeight: '1.75rem', letterSpacing: '0.005em' }],
+				'xl': ['1.25rem', { lineHeight: '1.875rem', letterSpacing: '0em' }],
+				'2xl': ['1.5rem', { lineHeight: '2.125rem', letterSpacing: '-0.005em' }],
+				'3xl': ['1.875rem', { lineHeight: '2.375rem', letterSpacing: '-0.01em' }],
+				'4xl': ['2.25rem', { lineHeight: '2.75rem', letterSpacing: '-0.015em' }],
+				'5xl': ['3rem', { lineHeight: '3.25rem', letterSpacing: '-0.02em' }],
+				'6xl': ['3.75rem', { lineHeight: '4rem', letterSpacing: '-0.025em' }],
 			},
 			// Espaçamentos otimizados para touch
 			spacing: {
@@ -104,11 +107,36 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				libra: {
-					navy: '#003399', // Cor principal
-					gold: '#D4AF37',
-					silver: '#F0F0F0',
-					blue: '#003399', // Cor de enfase alterada
-					light: '#F8F9FA'
+					// Paleta premium aprimorada
+					navy: '#1a365d',      // Azul profundo mais sofísticado
+					blue: '#2563eb',      // Azul moderno e vibrante
+					gold: '#f59e0b',      // Ouro premium
+					silver: '#f1f5f9',    // Cinza suave
+					light: '#fefefe',     // Branco premium
+					accent: {
+						50: '#eff6ff',
+						100: '#dbeafe',
+						200: '#bfdbfe',
+						300: '#93c5fd',
+						400: '#60a5fa',
+						500: '#3b82f6',
+						600: '#2563eb',
+						700: '#1d4ed8',
+						800: '#1e40af',
+						900: '#1e3a8a'
+					},
+					neutral: {
+						50: '#fafafa',
+						100: '#f5f5f5',
+						200: '#e5e5e5',
+						300: '#d4d4d4',
+						400: '#a3a3a3',
+						500: '#737373',
+						600: '#525252',
+						700: '#404040',
+						800: '#262626',
+						900: '#171717'
+					}
 				}
 			},
 			borderRadius: {
@@ -149,10 +177,21 @@ export default {
 				'slide-up': 'slide-up 0.5s ease-out'
 			},
 			backgroundImage: {
-				'hero-pattern': 'linear-gradient(to right, rgba(0, 51, 153, 0.9), rgba(0, 51, 153, 0.7))',
-				'gold-gradient': 'linear-gradient(90deg, #D4AF37 0%, #F2D57E 50%, #D4AF37 100%)'
+				'hero-pattern': 'linear-gradient(135deg, #1a365d 0%, #2563eb 50%, #1e40af 100%)',
+				'premium-gradient': 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+				'glass-gradient': 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)',
+				'section-gradient': 'linear-gradient(180deg, #fefefe 0%, #f1f5f9 100%)'
+			},
+			boxShadow: {
+				'premium': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+				'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+				'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)'
+			},
+			blur: {
+				'xs': '2px',
+				'glass': '16px'
 			}
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [],
 } satisfies Config;

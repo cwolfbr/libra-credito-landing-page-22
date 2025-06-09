@@ -47,21 +47,22 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white" role="banner">
-      {/* Faixa superior com aviso */}
-      <div className="bg-libra-navy">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-lg border-b border-white/20" role="banner">
+      {/* Faixa superior premium */}
+      <div className="bg-gradient-to-r from-blue-900 to-blue-600">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center py-3">
-            <div className="flex items-center text-white text-sm font-semibold">
-              <Info className="w-4 h-4 mr-2 text-white" />
+            <div className="flex items-center text-white text-sm font-medium">
+              <div className="w-2 h-2 bg-yellow-400 rounded-full mr-3 animate-pulse"></div>
+              <Info className="w-4 h-4 mr-2 text-yellow-400" />
               A Libra não realiza nenhum tipo de cobrança até a liberação do crédito
             </div>
           </div>
         </div>
       </div>
 
-      {/* Faixa principal */}
-      <div className="border-b border-gray-100">
+      {/* Faixa principal premium */}
+      <div className="border-b border-libra-neutral-100/50">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             {/* Logo e slogan */}
@@ -80,48 +81,49 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
                   />
                 </div>
               </Link>
-              <span className="text-libra-blue text-sm font-medium">
-                Vem que a gente equiLIBRA
+              <span className="text-base text-blue-600 font-medium">
+                Vem que a gente equi<span className="text-yellow-500 font-semibold">LIBRA</span>
               </span>
             </div>
 
-            {/* Navegação */}
+            {/* Navegação Premium */}
             <nav className="flex items-center space-x-8">
               {navigationItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`relative text-base font-medium transition-all duration-200 hover:text-libra-blue ${
+                  className={`relative text-base font-medium transition-all duration-300 hover:text-blue-600 group ${
                     location.pathname === item.path 
-                      ? 'text-libra-blue after:absolute after:bottom-[-24px] after:left-0 after:w-full after:h-0.5 after:bg-libra-blue' 
-                      : 'text-libra-navy hover:text-libra-blue'
+                      ? 'text-blue-600 after:absolute after:bottom-[-24px] after:left-0 after:w-full after:h-0.5 after:bg-blue-600' 
+                      : 'text-gray-700 hover:text-blue-600'
                   }`}
                 >
-                  {item.name}
+                  <span className="relative">
+                    {item.name}
+                    <span className="absolute inset-x-0 -bottom-1 h-0.5 bg-blue-600 scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
+                  </span>
                 </Link>
               ))}
             </nav>
 
-            {/* Botões à direita */}
+            {/* Botões Premium */}
             <div className="flex items-center gap-4">
-              <Button
-                variant="outline"
-                size="default"
+              <button
                 onClick={onPortalClientes}
                 aria-label="Acessar Portal de Clientes"
-                className="bg-transparent text-libra-navy border-2 border-libra-navy hover:bg-libra-navy hover:text-white transition-colors"
+                className="px-6 py-3 text-blue-900 border-2 border-blue-200 rounded-xl font-medium hover:bg-blue-50 hover:border-blue-300 transition-all duration-300 hover:-translate-y-0.5"
               >
                 Portal de Clientes
-              </Button>
+              </button>
               
-              <Button 
+              <button 
                 onClick={onSimulateNow}
-                size="default"
                 aria-label="Simular crédito agora"
-                className="px-6 font-bold bg-libra-navy text-white hover:bg-libra-navy/90 shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5"
+                className="px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-all duration-300 hover:-translate-y-1 shadow-lg"
               >
+                <span className="mr-2">📊</span>
                 Simule Agora
-              </Button>
+              </button>
             </div>
           </div>
         </div>

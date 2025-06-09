@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -224,8 +226,17 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-body;
     font-feature-settings: "rlig" 1, "calt" 1;
+    font-optical-sizing: auto;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+    font-optical-sizing: auto;
   }
   
   /* Melhorar a acessibilidade de foco */
@@ -296,14 +307,46 @@
   border-width: 0;
 }
 
-/* Estilos globais para títulos de página */
+/* Sistema tipográfico premium */
 .page-title {
-  @apply text-4xl md:text-5xl lg:text-6xl font-bold text-libra-navy text-center mb-6;
-  letter-spacing: -0.02em;
+  @apply text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-libra-navy text-center mb-6;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
 }
 
 .page-subtitle {
-  @apply text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto text-center leading-relaxed;
+  @apply text-xl md:text-2xl text-libra-neutral-600 max-w-4xl mx-auto text-center;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+
+.section-title {
+  @apply text-3xl md:text-4xl font-heading font-semibold text-libra-navy mb-6;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.card-title {
+  @apply text-xl md:text-2xl font-heading font-medium text-libra-navy;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.body-large {
+  @apply text-lg text-libra-neutral-700;
+  line-height: 1.7;
+  letter-spacing: -0.005em;
+}
+
+.body-medium {
+  @apply text-base text-libra-neutral-600;
+  line-height: 1.6;
+}
+
+.caption {
+  @apply text-sm text-libra-neutral-500;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
 }
 
 /* Manter animações existentes */
@@ -390,6 +433,42 @@
 
 /* Bottom Navigation Styles */
 @layer components {
+  /* Componentes Premium */
+  .glass-card {
+    @apply bg-white/80 backdrop-blur-lg border border-white/20 shadow-glass;
+  }
+  
+  .premium-card {
+    @apply bg-white shadow-premium border border-libra-neutral-100 rounded-2xl p-8;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .premium-card:hover {
+    @apply shadow-soft transform -translate-y-1;
+  }
+  
+  .gradient-text {
+    @apply bg-premium-gradient bg-clip-text text-transparent;
+  }
+  
+  .premium-button {
+    @apply px-8 py-4 rounded-xl font-semibold text-base transition-all duration-300;
+    @apply shadow-soft hover:shadow-premium transform hover:-translate-y-1;
+  }
+  
+  .premium-button-primary {
+    @apply premium-button bg-libra-blue text-white hover:bg-libra-accent-700;
+  }
+  
+  .premium-button-secondary {
+    @apply premium-button bg-white text-libra-navy border-2 border-libra-accent-200;
+    @apply hover:bg-libra-accent-50 hover:border-libra-accent-300;
+  }
+  
+  .premium-section {
+    @apply py-20 md:py-28 bg-section-gradient;
+  }
+  
   /* Safe padding for bottom navigation */
   .pb-safe-nav {
     padding-bottom: calc(80px + env(safe-area-inset-bottom));

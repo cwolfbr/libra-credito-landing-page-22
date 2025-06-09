@@ -39,78 +39,99 @@ const Hero: React.FC = () => {
 
   return (
     <section 
-      className="min-h-[100vh] pt-header pb-4 bg-gradient-to-br from-white to-[#003399] relative flex flex-col justify-center" 
+      className="min-h-[100vh] pt-header pb-4 bg-hero-pattern relative flex flex-col justify-center overflow-hidden" 
       aria-labelledby="hero-heading"
     >
-      {/* Sobreposição para melhor contraste do texto */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-black/10 to-black/40"></div>
+      {/* Overlay premium com gradiente sofisticado */}
+      <div className="absolute inset-0 bg-gradient-to-br from-libra-navy/90 via-libra-blue/80 to-libra-accent-800/90"></div>
+      
+      {/* Elementos decorativos */}
+      <div className="absolute top-1/4 -right-32 w-96 h-96 bg-libra-gold/10 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-1/4 -left-32 w-80 h-80 bg-white/5 rounded-full blur-2xl"></div>
       <div className="container mx-auto px-4 relative z-10 flex-grow flex flex-col justify-center">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Lado Esquerdo */}
-          <div className="text-white space-y-4 md:space-y-6">
-            <div>
-              <h1 id="hero-heading" className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
-                Transforme seu Patrimônio<br />
+          <div className="text-white space-y-6 md:space-y-8">
+            <div className="space-y-6">
+              <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-lg rounded-full border border-white/20">
+                <Shield className="w-4 h-4 mr-2 text-yellow-400" />
+                <span className="text-sm font-medium text-white/90">Regulamentado pelo Banco Central</span>
+              </div>
+              
+              <h1 id="hero-heading" className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+                Transforme seu <span className="text-yellow-400">Patrimônio</span><br />
                 em Oportunidades
               </h1>
-              <div className="space-y-3 md:space-y-4">
-                <p className="text-lg md:text-xl text-white/90 leading-relaxed font-medium">
+              
+              <div className="space-y-4">
+                <p className="text-lg md:text-xl text-white/95 max-w-lg leading-relaxed">
                   Crédito inteligente para quem construiu história.
-                  Até R$ 5 milhões com as menores taxas do mercado.
+                  Até <strong className="text-libra-gold">R$ 5 milhões</strong> com as menores taxas do mercado.
                 </p>
-                <div className="flex items-center gap-3">
-                  <Shield className="w-5 h-5 text-white/80 flex-shrink-0" />
-                  <p className="text-base md:text-lg text-white/90 leading-relaxed">
-                    Regulamentado pelo Banco Central - Segurança e transparência
-                  </p>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 py-4">
+                  <div className="text-center sm:text-left">
+                    <div className="text-2xl font-bold text-yellow-400">1,19%</div>
+                    <div className="text-sm text-white/80">a.m. a partir de</div>
+                  </div>
+                  <div className="text-center sm:text-left">
+                    <div className="text-2xl font-bold text-yellow-400">180</div>
+                    <div className="text-sm text-white/80">meses para pagar</div>
+                  </div>
+                  <div className="text-center sm:text-left">
+                    <div className="text-2xl font-bold text-yellow-400">100%</div>
+                    <div className="text-sm text-white/80">online</div>
+                  </div>
                 </div>
-                <p className="text-base md:text-lg text-white/90 leading-relaxed">
-                  Taxas a partir de 1,19% a.m. • Até 180 meses • 100% online
-                </p>
               </div>
             </div>
 
-            {/* Botões */}
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <PremiumButton 
+            {/* Botões Premium */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button 
                 onClick={scrollToSimulator} 
-                variant="primary"
-                className="w-full sm:w-auto"
+                className="px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-all duration-300 hover:-translate-y-1 shadow-lg group"
               >
+                <span className="mr-2">📊</span>
                 Simular Agora
-              </PremiumButton>
-              <PremiumButton 
+                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+              </button>
+              <button 
                 onClick={goToVantagens} 
-                variant="secondary"
-                className="w-full sm:w-auto"
+                className="px-8 py-4 bg-white text-blue-900 border-2 border-blue-200 rounded-xl font-semibold hover:bg-blue-50 transition-all duration-300 hover:-translate-y-1"
               >
                 Conheça as Vantagens
-              </PremiumButton>
+              </button>
             </div>
           </div>
 
-            <div className="w-full max-w-2xl mx-auto lg:max-w-none">
-            <div className="hero-video">
-              <OptimizedYouTube
-                videoId="E9lwL6R2l1s"
-                title="Vídeo institucional Libra Crédito"
-                priority={true}
-                className="w-full h-full"
-                thumbnailSrc="/images/video-thumbnail.jpg"
-              />
+          {/* Vídeo Premium */}
+          <div className="w-full max-w-2xl mx-auto lg:max-w-none">
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-libra-gold/20 to-libra-blue/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
+              <div className="relative bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-2 shadow-premium">
+                <OptimizedYouTube
+                  videoId="E9lwL6R2l1s"
+                  title="Vídeo institucional Libra Crédito"
+                  priority={true}
+                  className="w-full h-full rounded-xl overflow-hidden"
+                  thumbnailSrc="/images/video-thumbnail.jpg"
+                />
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Botão Saiba Mais */}
-        <div className="flex justify-center mt-6 md:mt-8">
+        {/* Botão Saiba Mais Premium */}
+        <div className="flex justify-center mt-8 md:mt-12">
           <button
             onClick={scrollToBenefits}
-            className="text-white flex flex-col items-center gap-1 opacity-70 hover:opacity-100 transition-opacity"
+            className="group flex flex-col items-center gap-2 text-white/80 hover:text-white transition-all duration-300 hover:-translate-y-1"
             aria-label="Rolar para benefícios"
           >
-            <span className="text-sm font-medium">Saiba mais</span>
-            <ChevronDown className="w-5 h-5 animate-bounce" />
+            <span className="text-sm font-medium">Descubra mais</span>
+            <div className="w-6 h-6 border border-white/40 rounded-full flex items-center justify-center group-hover:border-white/80 transition-colors">
+              <ChevronDown className="w-4 h-4 group-hover:animate-bounce" />
+            </div>
           </button>
         </div>
       </div>
