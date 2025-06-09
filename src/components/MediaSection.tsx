@@ -34,16 +34,16 @@ const MediaSection: React.FC = () => {
   const isMobile = useIsMobile();
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className={`${isMobile ? 'py-8' : 'py-16'} bg-gray-50`}>
       <div className="container mx-auto px-4">
-        <div className="text-center mb-8">
+        <div className={`text-center ${isMobile ? 'mb-6' : 'mb-8'}`}>
           <div className="flex items-center justify-center gap-2 mb-4">
-            <Newspaper className="w-6 h-6 text-libra-blue" />
-            <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-libra-navy`}>
+            <Newspaper className={`${isMobile ? 'w-5 h-5' : 'w-6 h-6'} text-libra-blue`} />
+            <h2 className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold text-libra-navy`}>
               A Libra na Mídia
             </h2>
           </div>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className={`${isMobile ? 'text-sm px-2' : 'text-base'} text-gray-600 max-w-2xl mx-auto`}>
             Confira as principais matérias sobre a Libra Crédito
           </p>
         </div>

@@ -6,8 +6,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const FAQ: React.FC = () => {
+  const isMobile = useIsMobile();
+  
   const faqs = [
     {
       question: "Como funciona o crédito com garantia de imóvel?",
@@ -36,13 +39,13 @@ const FAQ: React.FC = () => {
   ];
 
   return (
-    <section id="faq" className="py-16 bg-gray-50">
+    <section id="faq" className={`${isMobile ? 'py-8' : 'py-16'} bg-gray-50`}>
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-libra-navy mb-4">
+        <div className="text-center mb-8 md:mb-12">
+          <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy mb-3 md:mb-4`}>
             Perguntas Frequentes
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className={`${isMobile ? 'text-base px-2' : 'text-lg'} text-gray-600 max-w-2xl mx-auto`}>
             Esclarecemos as principais dúvidas sobre crédito com garantia de imóvel
           </p>
         </div>
@@ -55,11 +58,11 @@ const FAQ: React.FC = () => {
                 value={`item-${index}`}
                 className="bg-white rounded-lg shadow-sm border"
               >
-                <AccordionTrigger className="px-6 py-4 text-left hover:no-underline">
-                  <span className="font-semibold text-libra-navy">{faq.question}</span>
+                <AccordionTrigger className={`${isMobile ? 'px-4 py-3' : 'px-6 py-4'} text-left hover:no-underline`}>
+                  <span className={`${isMobile ? 'text-sm' : 'text-base'} font-semibold text-libra-navy pr-2`}>{faq.question}</span>
                 </AccordionTrigger>
-                <AccordionContent className="px-6 pb-4">
-                  <p className="text-gray-600 leading-relaxed">{faq.answer}</p>
+                <AccordionContent className={`${isMobile ? 'px-4 pb-3' : 'px-6 pb-4'}`}>
+                  <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 leading-relaxed`}>{faq.answer}</p>
                 </AccordionContent>
               </AccordionItem>
             ))}

@@ -46,6 +46,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { HelpCircle, AlertCircle, Info } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 type LoanPurpose = 'consolidacao' | 'capital' | 'investimento' | 'reforma';
 type PropertyType = 'casa' | 'apartamento' | 'comercial' | 'rural';
@@ -58,6 +59,7 @@ const formatCurrency = (value: number): string => {
 };
 
 const LoanSimulator: React.FC = () => {
+  const isMobile = useIsMobile();
   const [loanPurpose, setLoanPurpose] = useState<LoanPurpose>('consolidacao');
   const [loanAmount, setLoanAmount] = useState<number>(500000);
   const [cep, setCep] = useState<string>('');
@@ -125,20 +127,20 @@ const LoanSimulator: React.FC = () => {
   const loanAmountLabelId = "loan-amount-label";
 
   return (
-    <section id="simulator" className="py-16 md:py-24 bg-gradient-to-b from-libra-light to-white">
-      <div className="container mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-libra-navy mb-4">Simule seu empréstimo</h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+    <section id="simulator" className={`${isMobile ? 'py-8' : 'py-16 md:py-24'} bg-gradient-to-b from-libra-light to-white`}>
+      <div className="container mx-auto px-4">
+        <div className={`text-center ${isMobile ? 'mb-8' : 'mb-12'}`}>
+          <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy mb-4`}>Simule seu empréstimo</h2>
+          <p className={`${isMobile ? 'text-base px-2' : 'text-lg'} text-gray-600 max-w-3xl mx-auto`}>
             Descubra quanto você pode obter com a garantia do seu imóvel (até 50% do valor) e quais serão as condições de pagamento.
           </p>
         </div>
         
-        <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-6 md:p-8 border border-gray-200">
+        <div className={`max-w-4xl mx-auto bg-white rounded-xl shadow-lg ${isMobile ? 'p-4' : 'p-6 md:p-8'} border border-gray-200`}>
           <form onSubmit={handleSubmit}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 ${isMobile ? 'mb-6' : 'mb-8'}`}>
               <div>
-                <h3 className="text-xl font-bold text-libra-navy mb-4">Sobre o empréstimo</h3>
+                <h3 className={`${isMobile ? 'text-lg' : 'text-xl'} font-bold text-libra-navy mb-4`}>Sobre o empréstimo</h3>
                 
                 <div className="space-y-4">
                   <div>
@@ -180,7 +182,7 @@ const LoanSimulator: React.FC = () => {
               </div>
               
               <div>
-                <h3 className="text-xl font-bold text-libra-navy mb-4">Sobre a garantia</h3>
+                <h3 className={`${isMobile ? 'text-lg' : 'text-xl'} font-bold text-libra-navy mb-4`}>Sobre a garantia</h3>
                 
                 <div className="space-y-4">
                   <div>
@@ -233,52 +235,52 @@ const LoanSimulator: React.FC = () => {
           </form>
           
           {showResults && (
-            <div className="mt-8 pt-6 border-t border-gray-200 animate-fade-in">
-              <h3 className="text-xl font-bold text-libra-navy mb-4 text-center">Resultado da Simulação</h3>
+            <div className={`${isMobile ? 'mt-6 pt-4' : 'mt-8 pt-6'} border-t border-gray-200 animate-fade-in`}>
+              <h3 className={`${isMobile ? 'text-lg' : 'text-xl'} font-bold text-libra-navy mb-4 text-center`}>Resultado da Simulação</h3>
               
               <div className="grid grid-cols-1 gap-6">
-                <div className="bg-libra-light p-6 rounded-lg text-center">
-                  <p className="text-sm text-gray-700 mb-2">Parcela mensal estimada:</p>
-                  <p className="text-3xl font-bold text-libra-navy">{formatCurrency(monthlyPayment)}</p>
-                  <p className="text-xs text-gray-700 mt-2">*Valores aproximados, sujeitos à análise de crédito</p>
-                  <p className="text-xs text-gray-700 mt-1">Taxa a partir de 1,19% a.m. + IPCA em até 180 meses</p>
+                <div className={`bg-libra-light ${isMobile ? 'p-4' : 'p-6'} rounded-lg text-center`}>
+                  <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-gray-700 mb-2`}>Parcela mensal estimada:</p>
+                  <p className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-libra-navy`}>{formatCurrency(monthlyPayment)}</p>
+                  <p className={`${isMobile ? 'text-xs' : 'text-xs'} text-gray-700 mt-2`}>*Valores aproximados, sujeitos à análise de crédito</p>
+                  <p className={`${isMobile ? 'text-xs' : 'text-xs'} text-gray-700 mt-1`}>Taxa a partir de 1,19% a.m. + IPCA em até 180 meses</p>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-libra-light p-6 rounded-lg text-center">
+                  <div className={`bg-libra-light ${isMobile ? 'p-4' : 'p-6'} rounded-lg text-center`}>
                     <div className="flex items-center justify-center gap-1 mb-2">
-                      <p className="text-sm text-gray-700" id="requiredIncomeLabel">Renda familiar necessária:</p>
+                      <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-gray-700`} id="requiredIncomeLabel">Renda familiar necessária:</p>
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <button type="button" aria-label="Mais informações sobre renda necessária">
-                            <HelpCircle className="w-4 h-4 text-gray-600" aria-hidden="true" />
+                            <HelpCircle className="w-3 h-3 md:w-4 md:h-4 text-gray-600" aria-hidden="true" />
                           </button>
                         </TooltipTrigger>
                         <TooltipContent>
-                          <p>A renda familiar necessária é calculada com base no comprometimento máximo de 30% da renda com a parcela, para evitar o superendividamento.</p>
+                          <p className={`${isMobile ? 'text-xs' : 'text-sm'}`}>A renda familiar necessária é calculada com base no comprometimento máximo de 30% da renda com a parcela, para evitar o superendividamento.</p>
                         </TooltipContent>
                       </Tooltip>
                     </div>
-                    <p className="text-3xl font-bold text-libra-navy" aria-labelledby="requiredIncomeLabel">{formatCurrency(requiredIncome)}</p>
-                    <p className="text-xs text-gray-700 mt-2">*Valores aproximados, sujeitos à análise de crédito</p>
+                    <p className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-libra-navy`} aria-labelledby="requiredIncomeLabel">{formatCurrency(requiredIncome)}</p>
+                    <p className={`${isMobile ? 'text-xs' : 'text-xs'} text-gray-700 mt-2`}>*Valores aproximados, sujeitos à análise de crédito</p>
                   </div>
                   
-                  <div className="bg-libra-light p-6 rounded-lg text-center">
+                  <div className={`bg-libra-light ${isMobile ? 'p-4' : 'p-6'} rounded-lg text-center`}>
                     <div className="flex items-center justify-center gap-1 mb-2">
-                      <p className="text-sm text-gray-700" id="propertyValueLabel">Avaliação do imóvel mínima necessária:</p>
+                      <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-gray-700`} id="propertyValueLabel">Avaliação do imóvel mínima necessária:</p>
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <button type="button" aria-label="Mais informações sobre avaliação do imóvel">
-                            <Info className="w-4 h-4 text-gray-600" aria-hidden="true" />
+                            <Info className="w-3 h-3 md:w-4 md:h-4 text-gray-600" aria-hidden="true" />
                           </button>
                         </TooltipTrigger>
                         <TooltipContent>
-                          <p>Dependendo das características do imóvel (tipo, região e documentação), a avaliação mínima necessária pode ser até {formatCurrency(maxPropertyValue)}.</p>
+                          <p className={`${isMobile ? 'text-xs' : 'text-sm'}`}>Dependendo das características do imóvel (tipo, região e documentação), a avaliação mínima necessária pode ser até {formatCurrency(maxPropertyValue)}.</p>
                         </TooltipContent>
                       </Tooltip>
                     </div>
-                    <p className="text-3xl font-bold text-libra-navy" aria-labelledby="propertyValueLabel">{formatCurrency(minPropertyValue)}</p>
-                    <p className="text-xs text-gray-700 mt-2">*Dependendo das características do imóvel (tipo, região e documentação), pode ser necessário até {formatCurrency(maxPropertyValue)}</p>
+                    <p className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-libra-navy`} aria-labelledby="propertyValueLabel">{formatCurrency(minPropertyValue)}</p>
+                    <p className={`${isMobile ? 'text-xs' : 'text-xs'} text-gray-700 mt-2`}>*Dependendo das características do imóvel (tipo, região e documentação), pode ser necessário até {formatCurrency(maxPropertyValue)}</p>
                   </div>
                 </div>
               </div>
