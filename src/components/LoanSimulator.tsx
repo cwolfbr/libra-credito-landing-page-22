@@ -198,6 +198,7 @@ const LoanSimulator: React.FC = () => {
                       maxLength={9} 
                       className="w-full"
                       aria-label="CEP do imóvel"
+                      inputMode="numeric"
                     />
                   </div>
                   

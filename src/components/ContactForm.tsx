@@ -138,6 +138,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
           onChange={(e) => setTelefone(e.target.value)}
           placeholder="Telefone (99) 99999-9999"
           className={inputClassName}
+          inputMode="numeric"
           required
         />
 
@@ -237,6 +238,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
               value={telefone}
               onChange={(e) => setTelefone(e.target.value)}
               placeholder="Telefone (99) 99999-9999"
+              inputMode="numeric"
               required
             />
 
