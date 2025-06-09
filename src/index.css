@@ -394,6 +394,37 @@
   @apply px-4 md:px-6 lg:px-8;
 }
 
+/* Wizard Animations */
+@keyframes slide-left {
+  0% { transform: translateX(100%); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slide-right {
+  0% { transform: translateX(-100%); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+.animate-slide-left {
+  animation: slide-left 0.3s ease-out;
+}
+
+.animate-slide-right {
+  animation: slide-right 0.3s ease-out;
+}
+
+/* Wizard specific styles */
+.wizard-container {
+  height: 100vh;
+  height: -webkit-fill-available;
+  height: 100dvh;
+}
+
+/* Bottom Navigation Safe Area */
+.bottom-nav-padding {
+  padding-bottom: calc(var(--touch-target-comfortable, 56px) + var(--safe-area-bottom, 0px));
+}
+
 /* Bottom Navigation Styles */
 @layer components {
   /* Safe padding for bottom navigation */

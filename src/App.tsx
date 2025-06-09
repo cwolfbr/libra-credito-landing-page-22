@@ -20,6 +20,8 @@ const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const SupabaseTestPage = lazy(() => import("./pages/SupabaseTestPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const MobileDemo = lazy(() => import("./pages/MobileDemo"));
+const SimulacaoWizard = lazy(() => import("./pages/SimulacaoWizard"));
+const SimpleWizardTest = lazy(() => import("./pages/SimpleWizardTest"));
 const MobileNavDemo = lazy(() => import("./pages/MobileNavDemo"));
 
 const Loading = () => (
@@ -56,6 +58,8 @@ const App = () => (
               <Route path="/test-supabase" element={<SupabaseTestPage />} />
               <Route path="/mobile-demo" element={<MobileDemo />} />
               <Route path="/mobile-nav" element={<MobileNavDemo />} />
+              <Route path="/simulacao-wizard" element={<SimulacaoWizard />} />
+              <Route path="/wizard-test" element={<SimpleWizardTest />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
