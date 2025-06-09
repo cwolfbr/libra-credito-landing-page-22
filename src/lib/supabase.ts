@@ -129,6 +129,27 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
 
 // Funções auxiliares para operações no banco
 export const supabaseApi = {
+  // Teste de conexão
+  async testConnection() {
+    try {
+      const { data, error } = await supabase
+        .from('parceiros')
+        .select('count')
+        .limit(1);
+      
+      if (error) {
+        console.error('Erro de conexão/tabela:', error);
+        throw error;
+      }
+      
+      console.log('✅ Conexão Supabase OK');
+      return true;
+    } catch (error) {
+      console.error('❌ Falha na conexão Supabase:', error);
+      throw error;
+    }
+  },
+
   // Simulações
   async createSimulacao(data: Database['public']['Tables']['simulacoes']['Insert']) {
     const { data: result, error } = await supabase
@@ -201,9 +222,13 @@ export const supabaseApi = {
 
   // User Journey
   async createUserJourney(data: Database['public']['Tables']['user_journey']['Insert']) {
+    // Tentar upsert para evitar conflitos
     const { data: result, error } = await supabase
       .from('user_journey')
-      .insert(data)
+      .upsert(data, { 
+        onConflict: 'session_id',
+        ignoreDuplicates: false 
+      })
       .select()
       .single();
     

@@ -141,37 +141,51 @@ export function useUserJourney(): UserJourneyHook {
   const initializeJourney = useCallback(async (sessionId: string) => {
     try {
       // Verificar se já existe jornada para esta sessão
-      let existingJourney = await supabaseApi.getUserJourney(sessionId);
+      let existingJourney;
+      
+      try {
+        existingJourney = await supabaseApi.getUserJourney(sessionId);
+      } catch (getError) {
+        console.warn('Erro ao buscar jornada existente (tabela pode não existir):', getError);
+        existingJourney = null;
+      }
       
       if (!existingJourney) {
-        // Criar nova jornada
-        const utms = extractUTMParams();
-        const deviceInfo = getDeviceInfo();
-        const ip = await getUserIP();
-        
-        const newJourney: UserJourneyData = {
-          session_id: sessionId,
-          utm_source: utms.utm_source,
-          utm_medium: utms.utm_medium,
-          utm_campaign: utms.utm_campaign,
-          utm_term: utms.utm_term,
-          utm_content: utms.utm_content,
-          referrer: document.referrer || 'direct',
-          landing_page: window.location.href,
-          pages_visited: [],
-          device_info: deviceInfo,
-          ip_address: ip
-        };
-        
-        existingJourney = await supabaseApi.createUserJourney(newJourney);
-        console.log('Nova jornada criada:', existingJourney);
+        // Tentar criar nova jornada
+        try {
+          const utms = extractUTMParams();
+          const deviceInfo = getDeviceInfo();
+          const ip = await getUserIP();
+          
+          const newJourney: UserJourneyData = {
+            session_id: sessionId,
+            utm_source: utms.utm_source,
+            utm_medium: utms.utm_medium,
+            utm_campaign: utms.utm_campaign,
+            utm_term: utms.utm_term,
+            utm_content: utms.utm_content,
+            referrer: document.referrer || 'direct',
+            landing_page: window.location.href,
+            pages_visited: [],
+            device_info: deviceInfo,
+            ip_address: ip
+          };
+          
+          existingJourney = await supabaseApi.createUserJourney(newJourney);
+          console.log('Nova jornada criada:', existingJourney);
+        } catch (createError) {
+          console.warn('Erro ao criar jornada (continuando sem tracking):', createError);
+          // Continuar sem tracking se Supabase falhar
+          setIsTracking(false);
+          return;
+        }
       }
       
       setJourneyData(existingJourney);
       setIsTracking(true);
       
     } catch (error) {
-      console.error('Erro ao inicializar jornada:', error);
+      console.error('Erro geral ao inicializar jornada:', error);
       setIsTracking(false);
     }
   }, []);

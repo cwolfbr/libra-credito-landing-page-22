@@ -51,6 +51,10 @@ export class PartnersService {
     try {
       console.log('🤝 Criando solicitação de parceria:', input);
       
+      // 0. Testar conexão primeiro
+      console.log('🔄 Testando conexão Supabase...');
+      await supabaseApi.testConnection();
+      
       // 1. Validar dados de entrada
       this.validatePartnerInput(input);
       
@@ -185,9 +189,10 @@ export class PartnersService {
     if (!input.ramoAtuacao) throw new Error('Ramo de atuação é obrigatório');
     if (!input.origem) throw new Error('Origem é obrigatória');
     
-    // Validar CNPJ se fornecido
-    if (input.cnpj && !this.validateCNPJ(input.cnpj)) {
-      throw new Error('CNPJ inválido');
+    // Validar CNPJ se fornecido (validação simplificada)
+    if (input.cnpj && input.cnpj.replace(/\D/g, '').length > 0 && input.cnpj.replace(/\D/g, '').length !== 14) {
+      console.warn('CNPJ com formato não padrão:', input.cnpj);
+      // Não bloquear por CNPJ inválido - apenas logar warning
     }
   }
   

@@ -88,7 +88,12 @@ export const validateEmail = (email: string): boolean => {
  * Valida telefone brasileiro
  */
 export const validatePhone = (phone: string): boolean => {
+  if (!phone || typeof phone !== 'string') {
+    return false;
+  }
+  
   const cleanPhone = phone.replace(/\D/g, '');
+  
   // Aceita 10 ou 11 dígitos (com ou sem 9º dígito)
   return cleanPhone.length >= 10 && cleanPhone.length <= 11;
 };
