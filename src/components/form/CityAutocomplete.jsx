@@ -12,7 +12,10 @@ const CityAutocomplete = ({ value = '', onCityChange }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [highlightIndex, setHighlightIndex] = useState(-1);
+  const [isFocused, setIsFocused] = useState(false);
   const fetchTimeout = useRef(null);
+  const inputRef = useRef(null);
+  const containerRef = useRef(null);
 
   // Keep input in sync if parent resets the value
   useEffect(() => {
@@ -75,12 +78,48 @@ const CityAutocomplete = ({ value = '', onCityChange }) => {
     };
   }, [inputValue]);
 
+  // Function to scroll input to top of viewport
+  const scrollToInput = () => {
+    if (inputRef.current && window.innerWidth < 768) { // Only on mobile
+      setTimeout(() => {
+        const headerHeight = 80; // Approximate header height
+        const rect = inputRef.current.getBoundingClientRect();
+        const elementTop = rect.top + window.pageYOffset;
+        const targetPosition = elementTop - headerHeight;
+        
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+      }, 300); // Delay to allow keyboard to appear
+    }
+  };
+
+  // Handle focus
+  const handleFocus = () => {
+    setIsFocused(true);
+    scrollToInput();
+  };
+
+  // Handle blur
+  const handleBlur = () => {
+    // Delay hiding suggestions to allow selection
+    setTimeout(() => {
+      setIsFocused(false);
+      setSuggestions([]);
+    }, 200);
+  };
+
   // Handle selection of a city
   const handleSelect = (city) => {
     setInputValue(city);
     setSuggestions([]);
     setHighlightIndex(-1);
+    setIsFocused(false);
     if (onCityChange) onCityChange(city);
+    if (inputRef.current) {
+      inputRef.current.blur();
+    }
   };
 
   // When typing, clear current selection until a suggestion is chosen
@@ -108,51 +147,90 @@ const CityAutocomplete = ({ value = '', onCityChange }) => {
     }
   };
 
+  // Check if we should show suggestions
+  const showSuggestions = isFocused && inputValue.length >= 3 && (isLoading || error || suggestions.length > 0);
+
   return (
-    <div className="flex items-start gap-2 relative">
+    <div ref={containerRef} className="flex items-start gap-2 relative">
       {/* Icon */}
       <div className="bg-libra-light p-1.5 rounded-full mt-0.5">
         <MapPin className="w-4 h-4 text-libra-blue" />
       </div>
-      <div className="flex-1">
+      <div className="flex-1 relative">
         <label className="block text-xs font-medium text-libra-navy mb-1">
           Selecione a cidade do imóvel a ser dado de garantia
         </label>
         {/* Input with green border */}
         <input
+          ref={inputRef}
           type="text"
           value={inputValue}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
           placeholder={
             inputValue.length < 3 ? 'Digite 3 ou mais caracteres' : 'Busque a cidade'
           }
-          className="text-sm w-full px-3 py-2 rounded-md border-2 border-[#3CB371] focus:outline-none"
+          className="text-sm w-full px-3 py-2 rounded-md border-2 border-[#3CB371] focus:outline-none focus:border-[#2E8B57] transition-colors"
         />
-        {/* Suggestion dropdown */}
-        {inputValue.length >= 3 && (
-          <ul className="absolute left-7 right-0 mt-1 max-h-60 overflow-auto rounded-md border border-gray-300 bg-white text-sm shadow-md z-10">
-            {isLoading && <li className="px-3 py-2">Buscando...</li>}
-            {error && !isLoading && (
-              <li className="px-3 py-2 text-red-500">{error}</li>
-            )}
-            {!isLoading && !error && suggestions.length === 0 && (
-              <li className="px-3 py-2">Nenhuma cidade encontrada</li>
-            )}
-            {!isLoading && !error &&
-              suggestions.map((city, index) => (
-                <li
-                  key={city}
-                  onMouseDown={() => handleSelect(city)}
-                  onMouseEnter={() => setHighlightIndex(index)}
-                  className={`cursor-pointer px-3 py-2 ${
-                    index === highlightIndex ? 'bg-gray-200' : ''
-                  }`}
-                >
-                  {city}
+        
+        {/* Suggestion dropdown - Fixed positioning for mobile */}
+        {showSuggestions && (
+          <div className="absolute left-0 right-0 mt-1 z-50">
+            <ul className="max-h-60 overflow-auto rounded-md border border-gray-300 bg-white text-sm shadow-lg">
+              {isLoading && (
+                <li className="px-3 py-2 text-center text-gray-500">
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-libra-blue"></div>
+                    Buscando...
+                  </div>
                 </li>
-              ))}
-          </ul>
+              )}
+              {error && !isLoading && (
+                <li className="px-3 py-2 text-red-500 text-center">{error}</li>
+              )}
+              {!isLoading && !error && suggestions.length === 0 && (
+                <li className="px-3 py-2 text-gray-500 text-center">Nenhuma cidade encontrada</li>
+              )}
+              {!isLoading && !error &&
+                suggestions.map((city, index) => (
+                  <li
+                    key={city}
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      handleSelect(city);
+                    }}
+                    onTouchStart={(e) => {
+                      e.preventDefault();
+                      handleSelect(city);
+                    }}
+                    onMouseEnter={() => setHighlightIndex(index)}
+                    className={`cursor-pointer px-3 py-3 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors ${
+                      index === highlightIndex ? 'bg-libra-light text-libra-navy' : ''
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <MapPin className="w-3 h-3 text-libra-blue flex-shrink-0" />
+                      <span className="truncate">{city}</span>
+                    </div>
+                  </li>
+                ))}
+            </ul>
+          </div>
+        )}
+        
+        {/* Mobile overlay to prevent scrolling behind suggestions */}
+        {showSuggestions && window.innerWidth < 768 && (
+          <div 
+            className="fixed inset-0 bg-black bg-opacity-20 z-40"
+            onTouchStart={(e) => {
+              e.preventDefault();
+              if (inputRef.current) {
+                inputRef.current.blur();
+              }
+            }}
+          />
         )}
       </div>
     </div>
