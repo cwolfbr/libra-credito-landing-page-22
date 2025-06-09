@@ -13,6 +13,7 @@ const Index = lazy(() => import("./pages/Index"));
 const Vantagens = lazy(() => import("./pages/Vantagens"));
 const QuemSomos = lazy(() => import("./pages/QuemSomos"));
 const Blog = lazy(() => import("./pages/Blog"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
 const Parceiros = lazy(() => import("./pages/Parceiros"));
 const Simulacao = lazy(() => import("./pages/Simulacao"));
 const PoliticaPrivacidade = lazy(() => import("./pages/PoliticaPrivacidade"));
@@ -51,6 +52,7 @@ const App = () => (
               <Route path="/vantagens" element={<Vantagens />} />
               <Route path="/quem-somos" element={<QuemSomos />} />
               <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/parceiros" element={<Parceiros />} />
               <Route path="/simulacao" element={<Simulacao />} />
               <Route path="/politica-privacidade" element={<PoliticaPrivacidade />} />

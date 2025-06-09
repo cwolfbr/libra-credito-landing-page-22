@@ -59,20 +59,6 @@ const QuemSomos = () => {
           </div>
         </section>
 
-        {/* Imagem Institucional */}
-        <section className="py-4 md:py-12">
-          <div className="container mx-auto px-4">
-            <div className="relative w-full max-w-3xl mx-auto">
-              <ImageOptimizer
-                src="/images/media/quemsomos.png"
-                alt="Libra Crédito - Quem Somos"
-                className="rounded-xl shadow-lg w-full"
-                aspectRatio={16/9}
-              />
-            </div>
-          </div>
-        </section>
-
         {/* Nossa História */}
         <section className="py-4 md:py-12">
           <div className="container mx-auto px-4">
@@ -118,6 +104,20 @@ const QuemSomos = () => {
                   </div>
                 );
               })}
+            </div>
+          </div>
+        </section>
+
+        {/* Imagem Institucional */}
+        <section className="py-4 md:py-12">
+          <div className="container mx-auto px-4">
+            <div className="relative w-full max-w-3xl mx-auto">
+              <ImageOptimizer
+                src="/images/media/quemsomos.png"
+                alt="Libra Crédito - Quem Somos"
+                className="rounded-xl shadow-lg w-full"
+                aspectRatio={16/9}
+              />
             </div>
           </div>
         </section>
