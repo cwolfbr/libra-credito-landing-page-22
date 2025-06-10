@@ -131,7 +131,40 @@ const EXISTING_POSTS: BlogPost[] = [
     category: 'home-equity',
     imageUrl: '/images/blog/capital-giro.jpg',
     slug: 'home-equity-o-que-e-como-conseguir',
-    content: 'Home Equity é uma modalidade de crédito que permite usar seu imóvel como garantia...',
+    content: `
+      <h2>O que é Home Equity?</h2>
+      <p>Home Equity é uma modalidade de crédito onde você utiliza seu imóvel como garantia para obter empréstimos com condições muito mais vantajosas. Esta modalidade permite acessar até 50% do valor de avaliação do imóvel com taxas reduzidas e prazos estendidos.</p>
+
+      <h2>Como Funciona o Home Equity</h2>
+      <p>O processo é simples: seu imóvel serve como garantia real para o empréstimo, o que reduz o risco para a instituição financeira e resulta em melhores condições para você. O imóvel continua sendo seu e você pode continuar morando nele normalmente.</p>
+
+      <h3>Principais características:</h3>
+      <ul>
+        <li>Taxa de juros reduzida (a partir de 1,09% a.m.)</li>
+        <li>Prazos de até 15 anos para pagamento</li>
+        <li>Liberação de até 50% do valor do imóvel</li>
+        <li>Sem comprovação de finalidade do uso</li>
+        <li>Flexibilidade total no uso do recurso</li>
+      </ul>
+
+      <h2>Vantagens do Home Equity</h2>
+      <p>O crédito com garantia de imóvel oferece as melhores condições do mercado financeiro, permitindo que você realize seus projetos com economia significativa em juros.</p>
+
+      <h3>Benefícios principais:</h3>
+      <ul>
+        <li>Juros muito menores que outras modalidades</li>
+        <li>Maior valor liberado</li>
+        <li>Prazos mais longos para pagamento</li>
+        <li>Facilidade na aprovação</li>
+        <li>Processo 100% digital</li>
+      </ul>
+
+      <h2>Quem Pode Contratar?</h2>
+      <p>Qualquer pessoa física ou jurídica que possua um imóvel quitado ou com financiamento em fase final pode solicitar o Home Equity. O imóvel deve estar regularizado e com documentação em ordem.</p>
+
+      <h2>Crescimento do Mercado</h2>
+      <p>O crédito com garantia imobiliária atingiu R$ 19,7 bilhões em dezembro de 2023, representando crescimento de 19,3% em relação a 2022. Este crescimento demonstra a confiança dos brasileiros nesta modalidade.</p>
+    `,
     readTime: 8,
     published: true,
     featuredPost: true,
@@ -145,7 +178,47 @@ const EXISTING_POSTS: BlogPost[] = [
     category: 'home-equity',
     imageUrl: '/images/blog/consolidacao.jpg',
     slug: 'home-equity-guia-completo-modalidade',
-    content: 'Este é o guia definitivo sobre Home Equity. Vamos explicar tudo que você precisa saber...',
+    content: `
+      <h2>Home Equity: Entendendo Completamente a Modalidade</h2>
+      <p>O Home Equity representa uma revolução no mercado de crédito brasileiro, oferecendo condições excepcionais para quem possui imóvel próprio. Com taxas a partir de 1,09% ao mês e prazos de até 15 anos, esta modalidade transforma seu patrimônio imobiliário em uma ferramenta financeira poderosa.</p>
+
+      <h2>Características Técnicas Detalhadas</h2>
+      <p>A Libra Crédito, com mais de 40 anos de experiência do Grupo Construtora Stefani, oferece todas as vantagens do mercado nesta modalidade.</p>
+
+      <h3>Especificações da modalidade:</h3>
+      <ul>
+        <li><strong>Taxa de juros:</strong> A partir de 1,09% ao mês</li>
+        <li><strong>Prazo máximo:</strong> Até 15 anos (180 meses)</li>
+        <li><strong>Valor liberado:</strong> Até 50% do valor de avaliação</li>
+        <li><strong>Carência:</strong> Até 6 meses (opcional)</li>
+        <li><strong>Amortização:</strong> Sistema SAC ou Tabela Price</li>
+        <li><strong>Garantia:</strong> Alienação fiduciária do imóvel</li>
+      </ul>
+
+      <h2>Processo Completo de Contratação</h2>
+      <p>O processo foi otimizado para ser 100% digital, garantindo agilidade e segurança em todas as etapas.</p>
+
+      <h3>Etapas do processo:</h3>
+      <ol>
+        <li><strong>Simulação online:</strong> Calcule valores e condições</li>
+        <li><strong>Envio de documentos:</strong> Upload seguro da documentação</li>
+        <li><strong>Análise de crédito:</strong> Avaliação em até 48 horas</li>
+        <li><strong>Avaliação do imóvel:</strong> Laudo técnico profissional</li>
+        <li><strong>Aprovação:</strong> Proposta final personalizada</li>
+        <li><strong>Assinatura:</strong> Contrato digital ou presencial</li>
+        <li><strong>Registro:</strong> Averbação no cartório de imóveis</li>
+        <li><strong>Liberação:</strong> Recursos disponibilizados</li>
+      </ol>
+
+      <h2>Avaliação Imobiliária Profissional</h2>
+      <p>A avaliação é realizada por engenheiros especializados, seguindo normas da ABNT NBR 14653. Consideramos localização, estado de conservação, área útil, documentação e potencial de valorização.</p>
+
+      <h2>Segurança Jurídica Total</h2>
+      <p>Todos os contratos seguem as determinações do Banco Central e são registrados em cartório, garantindo segurança jurídica completa para ambas as partes.</p>
+
+      <h2>Atendimento Personalizado</h2>
+      <p>Nossa equipe oferece acompanhamento personalizado em todas as etapas, garantindo que você compreenda completamente o processo e tenha suporte sempre que necessário.</p>
+    `,
     readTime: 12,
     published: true,
     featuredPost: false,
@@ -159,12 +232,82 @@ const EXISTING_POSTS: BlogPost[] = [
     category: 'home-equity',
     imageUrl: '/images/blog/reforma.jpg',
     slug: 'como-investir-sem-descapitalizar-home-equity',
-    content: 'Investir sem descapitalizar é o sonho de todo empreendedor...',
+    content: `
+      <h2>A Estratégia de Investimento sem Descapitalização</h2>
+      <p>O Home Equity permite uma estratégia financeira inteligente: usar o valor do seu imóvel para investir sem precisar vendê-lo ou comprometer sua moradia. Esta abordagem maximiza o potencial do seu patrimônio imobiliário.</p>
+
+      <h2>Como Funciona na Prática</h2>
+      <p>Ao invés de vender seu imóvel para ter capital de investimento, você utiliza o Home Equity para acessar recursos com taxas baixas, mantendo a propriedade e ainda podendo se beneficiar de sua valorização.</p>
+
+      <h3>Vantagens desta estratégia:</h3>
+      <ul>
+        <li>Mantém a propriedade do imóvel</li>
+        <li>Acessa capital com taxas reduzidas</li>
+        <li>Beneficia-se da valorização imobiliária</li>
+        <li>Flexibilidade total no uso dos recursos</li>
+        <li>Preserva seu local de moradia</li>
+      </ul>
+
+      <h2>Oportunidades de Investimento</h2>
+      <p>Com os recursos do Home Equity, você pode diversificar seus investimentos e construir uma carteira mais robusta.</p>
+
+      <h3>Opções de investimento:</h3>
+      <ul>
+        <li><strong>Mercado financeiro:</strong> CDBs, LCIs, LCAs, Tesouro Direto</li>
+        <li><strong>Fundos imobiliários:</strong> Diversificação no setor imobiliário</li>
+        <li><strong>Ações:</strong> Participação no crescimento das empresas</li>
+        <li><strong>Empreendimentos:</strong> Abertura ou expansão de negócios</li>
+        <li><strong>Educação:</strong> Cursos e especializações</li>
+      </ul>
+    `,
     readTime: 10,
     published: true,
     featuredPost: false,
     createdAt: '2024-03-23T00:00:00.000Z',
     updatedAt: '2024-03-23T00:00:00.000Z'
+  },
+  {
+    id: '4',
+    title: 'Simplificando o Pós-venda: Um Guia para Retirar seus Boletos',
+    description: 'Conheça as ferramentas disponíveis para clientes: Chat Bot e Portal do Cliente para retirada de boletos.',
+    category: 'home-equity',
+    imageUrl: '/images/blog/capital-giro.jpg',
+    slug: 'simplificando-pos-venda-guia-boletos',
+    content: `
+      <h2>Atendimento Pós-Venda Digital</h2>
+      <p>Na Libra Crédito, oferecemos diversas ferramentas digitais para facilitar o relacionamento com nossos clientes após a contratação do Home Equity.</p>
+
+      <h2>Chat Bot Inteligente</h2>
+      <p>Nosso chat bot está disponível 24/7 para auxiliar na retirada de boletos e esclarecimento de dúvidas básicas sobre seu contrato.</p>
+
+      <h2>Portal do Cliente</h2>
+      <p>Acesse seu Portal do Cliente para visualizar e baixar seus boletos, acompanhar seu histórico de pagamentos e muito mais.</p>
+    `,
+    readTime: 5,
+    published: true,
+    featuredPost: false,
+    createdAt: '2024-03-22T00:00:00.000Z',
+    updatedAt: '2024-03-22T00:00:00.000Z'
+  },
+  {
+    id: '5',
+    title: 'Processo de Registro e Liberação de Recurso no Home Equity',
+    description: 'Passo a passo completo das etapas após formalização do contrato de empréstimo com garantia imobiliária.',
+    category: 'home-equity',
+    imageUrl: '/images/blog/consolidacao.jpg',
+    slug: 'processo-registro-liberacao-home-equity',
+    content: `
+      <h2>Etapas do Registro</h2>
+      <p>Após a assinatura do contrato, iniciamos o processo de registro no cartório de imóveis para formalizar a garantia.</p>
+
+      <h2>Liberação dos Recursos</h2>
+      <p>Uma vez registrado, os recursos são liberados conforme acordo estabelecido no contrato.</p>
+    `,
+    readTime: 8,
+    published: true,
+    featuredPost: false,
+    createdAt: '2024-03-21T00:00:00.000Z',
+    updatedAt: '2024-03-21T00:00:00.000Z'
   }
 ];
 
@@ -229,7 +372,13 @@ export class BlogService {
     try {
       const stored = localStorage.getItem(this.STORAGE_KEY);
       if (stored) {
-        return JSON.parse(stored);
+        const posts = JSON.parse(stored);
+        // Se temos poucos posts, reinicializar com todos os posts existentes
+        if (posts.length < 5) {
+          localStorage.setItem(this.STORAGE_KEY, JSON.stringify(EXISTING_POSTS));
+          return EXISTING_POSTS;
+        }
+        return posts;
       } else {
         // Primeira vez acessando - inicializar com posts existentes
         localStorage.setItem(this.STORAGE_KEY, JSON.stringify(EXISTING_POSTS));
