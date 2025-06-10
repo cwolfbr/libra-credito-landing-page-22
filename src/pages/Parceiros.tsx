@@ -88,7 +88,9 @@ const Parceiros = () => {
         break;
         
       case 'cnpj':
-        if (value && value.replace(/\D/g, '').length !== 14) {
+        if (!value) {
+          newErrors.cnpj = 'CNPJ é obrigatório';
+        } else if (value.replace(/\D/g, '').length !== 14) {
           newErrors.cnpj = 'CNPJ deve ter 14 dígitos';
         } else {
           delete newErrors.cnpj;
@@ -156,8 +158,8 @@ const Parceiros = () => {
   };
 
   const validateForm = () => {
-    const fields = ['nome', 'email', 'telefone', 'cidade', 'tempoHomeEquity', 'perfilCliente', 'ramoAtuacao', 'origem'];
-    const values = { nome, email, telefone, cidade, tempoHomeEquity, perfilCliente, ramoAtuacao, origem, cnpj };
+    const fields = ['nome', 'email', 'telefone', 'cidade', 'cnpj', 'tempoHomeEquity', 'perfilCliente', 'ramoAtuacao', 'origem'];
+    const values = { nome, email, telefone, cidade, cnpj, tempoHomeEquity, perfilCliente, ramoAtuacao, origem };
     
     // Criar um objeto temporário para verificar erros
     const tempErrors: Record<string, string> = {};
@@ -183,6 +185,10 @@ const Parceiros = () => {
           if (!value) tempErrors.cidade = 'Cidade é obrigatória';
           else if (value.length < 2) tempErrors.cidade = 'Cidade deve ter pelo menos 2 caracteres';
           break;
+        case 'cnpj':
+          if (!value) tempErrors.cnpj = 'CNPJ é obrigatório';
+          else if (value.replace(/\D/g, '').length !== 14) tempErrors.cnpj = 'CNPJ deve ter 14 dígitos';
+          break;
         case 'tempoHomeEquity':
           if (!value) tempErrors.tempoHomeEquity = 'Tempo de experiência é obrigatório';
           break;
@@ -198,10 +204,7 @@ const Parceiros = () => {
       }
     });
     
-    // Validar CNPJ se preenchido
-    if (cnpj && cnpj.replace(/\D/g, '').length !== 14) {
-      tempErrors.cnpj = 'CNPJ deve ter 14 dígitos';
-    }
+    // CNPJ já validado no loop acima
     
     // Marcar todos os campos como tocados
     setTouched(prev => {
@@ -209,7 +212,6 @@ const Parceiros = () => {
       fields.forEach(field => {
         newTouched[field] = true;
       });
-      if (cnpj) newTouched.cnpj = true;
       return newTouched;
     });
     
@@ -395,7 +397,7 @@ const Parceiros = () => {
                     required
                   />
                   <ValidatedInput
-                    label="CNPJ (opcional)"
+                    label="CNPJ"
                     type="text"
                     placeholder="00.000.000/0000-00"
                     value={cnpj}
@@ -403,71 +405,76 @@ const Parceiros = () => {
                     onBlur={() => setTouched(prev => ({ ...prev, cnpj: true }))}
                     error={errors.cnpj}
                     touched={touched.cnpj}
+                    required
                   />
                 </div>
 
-                <ValidatedSelect
-                  label="Tempo de experiência com Home Equity"
-                  value={tempoHomeEquity}
-                  onChange={(value) => handleFieldChange('tempoHomeEquity', value)}
-                  onBlur={() => setTouched(prev => ({ ...prev, tempoHomeEquity: true }))}
-                  error={errors.tempoHomeEquity}
-                  touched={touched.tempoHomeEquity}
-                  placeholder="Selecione o tempo de experiência"
-                  required
-                >
-                  <SelectItem value="menos-1">Menos de 1 ano</SelectItem>
-                  <SelectItem value="1-2">1 a 2 anos</SelectItem>
-                  <SelectItem value="2-5">2 a 5 anos</SelectItem>
-                  <SelectItem value="mais-5">Mais de 5 anos</SelectItem>
-                </ValidatedSelect>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <ValidatedSelect
+                    label="Tempo de experiência com Home Equity"
+                    value={tempoHomeEquity}
+                    onChange={(value) => handleFieldChange('tempoHomeEquity', value)}
+                    onBlur={() => setTouched(prev => ({ ...prev, tempoHomeEquity: true }))}
+                    error={errors.tempoHomeEquity}
+                    touched={touched.tempoHomeEquity}
+                    placeholder="Selecione o tempo"
+                    required
+                  >
+                    <SelectItem value="menos-1">Menos de 1 ano</SelectItem>
+                    <SelectItem value="1-2">1 a 2 anos</SelectItem>
+                    <SelectItem value="2-5">2 a 5 anos</SelectItem>
+                    <SelectItem value="mais-5">Mais de 5 anos</SelectItem>
+                  </ValidatedSelect>
 
-                <ValidatedSelect
-                  label="Perfil de cliente"
-                  value={perfilCliente}
-                  onChange={(value) => handleFieldChange('perfilCliente', value)}
-                  onBlur={() => setTouched(prev => ({ ...prev, perfilCliente: true }))}
-                  error={errors.perfilCliente}
-                  touched={touched.perfilCliente}
-                  placeholder="Selecione o perfil"
-                  required
-                >
-                  <SelectItem value="pf">Pessoa Física</SelectItem>
-                  <SelectItem value="pj">Pessoa Jurídica</SelectItem>
-                  <SelectItem value="ambos">Ambos</SelectItem>
-                </ValidatedSelect>
+                  <ValidatedSelect
+                    label="Perfil de cliente"
+                    value={perfilCliente}
+                    onChange={(value) => handleFieldChange('perfilCliente', value)}
+                    onBlur={() => setTouched(prev => ({ ...prev, perfilCliente: true }))}
+                    error={errors.perfilCliente}
+                    touched={touched.perfilCliente}
+                    placeholder="Selecione o perfil"
+                    required
+                  >
+                    <SelectItem value="pf">Pessoa Física</SelectItem>
+                    <SelectItem value="pj">Pessoa Jurídica</SelectItem>
+                    <SelectItem value="ambos">Ambos</SelectItem>
+                  </ValidatedSelect>
+                </div>
 
-                <ValidatedSelect
-                  label="Ramo de atuação"
-                  value={ramoAtuacao}
-                  onChange={(value) => handleFieldChange('ramoAtuacao', value)}
-                  onBlur={() => setTouched(prev => ({ ...prev, ramoAtuacao: true }))}
-                  error={errors.ramoAtuacao}
-                  touched={touched.ramoAtuacao}
-                  placeholder="Selecione seu ramo"
-                  required
-                >
-                  <SelectItem value="correspondente">Correspondente Bancário</SelectItem>
-                  <SelectItem value="corretor">Corretor de Imóveis</SelectItem>
-                  <SelectItem value="consultor">Consultor Financeiro</SelectItem>
-                  <SelectItem value="outro">Outro</SelectItem>
-                </ValidatedSelect>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <ValidatedSelect
+                    label="Ramo de atuação"
+                    value={ramoAtuacao}
+                    onChange={(value) => handleFieldChange('ramoAtuacao', value)}
+                    onBlur={() => setTouched(prev => ({ ...prev, ramoAtuacao: true }))}
+                    error={errors.ramoAtuacao}
+                    touched={touched.ramoAtuacao}
+                    placeholder="Selecione seu ramo"
+                    required
+                  >
+                    <SelectItem value="correspondente">Correspondente Bancário</SelectItem>
+                    <SelectItem value="corretor">Corretor de Imóveis</SelectItem>
+                    <SelectItem value="consultor">Consultor Financeiro</SelectItem>
+                    <SelectItem value="outro">Outro</SelectItem>
+                  </ValidatedSelect>
 
-                <ValidatedSelect
-                  label="Como chegou até nós?"
-                  value={origem}
-                  onChange={(value) => handleFieldChange('origem', value)}
-                  onBlur={() => setTouched(prev => ({ ...prev, origem: true }))}
-                  error={errors.origem}
-                  touched={touched.origem}
-                  placeholder="Selecione como nos conheceu"
-                  required
-                >
-                  <SelectItem value="google">Google</SelectItem>
-                  <SelectItem value="redes-sociais">Redes Sociais</SelectItem>
-                  <SelectItem value="indicacao">Indicação</SelectItem>
-                  <SelectItem value="outro">Outro</SelectItem>
-                </ValidatedSelect>
+                  <ValidatedSelect
+                    label="Como chegou até nós?"
+                    value={origem}
+                    onChange={(value) => handleFieldChange('origem', value)}
+                    onBlur={() => setTouched(prev => ({ ...prev, origem: true }))}
+                    error={errors.origem}
+                    touched={touched.origem}
+                    placeholder="Como nos conheceu"
+                    required
+                  >
+                    <SelectItem value="google">Google</SelectItem>
+                    <SelectItem value="redes-sociais">Redes Sociais</SelectItem>
+                    <SelectItem value="indicacao">Indicação</SelectItem>
+                    <SelectItem value="outro">Outro</SelectItem>
+                  </ValidatedSelect>
+                </div>
 
                 <div className="space-y-1">
                   <label className="block text-sm font-medium text-gray-700">
