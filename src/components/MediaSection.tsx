@@ -62,7 +62,7 @@ const MediaSection: React.FC = () => {
               >
                 <img
                   src={media.logo}
-                  alt={`Logo ${media.name}`}
+                  alt={`${media.name} - acesse matéria sobre Libra Crédito`}
                   className="max-w-full max-h-[40px] object-contain"
                   loading="lazy"
                 />
@@ -77,7 +77,7 @@ const MediaSection: React.FC = () => {
                 <div className="h-12 mb-4 flex items-center">
                   <img
                     src={media.logo}
-                    alt={`Logo ${media.name}`}
+                    alt={`${media.name} - veículo de mídia que destaca a Libra Crédito`}
                     className="max-h-full object-contain"
                     loading="lazy"
                   />

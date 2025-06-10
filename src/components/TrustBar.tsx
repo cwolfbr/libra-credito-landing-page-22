@@ -4,6 +4,7 @@ import { Award, Users, TrendingUp, Shield } from 'lucide-react';
 const TrustBar: React.FC = () => {
   return (
     <section className="bg-gray-50 py-6 border-t border-gray-200" aria-label="Indicadores de confiança">
+      <h2 className="sr-only">Indicadores de Confiança da Libra Crédito</h2>
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
           {/* Regulamentação */}

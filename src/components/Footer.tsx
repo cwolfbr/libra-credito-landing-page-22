@@ -68,20 +68,20 @@ const Footer: React.FC = () => {
               <h4 className="font-bold text-base md:text-lg mb-3 md:mb-4 text-center md:text-right">Acompanhe nas redes sociais</h4>
               <div className="flex items-center justify-center md:justify-end">
                 <div className="grid grid-flow-col gap-6 md:gap-8">
-                  <a href="https://www.facebook.com/LibraCreditoOficial/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-libra-blue transition-colors" aria-label="Facebook">
-                    <Facebook className="w-5 h-5 md:w-6 md:h-6" />
+                  <a href="https://www.facebook.com/LibraCreditoOficial/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-libra-blue transition-colors" aria-label="Siga a Libra Crédito no Facebook - abre em nova aba">
+                    <Facebook className="w-5 h-5 md:w-6 md:h-6" aria-hidden="true" />
                   </a>
-                  <a href="https://www.instagram.com/libracredito/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-libra-blue transition-colors" aria-label="Instagram">
-                    <Instagram className="w-5 h-5 md:w-6 md:h-6" />
+                  <a href="https://www.instagram.com/libracredito/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-libra-blue transition-colors" aria-label="Siga a Libra Crédito no Instagram - abre em nova aba">
+                    <Instagram className="w-5 h-5 md:w-6 md:h-6" aria-hidden="true" />
                   </a>
-                  <a href="https://www.linkedin.com/company/libracredito/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-libra-blue transition-colors" aria-label="LinkedIn">
-                    <Linkedin className="w-5 h-5 md:w-6 md:h-6" />
+                  <a href="https://www.linkedin.com/company/libracredito/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-libra-blue transition-colors" aria-label="Conecte-se com a Libra Crédito no LinkedIn - abre em nova aba">
+                    <Linkedin className="w-5 h-5 md:w-6 md:h-6" aria-hidden="true" />
                   </a>
-                  <a href="https://www.youtube.com/channel/UCXpuj7LlTLT_kdbwwJHS0qA" target="_blank" rel="noopener noreferrer" className="text-white hover:text-libra-blue transition-colors" aria-label="YouTube">
-                    <Youtube className="w-5 h-5 md:w-6 md:h-6" />
+                  <a href="https://www.youtube.com/channel/UCXpuj7LlTLT_kdbwwJHS0qA" target="_blank" rel="noopener noreferrer" className="text-white hover:text-libra-blue transition-colors" aria-label="Assista aos vídeos da Libra Crédito no YouTube - abre em nova aba">
+                    <Youtube className="w-5 h-5 md:w-6 md:h-6" aria-hidden="true" />
                   </a>
-                  <a href="https://www.reclameaqui.com.br/empresa/libra-credito-solucoes-financeiras/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-libra-blue transition-colors" aria-label="Reclame Aqui">
-                    <ExternalLink className="w-5 h-5 md:w-6 md:h-6" />
+                  <a href="https://www.reclameaqui.com.br/empresa/libra-credito-solucoes-financeiras/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-libra-blue transition-colors" aria-label="Veja a reputação da Libra Crédito no Reclame Aqui - abre em nova aba">
+                    <ExternalLink className="w-5 h-5 md:w-6 md:h-6" aria-hidden="true" />
                   </a>
                 </div>
               </div>
@@ -89,10 +89,11 @@ const Footer: React.FC = () => {
             
             <button 
               onClick={scrollToTop} 
-              className="flex items-center gap-2 text-sm md:text-base text-libra-silver hover:text-white transition-colors"
+              className="flex items-center gap-2 text-sm md:text-base text-libra-silver hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-libra-gold rounded px-2 py-1"
+              aria-label="Voltar ao topo da página"
             >
               Voltar ao topo
-              <ChevronUp className="w-3 h-3 md:w-4 md:h-4" />
+              <ChevronUp className="w-3 h-3 md:w-4 md:h-4" aria-hidden="true" />
             </button>
           </div>
         </div>

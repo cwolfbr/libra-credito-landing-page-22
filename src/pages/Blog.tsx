@@ -143,7 +143,7 @@ const Blog = () => {
                   )}
                 >
                   <Icon className="w-6 h-6" />
-                  <h2 className="text-sm font-semibold text-center">{category.name}</h2>
+                  <span className="text-sm font-semibold text-center">{category.name}</span>
                   <p className="text-xs text-gray-600 text-center hidden lg:block">{category.description}</p>
                 </Button>
               );

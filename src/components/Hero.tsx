@@ -41,6 +41,7 @@ const Hero: React.FC = () => {
     <section 
       className="min-h-[100vh] pt-header pb-4 bg-gradient-to-br from-white to-[#003399] relative flex flex-col justify-center" 
       aria-labelledby="hero-heading"
+      role="banner"
     >
       {/* Sobreposição para melhor contraste do texto */}
       <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-black/10 to-black/40"></div>

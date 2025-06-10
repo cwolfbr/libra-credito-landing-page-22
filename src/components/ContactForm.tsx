@@ -115,32 +115,53 @@ const ContactForm: React.FC<ContactFormProps> = ({
   if (compact) {
     return (
       <form onSubmit={handleSubmit} className={`space-y-3 ${className}`}>
-        <Input
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
-          placeholder="Nome Completo"
-          className={inputClassName}
-          required
-        />
+        <div>
+          <label htmlFor="nome-compact" className="sr-only">
+            Nome Completo
+          </label>
+          <Input
+            id="nome-compact"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+            placeholder="Nome Completo"
+            className={inputClassName}
+            required
+            aria-required="true"
+          />
+        </div>
         
-        <Input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="E-mail"
-          className={inputClassName}
-          required
-        />
+        <div>
+          <label htmlFor="email-compact" className="sr-only">
+            E-mail
+          </label>
+          <Input
+            id="email-compact"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="E-mail"
+            className={inputClassName}
+            required
+            aria-required="true"
+          />
+        </div>
         
-        <Input
-          type="tel"
-          value={telefone}
-          onChange={(e) => setTelefone(e.target.value)}
-          placeholder="Telefone (99) 99999-9999"
-          className={inputClassName}
-          inputMode="numeric"
-          required
-        />
+        <div>
+          <label htmlFor="telefone-compact" className="sr-only">
+            Telefone
+          </label>
+          <Input
+            id="telefone-compact"
+            type="tel"
+            value={telefone}
+            onChange={(e) => setTelefone(e.target.value)}
+            placeholder="Telefone (99) 99999-9999"
+            className={inputClassName}
+            inputMode="numeric"
+            required
+            aria-required="true"
+          />
+        </div>
 
         <div className="flex items-start gap-2">
           <Checkbox
@@ -218,33 +239,56 @@ const ContactForm: React.FC<ContactFormProps> = ({
         
         <CardContent className="p-4">
           <form onSubmit={handleSubmit} className="space-y-3">
-            <Input
-              value={nome}
-              onChange={(e) => setNome(e.target.value)}
-              placeholder="Nome Completo"
-              required
-            />
+            <div>
+              <label htmlFor="nome-full" className="block text-sm font-medium text-libra-navy mb-1">
+                Nome Completo *
+              </label>
+              <Input
+                id="nome-full"
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+                placeholder="Digite seu nome completo"
+                required
+                aria-required="true"
+              />
+            </div>
             
-            <Input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="E-mail"
-              required
-            />
+            <div>
+              <label htmlFor="email-full" className="block text-sm font-medium text-libra-navy mb-1">
+                E-mail *
+              </label>
+              <Input
+                id="email-full"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Digite seu e-mail"
+                required
+                aria-required="true"
+              />
+            </div>
             
-            <Input
-              type="tel"
-              value={telefone}
-              onChange={(e) => setTelefone(e.target.value)}
-              placeholder="Telefone (99) 99999-9999"
-              inputMode="numeric"
-              required
-            />
+            <div>
+              <label htmlFor="telefone-full" className="block text-sm font-medium text-libra-navy mb-1">
+                Telefone *
+              </label>
+              <Input
+                id="telefone-full"
+                type="tel"
+                value={telefone}
+                onChange={(e) => setTelefone(e.target.value)}
+                placeholder="(99) 99999-9999"
+                inputMode="numeric"
+                required
+                aria-required="true"
+              />
+            </div>
 
-            <div className="space-y-3">
-              <p className="text-sm font-medium text-libra-navy">O imóvel em garantia é:</p>
-              <div className="flex gap-4">
+            <fieldset className="space-y-3">
+              <legend className="text-sm font-medium text-libra-navy">
+                O imóvel em garantia é:
+              </legend>
+              <div className="flex gap-4" role="radiogroup" aria-labelledby="tipo-imovel-legend">
                 <label className="flex items-center gap-2 text-sm">
                   <input 
                     type="radio" 
@@ -252,7 +296,8 @@ const ContactForm: React.FC<ContactFormProps> = ({
                     value="proprio" 
                     checked={tipoImovel === 'proprio'}
                     onChange={(e) => setTipoImovel(e.target.value as 'proprio')}
-                    className="text-libra-blue" 
+                    className="text-libra-blue"
+                    aria-describedby="tipo-imovel-help"
                   />
                   Próprio
                 </label>
@@ -263,12 +308,16 @@ const ContactForm: React.FC<ContactFormProps> = ({
                     value="terceiro" 
                     checked={tipoImovel === 'terceiro'}
                     onChange={(e) => setTipoImovel(e.target.value as 'terceiro')}
-                    className="text-libra-blue" 
+                    className="text-libra-blue"
+                    aria-describedby="tipo-imovel-help"
                   />
                   De terceiro
                 </label>
               </div>
-            </div>
+              <div id="tipo-imovel-help" className="sr-only">
+                Selecione se o imóvel usado como garantia é seu ou de terceiros
+              </div>
+            </fieldset>
 
             <div className="flex items-start gap-2">
               <Checkbox

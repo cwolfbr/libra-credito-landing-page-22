@@ -21,11 +21,36 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
 
   return (
     <div className="min-h-screen flex flex-col">
+      {/* Skip Navigation Links for Accessibility */}
+      <div className="sr-only focus-within:not-sr-only">
+        <a 
+          href="#main-content" 
+          className="absolute top-4 left-4 z-50 bg-libra-blue text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-libra-gold"
+          tabIndex={1}
+        >
+          Pular para o conteúdo principal
+        </a>
+        {showBottomNav && isMobile && (
+          <a 
+            href="#bottom-navigation" 
+            className="absolute top-4 left-48 z-50 bg-libra-blue text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-libra-gold"
+            tabIndex={2}
+          >
+            Pular para navegação
+          </a>
+        )}
+      </div>
+      
       {/* Header - Simplificado em mobile */}
       {showHeader && <Header />}
       
       {/* Main Content */}
-      <main className={`flex-1 ${showHeader ? 'pt-20' : ''} ${isMobile && showBottomNav ? 'pb-20' : ''}`}>
+      <main 
+        id="main-content"
+        className={`flex-1 ${showHeader ? 'pt-20' : ''} ${isMobile && showBottomNav ? 'pb-20' : ''}`}
+        role="main"
+        aria-label="Conteúdo principal"
+      >
         {children}
       </main>
       
@@ -33,7 +58,11 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
       {showFooter && !isMobile && <Footer />}
       
       {/* Bottom Navigation - Apenas em mobile */}
-      {showBottomNav && isMobile && <BottomNavigation />}
+      {showBottomNav && isMobile && (
+        <div id="bottom-navigation">
+          <BottomNavigation />
+        </div>
+      )}
     </div>
   );
 };
