@@ -70,14 +70,8 @@ const AdminDashboard: React.FC = () => {
     valorMaximo: 5000000,
     parcelasMin: 36,
     parcelasMax: 180,
-    taxaJurosMin: 1.09,
-    taxaJurosMax: 2.5,
-    taxaPadrao: 1.19,
-    percentualMaximo: 70,
-    multiplicadorMinimo: 2,
-    carenciaPadrao: 1,
-    carenciaMinima: 0,
-    carenciaMaxima: 12,
+    juros: 1.19,
+    carencia: 1,
     apiUrl: 'https://api-calculos.vercel.app/simulacao',
     custoOperacional: 0.5
   });
@@ -1142,115 +1136,39 @@ const AdminDashboard: React.FC = () => {
 
                 {/* Taxas de Juros */}
                 <div>
-                  <h4 className="font-medium text-gray-900 mb-3">Configurações de Juros</h4>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Taxa Mínima (% a.m.)</label>
-                      <Input 
-                        type="number" 
-                        step="0.01"
-                        value={simulationConfig.taxaJurosMin}
-                        onChange={(e) => setSimulationConfig({
-                          ...simulationConfig, 
-                          taxaJurosMin: parseFloat(e.target.value)
-                        })}
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Taxa Máxima (% a.m.)</label>
-                      <Input 
-                        type="number" 
-                        step="0.01"
-                        value={simulationConfig.taxaJurosMax}
-                        onChange={(e) => setSimulationConfig({
-                          ...simulationConfig, 
-                          taxaJurosMax: parseFloat(e.target.value)
-                        })}
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Taxa Padrão (% a.m.)</label>
-                      <Input 
-                        type="number" 
-                        step="0.01"
-                        value={simulationConfig.taxaPadrao}
-                        onChange={(e) => setSimulationConfig({
-                          ...simulationConfig, 
-                          taxaPadrao: parseFloat(e.target.value)
-                        })}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Configurações do Imóvel */}
-                <div>
-                  <h4 className="font-medium text-gray-900 mb-3">Regras do Imóvel Garantia</h4>
+                  <h4 className="font-medium text-gray-900 mb-3">Taxa de Juros</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium mb-2">% Máximo do Valor do Imóvel</label>
+                      <label className="block text-sm font-medium mb-2">Taxa de Juros (% a.m.)</label>
                       <Input 
-                        type="number"
-                        value={simulationConfig.percentualMaximo}
+                        type="number" 
+                        step="0.01"
+                        value={simulationConfig.juros}
                         onChange={(e) => setSimulationConfig({
                           ...simulationConfig, 
-                          percentualMaximo: parseInt(e.target.value)
+                          juros: parseFloat(e.target.value)
                         })}
                       />
-                      <p className="text-xs text-gray-500 mt-1">Ex: 70% = máximo 70% do valor do imóvel</p>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Multiplicador Mínimo</label>
-                      <Input 
-                        type="number"
-                        step="0.1"
-                        value={simulationConfig.multiplicadorMinimo}
-                        onChange={(e) => setSimulationConfig({
-                          ...simulationConfig, 
-                          multiplicadorMinimo: parseFloat(e.target.value)
-                        })}
-                      />
-                      <p className="text-xs text-gray-500 mt-1">Ex: 2x = imóvel deve valer 2x o empréstimo</p>
+                      <p className="text-xs text-gray-500 mt-1">Taxa enviada para a API (ex: 1.19 = 1,19% a.m.)</p>
                     </div>
                   </div>
                 </div>
 
-                {/* Configurações de Carência */}
+                {/* Carência */}
                 <div>
-                  <h4 className="font-medium text-gray-900 mb-3">Configurações de Carência</h4>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <h4 className="font-medium text-gray-900 mb-3">Carência</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium mb-2">Carência Padrão (meses)</label>
+                      <label className="block text-sm font-medium mb-2">Carência (meses)</label>
                       <Input 
                         type="number"
-                        value={simulationConfig.carenciaPadrao}
+                        value={simulationConfig.carencia}
                         onChange={(e) => setSimulationConfig({
                           ...simulationConfig, 
-                          carenciaPadrao: parseInt(e.target.value)
+                          carencia: parseInt(e.target.value)
                         })}
                       />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Carência Mínima (meses)</label>
-                      <Input 
-                        type="number"
-                        value={simulationConfig.carenciaMinima}
-                        onChange={(e) => setSimulationConfig({
-                          ...simulationConfig, 
-                          carenciaMinima: parseInt(e.target.value)
-                        })}
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Carência Máxima (meses)</label>
-                      <Input 
-                        type="number"
-                        value={simulationConfig.carenciaMaxima}
-                        onChange={(e) => setSimulationConfig({
-                          ...simulationConfig, 
-                          carenciaMaxima: parseInt(e.target.value)
-                        })}
-                      />
+                      <p className="text-xs text-gray-500 mt-1">Valor enviado para a API (ex: 1 = 1 mês de carência)</p>
                     </div>
                   </div>
                 </div>

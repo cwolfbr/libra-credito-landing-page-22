@@ -49,19 +49,11 @@ export interface SimulationConfig {
   parcelasMin: number;
   parcelasMax: number;
   
-  // Taxas de juros
-  taxaJurosMin: number;
-  taxaJurosMax: number;
-  taxaPadrao: number;
+  // Taxa de juros (campo único enviado para API)
+  juros: number;
   
-  // Configurações do imóvel
-  percentualMaximo: number; // % máximo do valor do imóvel
-  multiplicadorMinimo: number; // quantas vezes o valor deve ser maior que o empréstimo
-  
-  // Configurações de carência
-  carenciaPadrao: number;
-  carenciaMinima: number;
-  carenciaMaxima: number;
+  // Carência (campo único enviado para API) 
+  carencia: number;
   
   // URL da API
   apiUrl: string;
@@ -527,19 +519,11 @@ export class BlogService {
         parcelasMin: 36,
         parcelasMax: 180,
         
-        // Taxas de juros
-        taxaJurosMin: 1.09,
-        taxaJurosMax: 2.5,
-        taxaPadrao: 1.19,
+        // Taxa de juros (enviada para API)
+        juros: 1.19,
         
-        // Configurações do imóvel
-        percentualMaximo: 70, // 70% do valor do imóvel
-        multiplicadorMinimo: 2, // imóvel deve valer 2x o empréstimo
-        
-        // Configurações de carência
-        carenciaPadrao: 1,
-        carenciaMinima: 0,
-        carenciaMaxima: 12,
+        // Carência (enviada para API)
+        carencia: 1,
         
         // URL da API
         apiUrl: 'https://api-calculos.vercel.app/simulacao',
