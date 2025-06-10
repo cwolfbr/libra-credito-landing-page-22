@@ -144,12 +144,12 @@ const QuemSomos = () => {
         </section>
 
         {/* CTA Section */}
-        <section className={`${isMobile ? 'py-6' : 'py-8 md:py-12'} bg-[#00ccff] text-white`}>
+        <section className={`${isMobile ? 'py-6' : 'py-8 md:py-12'} bg-[#00ccff] text-[#003399]`}>
           <div className="container mx-auto px-4 text-center">
             <h2 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold mb-3 md:mb-4`}>
               Pronto para começar?
             </h2>
-            <p className={`${isMobile ? 'text-sm px-2' : 'text-base md:text-lg'} mb-4 md:mb-6 max-w-2xl mx-auto opacity-90`}>
+            <p className={`${isMobile ? 'text-sm px-2' : 'text-base md:text-lg'} mb-4 md:mb-6 max-w-2xl mx-auto opacity-80`}>
               Faça uma simulação agora mesmo e descubra quanto você pode obter com seu imóvel como garantia.
             </p>
             <Button 
