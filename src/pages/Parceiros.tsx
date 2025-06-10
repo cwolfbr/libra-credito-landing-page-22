@@ -541,7 +541,7 @@ const Parceiros = () => {
 
                 <Button 
                   onClick={() => window.location.href = "https://parceiros.libracredito.com.br/login"}
-                  className="w-full bg-libra-blue hover:bg-libra-blue/90 text-white mb-4"
+                  className="w-full bg-[#00ccff] hover:bg-[#00ccff]/90 text-white mb-4"
                 >
                   Já sou Parceiro
                 </Button>
