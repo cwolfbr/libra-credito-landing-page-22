@@ -55,17 +55,17 @@ const Hero: React.FC = () => {
                 em Oportunidades
               </h1>
               <div className="space-y-3 md:space-y-4">
-                <p className="text-lg md:text-xl text-white/90 leading-relaxed font-medium">
+                <p className="text-lg md:text-xl text-white leading-relaxed font-medium">
                   Crédito inteligente para quem construiu história.
                   Até R$ 5 milhões com as menores taxas do mercado.
                 </p>
                 <div className="flex items-center gap-3">
-                  <Shield className="w-5 h-5 text-white/80 flex-shrink-0" />
-                  <p className="text-base md:text-lg text-white/90 leading-relaxed">
+                  <Shield className="w-5 h-5 text-white flex-shrink-0" aria-hidden="true" />
+                  <p className="text-base md:text-lg text-white leading-relaxed">
                     Regulamentado pelo Banco Central - Segurança e transparência
                   </p>
                 </div>
-                <p className="text-base md:text-lg text-white/90 leading-relaxed">
+                <p className="text-base md:text-lg text-white leading-relaxed">
                   Taxas a partir de 1,19% a.m. • Até 180 meses • 100% online
                 </p>
               </div>

@@ -285,7 +285,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
             </div>
 
             <fieldset className="space-y-3">
-              <legend className="text-sm font-medium text-libra-navy">
+              <legend id="tipo-imovel-legend" className="text-sm font-medium text-libra-navy">
                 O imóvel em garantia é:
               </legend>
               <div className="flex gap-4" role="radiogroup" aria-labelledby="tipo-imovel-legend">

@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDevice } from '@/hooks/useDevice';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import ImageOptimizer from '@/components/ImageOptimizer';
 
 interface SimpleMobileHeaderProps {
   onPortalClientes?: () => void;
@@ -32,12 +33,14 @@ const SimpleMobileHeader: React.FC<SimpleMobileHeaderProps> = ({ onPortalCliente
     <header className={`fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-sm ${hasNotch ? 'safe-top' : ''}`}>
       <div className="h-16 px-4 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center">
+        <Link to="/" className="flex items-center" aria-label="Ir para página inicial da Libra Crédito">
           <div className="h-12 overflow-hidden flex items-center">
-            <img 
-              src="/logo-libra.png" 
-              alt="Libra Crédito" 
+            <ImageOptimizer
+              src="/images/logos/libra-logo.png"
+              alt="Libra Crédito - Empréstimo com garantia de imóvel"
               className="h-16 w-auto transform scale-105"
+              aspectRatio={1}
+              priority={true}
               style={{
                 clipPath: 'inset(30% 0 30% 0)'
               }}
@@ -51,7 +54,8 @@ const SimpleMobileHeader: React.FC<SimpleMobileHeaderProps> = ({ onPortalCliente
           <Button 
             onClick={handleSimulate}
             size="sm"
-            className="bg-libra-navy text-white hover:bg-libra-navy/90 text-xs px-3 py-2 h-8"
+            className="bg-libra-navy text-white hover:bg-libra-navy/90 text-sm px-4 py-3 h-11 min-h-[44px]"
+            aria-label="Ir para simulação de empréstimo"
           >
             Simular
           </Button>
@@ -59,29 +63,30 @@ const SimpleMobileHeader: React.FC<SimpleMobileHeaderProps> = ({ onPortalCliente
           {/* Menu Hamburguer */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="p-2 hover:bg-gray-100 rounded-md transition-colors"
-            aria-label="Abrir menu de navegação"
+            className="p-3 hover:bg-gray-100 rounded-md transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+            aria-label={isMenuOpen ? "Fechar menu de navegação" : "Abrir menu de navegação"}
           >
-            {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {isMenuOpen ? <X className="w-5 h-5" aria-hidden="true" /> : <Menu className="w-5 h-5" aria-hidden="true" />}
           </button>
         </div>
       </div>
 
       {/* Menu Mobile Dropdown */}
       {isMenuOpen && (
-        <nav className="bg-white border-t border-gray-100 shadow-lg">
+        <nav className="bg-white border-t border-gray-100 shadow-lg" aria-label="Menu principal de navegação">
           <div className="px-4 py-3">
-            <ul className="space-y-2">
+            <ul className="space-y-2" role="menu">
               {navigationItems.map((item) => (
-                <li key={item.path}>
+                <li key={item.path} role="none">
                   <Link
                     to={item.path}
-                    className={`block py-3 px-2 text-sm font-medium rounded-md transition-colors ${
+                    className={`block py-3 px-2 text-sm font-medium rounded-md transition-colors min-h-[44px] flex items-center ${
                       location.pathname === item.path 
                         ? 'text-libra-blue bg-blue-50' 
                         : 'text-libra-navy hover:text-libra-blue hover:bg-gray-50'
                     }`}
                     onClick={() => setIsMenuOpen(false)}
+                    role="menuitem"
                   >
                     {item.name}
                   </Link>
