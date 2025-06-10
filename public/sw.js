@@ -107,12 +107,27 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Ignorar métodos não-GET para cache
+  if (request.method !== 'GET') {
+    return;
+  }
+
+  // Ignorar requests com dados de formulário
+  if (request.url.includes('form') || request.url.includes('submit')) {
+    return;
+  }
+
   event.respondWith(handleFetch(request));
 });
 
 // Handler principal para fetch
 async function handleFetch(request) {
   const url = new URL(request.url);
+  
+  // Verificações adicionais de segurança
+  if (!isCacheableRequest(request)) {
+    return fetch(request);
+  }
   
   try {
     // Estratégia baseada no tipo de recurso
@@ -131,6 +146,27 @@ async function handleFetch(request) {
   }
 }
 
+// Verificar se request pode ser cacheado
+function isCacheableRequest(request) {
+  // Apenas GET requests
+  if (request.method !== 'GET') {
+    return false;
+  }
+  
+  // Não cachear requests com query strings específicas
+  const url = new URL(request.url);
+  if (url.search.includes('no-cache') || url.search.includes('timestamp')) {
+    return false;
+  }
+  
+  // Não cachear requests com headers específicos
+  if (request.headers.get('cache-control') === 'no-store') {
+    return false;
+  }
+  
+  return true;
+}
+
 // Cache First - Para recursos estáticos
 async function cacheFirst(request, cacheName) {
   const cache = await caches.open(cacheName);
@@ -141,8 +177,12 @@ async function cacheFirst(request, cacheName) {
   }
   
   const networkResponse = await fetch(request);
-  if (networkResponse.ok) {
-    cache.put(request, networkResponse.clone());
+  if (networkResponse.ok && request.method === 'GET') {
+    try {
+      cache.put(request, networkResponse.clone());
+    } catch (error) {
+      console.log('SW: Cache put failed:', error);
+    }
   }
   
   return networkResponse;
@@ -153,12 +193,14 @@ async function networkFirst(request, cacheName) {
   const cache = await caches.open(cacheName);
   
   try {
-    const networkResponse = await fetch(request, {
-      timeout: 3000 // 3s timeout
-    });
+    const networkResponse = await fetch(request);
     
-    if (networkResponse.ok) {
-      cache.put(request, networkResponse.clone());
+    if (networkResponse.ok && request.method === 'GET') {
+      try {
+        cache.put(request, networkResponse.clone());
+      } catch (error) {
+        console.log('SW: Cache put failed:', error);
+      }
     }
     
     return networkResponse;
@@ -178,8 +220,12 @@ async function staleWhileRevalidate(request, cacheName) {
   
   // Fetch em background para atualizar cache
   const fetchPromise = fetch(request).then((networkResponse) => {
-    if (networkResponse.ok) {
-      cache.put(request, networkResponse.clone());
+    if (networkResponse.ok && request.method === 'GET') {
+      try {
+        cache.put(request, networkResponse.clone());
+      } catch (error) {
+        console.log('SW: Cache put failed:', error);
+      }
     }
     return networkResponse;
   }).catch(() => {
