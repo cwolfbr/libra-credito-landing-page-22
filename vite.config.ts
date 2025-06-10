@@ -26,47 +26,68 @@ export default defineConfig(({ mode }) => ({
     target: 'esnext',
     minify: 'esbuild',
     reportCompressedSize: false,
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 600,
+    cssMinify: 'esbuild',
     rollupOptions: {
       output: {
-        // Manual chunks for better caching
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom'],
-          'router': ['react-router-dom'],
-          'ui-vendor': ['lucide-react'],
-          'utils': ['clsx', 'tailwind-merge']
-        },
-        // Optimize asset naming
+        // Simplified manual chunks for better performance
+        // Optimize asset naming with content hashing
         assetFileNames: (assetInfo) => {
           const info = assetInfo.name.split('.');
           let extType = info[info.length - 1];
-          if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
+          if (/png|jpe?g|svg|gif|tiff|bmp|ico|webp|avif/i.test(extType)) {
             extType = 'images';
           } else if (/woff2?|eot|ttf|otf/i.test(extType)) {
             extType = 'fonts';
+          } else if (/css/i.test(extType)) {
+            extType = 'css';
           }
           return `assets/${extType}/[name]-[hash][extname]`;
         },
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js'
+      },
+      // Tree shaking optimization
+      treeshake: {
+        moduleSideEffects: false,
+        propertyReadSideEffects: false,
+        tryCatchDeoptimization: false
       }
     }
   },
   optimizeDeps: {
     include: [
       'react',
-      'react-dom',
+      'react-dom', 
+      'react-dom/client',
       'react-router-dom',
+      'react/jsx-runtime',
       'lucide-react',
       'clsx',
-      'tailwind-merge'
+      'tailwind-merge',
+      '@tanstack/react-query'
     ],
-    // Force pre-bundling
-    force: true
+    exclude: [
+      // Exclude large dependencies that benefit from lazy loading
+      '@radix-ui/react-dialog',
+      '@radix-ui/react-select'
+    ],
+    // Force pre-bundling for better dev performance
+    force: mode === 'development'
   },
-  // CSS optimization
+  // Enhanced CSS optimization
   css: {
-    devSourcemap: mode === 'development'
+    devSourcemap: mode === 'development',
+    preprocessorOptions: {
+      // Add any CSS preprocessor options if needed
+    }
+  },
+  // Performance optimizations
+  esbuild: {
+    // Drop console and debugger in production
+    drop: mode === 'production' ? ['console', 'debugger'] : [],
+    // Enable tree shaking
+    treeShaking: true
   },
   // Experimental features for better performance
   experimental: {

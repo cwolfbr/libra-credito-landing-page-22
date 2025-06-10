@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 
 interface OptimizedImageProps {
   src: string;
@@ -10,6 +10,10 @@ interface OptimizedImageProps {
   placeholder?: string;
   webpSrc?: string;
   avifSrc?: string;
+  sizes?: string;
+  srcSet?: string;
+  onLoad?: () => void;
+  onError?: () => void;
 }
 
 const OptimizedImage: React.FC<OptimizedImageProps> = ({

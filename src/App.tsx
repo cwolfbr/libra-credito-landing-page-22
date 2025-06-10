@@ -26,10 +26,10 @@ const SimpleWizardTest = lazy(() => import("./pages/SimpleWizardTest"));
 const MobileNavDemo = lazy(() => import("./pages/MobileNavDemo"));
 
 const Loading = () => (
-  <div className="w-full h-screen flex items-center justify-center">
+  <div className="min-h-screen flex items-center justify-center bg-gray-50">
     <div className="text-center">
       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-libra-blue mx-auto mb-4"></div>
-      <p>Carregando...</p>
+      <p className="text-gray-600 font-medium">Carregando página...</p>
     </div>
   </div>
 );
