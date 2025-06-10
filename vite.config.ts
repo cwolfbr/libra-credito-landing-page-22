@@ -11,10 +11,7 @@ export default defineConfig(({ mode }) => ({
     historyApiFallback: true,
   },
   plugins: [
-    react({
-      // Enable React Fast Refresh
-      fastRefresh: true
-    }),
+    react(),
     mode === 'development' && componentTagger(),
   ].filter(Boolean),
   resolve: {
@@ -25,13 +22,8 @@ export default defineConfig(({ mode }) => ({
   build: {
     target: 'esnext',
     minify: 'esbuild',
-    reportCompressedSize: false,
-    chunkSizeWarningLimit: 600,
-    cssMinify: 'esbuild',
     rollupOptions: {
       output: {
-        // Simplified manual chunks for better performance
-        // Optimize asset naming with content hashing
         assetFileNames: (assetInfo) => {
           const info = assetInfo.name.split('.');
           let extType = info[info.length - 1];
@@ -46,56 +38,6 @@ export default defineConfig(({ mode }) => ({
         },
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js'
-      },
-      // Tree shaking optimization
-      treeshake: {
-        moduleSideEffects: false,
-        propertyReadSideEffects: false,
-        tryCatchDeoptimization: false
-      }
-    }
-  },
-  optimizeDeps: {
-    include: [
-      'react',
-      'react-dom', 
-      'react-dom/client',
-      'react-router-dom',
-      'react/jsx-runtime',
-      'lucide-react',
-      'clsx',
-      'tailwind-merge',
-      '@tanstack/react-query'
-    ],
-    exclude: [
-      // Exclude large dependencies that benefit from lazy loading
-      '@radix-ui/react-dialog',
-      '@radix-ui/react-select'
-    ],
-    // Force pre-bundling for better dev performance
-    force: mode === 'development'
-  },
-  // Enhanced CSS optimization
-  css: {
-    devSourcemap: mode === 'development',
-    preprocessorOptions: {
-      // Add any CSS preprocessor options if needed
-    }
-  },
-  // Performance optimizations
-  esbuild: {
-    // Drop console and debugger in production
-    drop: mode === 'production' ? ['console', 'debugger'] : [],
-    // Enable tree shaking
-    treeShaking: true
-  },
-  // Experimental features for better performance
-  experimental: {
-    renderBuiltUrl(filename, { hostType }) {
-      if (hostType === 'js') {
-        return { js: `"${filename}"` };
-      } else {
-        return filename;
       }
     }
   }
