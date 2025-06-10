@@ -25,12 +25,13 @@ import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { SimulationService } from '@/services/simulationService';
 import { PartnersService } from '@/services/partnersService';
+import { BlogService, type BlogPost, type SimulationConfig } from '@/services/blogService';
 import { SimulacaoData, ParceiroData } from '@/lib/supabase';
-import { Eye, Download, RefreshCw, Users, Calculator, TrendingUp, Clock, Handshake, UserCheck, Building } from 'lucide-react';
+import { Eye, Download, RefreshCw, Users, Calculator, TrendingUp, Clock, Handshake, UserCheck, Building, FileText, Settings, Plus, Edit, Trash2, Save } from 'lucide-react';
 import { formatBRL } from '@/utils/formatters';
 
 const AdminDashboard: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'simulacoes' | 'parceiros'>('simulacoes');
+  const [activeTab, setActiveTab] = useState<'simulacoes' | 'parceiros' | 'blog' | 'configuracoes'>('simulacoes');
   
   // Estados para simulações
   const [simulacoes, setSimulacoes] = useState<SimulacaoData[]>([]);
@@ -46,6 +47,27 @@ const AdminDashboard: React.FC = () => {
   
   // Estados para parceiros
   const [parceiros, setParceiros] = useState<ParceiroData[]>([]);
+  
+  // Estados para blog
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
+  const [showPostEditor, setShowPostEditor] = useState(false);
+  const [postForm, setPostForm] = useState<Partial<BlogPost>>({});
+  const [loadingBlog, setLoadingBlog] = useState(false);
+  
+  // Estados para configurações de simulação
+  const [simulationConfig, setSimulationConfig] = useState<SimulationConfig>({
+    taxaJurosMin: 1.09,
+    taxaJurosMax: 2.5,
+    valorMinimo: 100000,
+    valorMaximo: 5000000,
+    parcelasMin: 36,
+    parcelasMax: 180,
+    percentualMaximo: 70,
+    taxaPadrao: 1.19,
+    custoOperacional: 0.5
+  });
+  const [loadingConfig, setLoadingConfig] = useState(false);
   const [loadingParceiros, setLoadingParceiros] = useState(false);
   const [filtroStatusParceiros, setFiltroStatusParceiros] = useState<string>('todos');
   const [filtroNomeParceiros, setFiltroNomeParceiros] = useState('');
@@ -60,7 +82,92 @@ const AdminDashboard: React.FC = () => {
   useEffect(() => {
     loadSimulacoes();
     loadParceiros();
+    loadBlogPosts();
+    loadSimulationConfig();
   }, []);
+  
+  // Carregar posts do blog
+  const loadBlogPosts = async () => {
+    setLoadingBlog(true);
+    try {
+      const posts = await BlogService.getAllPosts();
+      setBlogPosts(posts);
+    } catch (error) {
+      console.error('Erro ao carregar posts:', error);
+    } finally {
+      setLoadingBlog(false);
+    }
+  };
+  
+  // Carregar configurações de simulação
+  const loadSimulationConfig = async () => {
+    try {
+      const config = await BlogService.getSimulationConfig();
+      setSimulationConfig(config);
+    } catch (error) {
+      console.error('Erro ao carregar configurações:', error);
+    }
+  };
+  
+  // Salvar post
+  const handleSavePost = async () => {
+    if (!postForm.title || !postForm.description || !postForm.category || !postForm.content) {
+      alert('Preencha todos os campos obrigatórios');
+      return;
+    }
+    
+    try {
+      // Gerar slug se não fornecido
+      if (!postForm.slug) {
+        postForm.slug = BlogService.generateSlug(postForm.title);
+      }
+      
+      if (editingPost?.id) {
+        await BlogService.updatePost(editingPost.id, postForm);
+      } else {
+        await BlogService.createPost({
+          ...postForm,
+          published: true,
+          featuredPost: false
+        } as BlogPost);
+      }
+      
+      await loadBlogPosts();
+      setShowPostEditor(false);
+      setPostForm({});
+      setEditingPost(null);
+    } catch (error) {
+      console.error('Erro ao salvar post:', error);
+      alert('Erro ao salvar post: ' + (error as Error).message);
+    }
+  };
+  
+  // Deletar post
+  const handleDeletePost = async (id: string) => {
+    if (!confirm('Tem certeza que deseja deletar este post?')) return;
+    
+    try {
+      await BlogService.deletePost(id);
+      await loadBlogPosts();
+    } catch (error) {
+      console.error('Erro ao deletar post:', error);
+      alert('Erro ao deletar post');
+    }
+  };
+  
+  // Salvar configurações
+  const handleSaveConfig = async () => {
+    setLoadingConfig(true);
+    try {
+      await BlogService.saveSimulationConfig(simulationConfig);
+      alert('Configurações salvas com sucesso!');
+    } catch (error) {
+      console.error('Erro ao salvar configurações:', error);
+      alert('Erro ao salvar configurações');
+    } finally {
+      setLoadingConfig(false);
+    }
+  };
   
   // Carregar parceiros
   const loadParceiros = async () => {
@@ -271,6 +378,28 @@ const AdminDashboard: React.FC = () => {
             >
               <Handshake className="w-4 h-4 inline mr-2" />
               Parceiros
+            </button>
+            <button
+              onClick={() => setActiveTab('blog')}
+              className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'blog'
+                  ? 'border-libra-blue text-libra-blue'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              <FileText className="w-4 h-4 inline mr-2" />
+              Blog
+            </button>
+            <button
+              onClick={() => setActiveTab('configuracoes')}
+              className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'configuracoes'
+                  ? 'border-libra-blue text-libra-blue'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              <Settings className="w-4 h-4 inline mr-2" />
+              Configurações
             </button>
           </nav>
         </div>
@@ -643,6 +772,349 @@ const AdminDashboard: React.FC = () => {
               )}
             </CardContent>
           </Card>
+        </>
+      )}
+      
+      {/* Blog Tab */}
+      {activeTab === 'blog' && (
+        <>
+          {/* Header do Blog */}
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">Gerenciar Blog</h2>
+              <p className="text-gray-600">Criar, editar e gerenciar posts do blog</p>
+            </div>
+            <Button 
+              onClick={() => {
+                setEditingPost(null);
+                setPostForm({});
+                setShowPostEditor(true);
+              }}
+              className="bg-libra-blue hover:bg-libra-blue/90 text-white"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Novo Post
+            </Button>
+          </div>
+
+          {/* Editor de Post */}
+          {showPostEditor && (
+            <Card className="mb-8">
+              <CardHeader>
+                <CardTitle>{editingPost ? 'Editar Post' : 'Novo Post'}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Título</label>
+                    <Input 
+                      placeholder="Título do post" 
+                      value={postForm.title || ''}
+                      onChange={(e) => setPostForm({...postForm, title: e.target.value})}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Categoria</label>
+                    <Select 
+                      value={postForm.category || ''} 
+                      onValueChange={(value) => setPostForm({...postForm, category: value as any})}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione uma categoria" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="home-equity">Home Equity</SelectItem>
+                        <SelectItem value="cgi">Capital de Giro</SelectItem>
+                        <SelectItem value="consolidacao">Consolidação</SelectItem>
+                        <SelectItem value="educacao-financeira">Educação Financeira</SelectItem>
+                        <SelectItem value="score-credito">Score e Crédito</SelectItem>
+                        <SelectItem value="credito-rural">Crédito Rural</SelectItem>
+                        <SelectItem value="documentacao">Documentação</SelectItem>
+                        <SelectItem value="reformas">Reformas</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium mb-1">Descrição</label>
+                  <Input 
+                    placeholder="Breve descrição do post" 
+                    value={postForm.description || ''}
+                    onChange={(e) => setPostForm({...postForm, description: e.target.value})}
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium mb-1">URL da Imagem</label>
+                  <Input 
+                    placeholder="https://..." 
+                    value={postForm.imageUrl || ''}
+                    onChange={(e) => setPostForm({...postForm, imageUrl: e.target.value})}
+                  />
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Slug</label>
+                    <Input 
+                      placeholder="url-do-post" 
+                      value={postForm.slug || ''}
+                      onChange={(e) => setPostForm({...postForm, slug: e.target.value})}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Tempo de Leitura (min)</label>
+                    <Input 
+                      type="number" 
+                      placeholder="5" 
+                      value={postForm.readTime || ''}
+                      onChange={(e) => setPostForm({...postForm, readTime: parseInt(e.target.value) || 0})}
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium mb-1">Conteúdo</label>
+                  <textarea 
+                    className="w-full h-64 p-3 border border-gray-300 rounded-md"
+                    placeholder="Conteúdo do post em Markdown..."
+                    value={postForm.content || ''}
+                    onChange={(e) => setPostForm({...postForm, content: e.target.value})}
+                  />
+                </div>
+                
+                <div className="flex gap-2">
+                  <Button 
+                    className="bg-libra-blue hover:bg-libra-blue/90"
+                    onClick={handleSavePost}
+                  >
+                    <Save className="w-4 h-4 mr-2" />
+                    Salvar
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setShowPostEditor(false)}
+                  >
+                    Cancelar
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Lista de Posts */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Posts do Blog</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {loadingBlog ? (
+                  <div className="text-center py-8 text-gray-500">
+                    Carregando posts...
+                  </div>
+                ) : blogPosts.length > 0 ? (
+                  blogPosts.map((post) => (
+                    <div key={post.id} className="border rounded-lg p-4 flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <img 
+                          src={post.imageUrl} 
+                          alt={post.title} 
+                          className="w-16 h-16 object-cover rounded"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = '/images/blog/capital-giro.jpg';
+                          }}
+                        />
+                        <div>
+                          <h3 className="font-semibold">{post.title}</h3>
+                          <p className="text-sm text-gray-600">
+                            Categoria: {post.category} • {post.readTime} min
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            {post.published ? 'Publicado' : 'Rascunho'} em {new Date(post.createdAt || '').toLocaleDateString()}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={() => {
+                            setEditingPost(post);
+                            setPostForm(post);
+                            setShowPostEditor(true);
+                          }}
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="text-red-500 hover:text-red-600"
+                          onClick={() => handleDeletePost(post.id!)}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-8 text-gray-500">
+                    Nenhum post encontrado. Crie seu primeiro post!
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </>
+      )}
+      
+      {/* Configurações Tab */}
+      {activeTab === 'configuracoes' && (
+        <>
+          <div className="space-y-8">
+            {/* Parâmetros de Simulação */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Parâmetros de Simulação</CardTitle>
+                <p className="text-gray-600">Configure os limites e taxas do sistema de simulação</p>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Taxa de Juros Mínima (%)</label>
+                    <Input 
+                      type="number" 
+                      step="0.01"
+                      value={simulationConfig.taxaJurosMin}
+                      onChange={(e) => setSimulationConfig({
+                        ...simulationConfig, 
+                        taxaJurosMin: parseFloat(e.target.value)
+                      })}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Taxa de Juros Máxima (%)</label>
+                    <Input 
+                      type="number" 
+                      step="0.01"
+                      value={simulationConfig.taxaJurosMax}
+                      onChange={(e) => setSimulationConfig({
+                        ...simulationConfig, 
+                        taxaJurosMax: parseFloat(e.target.value)
+                      })}
+                    />
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Valor Mínimo de Empréstimo (R$)</label>
+                    <Input 
+                      type="number"
+                      value={simulationConfig.valorMinimo}
+                      onChange={(e) => setSimulationConfig({
+                        ...simulationConfig, 
+                        valorMinimo: parseInt(e.target.value)
+                      })}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Valor Máximo de Empréstimo (R$)</label>
+                    <Input 
+                      type="number"
+                      value={simulationConfig.valorMaximo}
+                      onChange={(e) => setSimulationConfig({
+                        ...simulationConfig, 
+                        valorMaximo: parseInt(e.target.value)
+                      })}
+                    />
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Parcelas Mínimas</label>
+                    <Input 
+                      type="number"
+                      value={simulationConfig.parcelasMin}
+                      onChange={(e) => setSimulationConfig({
+                        ...simulationConfig, 
+                        parcelasMin: parseInt(e.target.value)
+                      })}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Parcelas Máximas</label>
+                    <Input 
+                      type="number"
+                      value={simulationConfig.parcelasMax}
+                      onChange={(e) => setSimulationConfig({
+                        ...simulationConfig, 
+                        parcelasMax: parseInt(e.target.value)
+                      })}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">% Máximo do Imóvel</label>
+                    <Input 
+                      type="number"
+                      value={simulationConfig.percentualMaximo}
+                      onChange={(e) => setSimulationConfig({
+                        ...simulationConfig, 
+                        percentualMaximo: parseInt(e.target.value)
+                      })}
+                    />
+                  </div>
+                </div>
+                
+                <Button 
+                  className="bg-libra-blue hover:bg-libra-blue/90"
+                  onClick={handleSaveConfig}
+                  disabled={loadingConfig}
+                >
+                  <Save className="w-4 h-4 mr-2" />
+                  {loadingConfig ? 'Salvando...' : 'Salvar Configurações'}
+                </Button>
+              </CardContent>
+            </Card>
+            
+            {/* Configurações Gerais */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Configurações Gerais</CardTitle>
+                <p className="text-gray-600">Configurações do sistema e notificações</p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-medium">Notificações por Email</h4>
+                    <p className="text-sm text-gray-600">Receber notificações de novas simulações</p>
+                  </div>
+                  <input type="checkbox" className="w-4 h-4" defaultChecked />
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-medium">Backup Automático</h4>
+                    <p className="text-sm text-gray-600">Backup diário dos dados</p>
+                  </div>
+                  <input type="checkbox" className="w-4 h-4" defaultChecked />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium mb-2">Email para Notificações</label>
+                  <Input placeholder="admin@libracredito.com.br" />
+                </div>
+                
+                <Button className="bg-libra-blue hover:bg-libra-blue/90">
+                  <Save className="w-4 h-4 mr-2" />
+                  Salvar Configurações
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
         </>
       )}
     </div>
