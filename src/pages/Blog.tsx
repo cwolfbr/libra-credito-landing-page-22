@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Search, TrendingUp, Wallet, Home, Building, FileText, CreditCard, BookOpen } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { BlogService, type BlogPost as BlogPostType } from '@/services/blogService';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 // Usar o tipo do BlogService
 type BlogPost = BlogPostType;
@@ -62,6 +63,8 @@ const CATEGORIES = [
 ];
 
 const Blog = () => {
+  const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -89,6 +92,10 @@ const Blog = () => {
 
     loadPosts();
   }, []);
+
+  const handleSimular = () => {
+    navigate('/simulacao');
+  };
 
   const filteredPosts = posts.filter(post => {
     const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -210,6 +217,26 @@ const Blog = () => {
             </div>
           )}
         </div>
+
+        {/* CTA Section */}
+        <section className={`${isMobile ? 'py-6' : 'py-8 md:py-12'} bg-[#00ccff] text-white`}>
+          <div className="container mx-auto px-4 text-center">
+            <h2 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold mb-3 md:mb-4`}>
+              Pronto para começar?
+            </h2>
+            <p className={`${isMobile ? 'text-sm px-2' : 'text-base md:text-lg'} mb-4 md:mb-6 max-w-2xl mx-auto opacity-90`}>
+              Faça uma simulação agora mesmo e descubra quanto você pode obter com seu imóvel como garantia.
+            </p>
+            <Button 
+              onClick={handleSimular}
+              variant="goldContrast" 
+              size={isMobile ? "default" : "xl"}
+              className={`${isMobile ? 'min-h-[40px] min-w-[160px]' : 'min-h-[40px] md:min-h-[48px] min-w-[180px] md:min-w-[200px]'} bg-white text-libra-navy hover:bg-white/90`}
+            >
+              Simular Agora
+            </Button>
+          </div>
+        </section>
       </main>
 
       <Footer />

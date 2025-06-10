@@ -170,7 +170,7 @@ const Vantagens: React.FC = () => {
         </section>
 
         {/* CTA Section */}
-        <section className={`${isMobile ? 'py-6' : 'py-8 md:py-12'} bg-gradient-to-r from-libra-navy to-libra-blue text-white`}>
+        <section className={`${isMobile ? 'py-6' : 'py-8 md:py-12'} bg-[#00ccff] text-white`}>
           <div className="container mx-auto px-4 text-center">
             <h2 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold mb-3 md:mb-4`}>
               Pronto para começar?
