@@ -14,18 +14,6 @@ import ValidatedSelect from '@/components/ValidatedSelect';
 const Parceiros = () => {
   const { sessionId } = useUserJourney();
   
-  // Debug do sessionId
-  useEffect(() => {
-    console.log('🔍 DEBUG - useUserJourney sessionId:', sessionId);
-    console.log('🔍 DEBUG - sessionId tipo:', typeof sessionId);
-    console.log('🔍 DEBUG - sessionId válido:', !!sessionId);
-    
-    if (!sessionId) {
-      console.warn('⚠️ WARNING: sessionId é undefined/null/empty');
-    } else {
-      console.log('✅ SUCCESS: sessionId encontrado:', sessionId);
-    }
-  }, [sessionId]);
   
   // Estados do formulário
   const [nome, setNome] = useState('');
@@ -45,8 +33,6 @@ const Parceiros = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   
-  // Debug dos estados do formulário
-  const [debugMode, setDebugMode] = useState(false);
   useEffect(() => {
     document.title = "Seja Parceiro | Libra Crédito";
     
@@ -237,7 +223,6 @@ const Parceiros = () => {
     e.preventDefault();
     
     if (!sessionId) {
-      console.error('🚨 Session ID não encontrado!');
       alert('Erro: Session ID não encontrado. Tente recarregar a página.');
       return;
     }
@@ -267,24 +252,8 @@ const Parceiros = () => {
         ipAddress: undefined
       };
       
-      console.log('🤝 Dados do formulário preparados:', formData);
-      console.log('📊 Validações básicas:', {
-        nomeValido: nome.length >= 3,
-        emailValido: email.includes('@'),
-        telefoneValido: telefone.length >= 10,
-        cidadeValida: cidade.length >= 2,
-        tempoValido: !!tempoHomeEquity,
-        perfilValido: !!perfilCliente,
-        ramoValido: !!ramoAtuacao,
-        origemValida: !!origem
-      });
-      
-      console.log('🔄 Iniciando chamada para PartnersService...');
-      
       // Usar o serviço de parceiros
       const result = await PartnersService.createPartnership(formData);
-      
-      console.log('✅ Resposta do serviço:', result);
       
       // Limpar formulário
       setNome('');
@@ -352,12 +321,12 @@ const Parceiros = () => {
     <div className="min-h-screen flex flex-col bg-[#F8F9FF]">
       <Header />
       
-      <main className="flex-1 pt-header pb-8 md:pb-12">
-        <div className="container mx-auto px-4 mt-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+      <main className="flex-1 pt-header pb-4 md:pb-8">
+        <div className="container mx-auto px-4 mt-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
             {/* Formulário para Novos Parceiros */}
-            <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
-              <h2 className="text-2xl md:text-3xl font-bold text-libra-navy mb-8">Seja um parceiro</h2>
+            <div className="bg-white rounded-xl shadow-lg p-4 md:p-6">
+              <h2 className="text-xl md:text-2xl font-bold text-libra-navy mb-4">Seja um parceiro</h2>
 
               {/* Mensagem de sucesso */}
               {success && (
@@ -376,8 +345,8 @@ const Parceiros = () => {
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <ValidatedInput
                     label="Nome completo"
                     type="text"
@@ -402,7 +371,7 @@ const Parceiros = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   <ValidatedInput
                     label="Telefone"
                     type="tel"
@@ -505,8 +474,8 @@ const Parceiros = () => {
                     Mensagem (opcional)
                   </label>
                   <Textarea
-                    placeholder="Conte-nos mais sobre seu interesse em ser parceiro..."
-                    className="min-h-[120px] transition-colors"
+                    placeholder="Conte-nos mais sobre seu interesse..."
+                    className="min-h-[80px] transition-colors"
                     value={mensagem}
                     onChange={(e) => handleFieldChange('mensagem', e.target.value)}
                   />
@@ -546,82 +515,35 @@ const Parceiros = () => {
                   )}
                 </Button>
                 
-                {/* Botão de Debug */}
-                <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-                  <h4 className="text-sm font-semibold text-gray-700 mb-2">🔧 Debug & Teste</h4>
-                  <div className="flex gap-2 flex-wrap">
-                    <Button 
-                      type="button"
-                      onClick={() => {
-                        console.log('🔍 DEBUG MANUAL - Estado do componente:');
-                        console.log('sessionId:', sessionId);
-                        console.log('Dados do formulário:', { nome, email, telefone, cidade, tempoHomeEquity, perfilCliente, ramoAtuacao, origem });
-                        alert('Debug executado! Verifique o console (F12).');
-                      }}
-                      variant="outline"
-                      size="sm"
-                      className="text-xs"
-                    >
-                      🔍 Debug Console
-                    </Button>
-                    <Button 
-                      type="button"
-                      onClick={() => window.open('debug-formulario-parceiros.html', '_blank')}
-                      variant="outline"
-                      size="sm"
-                      className="text-xs"
-                    >
-                      🛠️ Debug Completo
-                    </Button>
-                    <Button 
-                      type="button"
-                      onClick={() => {
-                        // Preencher formulário automaticamente para teste
-                        setNome('Teste Debug');
-                        setEmail('debug@test.com');
-                        setTelefone('11999999999');
-                        setCidade('São Paulo');
-                        setTempoHomeEquity('1-2');
-                        setPerfilCliente('pf');
-                        setRamoAtuacao('correspondente');
-                        setOrigem('google');
-                        setMensagem('Preenchimento automático para teste');
-                        alert('Formulário preenchido automaticamente!');
-                      }}
-                      variant="outline"
-                      size="sm"
-                      className="text-xs"
-                    >
-                      ⚡ Auto-preencher
-                    </Button>
-                  </div>
-                  <p className="text-xs text-gray-500 mt-2">
-                    SessionId: {sessionId ? `✅ ${sessionId.substring(0, 20)}...` : '❌ Não encontrado'}
-                  </p>
-                </div>
               </form>
             </div>
 
             {/* Área de Acesso para Parceiros */}
-            <div className="lg:flex lg:items-center">
-              <div className="bg-libra-navy rounded-xl p-6 md:p-8 text-white text-center w-full">
-                <div className="flex justify-center mb-6">
-                  <LockKeyhole className="w-16 h-16 text-libra-blue" />
-          </div>
+            <div className="lg:flex lg:items-start">
+              <div className="bg-libra-navy rounded-xl p-4 md:p-6 text-white text-center w-full">
+                <div className="flex justify-center mb-4">
+                  <LockKeyhole className="w-12 h-12 text-libra-blue" />
+                </div>
                 
-                <h2 className="text-2xl md:text-3xl font-bold mb-4">Área do Parceiro</h2>
+                <h2 className="text-xl md:text-2xl font-bold mb-3">Área do Parceiro</h2>
                 
-                <p className="text-libra-silver mb-8">
-                  Já é nosso parceiro? Acesse a área exclusiva para ter acesso a materiais, 
+                <p className="text-libra-silver mb-6 text-sm">
+                  Já é nosso parceiro? Acesse a área exclusiva para materiais, 
                   relatórios e ferramentas especiais.
                 </p>
 
                 <Button 
                   onClick={() => window.location.href = "https://parceiros.libracredito.com.br/login"}
-                  className="w-full bg-libra-blue hover:bg-libra-blue/90 text-white"
+                  className="w-full bg-libra-blue hover:bg-libra-blue/90 text-white mb-4"
                 >
                   Já sou Parceiro
                 </Button>
+                
+                <div className="text-xs text-libra-silver/80 space-y-2">
+                  <p>✓ Material de divulgação</p>
+                  <p>✓ Relatórios de comissão</p>
+                  <p>✓ Suporte especializado</p>
+                </div>
               </div>
             </div>
           </div>
