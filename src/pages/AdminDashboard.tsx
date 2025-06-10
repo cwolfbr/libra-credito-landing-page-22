@@ -26,11 +26,20 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { SimulationService } from '@/services/simulationService';
 import { PartnersService } from '@/services/partnersService';
 import { BlogService, type BlogPost, type SimulationConfig } from '@/services/blogService';
+import { AuthService, type LoginCredentials, type AuthUser } from '@/services/authService';
+import AdminLogin from '@/components/AdminLogin';
 import { SimulacaoData, ParceiroData } from '@/lib/supabase';
-import { Eye, Download, RefreshCw, Users, Calculator, TrendingUp, Clock, Handshake, UserCheck, Building, FileText, Settings, Plus, Edit, Trash2, Save } from 'lucide-react';
+import { Eye, Download, RefreshCw, Users, Calculator, TrendingUp, Clock, Handshake, UserCheck, Building, FileText, Settings, Plus, Edit, Trash2, Save, LogOut } from 'lucide-react';
 import { formatBRL } from '@/utils/formatters';
 
 const AdminDashboard: React.FC = () => {
+  // Estados de autenticação
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
+  const [loginLoading, setLoginLoading] = useState(false);
+  const [loginError, setLoginError] = useState('');
+  const [checkingAuth, setCheckingAuth] = useState(true);
+
   const [activeTab, setActiveTab] = useState<'simulacoes' | 'parceiros' | 'blog' | 'configuracoes'>('simulacoes');
   
   // Estados para simulações
@@ -57,14 +66,19 @@ const AdminDashboard: React.FC = () => {
   
   // Estados para configurações de simulação
   const [simulationConfig, setSimulationConfig] = useState<SimulationConfig>({
-    taxaJurosMin: 1.09,
-    taxaJurosMax: 2.5,
     valorMinimo: 100000,
     valorMaximo: 5000000,
     parcelasMin: 36,
     parcelasMax: 180,
-    percentualMaximo: 70,
+    taxaJurosMin: 1.09,
+    taxaJurosMax: 2.5,
     taxaPadrao: 1.19,
+    percentualMaximo: 70,
+    multiplicadorMinimo: 2,
+    carenciaPadrao: 1,
+    carenciaMinima: 0,
+    carenciaMaxima: 12,
+    apiUrl: 'https://api-calculos.vercel.app/simulacao',
     custoOperacional: 0.5
   });
   const [loadingConfig, setLoadingConfig] = useState(false);
@@ -78,13 +92,54 @@ const AdminDashboard: React.FC = () => {
     rejeitados: 0
   });
 
-  // Carregar dados
+  // Verificar autenticação ao carregar
   useEffect(() => {
-    loadSimulacoes();
-    loadParceiros();
-    loadBlogPosts();
-    loadSimulationConfig();
+    const checkAuth = async () => {
+      if (AuthService.isAuthenticated() && AuthService.isTokenValid()) {
+        const user = AuthService.getCurrentUser();
+        if (user) {
+          setCurrentUser(user);
+          setIsAuthenticated(true);
+        }
+      }
+      setCheckingAuth(false);
+    };
+    
+    checkAuth();
   }, []);
+
+  // Carregar dados quando autenticado
+  useEffect(() => {
+    if (isAuthenticated) {
+      loadSimulacoes();
+      loadParceiros();
+      loadBlogPosts();
+      loadSimulationConfig();
+    }
+  }, [isAuthenticated]);
+
+  // Funções de autenticação
+  const handleLogin = async (credentials: LoginCredentials) => {
+    setLoginLoading(true);
+    setLoginError('');
+
+    try {
+      const user = await AuthService.login(credentials);
+      setCurrentUser(user);
+      setIsAuthenticated(true);
+    } catch (error) {
+      setLoginError((error as Error).message);
+    } finally {
+      setLoginLoading(false);
+    }
+  };
+
+  const handleLogout = () => {
+    AuthService.logout();
+    setCurrentUser(null);
+    setIsAuthenticated(false);
+    setActiveTab('simulacoes');
+  };
   
   // Carregar posts do blog
   const loadBlogPosts = async () => {
@@ -347,12 +402,54 @@ const AdminDashboard: React.FC = () => {
   const filteredSimulacoes = getFilteredSimulacoes();
   const filteredParceiros = getFilteredParceiros();
 
+  // Mostrar loading durante verificação inicial
+  if (checkingAuth) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-libra-blue mx-auto mb-4"></div>
+          <p className="text-gray-600">Verificando autenticação...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Mostrar tela de login se não autenticado
+  if (!isAuthenticated) {
+    return (
+      <AdminLogin 
+        onLogin={handleLogin}
+        loading={loginLoading}
+        error={loginError}
+      />
+    );
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Dashboard Admin - Libra Crédito</h1>
-        <p className="text-gray-600">Gestão de simulações, leads e parceiros</p>
+        <div className="flex justify-between items-start">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Dashboard Admin - Libra Crédito</h1>
+            <p className="text-gray-600">Gestão de simulações, leads e parceiros</p>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="text-right">
+              <p className="text-sm font-medium text-gray-900">{currentUser?.name}</p>
+              <p className="text-xs text-gray-500">{currentUser?.email}</p>
+            </div>
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={handleLogout}
+              className="flex items-center gap-2"
+            >
+              <LogOut className="w-4 h-4" />
+              Sair
+            </Button>
+          </div>
+        </div>
         
         {/* Navigation Tabs */}
         <div className="mt-6 border-b border-gray-200">
@@ -817,7 +914,7 @@ const AdminDashboard: React.FC = () => {
                     <label className="block text-sm font-medium mb-1">Categoria</label>
                     <Select 
                       value={postForm.category || ''} 
-                      onValueChange={(value) => setPostForm({...postForm, category: value as any})}
+                      onValueChange={(value) => setPostForm({...postForm, category: value as BlogPost['category']})}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione uma categoria" />
@@ -977,106 +1074,217 @@ const AdminDashboard: React.FC = () => {
             {/* Parâmetros de Simulação */}
             <Card>
               <CardHeader>
-                <CardTitle>Parâmetros de Simulação</CardTitle>
-                <p className="text-gray-600">Configure os limites e taxas do sistema de simulação</p>
+                <CardTitle>Parâmetros da API de Simulação</CardTitle>
+                <p className="text-gray-600">Configure os limites que serão aplicados em todas as simulações do site</p>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Taxa de Juros Mínima (%)</label>
-                    <Input 
-                      type="number" 
-                      step="0.01"
-                      value={simulationConfig.taxaJurosMin}
-                      onChange={(e) => setSimulationConfig({
-                        ...simulationConfig, 
-                        taxaJurosMin: parseFloat(e.target.value)
-                      })}
-                    />
+                {/* Limites de Valor */}
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-3">Limites de Valor do Empréstimo</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Valor Mínimo (R$)</label>
+                      <Input 
+                        type="number"
+                        value={simulationConfig.valorMinimo}
+                        onChange={(e) => setSimulationConfig({
+                          ...simulationConfig, 
+                          valorMinimo: parseInt(e.target.value)
+                        })}
+                      />
+                      <p className="text-xs text-gray-500 mt-1">Valor mínimo para empréstimo</p>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Valor Máximo (R$)</label>
+                      <Input 
+                        type="number"
+                        value={simulationConfig.valorMaximo}
+                        onChange={(e) => setSimulationConfig({
+                          ...simulationConfig, 
+                          valorMaximo: parseInt(e.target.value)
+                        })}
+                      />
+                      <p className="text-xs text-gray-500 mt-1">Valor máximo para empréstimo</p>
+                    </div>
                   </div>
+                </div>
+
+                {/* Limites de Parcelas */}
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-3">Limites de Parcelas</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Parcelas Mínimas</label>
+                      <Input 
+                        type="number"
+                        value={simulationConfig.parcelasMin}
+                        onChange={(e) => setSimulationConfig({
+                          ...simulationConfig, 
+                          parcelasMin: parseInt(e.target.value)
+                        })}
+                      />
+                      <p className="text-xs text-gray-500 mt-1">Quantidade mínima de parcelas</p>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Parcelas Máximas</label>
+                      <Input 
+                        type="number"
+                        value={simulationConfig.parcelasMax}
+                        onChange={(e) => setSimulationConfig({
+                          ...simulationConfig, 
+                          parcelasMax: parseInt(e.target.value)
+                        })}
+                      />
+                      <p className="text-xs text-gray-500 mt-1">Quantidade máxima de parcelas</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Taxas de Juros */}
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-3">Configurações de Juros</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Taxa Mínima (% a.m.)</label>
+                      <Input 
+                        type="number" 
+                        step="0.01"
+                        value={simulationConfig.taxaJurosMin}
+                        onChange={(e) => setSimulationConfig({
+                          ...simulationConfig, 
+                          taxaJurosMin: parseFloat(e.target.value)
+                        })}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Taxa Máxima (% a.m.)</label>
+                      <Input 
+                        type="number" 
+                        step="0.01"
+                        value={simulationConfig.taxaJurosMax}
+                        onChange={(e) => setSimulationConfig({
+                          ...simulationConfig, 
+                          taxaJurosMax: parseFloat(e.target.value)
+                        })}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Taxa Padrão (% a.m.)</label>
+                      <Input 
+                        type="number" 
+                        step="0.01"
+                        value={simulationConfig.taxaPadrao}
+                        onChange={(e) => setSimulationConfig({
+                          ...simulationConfig, 
+                          taxaPadrao: parseFloat(e.target.value)
+                        })}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Configurações do Imóvel */}
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-3">Regras do Imóvel Garantia</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">% Máximo do Valor do Imóvel</label>
+                      <Input 
+                        type="number"
+                        value={simulationConfig.percentualMaximo}
+                        onChange={(e) => setSimulationConfig({
+                          ...simulationConfig, 
+                          percentualMaximo: parseInt(e.target.value)
+                        })}
+                      />
+                      <p className="text-xs text-gray-500 mt-1">Ex: 70% = máximo 70% do valor do imóvel</p>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Multiplicador Mínimo</label>
+                      <Input 
+                        type="number"
+                        step="0.1"
+                        value={simulationConfig.multiplicadorMinimo}
+                        onChange={(e) => setSimulationConfig({
+                          ...simulationConfig, 
+                          multiplicadorMinimo: parseFloat(e.target.value)
+                        })}
+                      />
+                      <p className="text-xs text-gray-500 mt-1">Ex: 2x = imóvel deve valer 2x o empréstimo</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Configurações de Carência */}
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-3">Configurações de Carência</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Carência Padrão (meses)</label>
+                      <Input 
+                        type="number"
+                        value={simulationConfig.carenciaPadrao}
+                        onChange={(e) => setSimulationConfig({
+                          ...simulationConfig, 
+                          carenciaPadrao: parseInt(e.target.value)
+                        })}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Carência Mínima (meses)</label>
+                      <Input 
+                        type="number"
+                        value={simulationConfig.carenciaMinima}
+                        onChange={(e) => setSimulationConfig({
+                          ...simulationConfig, 
+                          carenciaMinima: parseInt(e.target.value)
+                        })}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Carência Máxima (meses)</label>
+                      <Input 
+                        type="number"
+                        value={simulationConfig.carenciaMaxima}
+                        onChange={(e) => setSimulationConfig({
+                          ...simulationConfig, 
+                          carenciaMaxima: parseInt(e.target.value)
+                        })}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* URL da API */}
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-3">Configurações da API</h4>
                   <div>
-                    <label className="block text-sm font-medium mb-2">Taxa de Juros Máxima (%)</label>
+                    <label className="block text-sm font-medium mb-2">URL da API de Simulação</label>
                     <Input 
-                      type="number" 
-                      step="0.01"
-                      value={simulationConfig.taxaJurosMax}
+                      type="url"
+                      value={simulationConfig.apiUrl}
                       onChange={(e) => setSimulationConfig({
                         ...simulationConfig, 
-                        taxaJurosMax: parseFloat(e.target.value)
+                        apiUrl: e.target.value
                       })}
                     />
+                    <p className="text-xs text-gray-500 mt-1">URL atual da API para simulações</p>
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Valor Mínimo de Empréstimo (R$)</label>
-                    <Input 
-                      type="number"
-                      value={simulationConfig.valorMinimo}
-                      onChange={(e) => setSimulationConfig({
-                        ...simulationConfig, 
-                        valorMinimo: parseInt(e.target.value)
-                      })}
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Valor Máximo de Empréstimo (R$)</label>
-                    <Input 
-                      type="number"
-                      value={simulationConfig.valorMaximo}
-                      onChange={(e) => setSimulationConfig({
-                        ...simulationConfig, 
-                        valorMaximo: parseInt(e.target.value)
-                      })}
-                    />
-                  </div>
+                <div className="pt-4 border-t">
+                  <Button 
+                    className="bg-libra-blue hover:bg-libra-blue/90"
+                    onClick={handleSaveConfig}
+                    disabled={loadingConfig}
+                  >
+                    <Save className="w-4 h-4 mr-2" />
+                    {loadingConfig ? 'Salvando...' : 'Salvar Todas as Configurações'}
+                  </Button>
+                  <p className="text-sm text-gray-600 mt-2">
+                    ⚠️ Estas alterações afetarão todas as simulações realizadas no site
+                  </p>
                 </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Parcelas Mínimas</label>
-                    <Input 
-                      type="number"
-                      value={simulationConfig.parcelasMin}
-                      onChange={(e) => setSimulationConfig({
-                        ...simulationConfig, 
-                        parcelasMin: parseInt(e.target.value)
-                      })}
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Parcelas Máximas</label>
-                    <Input 
-                      type="number"
-                      value={simulationConfig.parcelasMax}
-                      onChange={(e) => setSimulationConfig({
-                        ...simulationConfig, 
-                        parcelasMax: parseInt(e.target.value)
-                      })}
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">% Máximo do Imóvel</label>
-                    <Input 
-                      type="number"
-                      value={simulationConfig.percentualMaximo}
-                      onChange={(e) => setSimulationConfig({
-                        ...simulationConfig, 
-                        percentualMaximo: parseInt(e.target.value)
-                      })}
-                    />
-                  </div>
-                </div>
-                
-                <Button 
-                  className="bg-libra-blue hover:bg-libra-blue/90"
-                  onClick={handleSaveConfig}
-                  disabled={loadingConfig}
-                >
-                  <Save className="w-4 h-4 mr-2" />
-                  {loadingConfig ? 'Salvando...' : 'Salvar Configurações'}
-                </Button>
               </CardContent>
             </Card>
             

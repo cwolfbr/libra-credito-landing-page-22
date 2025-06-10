@@ -41,14 +41,32 @@ export interface BlogCategory {
 }
 
 export interface SimulationConfig {
-  taxaJurosMin: number;
-  taxaJurosMax: number;
+  // Limites de valor
   valorMinimo: number;
   valorMaximo: number;
+  
+  // Limites de parcelas  
   parcelasMin: number;
   parcelasMax: number;
-  percentualMaximo: number;
+  
+  // Taxas de juros
+  taxaJurosMin: number;
+  taxaJurosMax: number;
   taxaPadrao: number;
+  
+  // Configurações do imóvel
+  percentualMaximo: number; // % máximo do valor do imóvel
+  multiplicadorMinimo: number; // quantas vezes o valor deve ser maior que o empréstimo
+  
+  // Configurações de carência
+  carenciaPadrao: number;
+  carenciaMinima: number;
+  carenciaMaxima: number;
+  
+  // URL da API
+  apiUrl: string;
+  
+  // Configurações gerais
   custoOperacional: number;
   updateAt?: string;
 }
@@ -101,6 +119,52 @@ export const BLOG_CATEGORIES: BlogCategory[] = [
     name: 'Projetos/Reformas',
     description: 'Realize seus projetos com as melhores condições',
     icon: 'Home'
+  }
+];
+
+// Posts existentes do site para inicialização
+const EXISTING_POSTS: BlogPost[] = [
+  {
+    id: '1',
+    title: 'Home Equity: O que é e como conseguir esse tipo de crédito',
+    description: 'Guia completo sobre Home Equity - modalidade que permite usar seu imóvel como garantia para obter crédito com melhores condições.',
+    category: 'home-equity',
+    imageUrl: '/images/blog/capital-giro.jpg',
+    slug: 'home-equity-o-que-e-como-conseguir',
+    content: 'Home Equity é uma modalidade de crédito que permite usar seu imóvel como garantia...',
+    readTime: 8,
+    published: true,
+    featuredPost: true,
+    createdAt: '2024-03-25T00:00:00.000Z',
+    updatedAt: '2024-03-25T00:00:00.000Z'
+  },
+  {
+    id: '2', 
+    title: 'Home Equity: Guia Completo para Entender a Modalidade de Uma Vez por Todas',
+    description: 'Tudo sobre crédito com garantia de imóvel: taxas desde 1,09% a.m., prazos até 15 anos e como funciona.',
+    category: 'home-equity',
+    imageUrl: '/images/blog/consolidacao.jpg',
+    slug: 'home-equity-guia-completo-modalidade',
+    content: 'Este é o guia definitivo sobre Home Equity. Vamos explicar tudo que você precisa saber...',
+    readTime: 12,
+    published: true,
+    featuredPost: false,
+    createdAt: '2024-03-24T00:00:00.000Z',
+    updatedAt: '2024-03-24T00:00:00.000Z'
+  },
+  {
+    id: '3',
+    title: 'Como Investir sem Descapitalizar usando Home Equity',
+    description: 'Descubra como usar seu imóvel como fonte de investimento acessível, obtendo crédito sem se descapitalizar.',
+    category: 'home-equity',
+    imageUrl: '/images/blog/reforma.jpg',
+    slug: 'como-investir-sem-descapitalizar-home-equity',
+    content: 'Investir sem descapitalizar é o sonho de todo empreendedor...',
+    readTime: 10,
+    published: true,
+    featuredPost: false,
+    createdAt: '2024-03-23T00:00:00.000Z',
+    updatedAt: '2024-03-23T00:00:00.000Z'
   }
 ];
 
@@ -164,10 +228,16 @@ export class BlogService {
   static async getAllPosts(): Promise<BlogPost[]> {
     try {
       const stored = localStorage.getItem(this.STORAGE_KEY);
-      return stored ? JSON.parse(stored) : [];
+      if (stored) {
+        return JSON.parse(stored);
+      } else {
+        // Primeira vez acessando - inicializar com posts existentes
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(EXISTING_POSTS));
+        return EXISTING_POSTS;
+      }
     } catch (error) {
       console.error('Erro ao carregar posts:', error);
-      return [];
+      return EXISTING_POSTS;
     }
   }
 
@@ -300,14 +370,32 @@ export class BlogService {
     try {
       const stored = localStorage.getItem(this.CONFIG_KEY);
       return stored ? JSON.parse(stored) : {
-        taxaJurosMin: 1.09,
-        taxaJurosMax: 2.5,
+        // Limites de valor (baseado na API atual)
         valorMinimo: 100000,
         valorMaximo: 5000000,
+        
+        // Limites de parcelas
         parcelasMin: 36,
         parcelasMax: 180,
-        percentualMaximo: 70,
+        
+        // Taxas de juros
+        taxaJurosMin: 1.09,
+        taxaJurosMax: 2.5,
         taxaPadrao: 1.19,
+        
+        // Configurações do imóvel
+        percentualMaximo: 70, // 70% do valor do imóvel
+        multiplicadorMinimo: 2, // imóvel deve valer 2x o empréstimo
+        
+        // Configurações de carência
+        carenciaPadrao: 1,
+        carenciaMinima: 0,
+        carenciaMaxima: 12,
+        
+        // URL da API
+        apiUrl: 'https://api-calculos.vercel.app/simulacao',
+        
+        // Configurações gerais
         custoOperacional: 0.5
       };
     } catch (error) {
