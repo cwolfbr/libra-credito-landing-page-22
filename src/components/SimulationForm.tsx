@@ -306,12 +306,6 @@ const SimulationForm: React.FC = () => {
               <CityAutocomplete value={cidade} onCityChange={setCidade} />
 
               <LoanAmountField value={emprestimo} onChange={handleEmprestimoChange} />
-              
-              {validation.emprestimoForaRange && (
-                <div className="text-red-500 text-xs">
-                  O empréstimo deve estar entre R$ 100.000 e R$ 5.000.000
-                </div>
-              )}
 
               <GuaranteeAmountField 
                 value={garantia} 

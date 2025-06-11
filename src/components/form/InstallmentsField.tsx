@@ -9,14 +9,19 @@ interface InstallmentsFieldProps {
 
 const InstallmentsField: React.FC<InstallmentsFieldProps> = ({ value, onChange }) => {
   return (
-    <div className="flex items-start gap-2">
-      <div className="bg-libra-light p-1.5 rounded-full mt-0.5">
+    <div className="flex items-center gap-2">
+      <div className="bg-libra-light p-1.5 rounded-full flex-shrink-0">
         <Calendar className="w-4 h-4 text-libra-blue" />
       </div>
       <div className="flex-1">
-        <label className="block text-xs font-medium text-libra-navy mb-1">
-          Em quantas parcelas?
-        </label>
+        <div className="flex items-center justify-between mb-1">
+          <label className="text-xs font-medium text-libra-navy">
+            Em quantas parcelas?
+          </label>
+          <span className="bg-libra-blue text-white px-2 py-0.5 rounded text-xs font-bold">
+            {value}
+          </span>
+        </div>
         <div className="relative">
           <input
             type="range"
@@ -34,11 +39,6 @@ const InstallmentsField: React.FC<InstallmentsFieldProps> = ({ value, onChange }
             <span>60</span>
             <span>120</span>
             <span>180</span>
-          </div>
-          <div className="text-right mt-1">
-            <span className="bg-libra-blue text-white px-2 py-0.5 rounded text-xs font-bold">
-              {value}
-            </span>
           </div>
         </div>
       </div>

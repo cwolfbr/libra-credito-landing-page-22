@@ -151,9 +151,9 @@ const CityAutocomplete = ({ value = '', onCityChange }) => {
   const showSuggestions = isFocused && inputValue.length >= 3 && (isLoading || error || suggestions.length > 0);
 
   return (
-    <div ref={containerRef} className="flex items-start gap-2 relative">
+    <div ref={containerRef} className="flex items-center gap-2 relative">
       {/* Icon */}
-      <div className="bg-libra-light p-1.5 rounded-full mt-0.5">
+      <div className="bg-libra-light p-1.5 rounded-full flex-shrink-0">
         <MapPin className="w-4 h-4 text-libra-blue" />
       </div>
       <div className="flex-1 relative">
