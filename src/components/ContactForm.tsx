@@ -38,6 +38,28 @@ const ContactForm: React.FC<ContactFormProps> = ({
   const [aceitePrivacidade, setAceitePrivacidade] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // Função para aplicar máscara de telefone
+  const formatPhoneNumber = (value: string) => {
+    // Remove tudo que não é número
+    const numbers = value.replace(/\D/g, '');
+    
+    // Aplica a máscara conforme o número de dígitos
+    if (numbers.length <= 2) {
+      return `(${numbers}`;
+    } else if (numbers.length <= 7) {
+      return `(${numbers.slice(0, 2)}) ${numbers.slice(2)}`;
+    } else if (numbers.length <= 10) {
+      return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 6)}-${numbers.slice(6)}`;
+    } else {
+      return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(7, 11)}`;
+    }
+  };
+
+  const handlePhoneChange = (value: string) => {
+    const formatted = formatPhoneNumber(value);
+    setTelefone(formatted);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -154,7 +176,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
             id="telefone-compact"
             type="tel"
             value={telefone}
-            onChange={(e) => setTelefone(e.target.value)}
+            onChange={(e) => handlePhoneChange(e.target.value)}
             placeholder="Telefone (99) 99999-9999"
             className={inputClassName}
             inputMode="numeric"
@@ -276,7 +298,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
                 id="telefone-full"
                 type="tel"
                 value={telefone}
-                onChange={(e) => setTelefone(e.target.value)}
+                onChange={(e) => handlePhoneChange(e.target.value)}
                 placeholder="(99) 99999-9999"
                 inputMode="numeric"
                 required

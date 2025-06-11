@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Calculator, CheckCircle, Home, Calendar, Users, Info, TrendingUp } from 'lucide-react';
+import { Calculator, CheckCircle, Users, Info, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { SimulationService } from '@/services/simulationService';
-import { useUserJourney } from '@/hooks/useUserJourney';
+import ContactForm from './ContactForm';
 
 interface SimulationResultDisplayProps {
   resultado: {
@@ -60,15 +56,7 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
   onNewSimulation
 }) => {
   const isMobile = useIsMobile();
-  const { sessionId } = useUserJourney();
   const { valor, amortizacao, parcelas, primeiraParcela, ultimaParcela } = resultado;
-  
-  // Estados do formulário
-  const [nome, setNome] = useState('');
-  const [telefone, setTelefone] = useState('');
-  const [email, setEmail] = useState('');
-  const [aceiteTermos, setAceiteTermos] = useState(false);
-  const [loading, setLoading] = useState(false);
   
   // Cálculo da renda mínima familiar
   const calcularRendaMinima = () => {
@@ -80,75 +68,6 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
   };
   
   const rendaMinima = calcularRendaMinima();
-  
-  const handleSubmitContato = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    console.log('🔍 Debug dados da simulação:', {
-      resultado,
-      simulationId: resultado.id,
-      sessionId,
-      hasId: !!resultado.id,
-      hasSessionId: !!sessionId
-    });
-    
-    if (!aceiteTermos) {
-      alert('É necessário aceitar a Política de Privacidade para continuar.');
-      return;
-    }
-
-    if (!resultado.id) {
-      console.error('❌ ID da simulação não encontrado:', resultado);
-      alert('Erro: ID da simulação não encontrado. Tente simular novamente.');
-      return;
-    }
-    
-    if (!sessionId) {
-      console.error('❌ Session ID não encontrado');
-      alert('Erro: Session ID não encontrado. Tente recarregar a página.');
-      return;
-    }
-
-    setLoading(true);
-    
-    try {
-      console.log('📋 Enviando formulário de contato:', {
-        simulationId: resultado.id,
-        sessionId,
-        nome,
-        email,
-        telefone
-      });
-
-      await SimulationService.submitContactForm({
-        simulationId: resultado.id,
-        sessionId,
-        nomeCompleto: nome,
-        email,
-        telefone
-      });
-
-      console.log('✅ Formulário enviado com sucesso');
-      alert('Solicitação enviada com sucesso! Nossa equipe entrará em contato em até 24h.');
-      
-      // Limpar formulário
-      setNome('');
-      setEmail('');
-      setTelefone('');
-      setAceiteTermos(false);
-      
-    } catch (error) {
-      console.error('❌ Erro ao enviar formulário:', error);
-      
-      if (error instanceof Error) {
-        alert(`Erro ao enviar solicitação: ${error.message}`);
-      } else {
-        alert('Erro desconhecido ao enviar solicitação. Tente novamente.');
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
   
   if (isMobile) {
     // Layout Mobile - Sucinto e direto
@@ -218,50 +137,13 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
           <p className="font-bold">🎉 Gostou? Solicite uma consultoria gratuita!</p>
         </div>
         
-        <form onSubmit={handleSubmitContato} className="space-y-3">
-          <Input
-            placeholder="Nome completo"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-            className="bg-white/90 text-gray-800"
-            required
-          />
-          <Input
-            placeholder="Telefone"
-            value={telefone}
-            onChange={(e) => setTelefone(e.target.value)}
-            className="bg-white/90 text-gray-800"
-            required
-          />
-          <Input
-            placeholder="E-mail"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="bg-white/90 text-gray-800"
-            required
-          />
-          
-          <div className="flex items-start gap-2 text-xs">
-            <Checkbox
-              checked={aceiteTermos}
-              onCheckedChange={setAceiteTermos}
-              className="bg-white cursor-pointer"
-              id="aceite-termos-mobile"
-            />
-            <label htmlFor="aceite-termos-mobile" className="text-white/90 cursor-pointer">
-              Concordo com a <Link to="/politica-privacidade" className="text-yellow-300 underline">política de privacidade</Link> e autorizo o contato
-            </label>
-          </div>
-          
-          <Button
-            type="submit"
-            disabled={!aceiteTermos || loading}
-            className="w-full bg-white text-[#003399] hover:bg-gray-100 font-bold"
-          >
-            {loading ? 'Enviando...' : 'Continuar Processo'}
-          </Button>
-        </form>
+        <ContactForm 
+          simulationResult={resultado}
+          compact={true}
+          className="space-y-3"
+          inputClassName="bg-white/90 text-gray-800 placeholder-gray-500"
+          buttonClassName="bg-white text-[#003399] hover:bg-gray-100 font-bold py-3 w-full"
+        />
       </div>
     );
   }
@@ -290,9 +172,9 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-5 gap-6 lg:gap-10">
+      <div className="grid grid-cols-1 lg:grid-cols-7 gap-6 lg:gap-8">
         {/* Coluna 1: Informações da Parcela */}
-        <div className="xl:col-span-3 space-y-6 lg:space-y-8">
+        <div className="lg:col-span-5 space-y-6 lg:space-y-8">
           {/* Destaque da parcela */}
           <div className="bg-white rounded-2xl p-6 lg:p-8 text-gray-800">
             {amortizacao === 'SAC' && primeiraParcela && ultimaParcela ? (
@@ -386,81 +268,26 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
         </div>
 
         {/* Coluna 2: Formulário de Solicitação */}
-        <div className="xl:col-span-2 bg-white/10 rounded-xl p-6 lg:p-8">
-          <div className="mb-8 text-center">
-            <h4 className="text-xl lg:text-2xl font-bold mb-4 text-yellow-300">🎉 Gostou dos valores?</h4>
-            <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-800 rounded-lg p-4 lg:p-5 mb-4">
-              <p className="font-bold text-lg lg:text-xl">Solicite uma consultoria gratuita!</p>
+        <div className="lg:col-span-2 bg-white/10 rounded-xl p-4 lg:p-6">
+          <div className="mb-6 text-center">
+            <h4 className="text-lg lg:text-xl font-bold mb-3 text-yellow-300">🎉 Gostou dos valores?</h4>
+            <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-800 rounded-lg p-3 lg:p-4 mb-3">
+              <p className="font-bold text-base lg:text-lg">Solicite uma consultoria gratuita!</p>
             </div>
-            <p className="text-blue-200 text-sm lg:text-base leading-relaxed">
+            <p className="text-blue-200 text-xs lg:text-sm leading-relaxed">
               Preencha seus dados e nossa equipe especializada entrará em contato em até 24h
             </p>
           </div>
           
-          <form onSubmit={handleSubmitContato} className="space-y-5 lg:space-y-6">
-            <div>
-              <label className="block text-sm lg:text-base text-blue-200 mb-2">Nome Completo</label>
-              <Input
-                value={nome}
-                onChange={(e) => setNome(e.target.value)}
-                className="bg-white/90 text-gray-800 border-white/20 py-3 lg:py-4 text-base"
-                placeholder="Seu nome completo"
-                required
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm lg:text-base text-blue-200 mb-2">Telefone</label>
-              <Input
-                value={telefone}
-                onChange={(e) => setTelefone(e.target.value)}
-                className="bg-white/90 text-gray-800 border-white/20 py-3 lg:py-4 text-base"
-                placeholder="(00) 00000-0000"
-                required
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm lg:text-base text-blue-200 mb-2">E-mail</label>
-              <Input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="bg-white/90 text-gray-800 border-white/20 py-3 lg:py-4 text-base"
-                placeholder="seu@email.com"
-                required
-              />
-            </div>
-            
-            <div className="flex items-start gap-3 pt-3">
-              <Checkbox
-                checked={aceiteTermos}
-                onCheckedChange={setAceiteTermos}
-                className="bg-white mt-1 cursor-pointer"
-                id="aceite-termos-desktop"
-              />
-              <label htmlFor="aceite-termos-desktop" className="text-sm lg:text-base text-blue-200 leading-relaxed cursor-pointer">
-                Concordo com a <Link to="/politica-privacidade" className="text-yellow-300 underline hover:text-yellow-200">política de privacidade</Link> e autorizo o contato da equipe Libra Crédito
-              </label>
-            </div>
-            
-            <Button
-              type="submit"
-              disabled={!aceiteTermos || loading}
-              className="w-full bg-white text-[#003399] hover:bg-gray-100 font-bold py-4 lg:py-5 text-lg lg:text-xl mt-8"
-            >
-              {loading ? (
-                <div className="flex items-center gap-2">
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-[#003399]"></div>
-                  Enviando...
-                </div>
-              ) : (
-                'Solicitar Proposta'
-              )}
-            </Button>
-          </form>
+          <ContactForm 
+            simulationResult={resultado}
+            compact={true}
+            className="space-y-3 lg:space-y-4"
+            inputClassName="bg-white/90 text-gray-800 border-white/20 text-sm"
+            buttonClassName="bg-white text-[#003399] hover:bg-gray-100 font-bold py-3 lg:py-4 text-base lg:text-lg w-full"
+          />
           
-          <div className="mt-6 text-xs lg:text-sm text-blue-200 text-center space-y-1">
+          <div className="mt-4 text-xs lg:text-sm text-blue-200 text-center space-y-1">
             <p>🔒 Seus dados estão protegidos</p>
             <p>Nossa equipe entrará em contato em até 24h</p>
           </div>
