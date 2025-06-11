@@ -168,46 +168,51 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
         </Button>
       </div>
 
-      {/* Valor da parcela destacado */}
-      <div className="bg-white rounded-lg p-4 text-center mb-4">
-        {amortizacao === 'SAC' && primeiraParcela ? (
-          <div>
-            <div className="text-xs text-gray-600 mb-1">Parcela Inicial (SAC)</div>
-            <div className="text-2xl font-bold text-[#003399]">
-              R$ {primeiraParcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+      {/* Valor da parcela e Renda mínima lado a lado */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+        {/* Valor da parcela destacado */}
+        <div className="bg-white rounded-lg p-4 text-center">
+          {amortizacao === 'SAC' && primeiraParcela ? (
+            <div>
+              <div className="text-xs text-gray-600 mb-1">Parcela Inicial (SAC)</div>
+              <div className="text-xl lg:text-2xl font-bold text-[#003399]">
+                R$ {primeiraParcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+              </div>
+              <div className="text-xs text-gray-500 mt-1">
+                Última: R$ {ultimaParcela?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+              </div>
             </div>
-            <div className="text-xs text-gray-500 mt-1">
-              Última: R$ {ultimaParcela?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+          ) : (
+            <div>
+              <div className="text-xs text-gray-600 mb-1">Parcela Fixa (PRICE)</div>
+              <div className="text-xl lg:text-2xl font-bold text-[#003399]">
+                R$ {valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+              </div>
             </div>
+          )}
+        </div>
+
+        {/* Renda mínima */}
+        <div className="bg-white/10 rounded-lg p-3">
+          <div className="flex items-center gap-2 text-sm">
+            <Users className="w-4 h-4" />
+            <span>Renda familiar mínima:</span>
+            <TooltipInfo content="Renda familiar podendo ser composta por até 4 pessoas">
+              <Info className="w-3 h-3" />
+            </TooltipInfo>
           </div>
-        ) : (
-          <div>
-            <div className="text-xs text-gray-600 mb-1">Parcela Fixa (PRICE)</div>
-            <div className="text-2xl font-bold text-[#003399]">
-              R$ {valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-            </div>
+          <div className="text-lg font-bold mt-1">
+            R$ {rendaMinima.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
           </div>
-        )}
+        </div>
       </div>
 
-      {/* Renda mínima */}
-      <div className="bg-white/10 rounded-lg p-3 mb-4">
-        <div className="flex items-center gap-2 text-sm">
-          <Users className="w-4 h-4" />
-          <span>Renda familiar mínima:</span>
-          <TooltipInfo content="Renda familiar podendo ser composta por até 4 pessoas">
-            <Info className="w-3 h-3" />
-          </TooltipInfo>
+      {/* Dica SAC - movida para baixo */}
+      {amortizacao === 'SAC' && (
+        <div className="text-xs text-white/70 mb-4 p-2 bg-white/5 rounded border border-white/10">
+          💡 Ao contratar o crédito na tabela PRICE a comprovação de renda necessária é consideravelmente menor
         </div>
-        <div className="text-lg font-bold mt-1">
-          R$ {rendaMinima.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-        </div>
-        {amortizacao === 'SAC' && (
-          <div className="text-xs text-white/70 mt-2 p-2 bg-white/5 rounded border border-white/10">
-            💡 Ao contratar o crédito na tabela PRICE a comprovação de renda necessária é consideravelmente menor
-          </div>
-        )}
-      </div>
+      )}
 
       {/* Informações sobre taxa e custos */}
       <div className="bg-white/5 rounded-lg p-3 mb-4 text-xs">
