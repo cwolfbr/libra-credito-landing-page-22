@@ -117,15 +117,14 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
           <div className="text-lg font-bold">
             R$ {rendaMinima.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
           </div>
-          {amortizacao === 'SAC' && (
-            <div className="absolute bottom-1 right-2">
-              <TooltipInfo content="💡 Ao contratar o crédito na tabela PRICE a comprovação de renda necessária é consideravelmente menor">
-                <span className="cursor-help text-xs text-white/80">FICOU ALTO?💡</span>
-              </TooltipInfo>
-            </div>
-          )}
           <div className="text-xs text-white/70 mt-1">
-            <span>Ficou caro?</span>
+            {amortizacao === 'SAC' ? (
+              <TooltipInfo content="💡 Ao contratar o crédito na tabela PRICE a comprovação de renda necessária é consideravelmente menor">
+                <span className="cursor-help">FICOU ALTO?💡</span>
+              </TooltipInfo>
+            ) : (
+              <span>Ficou caro?</span>
+            )}
           </div>
         </div>
 
@@ -213,15 +212,14 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
           <div className="text-xl lg:text-2xl font-bold text-[#003399]">
             R$ {rendaMinima.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
           </div>
-          {amortizacao === 'SAC' && (
-            <div className="absolute bottom-1 right-2">
-              <TooltipInfo content="💡 Ao contratar o crédito na tabela PRICE a comprovação de renda necessária é consideravelmente menor">
-                <span className="cursor-help text-xs text-gray-500">FICOU ALTO?💡</span>
-              </TooltipInfo>
-            </div>
-          )}
           <div className="text-xs text-gray-500 mt-1">
-            <span>Ficou caro?</span>
+            {amortizacao === 'SAC' ? (
+              <TooltipInfo content="💡 Ao contratar o crédito na tabela PRICE a comprovação de renda necessária é consideravelmente menor">
+                <span className="cursor-help">FICOU ALTO?💡</span>
+              </TooltipInfo>
+            ) : (
+              <span>Ficou caro?</span>
+            )}
           </div>
         </div>
       </div>
