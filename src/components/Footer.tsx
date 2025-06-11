@@ -36,35 +36,6 @@ const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* Seção de Contato */}
-          <div className="bg-libra-blue/20 rounded-lg p-4 md:p-8 backdrop-blur-sm">
-            <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-center md:text-left">Entre em contato</h3>
-            
-            <div className="space-y-4 md:space-y-6">
-              <div className="flex items-start gap-3 md:gap-4 justify-center md:justify-start">
-                <div className="bg-libra-blue rounded-full p-2">
-                  <Phone className="w-4 h-4 md:w-5 md:h-5 text-white" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-base md:text-lg">Telefone</h4>
-                  <p className="text-libra-silver text-sm md:text-base">16 99636 0424</p>
-                  <p className="text-xs md:text-sm text-libra-silver mt-0.5 md:mt-1">Segunda a sexta, das 9h às 18h</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start gap-3 md:gap-4 justify-center md:justify-start">
-                <div className="bg-libra-blue rounded-full p-2">
-                  <Mail className="w-4 h-4 md:w-5 md:h-5 text-white" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-base md:text-lg">E-mail</h4>
-                  <p className="text-libra-silver text-sm md:text-base">contato@libracredito.com.br</p>
-                  <p className="text-xs md:text-sm text-libra-silver mt-0.5 md:mt-1">Respondemos em até 24 horas úteis</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
           {/* Redes Sociais e Voltar ao Topo */}
           <div className="flex flex-col items-center md:items-end space-y-4 md:space-y-6">
             <div className="w-full">
@@ -98,6 +69,35 @@ const Footer: React.FC = () => {
               Voltar ao topo
               <ChevronUp className="w-4 h-4 md:w-5 md:h-5" aria-hidden="true" />
             </button>
+          </div>
+
+          {/* Seção de Contato */}
+          <div className="bg-libra-blue/20 rounded-lg p-4 md:p-8 backdrop-blur-sm">
+            <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-center md:text-left">Entre em contato</h3>
+            
+            <div className="space-y-4 md:space-y-6">
+              <div className="flex items-start gap-3 md:gap-4 justify-center md:justify-start">
+                <div className="bg-libra-blue rounded-full p-2">
+                  <Phone className="w-4 h-4 md:w-5 md:h-5 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-base md:text-lg">Telefone</h4>
+                  <p className="text-libra-silver text-sm md:text-base">16 99636 0424</p>
+                  <p className="text-xs md:text-sm text-libra-silver mt-0.5 md:mt-1">Segunda a sexta, das 9h às 18h</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3 md:gap-4 justify-center md:justify-start">
+                <div className="bg-libra-blue rounded-full p-2">
+                  <Mail className="w-4 h-4 md:w-5 md:h-5 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-base md:text-lg">E-mail</h4>
+                  <p className="text-libra-silver text-sm md:text-base">contato@libracredito.com.br</p>
+                  <p className="text-xs md:text-sm text-libra-silver mt-0.5 md:mt-1">Respondemos em até 24 horas úteis</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
