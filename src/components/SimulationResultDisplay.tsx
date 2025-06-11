@@ -104,18 +104,20 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
         </div>
 
         {/* Renda mínima */}
-        <div className="bg-white/10 rounded-lg p-3 mb-4 text-center">
-          <div className="flex items-center justify-center gap-2 text-sm mb-1">
-            <span>Renda familiar mínima</span>
-            {amortizacao === 'SAC' && (
-              <TooltipInfo content="💡 Ao contratar o crédito na tabela PRICE a comprovação de renda necessária é consideravelmente menor">
-                <span className="cursor-help text-xs">FICOU ALTO?💡</span>
-              </TooltipInfo>
-            )}
+        <div className="bg-white/10 rounded-lg p-3 mb-4 text-center relative">
+          <div className="text-sm mb-1">
+            <span>Renda necessária</span>
           </div>
           <div className="text-lg font-bold">
             R$ {rendaMinima.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
           </div>
+          {amortizacao === 'SAC' && (
+            <div className="absolute bottom-1 right-2">
+              <TooltipInfo content="💡 Ao contratar o crédito na tabela PRICE a comprovação de renda necessária é consideravelmente menor">
+                <span className="cursor-help text-xs text-white/80">FICOU ALTO?💡</span>
+              </TooltipInfo>
+            </div>
+          )}
           <div className="flex items-center justify-center gap-1 text-xs text-white/70 mt-1">
             <Users className="w-3 h-3" />
             <span>Até 4 pessoas</span>
@@ -196,18 +198,20 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
         </div>
 
         {/* Renda mínima */}
-        <div className="bg-white rounded-lg p-4 text-center">
-          <div className="text-xs text-gray-600 mb-1 flex items-center justify-center gap-1">
-            <span>Renda Familiar Mínima</span>
-            {amortizacao === 'SAC' && (
-              <TooltipInfo content="💡 Ao contratar o crédito na tabela PRICE a comprovação de renda necessária é consideravelmente menor">
-                <span className="cursor-help text-sm">FICOU ALTO?💡</span>
-              </TooltipInfo>
-            )}
+        <div className="bg-white rounded-lg p-4 text-center relative">
+          <div className="text-xs text-gray-600 mb-1">
+            <span>Renda necessária</span>
           </div>
           <div className="text-xl lg:text-2xl font-bold text-[#003399]">
             R$ {rendaMinima.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
           </div>
+          {amortizacao === 'SAC' && (
+            <div className="absolute bottom-1 right-2">
+              <TooltipInfo content="💡 Ao contratar o crédito na tabela PRICE a comprovação de renda necessária é consideravelmente menor">
+                <span className="cursor-help text-xs text-gray-500">FICOU ALTO?💡</span>
+              </TooltipInfo>
+            </div>
+          )}
           <div className="flex items-center justify-center gap-1 text-xs text-gray-500 mt-1">
             <Users className="w-3 h-3" />
             <span>Até 4 pessoas</span>
