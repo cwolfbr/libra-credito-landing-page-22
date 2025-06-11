@@ -118,12 +118,10 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
             R$ {rendaMinima.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
           </div>
           <div className="text-xs text-white/70 mt-1">
-            {amortizacao === 'SAC' ? (
+            {amortizacao === 'SAC' && (
               <TooltipInfo content="💡 Ao contratar o crédito na tabela PRICE a comprovação de renda necessária é consideravelmente menor">
                 <span className="cursor-help">FICOU ALTO?💡</span>
               </TooltipInfo>
-            ) : (
-              <span>Ficou caro?</span>
             )}
           </div>
         </div>
@@ -213,12 +211,10 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
             R$ {rendaMinima.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
           </div>
           <div className="text-xs text-gray-500 mt-1">
-            {amortizacao === 'SAC' ? (
+            {amortizacao === 'SAC' && (
               <TooltipInfo content="💡 Ao contratar o crédito na tabela PRICE a comprovação de renda necessária é consideravelmente menor">
                 <span className="cursor-help">FICOU ALTO?💡</span>
               </TooltipInfo>
-            ) : (
-              <span>Ficou caro?</span>
             )}
           </div>
         </div>
