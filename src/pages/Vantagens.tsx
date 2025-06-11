@@ -98,9 +98,9 @@ const Vantagens: React.FC = () => {
       <Header />
       <main className="pt-header bg-gray-50">
         {/* Hero Section */}
-        <section className={`${isMobile ? 'py-4' : 'py-6 md:py-12'}`}>
+        <section className={`${isMobile ? 'py-4' : 'py-6 md:py-8'}`}>
           <div className="container mx-auto px-4">
-            <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl lg:text-5xl'} font-bold text-libra-navy text-center mb-2 md:mb-4`}>
+            <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl lg:text-5xl'} font-bold text-libra-navy text-center mb-2 md:mb-3`}>
               Vantagens do Crédito com Garantia
             </h1>
             <p className={`${isMobile ? 'text-base px-2' : 'text-lg md:text-xl'} text-gray-600 max-w-4xl mx-auto text-center`}>
@@ -110,7 +110,7 @@ const Vantagens: React.FC = () => {
         </section>
 
         {/* Grid de Vantagens e Comparativo */}
-        <section className={`${isMobile ? 'py-4' : 'py-6 md:py-12'}`}>
+        <section className={`${isMobile ? 'py-2' : 'py-4 md:py-6'}`}>
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
               {/* Vantagens */}
