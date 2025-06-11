@@ -148,7 +148,7 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
     );
   }
   
-  // Layout Desktop - 3 Cards Distintos
+  // Layout Desktop - 3 Cards Distintos com Mesma Altura
   return (
     <div className="container mx-auto px-4 py-6 max-w-7xl">
       {/* Header */}
@@ -172,125 +172,129 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:items-stretch">
         {/* Card 1: Resultado da Simulação */}
-        <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-          <div className="bg-gradient-to-r from-[#003399] to-[#004080] text-white p-6">
-            <h4 className="text-lg font-bold mb-2 flex items-center gap-2">
-              <Calculator className="w-5 h-5" />
+        <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden flex flex-col h-full">
+          <div className="bg-gradient-to-r from-[#003399] to-[#004080] text-white p-4">
+            <h4 className="text-base font-bold flex items-center gap-2">
+              <Calculator className="w-4 h-4" />
               Resultado da Simulação
             </h4>
           </div>
           
-          <div className="p-6">
-            {amortizacao === 'SAC' && primeiraParcela && ultimaParcela ? (
-              <div className="space-y-4">
-                <div className="text-center p-4 bg-blue-50 rounded-lg">
-                  <div className="text-sm text-gray-600 mb-2">Parcela Inicial (SAC)</div>
-                  <div className="text-2xl font-bold text-[#003399] mb-1">
-                    R$ {primeiraParcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+          <div className="p-4 flex-1 flex flex-col justify-between">
+            <div>
+              {amortizacao === 'SAC' && primeiraParcela && ultimaParcela ? (
+                <div className="space-y-3">
+                  <div className="text-center p-3 bg-blue-50 rounded-lg">
+                    <div className="text-xs text-gray-600 mb-1">Parcela Inicial (SAC)</div>
+                    <div className="text-lg font-bold text-[#003399]">
+                      R$ {primeiraParcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                    </div>
+                  </div>
+                  <div className="text-center p-3 bg-green-50 rounded-lg">
+                    <div className="text-xs text-gray-600 mb-1">Parcela Final</div>
+                    <div className="text-lg font-bold text-green-600">
+                      R$ {ultimaParcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                    </div>
+                  </div>
+                  <div className="text-xs text-gray-500 text-center">
+                    Sistema SAC - Parcelas decrescentes
                   </div>
                 </div>
-                <div className="text-center p-4 bg-green-50 rounded-lg">
-                  <div className="text-sm text-gray-600 mb-2">Parcela Final</div>
-                  <div className="text-2xl font-bold text-green-600 mb-1">
-                    R$ {ultimaParcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+              ) : (
+                <div className="text-center">
+                  <div className="text-xs text-gray-600 mb-2">Parcela Fixa (PRICE)</div>
+                  <div className="text-2xl font-bold text-[#003399] mb-2">
+                    R$ {valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                   </div>
+                  <div className="text-xs text-gray-500">{parcelas} parcelas</div>
                 </div>
-                <div className="text-xs text-gray-500 text-center">
-                  Sistema SAC - Parcelas decrescentes
-                </div>
-              </div>
-            ) : (
-              <div className="text-center">
-                <div className="text-sm text-gray-600 mb-3">Parcela Fixa (PRICE)</div>
-                <div className="text-3xl font-bold text-[#003399] mb-3">
-                  R$ {valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                </div>
-                <div className="text-sm text-gray-500">{parcelas} parcelas</div>
-              </div>
-            )}
+              )}
+            </div>
             
-            <div className="mt-6 grid grid-cols-2 gap-4 text-sm">
+            <div className="mt-4 grid grid-cols-2 gap-3 text-xs">
               <div>
                 <div className="text-gray-500">Empréstimo</div>
-                <div className="font-semibold">R$ {valorEmprestimo.toLocaleString('pt-BR')}</div>
+                <div className="font-semibold text-xs">R$ {valorEmprestimo.toLocaleString('pt-BR')}</div>
               </div>
               <div>
                 <div className="text-gray-500">Garantia</div>
-                <div className="font-semibold">R$ {valorImovel.toLocaleString('pt-BR')}</div>
+                <div className="font-semibold text-xs">R$ {valorImovel.toLocaleString('pt-BR')}</div>
               </div>
               <div>
                 <div className="text-gray-500">Sistema</div>
-                <div className="font-semibold">{amortizacao}</div>
+                <div className="font-semibold text-xs">{amortizacao}</div>
               </div>
               <div>
                 <div className="text-gray-500">Cidade</div>
-                <div className="font-semibold">{cidade}</div>
+                <div className="font-semibold text-xs">{cidade}</div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Card 2: Informações de Renda e Requisitos */}
-        <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-          <div className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white p-6">
-            <h4 className="text-lg font-bold mb-2 flex items-center gap-2">
-              <Users className="w-5 h-5" />
+        <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden flex flex-col h-full">
+          <div className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white p-4">
+            <h4 className="text-base font-bold flex items-center gap-2">
+              <Users className="w-4 h-4" />
               Renda Mínima Familiar
             </h4>
           </div>
           
-          <div className="p-6">
-            <div className="text-center mb-6">
-              <div className="text-3xl font-bold text-yellow-600 mb-2">
-                R$ {rendaMinima.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-              </div>
-              <div className="text-sm text-gray-600 flex items-center justify-center gap-2">
-                Baseado em 3,33x o valor da {amortizacao === 'SAC' ? 'maior' : ''} parcela
-                <TooltipInfo content="Renda familiar podendo ser composta por até 4 pessoas">
-                  <Info className="w-4 h-4 text-gray-400 hover:text-gray-600" />
-                </TooltipInfo>
-              </div>
-            </div>
-            
-            {amortizacao === 'SAC' && (
-              <div className="p-4 bg-yellow-50 rounded-lg border border-yellow-200 mb-6">
-                <div className="flex items-start gap-2 text-sm text-yellow-800">
-                  <TrendingUp className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                  <span>💡 Ao contratar o crédito na tabela PRICE a comprovação de renda necessária é consideravelmente menor</span>
+          <div className="p-4 flex-1 flex flex-col justify-between">
+            <div>
+              <div className="text-center mb-4">
+                <div className="text-2xl font-bold text-yellow-600 mb-1">
+                  R$ {rendaMinima.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                </div>
+                <div className="text-xs text-gray-600 flex items-center justify-center gap-1">
+                  3,33x o valor da {amortizacao === 'SAC' ? 'maior' : ''} parcela
+                  <TooltipInfo content="Renda familiar podendo ser composta por até 4 pessoas">
+                    <Info className="w-3 h-3 text-gray-400 hover:text-gray-600" />
+                  </TooltipInfo>
                 </div>
               </div>
-            )}
+              
+              {amortizacao === 'SAC' && (
+                <div className="p-3 bg-yellow-50 rounded-lg border border-yellow-200 mb-4">
+                  <div className="flex items-start gap-2 text-xs text-yellow-800">
+                    <TrendingUp className="w-3 h-3 mt-0.5 flex-shrink-0" />
+                    <span>💡 Na tabela PRICE a renda necessária é menor</span>
+                  </div>
+                </div>
+              )}
+            </div>
             
-            <div className="space-y-3 text-sm">
+            <div className="space-y-2 text-xs">
               <p className="text-gray-600 leading-relaxed">
-                <strong>Parcelas calculadas</strong> pelo sistema {amortizacao} com taxa de juros de 1,19% a.m. + IPCA.
+                <strong>Parcelas calculadas</strong> pelo sistema {amortizacao} com taxa de 1,19% a.m. + IPCA.
               </p>
               <p className="text-gray-500 text-xs">
-                Taxa pode sofrer alterações conforme análise de crédito. Inclusos custos com avaliação, cartório e impostos.
+                Taxa pode variar conforme análise. Inclusos custos de avaliação, cartório e impostos.
               </p>
             </div>
           </div>
         </div>
 
         {/* Card 3: Formulário de Contato */}
-        <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-          <div className="bg-gradient-to-r from-green-500 to-green-600 text-white p-6">
-            <h4 className="text-lg font-bold mb-2">🎉 Solicite sua Análise</h4>
-            <p className="text-green-100 text-sm">Consultoria gratuita em até 24h</p>
+        <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden flex flex-col h-full">
+          <div className="bg-gradient-to-r from-green-500 to-green-600 text-white p-4">
+            <h4 className="text-base font-bold">🎉 Solicite sua Análise</h4>
+            <p className="text-green-100 text-xs">Consultoria gratuita em até 24h</p>
           </div>
           
-          <div className="p-6">
+          <div className="p-4 flex-1 flex flex-col justify-between">
             <ContactForm 
               simulationResult={resultado}
               compact={true}
-              className="space-y-4"
-              inputClassName="border-gray-300 text-gray-800 text-sm"
-              buttonClassName="bg-[#003399] hover:bg-[#003399]/90 text-white font-bold py-3 text-sm w-full"
+              className="space-y-3 flex-1"
+              inputClassName="border-gray-300 text-gray-800 text-xs h-8"
+              buttonClassName="bg-[#003399] hover:bg-[#003399]/90 text-white font-bold py-2 text-xs w-full"
             />
             
-            <div className="mt-4 text-xs text-gray-500 text-center space-y-1">
+            <div className="mt-3 text-xs text-gray-500 text-center space-y-1">
               <p>🔒 Seus dados estão protegidos</p>
               <p>Nossa equipe entrará em contato em até 24h</p>
             </div>
