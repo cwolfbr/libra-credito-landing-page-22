@@ -40,7 +40,7 @@ const Benefits: React.FC = () => {
   const isMobile = useIsMobile();
   
   return (
-    <section id="benefits" className={`${isMobile ? 'pt-12 pb-8' : 'pt-16 pb-10'} bg-libra-light scroll-mt-[88px]`}>
+    <section id="benefits" className={`${isMobile ? 'pt-6 pb-8' : 'pt-8 pb-10'} bg-libra-light scroll-mt-[88px]`}>
       <div className="container mx-auto px-4">
         <div className="text-center mb-8">
           <p className={`${isMobile ? 'text-sm' : 'text-lg'} text-libra-blue font-semibold uppercase tracking-wider mb-4`}>
