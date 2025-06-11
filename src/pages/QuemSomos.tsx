@@ -56,110 +56,79 @@ const QuemSomos = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="pt-header">
-        {/* Hero Section */}
-        <section className="py-4 md:py-12">
+        {/* Hero Section - Compacto */}
+        <section className="py-2 lg:py-3">
           <div className="container mx-auto px-4">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-libra-navy text-center mb-2 md:mb-4">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-libra-navy text-center mb-1 lg:mb-2">
               Quem Somos
             </h1>
-            <p className="text-base md:text-xl text-gray-600 max-w-4xl mx-auto text-center">
-              A Libra Crédito é uma fintech que nasceu para criar oportunidades de crédito justo, sustentável e equilibrado.
+            <p className="text-sm md:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto text-center leading-tight">
+              Fintech do Grupo Stéfani com 40+ anos criando oportunidades de crédito justo
             </p>
           </div>
         </section>
 
-        {/* Nossa História */}
-        <section className="py-4 md:py-12">
+        {/* História + Valores Combinados - Compacto */}
+        <section className="py-2 lg:py-3">
           <div className="container mx-auto px-4">
-            <h2 className="text-2xl md:text-3xl font-bold text-libra-navy text-center mb-4 md:mb-8">Nossa História</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 items-center">
-              <div className="space-y-4">
-                <p className="text-base md:text-lg text-gray-600">
-                  Somos do <a href="https://www.construtorastefani.com.br/" target="_blank" rel="noopener noreferrer" className="text-libra-blue hover:text-libra-navy transition-colors">Grupo Construtora Stéfani</a> e agregamos em nossos serviços todo o know-how, experiência e solidez adquiridos ao longo de mais de 40 anos de história no mercado imobiliário.
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-start">
+              {/* Nossa História - Lado Esquerdo */}
+              <div className="lg:col-span-5 space-y-2">
+                <h2 className="text-lg lg:text-xl font-bold text-libra-navy mb-2">Nossa História</h2>
+                <p className="text-sm lg:text-base text-gray-600 leading-tight">
+                  Do <a href="https://www.construtorastefani.com.br/" target="_blank" rel="noopener noreferrer" className="text-libra-blue hover:text-libra-navy transition-colors">Grupo Stéfani</a> com 40+ anos no mercado imobiliário. 
+                  <Link to="/vantagens" className="text-libra-blue hover:text-libra-navy transition-colors"> Veja as vantagens</Link> e 
+                  <Link to="/simulacao" className="text-libra-blue hover:text-libra-navy transition-colors"> simule agora</Link>!
                 </p>
-                <p className="text-base md:text-lg text-gray-600">
-                  Clique aqui e entenda as <Link to="/vantagens" className="text-libra-blue hover:text-libra-navy transition-colors">vantagens</Link> que oferecemos para equiLIBRAr a sua vida financeira.
-                </p>
-                <p className="text-base md:text-lg text-gray-600">
-                  Faça uma <Link to="/simulacao" className="text-libra-blue hover:text-libra-navy transition-colors">simulação</Link> e fale com um consultor!
-                </p>
+                <div className="relative mt-2">
+                  <ImageOptimizer
+                    src="/images/media/timelibra.png"
+                    alt="Time Libra Crédito"
+                    className="rounded-lg shadow-lg"
+                    aspectRatio={16/9}
+                  />
+                </div>
               </div>
-              <div className="relative">
-              <ImageOptimizer
-                  src="/images/media/timelibra.png"
-                  alt="Time Libra Crédito"
-                  className="rounded-lg shadow-xl"
-                  aspectRatio={16/9}
-                />
+
+              {/* Nossos Valores - Lado Direito */}
+              <div className="lg:col-span-7">
+                <h2 className="text-lg lg:text-xl font-bold text-libra-navy mb-2">Nossos Valores</h2>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-3">
+                  {valores.slice(0, 4).map((valor, index) => {
+                    const Icon = valor.icon;
+                    return (
+                      <div key={index} className="bg-white p-2 lg:p-3 rounded-lg shadow-sm">
+                        <div className="flex items-center mb-1">
+                          <Icon className="w-4 h-4 lg:w-5 lg:h-5 text-libra-blue mr-2" />
+                          <h3 className="text-sm lg:text-base font-bold text-libra-navy">{valor.title}</h3>
+                        </div>
+                        <p className="text-xs lg:text-sm text-gray-600 leading-tight">{valor.description}</p>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Nossos Valores */}
-        <section className="py-4 md:py-12 bg-gray-50">
+        {/* Missão + CTA Combinados - Compacto */}
+        <section className="py-2 lg:py-4 bg-[#00ccff] text-[#003399]">
           <div className="container mx-auto px-4">
-            <h2 className="text-2xl md:text-3xl font-bold text-libra-navy text-center mb-4 md:mb-8">Nossos Valores</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
-              {valores.map((valor, index) => {
-                const Icon = valor.icon;
-                return (
-                  <div key={index} className="bg-white p-4 md:p-6 rounded-lg shadow-lg">
-                    <div className="flex items-center mb-3 md:mb-4">
-                      <Icon className="w-6 h-6 md:w-8 md:h-8 text-libra-blue mr-2 md:mr-3" />
-                      <h3 className="text-lg md:text-xl font-bold text-libra-navy">{valor.title}</h3>
-                    </div>
-                    <p className="text-sm md:text-base text-gray-600">{valor.description}</p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* Imagem Institucional */}
-        <section className="py-4 md:py-12">
-          <div className="container mx-auto px-4">
-            <div className="relative w-full max-w-3xl mx-auto">
-              <ImageOptimizer
-                src="/images/media/quemsomos.png"
-                alt="Libra Crédito - Quem Somos"
-                className="rounded-xl shadow-lg w-full"
-                aspectRatio={16/9}
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* Nossa Missão */}
-        <section className="py-4 md:py-12">
-          <div className="container mx-auto px-4">
-            <h2 className="text-2xl md:text-3xl font-bold text-libra-navy text-center mb-4 md:mb-8">Nossa Missão</h2>
-            <div className="max-w-3xl mx-auto text-center">
-              <p className="text-base md:text-xl text-gray-600 leading-relaxed">
-                Democratizar o acesso ao crédito no Brasil, oferecendo soluções financeiras justas e transparentes que ajudem nossos clientes a realizarem seus sonhos e alcançarem a liberdade financeira.
+            <div className="text-center">
+              <h2 className="text-lg lg:text-xl font-bold mb-1 lg:mb-2">Nossa Missão</h2>
+              <p className="text-sm lg:text-base mb-3 lg:mb-4 max-w-2xl mx-auto opacity-90 leading-tight">
+                Democratizar o acesso ao crédito com soluções justas e transparentes para liberdade financeira
               </p>
+              <Button 
+                onClick={handleSimular}
+                variant="goldContrast" 
+                size={isMobile ? "default" : "lg"}
+                className={`${isMobile ? 'min-h-[40px] min-w-[160px]' : 'min-h-[40px] lg:min-h-[44px] min-w-[160px] lg:min-w-[180px]'} bg-white text-libra-navy hover:bg-white/90`}
+              >
+                Simular Agora
+              </Button>
             </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className={`${isMobile ? 'py-6' : 'py-8 md:py-12'} bg-[#00ccff] text-[#003399]`}>
-          <div className="container mx-auto px-4 text-center">
-            <h2 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold mb-3 md:mb-4`}>
-              Pronto para começar?
-            </h2>
-            <p className={`${isMobile ? 'text-sm px-2' : 'text-base md:text-lg'} mb-4 md:mb-6 max-w-2xl mx-auto opacity-80`}>
-              Faça uma simulação agora mesmo e descubra quanto você pode obter com seu imóvel como garantia.
-            </p>
-            <Button 
-              onClick={handleSimular}
-              variant="goldContrast" 
-              size={isMobile ? "default" : "xl"}
-              className={`${isMobile ? 'min-h-[40px] min-w-[160px]' : 'min-h-[40px] md:min-h-[48px] min-w-[180px] md:min-w-[200px]'} bg-white text-libra-navy hover:bg-white/90`}
-            >
-              Simular Agora
-            </Button>
           </div>
         </section>
       </main>
