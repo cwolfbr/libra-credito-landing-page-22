@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { SimulationService } from '@/services/simulationService';
+import { useUserJourney } from '@/hooks/useUserJourney';
 
 interface SimulationResultDisplayProps {
   resultado: {
@@ -58,6 +60,7 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
   onNewSimulation
 }) => {
   const isMobile = useIsMobile();
+  const { sessionId } = useUserJourney();
   const { valor, amortizacao, parcelas, primeiraParcela, ultimaParcela } = resultado;
   
   // Estados do formulário
@@ -80,14 +83,71 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
   
   const handleSubmitContato = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!aceiteTermos) return;
     
+    console.log('🔍 Debug dados da simulação:', {
+      resultado,
+      simulationId: resultado.id,
+      sessionId,
+      hasId: !!resultado.id,
+      hasSessionId: !!sessionId
+    });
+    
+    if (!aceiteTermos) {
+      alert('É necessário aceitar a Política de Privacidade para continuar.');
+      return;
+    }
+
+    if (!resultado.id) {
+      console.error('❌ ID da simulação não encontrado:', resultado);
+      alert('Erro: ID da simulação não encontrado. Tente simular novamente.');
+      return;
+    }
+    
+    if (!sessionId) {
+      console.error('❌ Session ID não encontrado');
+      alert('Erro: Session ID não encontrado. Tente recarregar a página.');
+      return;
+    }
+
     setLoading(true);
-    // Implementar envio do formulário
-    setTimeout(() => {
+    
+    try {
+      console.log('📋 Enviando formulário de contato:', {
+        simulationId: resultado.id,
+        sessionId,
+        nome,
+        email,
+        telefone
+      });
+
+      await SimulationService.submitContactForm({
+        simulationId: resultado.id,
+        sessionId,
+        nomeCompleto: nome,
+        email,
+        telefone
+      });
+
+      console.log('✅ Formulário enviado com sucesso');
+      alert('Solicitação enviada com sucesso! Nossa equipe entrará em contato em até 24h.');
+      
+      // Limpar formulário
+      setNome('');
+      setEmail('');
+      setTelefone('');
+      setAceiteTermos(false);
+      
+    } catch (error) {
+      console.error('❌ Erro ao enviar formulário:', error);
+      
+      if (error instanceof Error) {
+        alert(`Erro ao enviar solicitação: ${error.message}`);
+      } else {
+        alert('Erro desconhecido ao enviar solicitação. Tente novamente.');
+      }
+    } finally {
       setLoading(false);
-      alert('Solicitação enviada com sucesso! Nossa equipe entrará em contato.');
-    }, 2000);
+    }
   };
   
   if (isMobile) {
