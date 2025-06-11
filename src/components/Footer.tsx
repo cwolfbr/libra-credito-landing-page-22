@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { ChevronUp, Phone, Mail, Facebook, Instagram, Linkedin, Youtube, ExternalLink } from 'lucide-react';
 
 const Footer: React.FC = () => {
@@ -17,18 +18,20 @@ const Footer: React.FC = () => {
           <div className="text-center md:text-left">
             <div className="mb-6 md:mb-8">
               <h2 className="text-xl md:text-3xl font-bold mb-1 md:mb-2">
-                <span className="text-libra-blue">LIBRA</span> CRÉDITO
+                <span className="text-white">LIBRA</span> CRÉDITO
               </h2>
               <p className="text-sm text-libra-silver">Vem que a gente equiLIBRA</p>
             </div>
 
             <div>
-              <h3 className="font-bold text-base md:text-lg mb-3 md:mb-4">Produtos</h3>
+              <h3 className="font-bold text-base md:text-lg mb-3 md:mb-4">Páginas</h3>
               <ul className="space-y-2 text-sm md:text-base">
-                <li><a href="#" className="text-libra-silver hover:text-white transition-colors">Home Equity</a></li>
-                <li><a href="#" className="text-libra-silver hover:text-white transition-colors">Crédito com garantia de imóvel</a></li>
-                <li><a href="#" className="text-libra-silver hover:text-white transition-colors">Consolidação de dívidas</a></li>
-                <li><a href="#" className="text-libra-silver hover:text-white transition-colors">Capital de giro para empresas</a></li>
+                <li><Link to="/" className="text-libra-silver hover:text-white transition-colors">Início</Link></li>
+                <li><Link to="/simulacao" className="text-libra-silver hover:text-white transition-colors">Simulação</Link></li>
+                <li><Link to="/vantagens" className="text-libra-silver hover:text-white transition-colors">Vantagens</Link></li>
+                <li><Link to="/quem-somos" className="text-libra-silver hover:text-white transition-colors">Quem Somos</Link></li>
+                <li><Link to="/blog" className="text-libra-silver hover:text-white transition-colors">Blog</Link></li>
+                <li><Link to="/parceiros" className="text-libra-silver hover:text-white transition-colors">Parceiros</Link></li>
               </ul>
             </div>
           </div>
