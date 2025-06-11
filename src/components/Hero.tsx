@@ -39,7 +39,7 @@ const Hero: React.FC = () => {
 
   return (
     <section 
-      className="min-h-[100vh] pt-header pb-4 bg-white relative flex flex-col justify-center" 
+      className="min-h-[90vh] pt-header pb-2 bg-white relative flex flex-col justify-center" 
       aria-labelledby="hero-heading"
       role="banner"
     >
@@ -102,7 +102,7 @@ const Hero: React.FC = () => {
         </div>
 
         {/* Botão Saiba Mais */}
-        <div className="flex justify-center mt-6 md:mt-8">
+        <div className="flex justify-center mt-4 md:mt-6">
           <button
             onClick={scrollToBenefits}
             className="text-gray-700 flex flex-col items-center gap-1 opacity-70 hover:opacity-100 transition-opacity"
