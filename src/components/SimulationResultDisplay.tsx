@@ -105,8 +105,14 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
 
         {/* Renda mínima */}
         <div className="bg-white/10 rounded-lg p-3 mb-4 text-center relative">
-          <div className="text-sm mb-1">
+          <div className="text-sm mb-1 flex items-center justify-center gap-1">
             <span>Renda necessária</span>
+            <TooltipInfo content="Renda familiar podendo ser composta por até 4 pessoas">
+              <Users className="w-3 h-3" />
+            </TooltipInfo>
+            <TooltipInfo content="Informações sobre comprovação de renda">
+              <Info className="w-3 h-3" />
+            </TooltipInfo>
           </div>
           <div className="text-lg font-bold">
             R$ {rendaMinima.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
@@ -118,12 +124,8 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
               </TooltipInfo>
             </div>
           )}
-          <div className="flex items-center justify-center gap-1 text-xs text-white/70 mt-1">
-            <Users className="w-3 h-3" />
-            <span>Até 4 pessoas</span>
-            <TooltipInfo content="Renda familiar podendo ser composta por até 4 pessoas">
-              <Info className="w-3 h-3" />
-            </TooltipInfo>
+          <div className="text-xs text-white/70 mt-1">
+            <span>Ficou caro?</span>
           </div>
         </div>
 
@@ -199,8 +201,14 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
 
         {/* Renda mínima */}
         <div className="bg-white rounded-lg p-4 text-center relative">
-          <div className="text-xs text-gray-600 mb-1">
+          <div className="text-xs text-gray-600 mb-1 flex items-center justify-center gap-1">
             <span>Renda necessária</span>
+            <TooltipInfo content="Renda familiar podendo ser composta por até 4 pessoas">
+              <Users className="w-3 h-3" />
+            </TooltipInfo>
+            <TooltipInfo content="Informações sobre comprovação de renda">
+              <Info className="w-3 h-3" />
+            </TooltipInfo>
           </div>
           <div className="text-xl lg:text-2xl font-bold text-[#003399]">
             R$ {rendaMinima.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
@@ -212,12 +220,8 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
               </TooltipInfo>
             </div>
           )}
-          <div className="flex items-center justify-center gap-1 text-xs text-gray-500 mt-1">
-            <Users className="w-3 h-3" />
-            <span>Até 4 pessoas</span>
-            <TooltipInfo content="Renda familiar podendo ser composta por até 4 pessoas">
-              <Info className="w-3 h-3" />
-            </TooltipInfo>
+          <div className="text-xs text-gray-500 mt-1">
+            <span>Ficou caro?</span>
           </div>
         </div>
       </div>
