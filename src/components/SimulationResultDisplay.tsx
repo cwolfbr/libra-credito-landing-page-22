@@ -193,16 +193,17 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
         </div>
 
         {/* Renda mínima */}
-        <div className="bg-white/10 rounded-lg p-3">
-          <div className="flex items-center gap-2 text-sm">
-            <Users className="w-4 h-4" />
-            <span>Renda familiar mínima:</span>
+        <div className="bg-white rounded-lg p-4 text-center">
+          <div className="text-xs text-gray-600 mb-1">Renda Familiar Mínima</div>
+          <div className="text-xl lg:text-2xl font-bold text-[#003399]">
+            R$ {rendaMinima.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+          </div>
+          <div className="flex items-center justify-center gap-1 text-xs text-gray-500 mt-1">
+            <Users className="w-3 h-3" />
+            <span>Até 4 pessoas</span>
             <TooltipInfo content="Renda familiar podendo ser composta por até 4 pessoas">
               <Info className="w-3 h-3" />
             </TooltipInfo>
-          </div>
-          <div className="text-lg font-bold mt-1">
-            R$ {rendaMinima.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
           </div>
         </div>
       </div>
