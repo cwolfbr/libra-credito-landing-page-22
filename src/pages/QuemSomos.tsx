@@ -83,6 +83,14 @@ const QuemSomos = () => {
                 <p className="text-base md:text-lg text-gray-600">
                   Faça uma <Link to="/simulacao" className="text-libra-blue hover:text-libra-navy transition-colors">simulação</Link> e fale com um consultor!
                 </p>
+                
+                {/* Nossa Missão integrada */}
+                <div className="mt-4 pt-4 border-t border-gray-200">
+                  <h3 className="text-lg md:text-xl font-bold text-libra-navy mb-2">Nossa Missão</h3>
+                  <p className="text-sm md:text-base text-gray-600 leading-relaxed">
+                    Democratizar o acesso ao crédito no Brasil, oferecendo soluções financeiras justas e transparentes que ajudem nossos clientes a realizarem seus sonhos e alcançarem a liberdade financeira.
+                  </p>
+                </div>
               </div>
               <div className="relative">
                 <ImageOptimizer
@@ -131,17 +139,6 @@ const QuemSomos = () => {
           </div>
         </section>
 
-        {/* Nossa Missão - Otimizada */}
-        <section className="py-3 lg:py-4">
-          <div className="container mx-auto px-4">
-            <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-libra-navy text-center mb-3 lg:mb-4">Nossa Missão</h2>
-            <div className="max-w-3xl mx-auto text-center">
-              <p className="text-base md:text-xl text-gray-600 leading-relaxed">
-                Democratizar o acesso ao crédito no Brasil, oferecendo soluções financeiras justas e transparentes que ajudem nossos clientes a realizarem seus sonhos e alcançarem a liberdade financeira.
-              </p>
-            </div>
-          </div>
-        </section>
 
         {/* CTA Section - Otimizada */}
         <section className="py-3 lg:py-4 bg-[#00ccff] text-[#003399]">
