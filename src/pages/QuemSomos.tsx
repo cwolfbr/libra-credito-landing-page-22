@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ImageOptimizer from '@/components/ImageOptimizer';
-import { Button } from '@/components/ui/button';
+import ModernCTA from '@/components/ModernCTA';
 import { Users, Target, Award, Shield, TrendingUp } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -140,25 +140,11 @@ const QuemSomos = () => {
         </section>
 
 
-        {/* CTA Section */}
-        <section className={`${isMobile ? 'py-8' : 'py-12'} bg-[#00ccff] text-[#003399]`}>
-          <div className="container mx-auto px-4 text-center">
-            <h2 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold mb-3`}>
-              Pronto para começar?
-            </h2>
-            <p className={`${isMobile ? 'text-sm px-2' : 'text-base'} mb-4 max-w-2xl mx-auto opacity-80`}>
-              Faça uma simulação e descubra quanto você pode obter com seu imóvel como garantia.
-            </p>
-            <Button 
-              onClick={handleSimular}
-              variant="goldContrast" 
-              size={isMobile ? "default" : "lg"}
-              className={`${isMobile ? 'min-h-[40px] min-w-[160px]' : 'min-h-[48px] min-w-[200px]'} bg-white text-libra-navy hover:bg-white/90`}
-            >
-              Simular Agora
-            </Button>
-          </div>
-        </section>
+        <ModernCTA 
+          onSimulate={handleSimular}
+          title="Conhece nossa história? Faça parte dela!"
+          subtitle="Junte-se aos milhares de clientes que já transformaram suas vidas conosco"
+        />
       </main>
       <Footer />
     </div>
