@@ -57,7 +57,7 @@ export interface ContactFormInput {
   nomeCompleto: string;
   email: string;
   telefone: string;
-  tipoImovel?: 'proprio' | 'terceiro';
+  imovelProprio: 'proprio' | 'terceiro';
   observacoes?: string;
 }
 
@@ -157,6 +157,7 @@ export class SimulationService {
           nome_completo: input.nomeCompleto,
           email: input.email,
           telefone: this.formatPhoneNumber(input.telefone),
+          imovel_proprio: input.imovelProprio,
           status: 'interessado'
         })
         .eq('id', input.simulationId)

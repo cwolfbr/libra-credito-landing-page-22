@@ -34,7 +34,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [telefone, setTelefone] = useState('');
-  const [tipoImovel, setTipoImovel] = useState<'proprio' | 'terceiro' | ''>('');
+  const [imovelProprio, setImovelProprio] = useState<'proprio' | 'terceiro' | ''>('');
   const [aceitePrivacidade, setAceitePrivacidade] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -76,6 +76,11 @@ const ContactForm: React.FC<ContactFormProps> = ({
       return;
     }
 
+    if (!imovelProprio) {
+      alert('Por favor, informe se o imóvel é próprio ou de terceiro.');
+      return;
+    }
+
     if (!simulationResult.id) {
       console.error('❌ ID da simulação não encontrado:', simulationResult);
       alert('Erro: ID da simulação não encontrado. Tente simular novamente.');
@@ -97,7 +102,8 @@ const ContactForm: React.FC<ContactFormProps> = ({
         nome,
         email,
         telefone,
-        tipoImovel
+        imovelProprio,
+        imovelProprioTexto: imovelProprio === 'proprio' ? 'Imóvel Próprio' : 'Imóvel de Terceiro'
       });
       
       // Usar o serviço integrado
@@ -107,7 +113,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
         nomeCompleto: nome,
         email,
         telefone,
-        tipoImovel,
+        imovelProprio,
         observacoes: `Simulação: ${simulationResult.amortizacao} - ${simulationResult.parcelas}x - R$ ${simulationResult.valor.toLocaleString('pt-BR')}`
       });
       
@@ -117,7 +123,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
       setNome('');
       setEmail('');
       setTelefone('');
-      setTipoImovel('');
+      setImovelProprio('');
       setAceitePrivacidade(false);
       
     } catch (error) {
@@ -184,6 +190,38 @@ const ContactForm: React.FC<ContactFormProps> = ({
             aria-required="true"
           />
         </div>
+        
+        <fieldset className="space-y-2">
+          <legend className="text-xs text-white/90">
+            O imóvel que será utilizado como garantia é: *
+          </legend>
+          <div className="flex gap-3">
+            <label className="flex items-center gap-1 text-xs text-white/90">
+              <input 
+                type="radio" 
+                name="imovelProprioCompact" 
+                value="proprio" 
+                checked={imovelProprio === 'proprio'}
+                onChange={(e) => setImovelProprio(e.target.value as 'proprio')}
+                className="text-white"
+                required
+              />
+              Imóvel Próprio
+            </label>
+            <label className="flex items-center gap-1 text-xs text-white/90">
+              <input 
+                type="radio" 
+                name="imovelProprioCompact" 
+                value="terceiro" 
+                checked={imovelProprio === 'terceiro'}
+                onChange={(e) => setImovelProprio(e.target.value as 'terceiro')}
+                className="text-white"
+                required
+              />
+              Imóvel de terceiro
+            </label>
+          </div>
+        </fieldset>
 
         <div className="flex items-start gap-2">
           <Checkbox
@@ -308,32 +346,37 @@ const ContactForm: React.FC<ContactFormProps> = ({
 
             <fieldset className="space-y-3">
               <legend id="tipo-imovel-legend" className="text-sm font-medium text-libra-navy">
-                O imóvel em garantia é:
+                O imóvel que será utilizado como garantia é: *
+                <div className="text-xs text-gray-500 font-normal mt-1" title="A matrícula/escritura do imóvel está no seu nome próprio ou de um terceiro?">
+                  (A matrícula/escritura do imóvel está no seu nome próprio ou de um terceiro?)
+                </div>
               </legend>
               <div className="flex gap-4" role="radiogroup" aria-labelledby="tipo-imovel-legend">
                 <label className="flex items-center gap-2 text-sm">
                   <input 
                     type="radio" 
-                    name="tipoImovel" 
+                    name="imovelProprio" 
                     value="proprio" 
-                    checked={tipoImovel === 'proprio'}
-                    onChange={(e) => setTipoImovel(e.target.value as 'proprio')}
+                    checked={imovelProprio === 'proprio'}
+                    onChange={(e) => setImovelProprio(e.target.value as 'proprio')}
                     className="text-libra-blue"
+                    required
                     aria-describedby="tipo-imovel-help"
                   />
-                  Próprio
+                  Imóvel Próprio
                 </label>
                 <label className="flex items-center gap-2 text-sm">
                   <input 
                     type="radio" 
-                    name="tipoImovel" 
+                    name="imovelProprio" 
                     value="terceiro" 
-                    checked={tipoImovel === 'terceiro'}
-                    onChange={(e) => setTipoImovel(e.target.value as 'terceiro')}
+                    checked={imovelProprio === 'terceiro'}
+                    onChange={(e) => setImovelProprio(e.target.value as 'terceiro')}
                     className="text-libra-blue"
+                    required
                     aria-describedby="tipo-imovel-help"
                   />
-                  De terceiro
+                  Imóvel de terceiro
                 </label>
               </div>
               <div id="tipo-imovel-help" className="sr-only">

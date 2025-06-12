@@ -38,6 +38,7 @@ export interface SimulacaoData {
   tipo_amortizacao: string;
   parcela_inicial?: number;
   parcela_final?: number;
+  imovel_proprio?: 'proprio' | 'terceiro';
   ip_address?: string;
   user_agent?: string;
   created_at?: string;
