@@ -97,11 +97,12 @@ const Footer: React.FC = () => {
         {/* Informações Legais */}
         <div className="text-center border-t border-libra-blue/20 pt-6 md:pt-8">
           <p className="text-sm md:text-base">&copy; {new Date().getFullYear()} Libra Crédito. Todos os direitos reservados.</p>
-          <p className="mt-2 text-sm md:text-base">
+          <p className="mt-2 text-sm md:text-base text-libra-silver">
             CNPJ: 34.308.576/0001-32 | Rua Eliseu Guilherme, 879, sala 01 – Jardim Sumaré, Ribeirão Preto – SP, 14025-020
           </p>
-          <div className="mt-4 md:mt-6 px-0 md:px-4 text-[10px] md:text-xs leading-relaxed text-libra-silver/70">
-            <p>A Libra Crédito é uma plataforma digital que descomplica o processo de contratação de empréstimos com garantia de imóvel. Essas operações são realizadas através de Instituições Financeiras parceiras, autorizadas pelo Banco Central do Brasil, que instrumentalizam e emitem as cédulas de crédito bancário. Informações complementares referentes ao Empréstimo com Garantia de Imóvel: mínimo de 36 meses e máximo de 180 meses | Exemplo: Empréstimo de R$ 75.000,00 para pagar em 15 anos (180 meses) – Prestação inicial de R$ 1.184,26, com uma taxa de juros de 1,19% ao mês + IPCA | Sistema de Amortização Tabela Price. CET de 15,86% ao ano. Libra Crédito Soluções Financeiras Ltda. – CNPJ 34.308.576/0001-32 | Rua Eliseu Guilherme, 879, sala 01 – Jardim Sumaré, Ribeirão Preto – SP, 14025-020.</p>
+          <div className="mt-4 md:mt-6 px-0 md:px-4 text-xs md:text-sm leading-relaxed text-libra-silver/70 space-y-2">
+            <p>A Libra Crédito é uma plataforma digital que descomplica o processo de contratação de empréstimos com garantia de imóvel. Essas operações são realizadas através de Instituições Financeiras parceiras, autorizadas pelo Banco Central do Brasil.</p>
+            <p><strong>Informações do produto:</strong> Prazo de 36 a 180 meses | Taxa a partir de 1,19% ao mês + IPCA | Sistema Price ou SAC | Exemplo: R$ 75.000 em 180 meses - Prestação inicial de R$ 1.184,26 | CET de 15,86% ao ano.</p>
           </div>
         </div>
       </div>

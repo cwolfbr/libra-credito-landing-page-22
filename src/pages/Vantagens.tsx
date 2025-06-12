@@ -54,8 +54,8 @@ const Vantagens: React.FC = () => {
     {
       icon: BadgeCheck,
       title: "Credibilidade",
-      description: "40 anos de mercado",
-      benefit: <a href="https://www.construtorastefani.com.br/" target="_blank" rel="noopener noreferrer" className="text-libra-blue hover:underline">Grupo Stéfani</a>
+      description: "Grupo Stéfani - 40+ anos",
+      benefit: <a href="https://www.construtorastefani.com.br/" target="_blank" rel="noopener noreferrer" className="text-libra-blue hover:underline">Tradição e confiança</a>
     }
   ];
 
@@ -97,38 +97,38 @@ const Vantagens: React.FC = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="pt-header bg-gray-50">
-        {/* Hero Section - Compacto para Desktop */}
-        <section className={`${isMobile ? 'py-4' : 'py-3 lg:py-4'}`}>
+        {/* Hero Section - Otimizado */}
+        <section className={`${isMobile ? 'py-6' : 'py-8'}`}>
           <div className="container mx-auto px-4">
-            <h1 className={`${isMobile ? 'text-2xl' : 'text-2xl md:text-3xl lg:text-4xl'} font-bold text-libra-navy text-center mb-1 md:mb-2`}>
+            <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy text-center mb-3`}>
               Vantagens do Crédito com Garantia
             </h1>
-            <p className={`${isMobile ? 'text-base px-2' : 'text-base md:text-lg'} text-gray-600 max-w-3xl mx-auto text-center leading-tight`}>
+            <p className={`${isMobile ? 'text-base px-2' : 'text-lg'} text-gray-600 max-w-3xl mx-auto text-center`}>
               As melhores condições do mercado para realizar seus projetos
             </p>
           </div>
         </section>
 
-        {/* Grid de Vantagens e Comparativo - Compacto */}
-        <section className={`${isMobile ? 'py-2' : 'py-2 lg:py-3'}`}>
+        {/* Grid de Vantagens e Comparativo */}
+        <section className={`${isMobile ? 'py-4' : 'py-6'}`}>
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6">
               {/* Vantagens */}
               <div className="lg:col-span-5">
-                <div className={`grid grid-cols-2 sm:grid-cols-2 ${isMobile ? 'gap-2' : 'gap-2 lg:gap-3'}`}>
+                <div className={`grid grid-cols-2 sm:grid-cols-2 ${isMobile ? 'gap-3' : 'gap-4'}`}>
                   {vantagens.map((vantagem, index) => {
                     const Icon = vantagem.icon;
                     return (
-                      <div key={index} className={`bg-white ${isMobile ? 'p-2' : 'p-2 lg:p-3'} rounded-lg shadow-sm hover:shadow-md transition-shadow`}>
-                        <div className={`flex items-center ${isMobile ? 'mb-1' : 'mb-1 lg:mb-2'}`}>
-                          <div className={`bg-libra-blue/10 ${isMobile ? 'p-1' : 'p-1 lg:p-1.5'} rounded-lg`}>
-                            <Icon className={`${isMobile ? 'w-3 h-3' : 'w-4 h-4 lg:w-5 lg:h-5'} text-libra-blue`} />
+                      <div key={index} className={`bg-white ${isMobile ? 'p-3' : 'p-4'} rounded-lg shadow-sm hover:shadow-md transition-shadow`}>
+                        <div className={`flex items-center ${isMobile ? 'mb-2' : 'mb-3'}`}>
+                          <div className={`bg-libra-blue/10 ${isMobile ? 'p-1.5' : 'p-2'} rounded-lg`}>
+                            <Icon className={`${isMobile ? 'w-4 h-4' : 'w-5 h-5'} text-libra-blue`} />
                           </div>
-                          <h3 className={`${isMobile ? 'text-xs font-bold' : 'text-sm lg:text-base font-bold'} text-libra-navy ml-2`}>{vantagem.title}</h3>
+                          <h3 className={`${isMobile ? 'text-sm' : 'text-base'} font-bold text-libra-navy ml-2`}>{vantagem.title}</h3>
                         </div>
-                        <p className={`${isMobile ? 'text-xs' : 'text-xs lg:text-sm'} text-gray-600 ${isMobile ? 'mb-1' : 'mb-1 lg:mb-1.5'}`}>{vantagem.description}</p>
-                        <div className={`bg-libra-light rounded-lg ${isMobile ? 'p-1' : 'p-1 lg:p-1.5'}`}>
-                          <p className={`text-libra-navy font-medium ${isMobile ? 'text-xs' : 'text-xs lg:text-sm'}`}>{vantagem.benefit}</p>
+                        <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-gray-600 ${isMobile ? 'mb-2' : 'mb-3'}`}>{vantagem.description}</p>
+                        <div className={`bg-libra-light rounded-lg ${isMobile ? 'p-2' : 'p-2'}`}>
+                          <p className={`text-libra-navy font-medium ${isMobile ? 'text-xs' : 'text-sm'}`}>{vantagem.benefit}</p>
                         </div>
                       </div>
                     );
@@ -136,25 +136,25 @@ const Vantagens: React.FC = () => {
                 </div>
               </div>
 
-              {/* Comparativo de Taxas - Compacto */}
+              {/* Comparativo de Taxas */}
               <div className="lg:col-span-7">
-                <div className={`bg-white rounded-lg shadow-lg ${isMobile ? 'p-3' : 'p-3 lg:p-5'}`}>
-                  <h2 className={`${isMobile ? 'text-lg' : 'text-lg lg:text-xl'} font-bold text-libra-navy mb-1 lg:mb-2`}>Comparativo de Taxas de Juros</h2>
-                  <p className={`${isMobile ? 'text-xs' : 'text-xs lg:text-sm'} text-gray-500 ${isMobile ? 'mb-4' : 'mb-3 lg:mb-4'}`}>Fonte: Dados abertos do BACEN - Janeiro 2025</p>
-                  <div className={`${isMobile ? 'space-y-3' : 'space-y-2 lg:space-y-3'}`}>
+                <div className={`bg-white rounded-lg shadow-lg ${isMobile ? 'p-4' : 'p-6'}`}>
+                  <h2 className={`${isMobile ? 'text-lg' : 'text-xl'} font-bold text-libra-navy mb-2`}>Comparativo de Taxas de Juros</h2>
+                  <p className={`${isMobile ? 'text-sm' : 'text-sm'} text-gray-500 ${isMobile ? 'mb-4' : 'mb-4'}`}>Fonte: Dados abertos do BACEN - Janeiro 2025</p>
+                  <div className={`${isMobile ? 'space-y-3' : 'space-y-3'}`}>
                     {taxasJuros.map((item, index) => (
-                      <div key={index} className={`${isMobile ? 'space-y-1' : 'space-y-1 lg:space-y-1.5'}`}>
+                      <div key={index} className={`${isMobile ? 'space-y-2' : 'space-y-2'}`}>
                         <div className="flex justify-between items-center">
-                          <span className={`font-medium ${isMobile ? 'text-xs' : 'text-sm lg:text-base'} ${item.destaque ? 'text-libra-navy font-bold' : 'text-gray-700'}`}>
+                          <span className={`font-medium ${isMobile ? 'text-sm' : 'text-base'} ${item.destaque ? 'text-libra-navy font-bold' : 'text-gray-700'}`}>
                             {item.nome}
                           </span>
-                          <span className={`font-bold ${isMobile ? 'text-xs' : 'text-sm lg:text-base'} ${item.destaque ? 'text-libra-navy' : 'text-gray-700'}`}>
+                          <span className={`font-bold ${isMobile ? 'text-sm' : 'text-base'} ${item.destaque ? 'text-libra-navy' : 'text-gray-700'}`}>
                             {item.taxa.toFixed(2)}% a.m.
                           </span>
                         </div>
                         <Progress 
                           value={(item.taxa / maxTaxa) * 100} 
-                          className={`${isMobile ? 'h-2' : 'h-2 lg:h-3'} rounded-full bg-gray-100 [&>div]:transition-all ${
+                          className={`${isMobile ? 'h-2' : 'h-3'} rounded-full bg-gray-100 [&>div]:transition-all ${
                             item.destaque 
                               ? '[&>div]:bg-libra-navy' 
                               : '[&>div]:bg-red-400/70'
@@ -169,20 +169,20 @@ const Vantagens: React.FC = () => {
           </div>
         </section>
 
-        {/* CTA Section - Compacto */}
-        <section className={`${isMobile ? 'py-6' : 'py-4 lg:py-6'} bg-[#00ccff] text-[#003399]`}>
+        {/* CTA Section */}
+        <section className={`${isMobile ? 'py-8' : 'py-12'} bg-[#00ccff] text-[#003399]`}>
           <div className="container mx-auto px-4 text-center">
-            <h2 className={`${isMobile ? 'text-xl' : 'text-xl lg:text-2xl'} font-bold mb-2 lg:mb-3`}>
+            <h2 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold mb-3`}>
               Pronto para começar?
             </h2>
-            <p className={`${isMobile ? 'text-sm px-2' : 'text-sm lg:text-base'} mb-3 lg:mb-4 max-w-xl mx-auto opacity-80`}>
+            <p className={`${isMobile ? 'text-sm px-2' : 'text-base'} mb-4 max-w-xl mx-auto opacity-80`}>
               Simule agora e descubra quanto você pode obter
             </p>
             <Button 
               onClick={handleSimular}
               variant="goldContrast" 
               size={isMobile ? "default" : "lg"}
-              className={`${isMobile ? 'min-h-[40px] min-w-[160px]' : 'min-h-[40px] lg:min-h-[44px] min-w-[160px] lg:min-w-[180px]'} bg-white text-libra-navy hover:bg-white/90`}
+              className={`${isMobile ? 'min-h-[40px] min-w-[160px]' : 'min-h-[48px] min-w-[200px]'} bg-white text-libra-navy hover:bg-white/90`}
             >
               Simular Agora
             </Button>

@@ -142,7 +142,7 @@ const Blog = () => {
                 <Button
                   key={category.id}
                   variant="outline"
-                  className={`h-auto p-4 flex flex-col items-center gap-2 hover:bg-libra-blue/5 ${
+                  className={`h-auto ${isMobile ? 'p-6' : 'p-4'} flex flex-col items-center gap-2 hover:bg-libra-blue/5 ${
                     selectedCategory === category.id ? 'border-libra-blue text-libra-blue' : ''
                   }`}
                   onClick={() => setSelectedCategory(
@@ -150,8 +150,8 @@ const Blog = () => {
                   )}
                 >
                   <Icon className="w-6 h-6" />
-                  <span className="text-sm font-semibold text-center">{category.name}</span>
-                  <p className="text-xs text-gray-600 text-center hidden lg:block">{category.description}</p>
+                  <span className={`${isMobile ? 'text-base' : 'text-sm'} font-semibold text-center`}>{category.name}</span>
+                  <p className={`${isMobile ? 'text-sm' : 'text-xs'} text-gray-600 text-center hidden lg:block`}>{category.description}</p>
                 </Button>
               );
             })}
@@ -219,19 +219,19 @@ const Blog = () => {
         </div>
 
         {/* CTA Section */}
-        <section className={`${isMobile ? 'py-6' : 'py-8 md:py-12'} bg-[#00ccff] text-[#003399]`}>
+        <section className={`${isMobile ? 'py-8' : 'py-12'} bg-[#00ccff] text-[#003399]`}>
           <div className="container mx-auto px-4 text-center">
-            <h2 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold mb-3 md:mb-4`}>
+            <h2 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold mb-3`}>
               Pronto para começar?
             </h2>
-            <p className={`${isMobile ? 'text-sm px-2' : 'text-base md:text-lg'} mb-4 md:mb-6 max-w-2xl mx-auto opacity-80`}>
-              Faça uma simulação agora mesmo e descubra quanto você pode obter com seu imóvel como garantia.
+            <p className={`${isMobile ? 'text-sm px-2' : 'text-base'} mb-4 max-w-2xl mx-auto opacity-80`}>
+              Faça uma simulação e descubra quanto você pode obter com seu imóvel como garantia.
             </p>
             <Button 
               onClick={handleSimular}
               variant="goldContrast" 
-              size={isMobile ? "default" : "xl"}
-              className={`${isMobile ? 'min-h-[40px] min-w-[160px]' : 'min-h-[40px] md:min-h-[48px] min-w-[180px] md:min-w-[200px]'} bg-white text-libra-navy hover:bg-white/90`}
+              size={isMobile ? "default" : "lg"}
+              className={`${isMobile ? 'min-h-[40px] min-w-[160px]' : 'min-h-[48px] min-w-[200px]'} bg-white text-libra-navy hover:bg-white/90`}
             >
               Simular Agora
             </Button>
