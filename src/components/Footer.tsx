@@ -41,20 +41,16 @@ const Footer: React.FC = () => {
             <h3 className="text-xl font-bold mb-6 text-[#003399]">Entre em Contato</h3>
             <div className="space-y-4">
               <div className="flex items-center gap-3 justify-center md:justify-start">
-                <div className="bg-[#003399] rounded-full p-2 flex-shrink-0">
-                  <Phone className="w-5 h-5 text-white" />
-                </div>
-                <div className="text-left">
+                <Phone className="w-5 h-5 text-[#003399]" />
+                <div>
                   <p className="text-[#003399] font-medium">16 99636 0424</p>
                   <p className="text-gray-600 text-sm">Segunda a sexta, 9h às 18h</p>
                 </div>
               </div>
               
               <div className="flex items-center gap-3 justify-center md:justify-start">
-                <div className="bg-[#003399] rounded-full p-2 flex-shrink-0">
-                  <Mail className="w-5 h-5 text-white" />
-                </div>
-                <div className="text-left">
+                <Mail className="w-5 h-5 text-[#003399]" />
+                <div>
                   <p className="text-[#003399] font-medium">contato@libracredito.com.br</p>
                   <p className="text-gray-600 text-sm">Resposta em até 24h úteis</p>
                 </div>

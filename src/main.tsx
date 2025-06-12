@@ -1,10 +1,19 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
+import { createRoot } from 'react-dom/client';
+import App from './App.tsx';
+import './index.css';
 
-// Função para verificar necessidades de acessibilidade
-const setupAccessibility = () => {
+/**
+ * Ponto de entrada da aplicação React.
+ * Responsável por inicializar a árvore de componentes e aplicar
+ * pequenas melhorias de acessibilidade antes do primeiro render.
+ */
+
+/**
+ * Insere elementos de acessibilidade básicos na página
+ * e define o idioma padrão do documento.
+ */
+const setupAccessibility = (): void => {
   // Adicionar Skip Link para navegação por teclado
   const skipLink = document.createElement('a');
   skipLink.href = '#main-content';
@@ -16,8 +25,10 @@ const setupAccessibility = () => {
   document.documentElement.lang = 'pt-BR';
 };
 
-// Renderização rápida
-const renderApp = () => {
+/**
+ * Monta a aplicação React dentro do elemento #root.
+ */
+const renderApp = (): void => {
   setupAccessibility();
   
   const root = document.getElementById("root");
