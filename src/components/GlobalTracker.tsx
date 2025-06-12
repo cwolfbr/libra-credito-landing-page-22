@@ -19,9 +19,9 @@ const GlobalTracker: React.FC = () => {
   const { sessionId, isTracking, trackPageVisit } = useUserJourney();
   const location = useLocation();
 
-  // Log do tracking para debug
+  // Log do tracking para debug (apenas desenvolvimento)
   useEffect(() => {
-    if (isTracking && sessionId) {
+    if (isTracking && sessionId && process.env.NODE_ENV === 'development') {
       console.log('🎯 Tracking ativo:', {
         sessionId,
         currentPage: location.pathname,
@@ -44,7 +44,7 @@ const GlobalTracker: React.FC = () => {
     };
 
     const eventType = pageEvents[location.pathname];
-    if (eventType) {
+    if (eventType && process.env.NODE_ENV === 'development') {
       console.log('📊 Evento de página:', {
         event: eventType,
         page: location.pathname,

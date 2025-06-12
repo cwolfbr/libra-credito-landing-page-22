@@ -145,13 +145,18 @@ export function useUserJourney(): UserJourneyHook {
       
       try {
         existingJourney = await supabaseApi.getUserJourney(sessionId);
-      } catch (getError) {
-        console.warn('Erro ao buscar jornada existente (tabela pode não existir):', getError);
-        existingJourney = null;
+      } catch (getError: any) {
+        // Log silencioso para evitar poluição do console
+        if (process.env.NODE_ENV === 'development') {
+          console.warn('User journey tracking disabled - table may not exist:', getError?.message);
+        }
+        // Desabilitar tracking silenciosamente se tabela não existir
+        setIsTracking(false);
+        return;
       }
       
       if (!existingJourney) {
-        // Tentar criar nova jornada
+        // Tentar criar nova jornada apenas se a consulta anterior funcionou
         try {
           const utms = extractUTMParams();
           const deviceInfo = getDeviceInfo();
@@ -172,10 +177,14 @@ export function useUserJourney(): UserJourneyHook {
           };
           
           existingJourney = await supabaseApi.createUserJourney(newJourney);
-          console.log('Nova jornada criada:', existingJourney);
+          if (process.env.NODE_ENV === 'development') {
+            console.log('Nova jornada criada:', existingJourney);
+          }
         } catch (createError) {
-          console.warn('Erro ao criar jornada (continuando sem tracking):', createError);
-          // Continuar sem tracking se Supabase falhar
+          // Desabilitar tracking silenciosamente em caso de erro
+          if (process.env.NODE_ENV === 'development') {
+            console.warn('User journey tracking disabled:', createError);
+          }
           setIsTracking(false);
           return;
         }
@@ -185,7 +194,10 @@ export function useUserJourney(): UserJourneyHook {
       setIsTracking(true);
       
     } catch (error) {
-      console.error('Erro geral ao inicializar jornada:', error);
+      // Log apenas em desenvolvimento
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('User journey initialization failed:', error);
+      }
       setIsTracking(false);
     }
   }, []);
@@ -212,12 +224,18 @@ export function useUserJourney(): UserJourneyHook {
         time_on_site: Math.floor((currentTime - sessionStartTime.current) / 1000)
       };
       
-      // Atualizar no Supabase (debounced)
+      // Atualizar no Supabase (debounced) apenas se tracking estiver ativo
       setTimeout(() => {
-        supabaseApi.updateUserJourney(sessionId, {
-          pages_visited: updatedJourney.pages_visited,
-          time_on_site: updatedJourney.time_on_site
-        }).catch(console.error);
+        if (isTracking) {
+          supabaseApi.updateUserJourney(sessionId, {
+            pages_visited: updatedJourney.pages_visited,
+            time_on_site: updatedJourney.time_on_site
+          }).catch((error) => {
+            if (process.env.NODE_ENV === 'development') {
+              console.warn('Failed to update user journey:', error);
+            }
+          });
+        }
       }, 1000);
       
       return updatedJourney;
@@ -247,10 +265,16 @@ export function useUserJourney(): UserJourneyHook {
         pages_visited: [...(prev.pages_visited || []), simulationEvent]
       };
       
-      // Atualizar no Supabase
-      supabaseApi.updateUserJourney(sessionId, {
-        pages_visited: updatedJourney.pages_visited
-      }).catch(console.error);
+      // Atualizar no Supabase apenas se tracking estiver ativo
+      if (isTracking) {
+        supabaseApi.updateUserJourney(sessionId, {
+          pages_visited: updatedJourney.pages_visited
+        }).catch((error) => {
+          if (process.env.NODE_ENV === 'development') {
+            console.warn('Failed to track simulation:', error);
+          }
+        });
+      }
       
       return updatedJourney;
     });
@@ -263,9 +287,15 @@ export function useUserJourney(): UserJourneyHook {
     const currentTime = Date.now();
     const timeOnSite = Math.floor((currentTime - sessionStartTime.current) / 1000);
     
-    supabaseApi.updateUserJourney(sessionId, {
-      time_on_site: timeOnSite
-    }).catch(console.error);
+    if (isTracking) {
+      supabaseApi.updateUserJourney(sessionId, {
+        time_on_site: timeOnSite
+      }).catch((error) => {
+        if (process.env.NODE_ENV === 'development') {
+          console.warn('Failed to update time on site:', error);
+        }
+      });
+    }
   }, [sessionId, isTracking]);
   
   // Atualizar tempo a cada 30 segundos
