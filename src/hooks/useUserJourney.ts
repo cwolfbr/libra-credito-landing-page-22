@@ -146,13 +146,11 @@ export function useUserJourney(): UserJourneyHook {
       try {
         existingJourney = await supabaseApi.getUserJourney(sessionId);
       } catch (getError: any) {
-        // Log silencioso para evitar poluição do console
+        // Apenas log em desenvolvimento, não desabilitar o tracking ainda
         if (process.env.NODE_ENV === 'development') {
-          console.warn('User journey tracking disabled - table may not exist:', getError?.message);
+          console.warn('Could not fetch existing journey:', getError?.message);
         }
-        // Desabilitar tracking silenciosamente se tabela não existir
-        setIsTracking(false);
-        return;
+        existingJourney = null; // Continuar para tentar criar nova jornada
       }
       
       if (!existingJourney) {
@@ -164,11 +162,11 @@ export function useUserJourney(): UserJourneyHook {
           
           const newJourney: UserJourneyData = {
             session_id: sessionId,
-            utm_source: utms.utm_source,
-            utm_medium: utms.utm_medium,
-            utm_campaign: utms.utm_campaign,
-            utm_term: utms.utm_term,
-            utm_content: utms.utm_content,
+            utm_source: utms.utm_source || null,
+            utm_medium: utms.utm_medium || null,
+            utm_campaign: utms.utm_campaign || null,
+            utm_term: utms.utm_term || null,
+            utm_content: utms.utm_content || null,
             referrer: document.referrer || 'direct',
             landing_page: window.location.href,
             pages_visited: [],
@@ -226,11 +224,18 @@ export function useUserJourney(): UserJourneyHook {
       
       // Atualizar no Supabase (debounced) apenas se tracking estiver ativo
       setTimeout(() => {
-        if (isTracking) {
-          supabaseApi.updateUserJourney(sessionId, {
-            pages_visited: updatedJourney.pages_visited,
-            time_on_site: updatedJourney.time_on_site
-          }).catch((error) => {
+        if (isTracking && updatedJourney.pages_visited) {
+          // Garantir que os dados são serializáveis
+          const safeData = {
+            pages_visited: updatedJourney.pages_visited.map(page => ({
+              url: String(page.url),
+              timestamp: String(page.timestamp),
+              time_spent: Number(page.time_spent) || 0
+            })),
+            time_on_site: Number(updatedJourney.time_on_site) || 0
+          };
+          
+          supabaseApi.updateUserJourney(sessionId, safeData).catch((error) => {
             if (process.env.NODE_ENV === 'development') {
               console.warn('Failed to update user journey:', error);
             }
@@ -266,10 +271,17 @@ export function useUserJourney(): UserJourneyHook {
       };
       
       // Atualizar no Supabase apenas se tracking estiver ativo
-      if (isTracking) {
-        supabaseApi.updateUserJourney(sessionId, {
-          pages_visited: updatedJourney.pages_visited
-        }).catch((error) => {
+      if (isTracking && updatedJourney.pages_visited) {
+        // Garantir que os dados são serializáveis
+        const safeData = {
+          pages_visited: updatedJourney.pages_visited.map(page => ({
+            url: String(page.url),
+            timestamp: String(page.timestamp),
+            time_spent: Number(page.time_spent) || 0
+          }))
+        };
+        
+        supabaseApi.updateUserJourney(sessionId, safeData).catch((error) => {
           if (process.env.NODE_ENV === 'development') {
             console.warn('Failed to track simulation:', error);
           }

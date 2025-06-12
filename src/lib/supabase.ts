@@ -236,17 +236,27 @@ export const supabaseApi = {
 
   // User Journey
   async createUserJourney(data: Database['public']['Tables']['user_journey']['Insert']) {
-    // Tentar upsert para evitar conflitos
+    // Usar insert simples primeiro, depois upsert se necessário
     const { data: result, error } = await supabase
       .from('user_journey')
-      .upsert(data, { 
-        onConflict: 'session_id',
-        ignoreDuplicates: false 
-      })
+      .insert(data)
       .select()
-      .single();
+      .maybeSingle();
     
-    if (error) throw error;
+    if (error) {
+      // Se der erro de conflito, tentar upsert
+      if (error.code === '23505') { // código de unique constraint violation
+        const { data: upsertResult, error: upsertError } = await supabase
+          .from('user_journey')
+          .upsert(data, { onConflict: 'session_id' })
+          .select()
+          .maybeSingle();
+        
+        if (upsertError) throw upsertError;
+        return upsertResult;
+      }
+      throw error;
+    }
     return result;
   },
 
@@ -256,7 +266,7 @@ export const supabaseApi = {
       .update(data)
       .eq('session_id', sessionId)
       .select()
-      .single();
+      .maybeSingle();
     
     if (error) throw error;
     return result;
@@ -267,9 +277,9 @@ export const supabaseApi = {
       .from('user_journey')
       .select('*')
       .eq('session_id', sessionId)
-      .single();
+      .maybeSingle(); // Use maybeSingle ao invés de single para evitar erro quando não encontrar
     
-    if (error && error.code !== 'PGRST116') throw error; // PGRST116 = not found
+    if (error) throw error;
     return data;
   },
 
