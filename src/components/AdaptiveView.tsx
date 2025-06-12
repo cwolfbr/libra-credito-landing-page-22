@@ -1,6 +1,10 @@
 import React from 'react';
 import { useDevice } from '@/hooks/useDevice';
 
+/**
+ * Props para o componente AdaptiveView, que permite
+ * renderização condicional conforme o tamanho da tela.
+ */
 interface AdaptiveViewProps {
   mobile?: React.ReactNode;
   tablet?: React.ReactNode;
@@ -8,7 +12,11 @@ interface AdaptiveViewProps {
   children?: React.ReactNode;
 }
 
-export const AdaptiveView: React.FC<AdaptiveViewProps> = ({ 
+/**
+ * Renderiza diferentes nós React de acordo com o tipo de dispositivo
+ * detectado pelo hook `useDevice`.
+ */
+export const AdaptiveView: React.FC<AdaptiveViewProps> = ({
   mobile, 
   tablet, 
   desktop, 

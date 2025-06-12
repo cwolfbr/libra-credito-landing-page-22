@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 
+/**
+ * Informações detalhadas sobre o dispositivo atual.
+ */
 interface DeviceInfo {
   isMobile: boolean;
   isTablet: boolean;
@@ -14,6 +17,10 @@ interface DeviceInfo {
   isTouchDevice: boolean;
 }
 
+/**
+ * Detecta características do dispositivo e expõe
+ * informações úteis para renderização adaptativa.
+ */
 export const useDevice = (): DeviceInfo => {
   const [deviceInfo, setDeviceInfo] = useState<DeviceInfo>(() => {
     if (typeof window === 'undefined') {
@@ -168,7 +175,7 @@ export const useMobileOnly = () => {
   return isMobile;
 };
 
-// Hook para media queries customizadas
+// Hook para avaliar expressões de media query de forma reativa
 export const useMediaQuery = (query: string): boolean => {
   const [matches, setMatches] = useState(false);
 
