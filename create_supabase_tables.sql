@@ -50,15 +50,37 @@ CREATE TABLE IF NOT EXISTS public.user_journey (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 3. ÍNDICES PARA PERFORMANCE
+-- 3. TABELA BLOG_POSTS
+-- Armazena posts do blog
+CREATE TABLE IF NOT EXISTS public.blog_posts (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    category TEXT NOT NULL,
+    image_url TEXT,
+    slug TEXT NOT NULL UNIQUE,
+    content TEXT NOT NULL,
+    read_time INTEGER DEFAULT 0,
+    published BOOLEAN DEFAULT FALSE,
+    featured_post BOOLEAN DEFAULT FALSE,
+    meta_title TEXT,
+    meta_description TEXT,
+    tags TEXT[],
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 4. ÍNDICES PARA PERFORMANCE
 CREATE INDEX IF NOT EXISTS idx_simulacoes_session_id ON public.simulacoes(session_id);
 CREATE INDEX IF NOT EXISTS idx_simulacoes_created_at ON public.simulacoes(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_simulacoes_status ON public.simulacoes(status);
 CREATE INDEX IF NOT EXISTS idx_simulacoes_cidade ON public.simulacoes(cidade);
 CREATE INDEX IF NOT EXISTS idx_user_journey_session_id ON public.user_journey(session_id);
 CREATE INDEX IF NOT EXISTS idx_user_journey_created_at ON public.user_journey(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_blog_posts_created_at ON public.blog_posts(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_blog_posts_category ON public.blog_posts(category);
 
--- 4. TRIGGERS PARA UPDATED_AT
+-- 5. TRIGGERS PARA UPDATED_AT
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -71,13 +93,18 @@ CREATE TRIGGER update_simulacoes_updated_at
     BEFORE UPDATE ON public.simulacoes 
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
-CREATE TRIGGER update_user_journey_updated_at 
-    BEFORE UPDATE ON public.user_journey 
+CREATE TRIGGER update_user_journey_updated_at
+    BEFORE UPDATE ON public.user_journey
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
--- 5. POLÍTICAS RLS (Row Level Security)
+CREATE TRIGGER update_blog_posts_updated_at
+    BEFORE UPDATE ON public.blog_posts
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- 6. POLÍTICAS RLS (Row Level Security)
 ALTER TABLE public.simulacoes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.user_journey ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.blog_posts ENABLE ROW LEVEL SECURITY;
 
 -- Permitir INSERT, SELECT, UPDATE para anonymous role
 CREATE POLICY "Enable all operations for anonymous users" ON public.simulacoes
@@ -85,8 +112,10 @@ CREATE POLICY "Enable all operations for anonymous users" ON public.simulacoes
 
 CREATE POLICY "Enable all operations for anonymous users" ON public.user_journey
     FOR ALL USING (true);
+CREATE POLICY "Enable all operations for anonymous users" ON public.blog_posts
+    FOR ALL USING (true);
 
--- 6. FUNÇÃO PARA ESTATÍSTICAS
+-- 7. FUNÇÃO PARA ESTATÍSTICAS
 CREATE OR REPLACE FUNCTION get_simulacao_stats()
 RETURNS TABLE (
     total_simulacoes BIGINT,
@@ -114,7 +143,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- 7. VIEW PARA RELATÓRIOS
+-- 8. VIEW PARA RELATÓRIOS
 CREATE OR REPLACE VIEW public.simulacoes_dashboard AS
 SELECT 
     s.id,
@@ -139,7 +168,7 @@ FROM public.simulacoes s
 LEFT JOIN public.user_journey uj ON s.session_id = uj.session_id
 ORDER BY s.created_at DESC;
 
--- 8. FUNÇÃO PARA LIMPEZA DE DADOS ANTIGOS (LGPD)
+-- 9. FUNÇÃO PARA LIMPEZA DE DADOS ANTIGOS (LGPD)
 CREATE OR REPLACE FUNCTION cleanup_old_data()
 RETURNS INTEGER AS $$
 DECLARE
@@ -159,7 +188,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- 9. TABELA DE LOG DE LIMPEZA (opcional)
+-- 10. TABELA DE LOG DE LIMPEZA (opcional)
 CREATE TABLE IF NOT EXISTS public.data_cleanup_log (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     table_name TEXT NOT NULL,
@@ -167,9 +196,10 @@ CREATE TABLE IF NOT EXISTS public.data_cleanup_log (
     cleanup_date TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 10. COMENTÁRIOS NAS TABELAS
+-- 11. COMENTÁRIOS NAS TABELAS
 COMMENT ON TABLE public.simulacoes IS 'Armazena simulações de crédito com garantia de imóvel';
 COMMENT ON TABLE public.user_journey IS 'Tracking completo da jornada do usuário no site';
+COMMENT ON TABLE public.blog_posts IS 'Conteúdo do blog corporativo';
 COMMENT ON COLUMN public.simulacoes.session_id IS 'ID único da sessão do usuário';
 COMMENT ON COLUMN public.simulacoes.valor_emprestimo IS 'Valor solicitado para empréstimo';
 COMMENT ON COLUMN public.simulacoes.valor_imovel IS 'Valor do imóvel usado como garantia';
@@ -196,6 +226,9 @@ COMMENT ON COLUMN public.user_journey.device_info IS 'Informações do dispositi
 -- 
 -- -- Ver dashboard completo
 -- SELECT * FROM public.simulacoes_dashboard LIMIT 10;
+
+-- -- Ver posts do blog
+-- SELECT * FROM public.blog_posts ORDER BY created_at DESC LIMIT 5;
 -- 
 -- -- Ver jornadas de usuário
 -- SELECT session_id, utm_source, landing_page, time_on_site 

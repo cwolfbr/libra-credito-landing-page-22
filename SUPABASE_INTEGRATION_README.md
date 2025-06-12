@@ -61,7 +61,7 @@ npm list @supabase/supabase-js uuid
    ```sql
    SELECT table_name FROM information_schema.tables 
    WHERE table_schema = 'public' 
-   AND table_name IN ('simulacoes', 'user_journey');
+   AND table_name IN ('simulacoes', 'user_journey', 'blog_posts');
    ```
 
 ### 2. Verificar configurações RLS
@@ -69,7 +69,7 @@ npm list @supabase/supabase-js uuid
 -- Verificar se RLS está ativo
 SELECT schemaname, tablename, rowsecurity 
 FROM pg_tables 
-WHERE tablename IN ('simulacoes', 'user_journey');
+WHERE tablename IN ('simulacoes', 'user_journey', 'blog_posts');
 ```
 
 ---
@@ -166,6 +166,25 @@ time_on_site    | INTEGER | Tempo total em segundos
 device_info     | JSONB   | Dados do dispositivo
 ip_address      | TEXT    | IP do usuário
 created_at      | TIMESTAMP| Início da sessão
+```
+
+### **Tabela: blog_posts**
+```sql
+id               | UUID      | Chave primária
+title            | TEXT      | Título do post
+description      | TEXT      | Resumo do conteúdo
+category         | TEXT      | Categoria (ex: Finanças)
+image_url        | TEXT      | URL da imagem de capa
+slug             | TEXT      | Slug único
+content          | TEXT      | Conteúdo em HTML/Markdown
+read_time        | INTEGER   | Tempo de leitura em minutos
+published        | BOOLEAN   | Post publicado?
+featured_post    | BOOLEAN   | Destaque na home?
+meta_title       | TEXT      | Título SEO (opcional)
+meta_description | TEXT      | Descrição SEO (opcional)
+tags             | TEXT[]    | Tags de busca
+created_at       | TIMESTAMP | Data de criação
+updated_at       | TIMESTAMP | Última atualização
 ```
 
 ---
