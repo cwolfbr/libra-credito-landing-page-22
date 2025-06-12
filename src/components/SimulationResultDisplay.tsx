@@ -20,28 +20,26 @@ interface SimulationResultDisplayProps {
 }
 
 /**
- * Tooltip component para informações sobre renda familiar
+ * Tooltip simplificado - DOM reduzido
  */
 const TooltipInfo: React.FC<{ children: React.ReactNode; content: string }> = ({ children, content }) => {
   const [showTooltip, setShowTooltip] = useState(false);
   
   return (
-    <div className="relative inline-block">
-      <div
-        onMouseEnter={() => setShowTooltip(true)}
-        onMouseLeave={() => setShowTooltip(false)}
-        onClick={() => setShowTooltip(!showTooltip)}
-        className="cursor-help"
-      >
-        {children}
-      </div>
+    <span 
+      className="relative cursor-help"
+      onMouseEnter={() => setShowTooltip(true)}
+      onMouseLeave={() => setShowTooltip(false)}
+      onClick={() => setShowTooltip(!showTooltip)}
+      title={content} // Fallback nativo
+    >
+      {children}
       {showTooltip && (
-        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg whitespace-nowrap z-10 shadow-lg">
+        <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap z-10">
           {content}
-          <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-800"></div>
-        </div>
+        </span>
       )}
-    </div>
+    </span>
   );
 };
 
@@ -76,29 +74,20 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
         {/* Header compacto */}
         <div className="flex items-center gap-2 mb-4">
           <CheckCircle className="w-5 h-5 text-green-400" />
-          <div>
-            <h3 className="font-bold">Simulação Pronta!</h3>
-          </div>
+          <h3 className="font-bold">Simulação Pronta!</h3>
         </div>
 
         {/* Valor da parcela destacado */}
         <div className="bg-white rounded-lg p-4 text-center mb-4">
-          {amortizacao === 'SAC' && primeiraParcela ? (
-            <div>
-              <div className="text-xs text-gray-600 mb-1">Parcela Inicial (SAC)</div>
-              <div className="text-2xl font-bold text-[#003399]">
-                R$ {primeiraParcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-              </div>
-              <div className="text-xs text-gray-500 mt-1">
-                Última: R$ {ultimaParcela?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-              </div>
-            </div>
-          ) : (
-            <div>
-              <div className="text-xs text-gray-600 mb-1">Parcela Fixa (PRICE)</div>
-              <div className="text-2xl font-bold text-[#003399]">
-                R$ {valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-              </div>
+          <div className="text-xs text-gray-600 mb-1">
+            {amortizacao === 'SAC' ? 'Parcela Inicial (SAC)' : 'Parcela Fixa (PRICE)'}
+          </div>
+          <div className="text-2xl font-bold text-[#003399]">
+            R$ {(amortizacao === 'SAC' && primeiraParcela ? primeiraParcela : valor).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+          </div>
+          {amortizacao === 'SAC' && ultimaParcela && (
+            <div className="text-xs text-gray-500 mt-1">
+              Última: R$ {ultimaParcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
             </div>
           )}
         </div>

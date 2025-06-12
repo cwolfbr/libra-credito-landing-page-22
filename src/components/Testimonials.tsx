@@ -35,9 +35,7 @@ const TestimonialCard = memo(({ name, age, text, isMobile, isActive, currentInde
     <div className={`absolute inset-0 transition-opacity duration-500 ${isActive ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
       <div className="bg-white p-4 md:p-6 rounded-lg shadow-md border border-gray-100 h-full flex flex-col">
         <div className="flex items-start gap-3 mb-2">
-          <div className="bg-gray-100 rounded-full p-2">
-            <User className="w-4 h-4 text-libra-navy" />
-          </div>
+          <User className="w-6 h-6 text-libra-navy mt-1" />
           <div>
             <h4 className="font-bold text-libra-navy">{name}</h4>
             <p className="text-sm text-gray-500">{age}</p>
