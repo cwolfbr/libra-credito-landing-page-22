@@ -124,6 +124,12 @@ export interface Database {
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
   auth: {
     persistSession: false // Não precisamos de autenticação de usuário
+  },
+  global: {
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    }
   }
 });
 
@@ -138,15 +144,23 @@ export const supabaseApi = {
         .limit(1);
       
       if (error) {
-        console.error('Erro de conexão/tabela:', error);
-        throw error;
+        // Log silencioso para evitar poluição do console
+        if (process.env.NODE_ENV === 'development') {
+          console.warn('Supabase connection issue:', error.message);
+        }
+        return false;
       }
       
-      console.log('✅ Conexão Supabase OK');
+      if (process.env.NODE_ENV === 'development') {
+        console.log('✅ Conexão Supabase OK');
+      }
       return true;
     } catch (error) {
-      console.error('❌ Falha na conexão Supabase:', error);
-      throw error;
+      // Evitar console errors em produção
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('Supabase connection failed:', error);
+      }
+      return false;
     }
   },
 

@@ -11,11 +11,11 @@ export const MobileOptimized: React.FC<MobileOptimizedProps> = ({ children }) =>
   useEffect(() => {
     if (!isMobile) return;
 
-    // Prevenir zoom no iOS
+    // Configurar viewport respeitando acessibilidade
     const viewport = document.querySelector('meta[name="viewport"]');
     if (viewport) {
       viewport.setAttribute('content', 
-        'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
+        'width=device-width, initial-scale=1.0'
       );
     }
 
