@@ -98,6 +98,24 @@ export interface DeviceInfo {
   os: string;
 }
 
+export interface BlogPostData {
+  id?: string;
+  title: string;
+  description: string;
+  category: string;
+  image_url: string;
+  slug: string;
+  content: string;
+  read_time: number;
+  published: boolean;
+  featured_post: boolean;
+  meta_title?: string;
+  meta_description?: string;
+  tags?: string[];
+  created_at?: string;
+  updated_at?: string;
+}
+
 // Schema do banco para TypeScript
 export interface Database {
   public: {
@@ -116,6 +134,11 @@ export interface Database {
         Row: UserJourneyData;
         Insert: Omit<UserJourneyData, 'id' | 'created_at' | 'updated_at'>;
         Update: Partial<Omit<UserJourneyData, 'id' | 'created_at'>>;
+      };
+      blog_posts: {
+        Row: BlogPostData;
+        Insert: Omit<BlogPostData, 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Omit<BlogPostData, 'id' | 'created_at'>>;
       };
     };
   };
@@ -230,9 +253,76 @@ export const supabaseApi = {
       .eq('id', id)
       .select()
       .single();
-    
+
     if (error) throw error;
     return data;
+  },
+
+  // Blog Posts
+  async createBlogPost(data: Database['public']['Tables']['blog_posts']['Insert']) {
+    const { data: result, error } = await supabase
+      .from('blog_posts')
+      .insert(data)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return result;
+  },
+
+  async getBlogPosts(limit = 50) {
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(limit);
+
+    if (error) throw error;
+    return data;
+  },
+
+  async getBlogPostById(id: string) {
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .eq('id', id)
+      .maybeSingle();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async getBlogPostBySlug(slug: string) {
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .eq('slug', slug)
+      .maybeSingle();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async updateBlogPost(id: string, data: Database['public']['Tables']['blog_posts']['Update']) {
+    const { data: result, error } = await supabase
+      .from('blog_posts')
+      .update(data)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return result;
+  },
+
+  async deleteBlogPost(id: string) {
+    const { error } = await supabase
+      .from('blog_posts')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+    return true;
   },
 
   // User Journey
