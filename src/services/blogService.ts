@@ -5,6 +5,8 @@
  * @description Gerencia CRUD de posts do blog, categorias e configurações
  */
 
+import { supabaseApi, type BlogPostData, type Database } from '@/lib/supabase';
+
 export interface BlogPost {
   id?: string;
   title: string;
@@ -427,8 +429,48 @@ const EXISTING_POSTS: BlogPost[] = [
 ];
 
 export class BlogService {
-  private static readonly STORAGE_KEY = 'libra_blog_posts';
   private static readonly CONFIG_KEY = 'libra_simulation_config';
+
+  // Converters entre camelCase e snake_case
+  private static fromDb(data: BlogPostData): BlogPost {
+    return {
+      id: data.id,
+      title: data.title,
+      description: data.description,
+      category: data.category as BlogCategory,
+      imageUrl: data.image_url,
+      slug: data.slug,
+      content: data.content,
+      readTime: data.read_time,
+      published: data.published,
+      featuredPost: data.featured_post,
+      metaTitle: data.meta_title,
+      metaDescription: data.meta_description,
+      tags: data.tags || undefined,
+      createdAt: data.created_at,
+      updatedAt: data.updated_at
+    };
+  }
+
+  private static toDb(data: Partial<BlogPost>): Partial<BlogPostData> {
+    return {
+      id: data.id,
+      title: data.title,
+      description: data.description,
+      category: data.category as any,
+      image_url: data.imageUrl,
+      slug: data.slug,
+      content: data.content,
+      read_time: data.readTime,
+      published: data.published,
+      featured_post: data.featuredPost,
+      meta_title: data.metaTitle,
+      meta_description: data.metaDescription,
+      tags: data.tags,
+      created_at: data.createdAt,
+      updated_at: data.updatedAt
+    };
+  }
 
   /**
    * Gerar slug a partir do título
@@ -485,20 +527,11 @@ export class BlogService {
    */
   static async getAllPosts(): Promise<BlogPost[]> {
     try {
-      const stored = localStorage.getItem(this.STORAGE_KEY);
-      if (stored) {
-        const posts = JSON.parse(stored);
-        // Se temos poucos posts, reinicializar com todos os posts existentes
-        if (posts.length < 5) {
-          localStorage.setItem(this.STORAGE_KEY, JSON.stringify(EXISTING_POSTS));
-          return EXISTING_POSTS;
-        }
-        return posts;
-      } else {
-        // Primeira vez acessando - inicializar com posts existentes
-        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(EXISTING_POSTS));
+      const data = await supabaseApi.getBlogPosts(1000);
+      if (!data || data.length === 0) {
         return EXISTING_POSTS;
       }
+      return data.map(post => this.fromDb(post));
     } catch (error) {
       console.error('Erro ao carregar posts:', error);
       return EXISTING_POSTS;
@@ -509,16 +542,26 @@ export class BlogService {
    * Obter post por ID
    */
   static async getPostById(id: string): Promise<BlogPost | null> {
-    const posts = await this.getAllPosts();
-    return posts.find(post => post.id === id) || null;
+    try {
+      const data = await supabaseApi.getBlogPostById(id);
+      return data ? this.fromDb(data) : null;
+    } catch (error) {
+      console.error('Erro ao buscar post:', error);
+      return null;
+    }
   }
 
   /**
    * Obter post por slug
    */
   static async getPostBySlug(slug: string): Promise<BlogPost | null> {
-    const posts = await this.getAllPosts();
-    return posts.find(post => post.slug === slug) || null;
+    try {
+      const post = await supabaseApi.getBlogPostBySlug(slug);
+      return post ? this.fromDb(post) : null;
+    } catch (error) {
+      console.error('Erro ao buscar post:', error);
+      return null;
+    }
   }
 
   /**
@@ -530,26 +573,15 @@ export class BlogService {
       throw new Error(`Dados inválidos: ${errors.join(', ')}`);
     }
 
-    const posts = await this.getAllPosts();
-    
-    // Verificar se slug já existe
-    const existingSlug = posts.find(p => p.slug === postData.slug);
-    if (existingSlug) {
-      throw new Error('Slug já existe. Escolha outro.');
-    }
-
-    const newPost: BlogPost = {
+    const dbData = this.toDb({
       ...postData,
-      id: Date.now().toString(),
+      readTime: postData.readTime || this.calculateReadTime(postData.content),
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      readTime: postData.readTime || this.calculateReadTime(postData.content)
-    };
+      updatedAt: new Date().toISOString()
+    });
 
-    posts.unshift(newPost); // Adiciona no início
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(posts));
-    
-    return newPost;
+    const created = await supabaseApi.createBlogPost(dbData as Database['public']['Tables']['blog_posts']['Insert']);
+    return this.fromDb(created);
   }
 
   /**
@@ -557,13 +589,13 @@ export class BlogService {
    */
   static async updatePost(id: string, postData: Partial<BlogPost>): Promise<BlogPost> {
     const posts = await this.getAllPosts();
-    const index = posts.findIndex(post => post.id === id);
-    
-    if (index === -1) {
+    const existing = posts.find(post => post.id === id);
+
+    if (!existing) {
       throw new Error('Post não encontrado');
     }
 
-    const errors = this.validatePost({ ...posts[index], ...postData });
+    const errors = this.validatePost({ ...existing, ...postData });
     if (errors.length > 0) {
       throw new Error(`Dados inválidos: ${errors.join(', ')}`);
     }
@@ -573,31 +605,23 @@ export class BlogService {
       throw new Error('Slug já existe. Escolha outro.');
     }
 
-    const updatedPost: BlogPost = {
-      ...posts[index],
+    const updated: Partial<BlogPost> = {
+      ...existing,
       ...postData,
       updatedAt: new Date().toISOString(),
-      readTime: postData.content ? this.calculateReadTime(postData.content) : posts[index].readTime
+      readTime: postData.content ? this.calculateReadTime(postData.content) : existing.readTime
     };
 
-    posts[index] = updatedPost;
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(posts));
-    
-    return updatedPost;
+    const dbData = this.toDb(updated);
+    const result = await supabaseApi.updateBlogPost(id, dbData as Database['public']['Tables']['blog_posts']['Update']);
+    return this.fromDb(result);
   }
 
   /**
    * Deletar post
    */
   static async deletePost(id: string): Promise<boolean> {
-    const posts = await this.getAllPosts();
-    const filteredPosts = posts.filter(post => post.id !== id);
-    
-    if (filteredPosts.length === posts.length) {
-      throw new Error('Post não encontrado');
-    }
-
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(filteredPosts));
+    await supabaseApi.deleteBlogPost(id);
     return true;
   }
 
