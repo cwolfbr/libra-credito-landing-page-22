@@ -22,6 +22,7 @@
 import { supabaseApi, SimulacaoData } from '@/lib/supabase';
 import { simulateCredit } from '@/services/simulationApi';
 import { validateEmail, validatePhone, formatPhone } from '@/utils/validations';
+import { PloomesService } from '@/services/ploomesService';
 
 // Tipos para o serviço
 export interface SimulationInput {
@@ -171,11 +172,75 @@ export class SimulationService {
       
       console.log('✅ Dados pessoais atualizados na simulação:', updatedSimulation);
       
-      // Aqui você pode adicionar integração com:
-      // - Email marketing (Mailchimp, SendGrid)
-      // - CRM (Ploomes, que você mencionou)
-      // - WhatsApp Business API
-      // - Webhook para notificações
+      // Integração com Ploomes CRM
+      try {
+        console.log('🔗 Integrando com Ploomes CRM...');
+        
+        // Buscar dados completos da simulação para ter o valor da parcela
+        const { data: simulacaoCompleta } = await supabase
+          .from('simulacoes')
+          .select('*')
+          .eq('id', input.simulationId)
+          .single();
+        
+        if (!simulacaoCompleta) {
+          throw new Error('Simulação não encontrada');
+        }
+        
+        // Calcular valor da parcela (usar parcela_inicial para SAC ou parcela_final para PRICE)
+        const valorParcela = simulacaoCompleta.tipo_amortizacao === 'SAC' 
+          ? simulacaoCompleta.parcela_inicial || simulacaoCompleta.parcela_final || 0
+          : simulacaoCompleta.parcela_final || 0;
+        
+        const ploomesResponse = await PloomesService.cadastrarProposta({
+          cidade: simulacaoCompleta.cidade,
+          valorEmprestimo: simulacaoCompleta.valor_emprestimo,
+          valorImovel: simulacaoCompleta.valor_imovel,
+          parcelas: simulacaoCompleta.parcelas,
+          tipoAmortizacao: simulacaoCompleta.tipo_amortizacao,
+          valorParcela: valorParcela,
+          nomeCompleto: input.nomeCompleto,
+          email: input.email,
+          telefone: input.telefone,
+          imovelProprio: input.imovelProprio
+        });
+        
+        if (ploomesResponse.status) {
+          console.log('✅ Proposta cadastrada no Ploomes com sucesso');
+          
+          // Atualizar status para 'integrado_crm' se desejar
+          await supabase
+            .from('simulacoes')
+            .update({ status: 'integrado_crm' })
+            .eq('id', input.simulationId);
+            
+        } else if (PloomesService.isDuplicidadeError(ploomesResponse)) {
+          console.warn('⚠️ Lead já existe no Ploomes (últimos 7 dias)');
+          // Não é um erro crítico, apenas um aviso
+        } else {
+          console.error('❌ Erro ao cadastrar no Ploomes:', ploomesResponse.msg);
+          // Lançar erro apenas se for crítico
+          // Para duplicidade, apenas logamos
+          if (!PloomesService.isDuplicidadeError(ploomesResponse)) {
+            // Não é duplicidade, mas não vamos bloquear o fluxo
+            console.warn('Erro não crítico - lead salvo no Supabase');
+          }
+        }
+        
+      } catch (ploomesError) {
+        console.error('❌ Erro na integração com Ploomes:', ploomesError);
+        
+        // Verificar se é erro de duplicidade para propagar mensagem específica
+        if (ploomesError instanceof Error && 
+            ploomesError.message.includes('já existe') && 
+            ploomesError.message.includes('7 dias')) {
+          // Propagar erro de duplicidade para mostrar mensagem amigável
+          throw new Error('Lead já existe no CRM (últimos 7 dias)');
+        }
+        
+        // Para outros erros, não propagar - o lead já foi salvo no Supabase
+        console.warn('Erro não crítico na integração - lead salvo localmente');
+      }
       
     } catch (error) {
       console.error('❌ Erro ao processar contato:', error);

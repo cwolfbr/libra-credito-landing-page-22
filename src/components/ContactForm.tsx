@@ -117,7 +117,10 @@ const ContactForm: React.FC<ContactFormProps> = ({
         observacoes: `Simulação: ${simulationResult.amortizacao} - ${simulationResult.parcelas}x - R$ ${simulationResult.valor.toLocaleString('pt-BR')}`
       });
       
-      alert('🎉 Solicitação enviada com sucesso! Nossa equipe entrará em contato em breve.');
+      // Mensagem de sucesso mais detalhada
+      const mensagemSucesso = `🎉 Solicitação enviada com sucesso!\n\n✅ Seus dados foram registrados\n✅ Nossa equipe entrará em contato em breve\n📞 Fique atento ao telefone e e-mail cadastrados`;
+      
+      alert(mensagemSucesso);
       
       // Limpar formulário
       setNome('');
@@ -128,7 +131,23 @@ const ContactForm: React.FC<ContactFormProps> = ({
       
     } catch (error) {
       console.error('❌ Erro ao enviar solicitação:', error);
-      alert('Erro ao enviar solicitação. Tente novamente.');
+      
+      let mensagemErro = 'Erro ao enviar solicitação. ';
+      
+      if (error instanceof Error) {
+        // Verificar se é erro de duplicidade do Ploomes/CRM
+        if (error.message.toLowerCase().includes('já existe') || 
+            error.message.toLowerCase().includes('7 dias') ||
+            error.message.toLowerCase().includes('lead já existe')) {
+          mensagemErro = '⚠️ Você já possui uma solicitação em andamento.\n\nNossa equipe já está analisando seu pedido anterior.\nAguarde nosso contato!\n\n📞 Em caso de dúvidas, entre em contato pelo WhatsApp.';
+        } else {
+          mensagemErro += error.message;
+        }
+      } else {
+        mensagemErro += 'Por favor, tente novamente.';
+      }
+      
+      alert(mensagemErro);
     } finally {
       setLoading(false);
     }
