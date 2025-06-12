@@ -39,21 +39,21 @@ const Hero: React.FC = () => {
 
   return (
     <section 
-      className="min-h-[90vh] pt-header pb-2 bg-white relative flex flex-col justify-center" 
+      className="hero-section" 
       aria-labelledby="hero-heading"
       role="banner"
     >
-      <div className="container mx-auto px-4 relative z-10 flex-grow flex flex-col justify-center">
+      <div className="hero-container">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center">
           {/* Lado Esquerdo */}
           <div className="text-[#003399] space-y-4 md:space-y-6">
             <div>
-              <h1 id="hero-heading" className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
+              <h1 id="hero-heading" className="hero-h1">
                 Transforme seu Patrimônio<br />
                 em Oportunidades
               </h1>
               <div className="space-y-3 md:space-y-4">
-                <p className="text-lg md:text-xl text-[#003399] leading-relaxed font-medium">
+                <p className="hero-p">
                   Crédito inteligente para quem construiu história.
                   Até R$ 5 milhões com as menores taxas do mercado.
                 </p>

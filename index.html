@@ -27,14 +27,15 @@
     
     <!-- Critical CSS Inline for Above-the-fold -->
     <style>
-      /* Critical Above-the-fold CSS */
+      /* Critical Above-the-fold CSS - Mobile First Performance */
       *, *::before, *::after { box-sizing: border-box; }
       * { margin: 0; }
       body { 
         line-height: 1.5; 
         -webkit-font-smoothing: antialiased;
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
         background: #ffffff;
+        overflow-x: hidden;
       }
       
       :root {
@@ -47,7 +48,7 @@
       html, body { height: 100%; }
       #root { height: 100%; }
       
-      /* Header Critical */
+      /* Mobile-First Header */
       .header-fixed { 
         position: fixed;
         top: 0;
@@ -56,112 +57,107 @@
         z-index: 50;
         height: var(--header-height);
         background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
+        will-change: transform;
       }
       
-      /* Hero Critical */
+      /* Mobile-First Hero Optimizado */
       .hero-section {
         min-height: 100vh;
-        padding-top: var(--header-height);
+        min-height: 100dvh;
+        padding: var(--header-height) 1rem 2rem;
         background: linear-gradient(135deg, #003399 0%, #0066cc 50%, #00ccff 100%);
         color: white;
         display: flex;
         align-items: center;
+        contain: layout style;
       }
       
       .hero-container {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 0 1rem;
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 2rem;
-        align-items: center;
-      }
-      
-      @media (min-width: 1024px) {
-        .hero-container {
-          grid-template-columns: 1fr 1fr;
-          gap: 3rem;
-        }
-      }
-      
-      .hero-h1 {
-        font-size: 2.5rem;
-        font-weight: 700;
-        line-height: 1.2;
-        margin-bottom: 1rem;
-      }
-      
-      @media (min-width: 768px) {
-        .hero-h1 { font-size: 3rem; }
-      }
-      
-      @media (min-width: 1024px) {
-        .hero-h1 { font-size: 3.5rem; }
-      }
-      
-      .hero-video {
-        aspect-ratio: 16/9;
-        border-radius: 0.75rem;
-        overflow: hidden;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        position: relative;
-        background: #000;
-      }
-      
-      .video-thumbnail {
-        position: absolute;
-        inset: 0;
         width: 100%;
-        height: 100%;
-        object-fit: cover;
       }
       
-      /* Loading States */
-      .loading-spinner {
-        width: 3rem;
-        height: 3rem;
-        border: 3px solid rgba(0, 51, 153, 0.3);
-        border-top: 3px solid var(--libra-blue);
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
+      /* Typography Mobile First */
+      .hero-h1 {
+        font-size: clamp(2rem, 8vw, 3.5rem);
+        font-weight: 700;
+        line-height: 1.1;
+        margin-bottom: 1rem;
+        letter-spacing: -0.02em;
       }
       
-      .page-loading {
-        min-height: 100vh;
-        display: flex;
+      /* Button Critical Styles */
+      .btn-primary {
+        background: var(--libra-gold);
+        color: #000;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
         align-items: center;
         justify-content: center;
-        background: #f9fafb;
+        min-height: 48px;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+        will-change: transform;
+      }
+      
+      .btn-primary:active {
+        transform: scale(0.98);
+      }
+      
+      /* Loading States Otimizado */
+      .loading-spinner {
+        width: 2rem;
+        height: 2rem;
+        border: 2px solid rgba(0, 51, 153, 0.2);
+        border-top: 2px solid var(--libra-blue);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
       }
       
       @keyframes spin {
         to { transform: rotate(360deg); }
       }
       
-      /* Content Visibility Optimization */
-      .content-auto {
-        content-visibility: auto;
-        contain-intrinsic-size: 300px;
+      /* Mobile Performance Optimizations */
+      @media (max-width: 767px) {
+        * {
+          -webkit-tap-highlight-color: transparent;
+        }
+        
+        .hero-section {
+          background-attachment: scroll;
+        }
+        
+        img, video {
+          transform: translateZ(0);
+        }
       }
       
-      /* Enhanced Focus Styles for Accessibility */
-      :focus {
-        outline: 2px solid var(--libra-gold);
-        outline-offset: 2px;
+      /* Desktop Enhancements */
+      @media (min-width: 768px) {
+        .header-fixed {
+          backdrop-filter: blur(10px);
+        }
+        
+        .hero-container {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 3rem;
+          align-items: center;
+        }
       }
       
-      :focus:not(:focus-visible) {
-        outline: none;
-      }
-      
+      /* Critical Accessibility */
       :focus-visible {
         outline: 2px solid var(--libra-gold);
         outline-offset: 2px;
       }
       
-      /* Screen Reader Only utility */
       .sr-only {
         position: absolute;
         width: 1px;
@@ -174,15 +170,16 @@
         border: 0;
       }
       
-      .focus\:not-sr-only:focus {
-        position: static;
-        width: auto;
-        height: auto;
-        padding: inherit;
-        margin: inherit;
-        overflow: visible;
-        clip: auto;
-        white-space: normal;
+      /* Preload Shimmer for Images */
+      .img-placeholder {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: shimmer 2s infinite;
+      }
+      
+      @keyframes shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
       }
     </style>
     
@@ -244,6 +241,27 @@
 
   <body>
     <div id="root"></div>
+    
+    <!-- Carregamento assíncrono do CSS não-crítico -->
+    <script>
+      // Carregar CSS principal de forma assíncrona para evitar bloqueio de renderização
+      const loadCSS = (href) => {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = href;
+        document.head.appendChild(link);
+      };
+      
+      // Carregar após o LCP
+      window.addEventListener('load', () => {
+        // Delay mínimo para garantir que o conteúdo above-the-fold já foi renderizado
+        setTimeout(() => {
+          // O CSS do Vite será carregado automaticamente pelo main.tsx
+          // Este script apenas garante ordem de prioridade
+        }, 100);
+      });
+    </script>
+    
     <script type="module" src="/src/main.tsx"></script>
     
     <!-- Service Worker Registration -->

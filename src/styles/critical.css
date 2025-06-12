@@ -1,13 +1,20 @@
-/* CSS Crítico Above-the-Fold - Para Inline no HTML */
+/* CSS Crítico Mobile Performance - Above-the-Fold Only */
 
-/* Reset e Base */
-*, *::before, *::after { box-sizing: border-box; }
-* { margin: 0; }
+/* Reset e Base Mínimo */
+*, *::before, *::after { 
+  box-sizing: border-box; 
+}
+
+* { 
+  margin: 0; 
+}
+
 body { 
   line-height: 1.5; 
   -webkit-font-smoothing: antialiased;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-family: system-ui, -apple-system, sans-serif;
   background-color: #ffffff;
+  overflow-x: hidden;
 }
 
 /* Variáveis CSS */

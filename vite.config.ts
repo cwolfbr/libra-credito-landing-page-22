@@ -22,6 +22,7 @@ export default defineConfig(({ mode }) => ({
   build: {
     target: 'esnext',
     minify: 'esbuild',
+    cssCodeSplit: true, // Separar CSS por chunks para carregamento assíncrono
     rollupOptions: {
       output: {
         assetFileNames: (assetInfo) => {
@@ -37,7 +38,14 @@ export default defineConfig(({ mode }) => ({
           return `assets/${extType}/[name]-[hash][extname]`;
         },
         chunkFileNames: 'assets/js/[name]-[hash].js',
-        entryFileNames: 'assets/js/[name]-[hash].js'
+        entryFileNames: 'assets/js/[name]-[hash].js',
+        // Dividir código para melhor cache e carregamento
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+          ui: ['lucide-react', '@radix-ui/react-slot'],
+          utils: ['clsx', 'tailwind-merge']
+        }
       }
     }
   }
