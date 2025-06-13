@@ -146,12 +146,37 @@ export class UploadService {
   }
 
   /**
-   * Tentar upload real (placeholder para implementação futura)
+   * Tentar upload real para servidor
    */
   private static async attemptRealUpload(file: File, fileName: string): Promise<UploadResult> {
-    // Em uma implementação real, isso faria uma chamada para um endpoint
-    // Por enquanto, sempre falha para usar o fallback local
-    throw new Error('Upload real não implementado');
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+      formData.append('fileName', fileName);
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      
+      if (result.success) {
+        return {
+          success: true,
+          url: result.url,
+          fileName: result.fileName
+        };
+      } else {
+        throw new Error(result.error || 'Erro no upload');
+      }
+    } catch (error) {
+      throw new Error(error instanceof Error ? error.message : 'Erro de rede');
+    }
   }
 
   /**
