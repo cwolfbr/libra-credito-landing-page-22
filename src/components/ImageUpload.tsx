@@ -5,13 +5,13 @@
  * @description Upload de imagens com preview e salvamento local
  */
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Card, CardContent } from './ui/card';
 import { Badge } from './ui/badge';
 import { Upload, X, Image as ImageIcon, ExternalLink } from 'lucide-react';
-import { ImageService } from '../services/imageService';
+import { UploadService } from '../services/uploadService';
 
 interface ImageUploadProps {
   onImageUploaded: (imageUrl: string) => void;
@@ -28,38 +28,53 @@ export default function ImageUpload({
   maxSize = 5,
   className = ""
 }: ImageUploadProps) {
-  const [preview, setPreview] = useState<string>(currentImage || '');
+  const [preview, setPreview] = useState<string>('');
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string>('');
   const [dragActive, setDragActive] = useState(false);
-  const [urlInput, setUrlInput] = useState(currentImage || '');
+  const [urlInput, setUrlInput] = useState('');
   const [uploadMode, setUploadMode] = useState<'file' | 'url'>('file');
   
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Carregar imagem atual quando o componente monta
+  useEffect(() => {
+    if (currentImage) {
+      // Se for uma imagem local, buscar do localStorage
+      if (currentImage.includes('/images/blog/uploads/')) {
+        const fileName = currentImage.split('/').pop();
+        if (fileName) {
+          const localImageData = UploadService.getImageData(fileName);
+          if (localImageData) {
+            setPreview(localImageData);
+          } else {
+            setPreview(currentImage);
+          }
+        }
+      } else {
+        setPreview(currentImage);
+      }
+      setUrlInput(currentImage);
+    }
+  }, [currentImage]);
 
   const handleFileUpload = async (file: File) => {
     setError('');
     setUploading(true);
 
     try {
-      // Otimizar imagem se for muito grande
-      let processedFile = file;
-      const imageInfo = await ImageService.getImageInfo(file);
-      
-      if (imageInfo.width > 1200 || imageInfo.height > 800 || file.size > 2 * 1024 * 1024) {
-        processedFile = await ImageService.resizeImage(file, 1200, 800, 0.8);
-      }
-
-      // Fazer upload usando o serviço
-      const result = await ImageService.uploadImage(processedFile);
+      // Fazer upload usando o novo serviço
+      const result = await UploadService.uploadImage(file);
       
       if (result.success && result.url) {
         // Usar a imagem do localStorage para preview
         const fileName = result.url.split('/').pop();
-        const storedImageData = ImageService.getImageUrl(fileName || '');
+        const storedImageData = UploadService.getImageData(fileName || '');
         
         if (storedImageData) {
           setPreview(storedImageData);
+        } else {
+          setPreview(result.url);
         }
         
         onImageUploaded(result.url);

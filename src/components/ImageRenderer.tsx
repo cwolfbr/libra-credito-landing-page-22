@@ -6,7 +6,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { ImageService } from '../services/imageService';
+import { UploadService } from '../services/uploadService';
 
 interface ImageRendererProps {
   src: string;
@@ -39,7 +39,7 @@ export default function ImageRenderer({
         if (src.includes('/images/blog/uploads/')) {
           const fileName = src.split('/').pop();
           if (fileName) {
-            const localImageData = ImageService.getImageUrl(fileName);
+            const localImageData = UploadService.getImageData(fileName);
             if (localImageData) {
               setImageSrc(localImageData);
               setLoading(false);

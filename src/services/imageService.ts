@@ -3,7 +3,10 @@
  * 
  * @service ImageService
  * @description Upload e gerenciamento de imagens do blog
+ * @deprecated Use UploadService para novas implementações
  */
+
+import { UploadService } from './uploadService';
 
 export interface UploadResult {
   success: boolean;
@@ -12,147 +15,32 @@ export interface UploadResult {
 }
 
 export class ImageService {
-  private static readonly UPLOAD_ENDPOINT = '/api/upload';
-  private static readonly MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-  private static readonly ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
-
   /**
-   * Fazer upload de uma imagem
+   * Fazer upload de uma imagem (delegado para UploadService)
    */
   static async uploadImage(file: File): Promise<UploadResult> {
-    try {
-      // Validações
-      if (!this.ALLOWED_TYPES.includes(file.type)) {
-        return {
-          success: false,
-          error: 'Tipo de arquivo não suportado. Use JPG, PNG, WebP ou GIF.'
-        };
-      }
-
-      if (file.size > this.MAX_FILE_SIZE) {
-        return {
-          success: false,
-          error: 'Arquivo muito grande. Máximo 5MB.'
-        };
-      }
-
-      // Gerar nome único
-      const timestamp = Date.now();
-      const randomString = Math.random().toString(36).substring(2);
-      const extension = file.name.split('.').pop()?.toLowerCase();
-      const fileName = `blog-${timestamp}-${randomString}.${extension}`;
-
-      // Em um ambiente real, isso faria upload para um servidor
-      // Por enquanto, vamos simular o processo
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('fileName', fileName);
-
-      // Simular upload
-      await this.simulateUpload(file, fileName);
-
-      const imageUrl = `/images/blog/uploads/${fileName}`;
-      
-      return {
-        success: true,
-        url: imageUrl
-      };
-
-    } catch (error) {
-      return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Erro ao fazer upload'
-      };
-    }
+    return UploadService.uploadImage(file);
   }
 
   /**
-   * Simular upload salvando no localStorage para desenvolvimento
-   */
-  private static async simulateUpload(file: File, fileName: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      
-      reader.onload = () => {
-        try {
-          // Salvar no localStorage para simular persistência
-          const imageData = reader.result as string;
-          const images = this.getStoredImages();
-          images[fileName] = {
-            data: imageData,
-            originalName: file.name,
-            size: file.size,
-            type: file.type,
-            uploadedAt: new Date().toISOString()
-          };
-          
-          localStorage.setItem('blog_images', JSON.stringify(images));
-          resolve();
-        } catch (error) {
-          reject(error);
-        }
-      };
-      
-      reader.onerror = () => reject(new Error('Erro ao ler arquivo'));
-      reader.readAsDataURL(file);
-    });
-  }
-
-  /**
-   * Obter imagens armazenadas
-   */
-  static getStoredImages(): Record<string, any> {
-    try {
-      const stored = localStorage.getItem('blog_images');
-      return stored ? JSON.parse(stored) : {};
-    } catch {
-      return {};
-    }
-  }
-
-  /**
-   * Obter URL de uma imagem armazenada
+   * Obter URL de uma imagem armazenada (delegado para UploadService)
    */
   static getImageUrl(fileName: string): string | null {
-    const images = this.getStoredImages();
-    return images[fileName]?.data || null;
+    return UploadService.getImageData(fileName);
   }
 
   /**
-   * Listar todas as imagens
+   * Listar todas as imagens (delegado para UploadService)
    */
-  static listImages(): Array<{
-    fileName: string;
-    originalName: string;
-    size: number;
-    type: string;
-    uploadedAt: string;
-    url: string;
-  }> {
-    const images = this.getStoredImages();
-    
-    return Object.entries(images).map(([fileName, data]) => ({
-      fileName,
-      originalName: data.originalName,
-      size: data.size,
-      type: data.type,
-      uploadedAt: data.uploadedAt,
-      url: `/images/blog/uploads/${fileName}`
-    }));
+  static listImages() {
+    return UploadService.listImages();
   }
 
   /**
-   * Deletar uma imagem
+   * Deletar uma imagem (delegado para UploadService)
    */
   static deleteImage(fileName: string): boolean {
-    try {
-      const images = this.getStoredImages();
-      delete images[fileName];
-      localStorage.setItem('blog_images', JSON.stringify(images));
-      return true;
-    } catch {
-      return false;
-    }
+    return UploadService.deleteImage(fileName);
   }
 
   /**

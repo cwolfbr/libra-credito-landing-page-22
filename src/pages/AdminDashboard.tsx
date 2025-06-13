@@ -28,9 +28,9 @@ import { PartnersService } from '@/services/partnersService';
 import { BlogService, type BlogPost, type SimulationConfig } from '@/services/blogService';
 import { AuthService, type LoginCredentials, type AuthUser } from '@/services/authService';
 import AdminLogin from '@/components/AdminLogin';
-import BlogMigration from '@/components/BlogMigration';
 import ImageUpload from '@/components/ImageUpload';
 import RichTextEditor from '@/components/RichTextEditor';
+import ImageManager from '@/components/ImageManager';
 import { SimulacaoData, ParceiroData } from '@/lib/supabase';
 import { Eye, Download, RefreshCw, Users, Calculator, TrendingUp, Clock, Handshake, UserCheck, Building, FileText, Settings, Plus, Edit, Trash2, Save, LogOut } from 'lucide-react';
 import { formatBRL } from '@/utils/formatters';
@@ -43,7 +43,7 @@ const AdminDashboard: React.FC = () => {
   const [loginError, setLoginError] = useState('');
   const [checkingAuth, setCheckingAuth] = useState(true);
 
-  const [activeTab, setActiveTab] = useState<'simulacoes' | 'parceiros' | 'blog' | 'migracao' | 'configuracoes'>('simulacoes');
+  const [activeTab, setActiveTab] = useState<'simulacoes' | 'parceiros' | 'blog' | 'imagens' | 'configuracoes'>('simulacoes');
   
   // Estados para simulações
   const [simulacoes, setSimulacoes] = useState<SimulacaoData[]>([]);
@@ -485,15 +485,15 @@ const AdminDashboard: React.FC = () => {
               Blog
             </button>
             <button
-              onClick={() => setActiveTab('migracao')}
+              onClick={() => setActiveTab('imagens')}
               className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                activeTab === 'migracao'
+                activeTab === 'imagens'
                   ? 'border-libra-blue text-libra-blue'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
-              <RefreshCw className="w-4 h-4 inline mr-2" />
-              Migração
+              <Building className="w-4 h-4 inline mr-2" />
+              Imagens
             </button>
             <button
               onClick={() => setActiveTab('configuracoes')}
@@ -1258,21 +1258,22 @@ const AdminDashboard: React.FC = () => {
         </>
       )}
 
-      {/* Migração Tab */}
-      {activeTab === 'migracao' && (
+      {/* Imagens Tab */}
+      {activeTab === 'imagens' && (
         <>
           <div className="space-y-8">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Migração do Blog</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Gerenciar Imagens</h2>
               <p className="text-gray-600">
-                Configure e migre o sistema de blog para usar Supabase como banco de dados permanente.
+                Visualize e gerencie todas as imagens enviadas para o blog.
               </p>
             </div>
             
-            <BlogMigration />
+            <ImageManager />
           </div>
         </>
       )}
+
     </div>
   );
 };

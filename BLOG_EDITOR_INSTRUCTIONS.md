@@ -1,6 +1,11 @@
-# 📝 Editor de Blog Aprimorado - Guia de Uso
+# 📝 Editor de Blog Aprimorado - Guia Completo
 
-## ✨ Novas Funcionalidades Implementadas
+## ✨ Sistema Completo de Gestão de Blog
+
+### 🎯 **Visão Geral**
+Sistema moderno de criação e gestão de blog com editor WYSIWYG, upload inteligente de imagens e persistência avançada de dados.
+
+## ✨ Funcionalidades Implementadas
 
 ### 1. 🖼️ **Upload de Imagens Avançado**
 - **Upload por arquivo**: Arraste e solte ou selecione arquivos
@@ -25,14 +30,29 @@
 - **Preview instantâneo**: Veja como ficará o post
 - **Feedback visual**: Indicadores de carregamento e sucesso
 
+### 4. 🗄️ **Gerenciamento de Imagens**
+- **Biblioteca de mídia**: Visualize todas as imagens enviadas
+- **Busca inteligente**: Encontre imagens por nome
+- **Estatísticas**: Monitore uso de armazenamento
+- **Exportar/Importar**: Backup de imagens
+- **Limpeza automática**: Mantenha apenas as mais recentes
+
+### 5. 💾 **Persistência Avançada**
+- **Armazenamento local otimizado**: Imagens salvas no navegador
+- **Fallback inteligente**: URLs externas funcionam normalmente
+- **Sincronização**: Dados compartilhados entre abas
+- **Cache eficiente**: Carregamento rápido das imagens
+
 ## 🚀 Como Usar
 
 ### Criando um Novo Post
 
 1. **Acesse o Admin**: http://localhost:8080/admin
 2. **Faça login** com suas credenciais
-3. **Vá para aba "Blog"**
-4. **Clique em "Novo Post"**
+3. **Navegue pelas abas**:
+   - 📝 **"Blog"**: Criar/editar posts
+   - 🖼️ **"Imagens"**: Gerenciar biblioteca de mídia
+4. **Clique em "Novo Post"** na aba Blog
 
 ### Upload de Imagem de Capa
 
@@ -65,6 +85,20 @@
 3. **Blocos de Código**:
    - Use o ícone `</>` para código inline
    - Use o ícone de bloco para código em bloco
+
+### Gerenciando Imagens
+
+1. **Acesse a aba "Imagens"** no painel admin
+2. **Visualize estatísticas**:
+   - Total de imagens armazenadas
+   - Tamanho ocupado
+   - Uso de armazenamento
+
+3. **Buscar imagens**: Use a barra de pesquisa
+4. **Copiar URLs**: Clique no ícone de cópia
+5. **Deletar imagens**: Clique no ícone de lixeira
+6. **Exportar backup**: Salve todas as imagens em JSON
+7. **Limpar antigas**: Mantenha apenas as 50 mais recentes
 
 ## 🛠️ Recursos Técnicos
 
