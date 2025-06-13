@@ -5,6 +5,7 @@ import { Calendar, ArrowRight, Clock } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { BlogService, type BlogPost } from '@/services/blogService';
 import { useIsMobile } from '@/hooks/use-mobile';
+import ImageRenderer from '@/components/ImageRenderer';
 
 const BlogSection: React.FC = () => {
   const navigate = useNavigate();
@@ -117,11 +118,11 @@ const BlogSection: React.FC = () => {
                 <Card className="hover:shadow-lg transition-all duration-300 group-hover:-translate-y-1 overflow-hidden h-full">
                   {/* Imagem do post */}
                   <div className="aspect-video overflow-hidden">
-                    <img
+                    <ImageRenderer
                       src={post.imageUrl}
                       alt={post.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      loading="lazy"
+                      fallback="/images/blog/placeholder.jpg"
                     />
                   </div>
                   

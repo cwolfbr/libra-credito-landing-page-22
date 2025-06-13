@@ -29,6 +29,8 @@ import { BlogService, type BlogPost, type SimulationConfig } from '@/services/bl
 import { AuthService, type LoginCredentials, type AuthUser } from '@/services/authService';
 import AdminLogin from '@/components/AdminLogin';
 import BlogMigration from '@/components/BlogMigration';
+import ImageUpload from '@/components/ImageUpload';
+import RichTextEditor from '@/components/RichTextEditor';
 import { SimulacaoData, ParceiroData } from '@/lib/supabase';
 import { Eye, Download, RefreshCw, Users, Calculator, TrendingUp, Clock, Handshake, UserCheck, Building, FileText, Settings, Plus, Edit, Trash2, Save, LogOut } from 'lucide-react';
 import { formatBRL } from '@/utils/formatters';
@@ -949,11 +951,11 @@ const AdminDashboard: React.FC = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium mb-1">URL da Imagem</label>
-                  <Input 
-                    placeholder="https://..." 
-                    value={postForm.imageUrl || ''}
-                    onChange={(e) => setPostForm({...postForm, imageUrl: e.target.value})}
+                  <label className="block text-sm font-medium mb-2">Imagem de Capa</label>
+                  <ImageUpload
+                    currentImage={postForm.imageUrl}
+                    onImageUploaded={(imageUrl) => setPostForm({...postForm, imageUrl})}
+                    maxSize={5}
                   />
                 </div>
                 
@@ -978,12 +980,12 @@ const AdminDashboard: React.FC = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium mb-1">Conteúdo</label>
-                  <textarea 
-                    className="w-full h-64 p-3 border border-gray-300 rounded-md"
-                    placeholder="Conteúdo do post em Markdown..."
+                  <label className="block text-sm font-medium mb-2">Conteúdo</label>
+                  <RichTextEditor
                     value={postForm.content || ''}
-                    onChange={(e) => setPostForm({...postForm, content: e.target.value})}
+                    onChange={(content) => setPostForm({...postForm, content})}
+                    placeholder="Escreva o conteúdo do seu post..."
+                    height="500px"
                   />
                 </div>
                 

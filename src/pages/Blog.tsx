@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ModernCTA from '@/components/ModernCTA';
+import ImageRenderer from '@/components/ImageRenderer';
 import { BlogService, type BlogPost as BlogPostType } from '@/services/blogService';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -186,11 +187,11 @@ const Blog = () => {
                   className="block bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow group"
                 >
                   <article>
-                    <img
+                    <ImageRenderer
                       src={post.imageUrl}
                       alt={post.title}
                       className="w-full h-48 object-cover rounded-t-xl"
-                      loading="lazy"
+                      fallback="/images/blog/placeholder.jpg"
                     />
                     <div className="p-6">
                       <span className="text-sm text-libra-blue font-medium">
