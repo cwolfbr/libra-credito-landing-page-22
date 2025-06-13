@@ -28,6 +28,7 @@ import { PartnersService } from '@/services/partnersService';
 import { BlogService, type BlogPost, type SimulationConfig } from '@/services/blogService';
 import { AuthService, type LoginCredentials, type AuthUser } from '@/services/authService';
 import AdminLogin from '@/components/AdminLogin';
+import BlogMigration from '@/components/BlogMigration';
 import { SimulacaoData, ParceiroData } from '@/lib/supabase';
 import { Eye, Download, RefreshCw, Users, Calculator, TrendingUp, Clock, Handshake, UserCheck, Building, FileText, Settings, Plus, Edit, Trash2, Save, LogOut } from 'lucide-react';
 import { formatBRL } from '@/utils/formatters';
@@ -40,7 +41,7 @@ const AdminDashboard: React.FC = () => {
   const [loginError, setLoginError] = useState('');
   const [checkingAuth, setCheckingAuth] = useState(true);
 
-  const [activeTab, setActiveTab] = useState<'simulacoes' | 'parceiros' | 'blog' | 'configuracoes'>('simulacoes');
+  const [activeTab, setActiveTab] = useState<'simulacoes' | 'parceiros' | 'blog' | 'migracao' | 'configuracoes'>('simulacoes');
   
   // Estados para simulações
   const [simulacoes, setSimulacoes] = useState<SimulacaoData[]>([]);
@@ -480,6 +481,17 @@ const AdminDashboard: React.FC = () => {
             >
               <FileText className="w-4 h-4 inline mr-2" />
               Blog
+            </button>
+            <button
+              onClick={() => setActiveTab('migracao')}
+              className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'migracao'
+                  ? 'border-libra-blue text-libra-blue'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              <RefreshCw className="w-4 h-4 inline mr-2" />
+              Migração
             </button>
             <button
               onClick={() => setActiveTab('configuracoes')}
@@ -1240,6 +1252,22 @@ const AdminDashboard: React.FC = () => {
                 </Button>
               </CardContent>
             </Card>
+          </div>
+        </>
+      )}
+
+      {/* Migração Tab */}
+      {activeTab === 'migracao' && (
+        <>
+          <div className="space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Migração do Blog</h2>
+              <p className="text-gray-600">
+                Configure e migre o sistema de blog para usar Supabase como banco de dados permanente.
+              </p>
+            </div>
+            
+            <BlogMigration />
           </div>
         </>
       )}

@@ -381,6 +381,111 @@ export const supabaseApi = {
     
     if (error) throw error;
     return data;
+  },
+
+  // Blog Posts
+  async createBlogPost(data: Database['public']['Tables']['posts']['Insert']) {
+    const { data: result, error } = await supabase
+      .from('posts')
+      .insert(data)
+      .select()
+      .single();
+    
+    if (error) throw error;
+    return result;
+  },
+
+  async getBlogPosts(limit = 50) {
+    const { data, error } = await supabase
+      .from('posts')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(limit);
+    
+    if (error) throw error;
+    return data;
+  },
+
+  async getPublishedBlogPosts(limit = 50) {
+    const { data, error } = await supabase
+      .from('posts')
+      .select('*')
+      .eq('published', true)
+      .order('created_at', { ascending: false })
+      .limit(limit);
+    
+    if (error) throw error;
+    return data;
+  },
+
+  async getBlogPostBySlug(slug: string) {
+    const { data, error } = await supabase
+      .from('posts')
+      .select('*')
+      .eq('slug', slug)
+      .eq('published', true)
+      .maybeSingle();
+    
+    if (error) throw error;
+    return data;
+  },
+
+  async getBlogPostById(id: string) {
+    const { data, error } = await supabase
+      .from('posts')
+      .select('*')
+      .eq('id', id)
+      .single();
+    
+    if (error) throw error;
+    return data;
+  },
+
+  async updateBlogPost(id: string, data: Database['public']['Tables']['posts']['Update']) {
+    const { data: result, error } = await supabase
+      .from('posts')
+      .update(data)
+      .eq('id', id)
+      .select()
+      .single();
+    
+    if (error) throw error;
+    return result;
+  },
+
+  async deleteBlogPost(id: string) {
+    const { error } = await supabase
+      .from('posts')
+      .delete()
+      .eq('id', id);
+    
+    if (error) throw error;
+    return true;
+  },
+
+  async getBlogPostsByCategory(category: string, limit = 20) {
+    const { data, error } = await supabase
+      .from('posts')
+      .select('*')
+      .eq('category', category)
+      .eq('published', true)
+      .order('created_at', { ascending: false })
+      .limit(limit);
+    
+    if (error) throw error;
+    return data;
+  },
+
+  async getFeaturedBlogPosts() {
+    const { data, error } = await supabase
+      .from('posts')
+      .select('*')
+      .eq('published', true)
+      .eq('featured_post', true)
+      .order('created_at', { ascending: false });
+    
+    if (error) throw error;
+    return data;
   }
 };
 

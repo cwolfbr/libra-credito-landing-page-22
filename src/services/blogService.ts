@@ -3,6 +3,7 @@
  * 
  * @service BlogService
  * @description Gerencia CRUD de posts do blog, categorias e configurações
+ * Integrado com Supabase para persistência de dados
  */
 
 import { supabaseApi, type BlogPostData, type Database } from '@/lib/supabase';
@@ -523,7 +524,7 @@ export class BlogService {
   }
 
   /**
-   * Obter todos os posts (em produção viria do banco)
+   * Obter todos os posts do Supabase
    */
   static async getAllPosts(): Promise<BlogPost[]> {
     try {
@@ -533,8 +534,9 @@ export class BlogService {
       }
       return data.map(post => this.fromDb(post));
     } catch (error) {
-      console.error('Erro ao carregar posts:', error);
-      return EXISTING_POSTS;
+      console.error('Erro ao carregar posts do Supabase:', error);
+      // Fallback para localStorage se Supabase falhar
+      return this.getLocalPosts();
     }
   }
 
@@ -552,7 +554,7 @@ export class BlogService {
   }
 
   /**
-   * Obter post por slug
+   * Obter post por slug do Supabase
    */
   static async getPostBySlug(slug: string): Promise<BlogPost | null> {
     try {
@@ -565,7 +567,7 @@ export class BlogService {
   }
 
   /**
-   * Criar novo post
+   * Criar novo post no Supabase
    */
   static async createPost(postData: Omit<BlogPost, 'id' | 'createdAt' | 'updatedAt'>): Promise<BlogPost> {
     const errors = this.validatePost(postData);
@@ -585,7 +587,7 @@ export class BlogService {
   }
 
   /**
-   * Atualizar post existente
+   * Atualizar post existente no Supabase
    */
   static async updatePost(id: string, postData: Partial<BlogPost>): Promise<BlogPost> {
     const posts = await this.getAllPosts();
@@ -618,7 +620,7 @@ export class BlogService {
   }
 
   /**
-   * Deletar post
+   * Deletar post do Supabase
    */
   static async deletePost(id: string): Promise<boolean> {
     await supabaseApi.deleteBlogPost(id);
@@ -626,29 +628,50 @@ export class BlogService {
   }
 
   /**
-   * Buscar posts por categoria
+   * Buscar posts por categoria do Supabase
    */
   static async getPostsByCategory(category: BlogCategory): Promise<BlogPost[]> {
-    const posts = await this.getAllPosts();
-    return posts.filter(post => post.category === category && post.published);
+    try {
+      const posts = await supabaseApi.getBlogPostsByCategory(category);
+      return posts.map(this.convertSupabaseToLocal);
+    } catch (error) {
+      console.error('Erro ao carregar posts por categoria:', error);
+      // Fallback para localStorage
+      const posts = await this.getLocalPosts();
+      return posts.filter(post => post.category === category && post.published);
+    }
   }
 
   /**
-   * Buscar posts publicados
+   * Buscar posts publicados do Supabase
    */
   static async getPublishedPosts(): Promise<BlogPost[]> {
-    const posts = await this.getAllPosts();
-    return posts.filter(post => post.published).sort((a, b) => 
-      new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime()
-    );
+    try {
+      const posts = await supabaseApi.getPublishedBlogPosts();
+      return posts.map(this.convertSupabaseToLocal);
+    } catch (error) {
+      console.error('Erro ao carregar posts publicados:', error);
+      // Fallback para localStorage
+      const posts = await this.getLocalPosts();
+      return posts.filter(post => post.published).sort((a, b) => 
+        new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime()
+      );
+    }
   }
 
   /**
-   * Obter posts em destaque
+   * Obter posts em destaque do Supabase
    */
   static async getFeaturedPosts(): Promise<BlogPost[]> {
-    const posts = await this.getAllPosts();
-    return posts.filter(post => post.published && post.featuredPost);
+    try {
+      const posts = await supabaseApi.getFeaturedBlogPosts();
+      return posts.map(this.convertSupabaseToLocal);
+    } catch (error) {
+      console.error('Erro ao carregar posts em destaque:', error);
+      // Fallback para localStorage
+      const posts = await this.getLocalPosts();
+      return posts.filter(post => post.published && post.featuredPost);
+    }
   }
 
   /**
@@ -700,6 +723,128 @@ export class BlogService {
       console.error('Erro ao salvar configurações:', error);
       throw new Error('Erro ao salvar configurações');
     }
+  }
+
+  /**
+   * Funções auxiliares para conversão entre formatos
+   */
+  private static convertSupabaseToLocal(supabasePost: BlogPostData): BlogPost {
+    return {
+      id: supabasePost.id,
+      title: supabasePost.title,
+      description: supabasePost.description,
+      category: supabasePost.category as BlogCategory,
+      imageUrl: supabasePost.image_url,
+      slug: supabasePost.slug,
+      content: supabasePost.content,
+      readTime: supabasePost.read_time,
+      published: supabasePost.published,
+      featuredPost: supabasePost.featured_post,
+      metaTitle: supabasePost.meta_title,
+      metaDescription: supabasePost.meta_description,
+      tags: supabasePost.tags,
+      createdAt: supabasePost.created_at,
+      updatedAt: supabasePost.updated_at
+    };
+  }
+
+  private static convertLocalToSupabase(localPost: Partial<BlogPost>): Partial<BlogPostData> {
+    const result: Partial<BlogPostData> = {};
+    
+    if (localPost.title !== undefined) result.title = localPost.title;
+    if (localPost.description !== undefined) result.description = localPost.description;
+    if (localPost.category !== undefined) result.category = localPost.category;
+    if (localPost.imageUrl !== undefined) result.image_url = localPost.imageUrl;
+    if (localPost.slug !== undefined) result.slug = localPost.slug;
+    if (localPost.content !== undefined) result.content = localPost.content;
+    if (localPost.readTime !== undefined) result.read_time = localPost.readTime;
+    if (localPost.published !== undefined) result.published = localPost.published;
+    if (localPost.featuredPost !== undefined) result.featured_post = localPost.featuredPost;
+    if (localPost.metaTitle !== undefined) result.meta_title = localPost.metaTitle;
+    if (localPost.metaDescription !== undefined) result.meta_description = localPost.metaDescription;
+    if (localPost.tags !== undefined) result.tags = localPost.tags;
+    
+    return result;
+  }
+
+  /**
+   * Fallback para localStorage
+   */
+  private static async getLocalPosts(): Promise<BlogPost[]> {
+    try {
+      const stored = localStorage.getItem(this.STORAGE_KEY);
+      if (stored) {
+        const posts = JSON.parse(stored);
+        if (posts.length < 5) {
+          localStorage.setItem(this.STORAGE_KEY, JSON.stringify(EXISTING_POSTS));
+          return EXISTING_POSTS;
+        }
+        return posts;
+      } else {
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(EXISTING_POSTS));
+        return EXISTING_POSTS;
+      }
+    } catch (error) {
+      console.error('Erro ao carregar posts do localStorage:', error);
+      return EXISTING_POSTS;
+    }
+  }
+
+  private static async createLocalPost(postData: Omit<BlogPost, 'id' | 'createdAt' | 'updatedAt'>): Promise<BlogPost> {
+    const posts = await this.getLocalPosts();
+    
+    const existingSlug = posts.find(p => p.slug === postData.slug);
+    if (existingSlug) {
+      throw new Error('Slug já existe. Escolha outro.');
+    }
+
+    const newPost: BlogPost = {
+      ...postData,
+      id: Date.now().toString(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      readTime: postData.readTime || this.calculateReadTime(postData.content)
+    };
+
+    posts.unshift(newPost);
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(posts));
+    
+    return newPost;
+  }
+
+  /**
+   * Migrar posts do localStorage para Supabase
+   */
+  static async migrateLocalPostsToSupabase(): Promise<{ migrated: number; errors: string[] }> {
+    const results = { migrated: 0, errors: [] as string[] };
+    
+    try {
+      const localPosts = await this.getLocalPosts();
+      
+      for (const post of localPosts) {
+        try {
+          // Verificar se já existe no Supabase
+          const existingPost = await supabaseApi.getBlogPostBySlug(post.slug);
+          if (existingPost) {
+            results.errors.push(`Post "${post.title}" já existe no Supabase`);
+            continue;
+          }
+
+          // Migrar post
+          const supabaseData = this.convertLocalToSupabase(post);
+          await supabaseApi.createBlogPost(supabaseData as typeof supabaseData & { title: string; description: string; category: string; image_url: string; slug: string; content: string; read_time: number; published: boolean; featured_post: boolean });
+          results.migrated++;
+        } catch (error) {
+          const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
+          results.errors.push(`Erro ao migrar "${post.title}": ${errorMessage}`);
+        }
+      }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
+      results.errors.push(`Erro geral na migração: ${errorMessage}`);
+    }
+    
+    return results;
   }
 
   /**
