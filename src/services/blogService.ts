@@ -831,8 +831,8 @@ export class BlogService {
           }
 
           // Migrar post
-          const supabaseData = this.convertLocalToSupabase(post);
-          await supabaseApi.createBlogPost(supabaseData as typeof supabaseData & { title: string; description: string; category: string; image_url: string; slug: string; content: string; read_time: number; published: boolean; featured_post: boolean });
+          const supabaseData = this.toDb(post);
+          await supabaseApi.createBlogPost(supabaseData as Database['public']['Tables']['blog_posts']['Insert']);
           results.migrated++;
         } catch (error) {
           const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';

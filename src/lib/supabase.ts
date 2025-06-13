@@ -325,6 +325,43 @@ export const supabaseApi = {
     return true;
   },
 
+  async getPublishedBlogPosts(limit = 50) {
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .eq('published', true)
+      .order('created_at', { ascending: false })
+      .limit(limit);
+    
+    if (error) throw error;
+    return data;
+  },
+
+  async getBlogPostsByCategory(category: string, limit = 20) {
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .eq('category', category)
+      .eq('published', true)
+      .order('created_at', { ascending: false })
+      .limit(limit);
+    
+    if (error) throw error;
+    return data;
+  },
+
+  async getFeaturedBlogPosts() {
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .eq('published', true)
+      .eq('featured_post', true)
+      .order('created_at', { ascending: false });
+    
+    if (error) throw error;
+    return data;
+  },
+
   // User Journey
   async createUserJourney(data: Database['public']['Tables']['user_journey']['Insert']) {
     // Usar insert simples primeiro, depois upsert se necessário

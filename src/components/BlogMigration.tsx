@@ -53,23 +53,51 @@ export default function BlogMigration() {
 
       // Teste 2: Buscar posts do Supabase
       tests.push('🔍 Testando busca de posts...');
-      const posts = await supabaseApi.getBlogPosts(5);
-      tests.push(`✅ Encontrados ${posts.length} posts no Supabase`);
+      try {
+        const posts = await supabaseApi.getBlogPosts(5);
+        tests.push(`✅ Encontrados ${posts.length} posts no Supabase`);
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
+        tests.push(`❌ Erro ao buscar posts: ${errorMessage}`);
+        
+        // Se o erro contém "relation", provavelmente a tabela não existe
+        if (errorMessage.includes('relation') || errorMessage.includes('does not exist')) {
+          tests.push('💡 A tabela "blog_posts" não foi encontrada. Execute o script SQL primeiro.');
+        }
+        
+        setTestResults(tests);
+        return;
+      }
 
       // Teste 3: Posts publicados
       tests.push('🔍 Testando posts publicados...');
-      const publishedPosts = await supabaseApi.getPublishedBlogPosts(5);
-      tests.push(`✅ Encontrados ${publishedPosts.length} posts publicados`);
+      try {
+        const publishedPosts = await supabaseApi.getPublishedBlogPosts(5);
+        tests.push(`✅ Encontrados ${publishedPosts.length} posts publicados`);
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
+        tests.push(`❌ Erro posts publicados: ${errorMessage}`);
+      }
 
       // Teste 4: Posts em destaque
       tests.push('🔍 Testando posts em destaque...');
-      const featuredPosts = await supabaseApi.getFeaturedBlogPosts();
-      tests.push(`✅ Encontrados ${featuredPosts.length} posts em destaque`);
+      try {
+        const featuredPosts = await supabaseApi.getFeaturedBlogPosts();
+        tests.push(`✅ Encontrados ${featuredPosts.length} posts em destaque`);
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
+        tests.push(`❌ Erro posts em destaque: ${errorMessage}`);
+      }
 
       // Teste 5: BlogService integrado
       tests.push('🔍 Testando BlogService integrado...');
-      const blogServicePosts = await BlogService.getPublishedPosts();
-      tests.push(`✅ BlogService retornou ${blogServicePosts.length} posts`);
+      try {
+        const blogServicePosts = await BlogService.getPublishedPosts();
+        tests.push(`✅ BlogService retornou ${blogServicePosts.length} posts`);
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
+        tests.push(`❌ Erro BlogService: ${errorMessage}`);
+      }
 
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
