@@ -47,7 +47,7 @@ import { Input } from '@/components/ui/input';
 import { validateForm } from '@/utils/validations';
 import { SimulationService, SimulationResult } from '@/services/simulationService';
 import { useUserJourney } from '@/hooks/useUserJourney';
-import CityAutocomplete from './form/CityAutocomplete';
+import SmartCityField from './form/SmartCityField';
 import LoanAmountField from './form/LoanAmountField';
 import GuaranteeAmountField from './form/GuaranteeAmountField';
 import InstallmentsField from './form/InstallmentsField';
@@ -59,6 +59,7 @@ import SmartApiMessage from './messages/SmartApiMessage';
 import SimulationResultDisplay from './SimulationResultDisplay';
 import { analyzeApiMessage, ApiMessageAnalysis } from '@/utils/apiMessageAnalyzer';
 import { formatBRL, norm } from '@/utils/formatters';
+import { LtvValidationResult } from '@/data/cityLtvData';
 
 const SimulationForm: React.FC = () => {
   const { sessionId, trackSimulation } = useUserJourney();
@@ -66,7 +67,9 @@ const SimulationForm: React.FC = () => {
   const [garantia, setGarantia] = useState('');
   const [parcelas, setParcelas] = useState<number>(36);
   const [amortizacao, setAmortizacao] = useState('');
-  const [cidade, setCidade] = useState('');
+  const [cidade, setCidade] = useState<{cidade: string, uf: string} | null>(null);
+  const [isRural, setIsRural] = useState(false);
+  const [cityValidation, setCityValidation] = useState<LtvValidationResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [resultado, setResultado] = useState<SimulationResult | null>(null);
   const [erro, setErro] = useState('');
@@ -74,7 +77,8 @@ const SimulationForm: React.FC = () => {
   const [isRuralProperty, setIsRuralProperty] = useState(false);
 
   // Validações
-  const validation = validateForm(emprestimo, garantia, parcelas, amortizacao, cidade);
+  const cityString = cidade ? `${cidade.cidade} - ${cidade.uf}` : '';
+  const validation = validateForm(emprestimo, garantia, parcelas, amortizacao, cityString);
 
   const handleEmprestimoChange = (value: string) => {
     setEmprestimo(formatBRL(value));
@@ -84,8 +88,19 @@ const SimulationForm: React.FC = () => {
     setGarantia(formatBRL(value));
   };
 
+  // Função para lidar com mudanças na validação da cidade
+  const handleCityValidationChange = (validation: LtvValidationResult | null) => {
+    setCityValidation(validation);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Verificar se a cidade é válida antes de prosseguir
+    if (cityValidation && !cityValidation.isValid) {
+      setErro(cityValidation.error || 'Cidade inválida');
+      return;
+    }
     
     if (!validation.formularioValido || !sessionId) return;
 
@@ -100,7 +115,7 @@ const SimulationForm: React.FC = () => {
         nomeCompleto: 'Lead Anônimo', // Temporário até preenchimento do contato
         email: 'nao-informado@temp.com',
         telefone: '(00) 00000-0000',
-        cidade: cidade,
+        cidade: cityString,
         valorEmprestimo: validation.emprestimoValue,
         valorImovel: validation.garantiaValue,
         parcelas: parcelas,
@@ -165,7 +180,9 @@ const SimulationForm: React.FC = () => {
     setGarantia('');
     setParcelas(36);
     setAmortizacao('');
-    setCidade('');
+    setCidade(null);
+    setIsRural(false);
+    setCityValidation(null);
     setResultado(null);
     setErro('');
     setApiMessage(null);
@@ -194,7 +211,7 @@ const SimulationForm: React.FC = () => {
         garantia, 
         parcelas, 
         amortizacao, 
-        cidade
+        cityString
       );
 
       if (!newValidation.formularioValido) {
@@ -211,7 +228,7 @@ const SimulationForm: React.FC = () => {
           nomeCompleto: 'Lead Anônimo',
           email: 'nao-informado@temp.com',
           telefone: '(00) 00000-0000',
-          cidade: cidade,
+          cidade: cityString,
           valorEmprestimo: newValidation.emprestimoValue,
           valorImovel: newValidation.garantiaValue,
           parcelas: parcelas,
@@ -303,7 +320,14 @@ const SimulationForm: React.FC = () => {
           <CardContent className="p-3 md:p-4">
             <form onSubmit={handleSubmit} className="space-y-2">
               
-              <CityAutocomplete value={cidade} onCityChange={setCidade} />
+              <SmartCityField
+                value={cidade}
+                onChange={setCidade}
+                loanAmount={norm(emprestimo)}
+                guaranteeAmount={norm(garantia)}
+                isRural={isRural}
+                onValidationChange={handleCityValidationChange}
+              />
 
               <LoanAmountField value={emprestimo} onChange={handleEmprestimoChange} />
 
@@ -317,11 +341,26 @@ const SimulationForm: React.FC = () => {
 
               <AmortizationField value={amortizacao} onChange={setAmortizacao} />
 
+              {/* Toggle para imóvel rural quando necessário */}
+              {cityValidation?.error?.includes("rural") && (
+                <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
+                  <label className="flex items-center gap-2 text-sm">
+                    <input
+                      type="checkbox"
+                      checked={isRural}
+                      onChange={(e) => setIsRural(e.target.checked)}
+                      className="rounded"
+                    />
+                    <span>Este é um imóvel rural</span>
+                  </label>
+                </div>
+              )}
+
               {/* Botões */}
               <div className="flex gap-2 pt-2">
                 <Button
                 type="submit"
-                disabled={!validation.formularioValido || loading}
+                disabled={!validation.formularioValido || loading || (cityValidation && !cityValidation.isValid)}
                 className="flex-1 bg-libra-blue hover:bg-libra-blue/90 text-white py-2 text-sm font-semibold min-h-[44px]"
                 >
                   {loading ? (
@@ -381,7 +420,7 @@ const SimulationForm: React.FC = () => {
             resultado={resultado}
             valorEmprestimo={validation.emprestimoValue}
             valorImovel={validation.garantiaValue}
-            cidade={cidade}
+            cidade={cityString}
             onNewSimulation={handleNewSimulation}
           />
         )}
