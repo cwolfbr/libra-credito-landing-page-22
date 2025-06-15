@@ -17,7 +17,7 @@
 import { validateCity, validateLTV } from '@/utils/cityLtvService';
 import { calculateLoan, getInterestRate, validateLoanParameters } from '@/utils/loanCalculator';
 import { validateEmail, validatePhone, formatPhone } from '@/utils/validations';
-import { supabaseApi, SimulacaoData } from '@/lib/supabase';
+import { supabaseApi, SimulacaoData, supabase } from '@/lib/supabase';
 
 // Reutilizar interfaces do serviço original
 export interface SimulationInput {
@@ -144,7 +144,7 @@ export class LocalSimulationService {
 
       // 7. Salvar no Supabase (mantendo integração original)
       try {
-        const supabaseData: Omit<SimulacaoData, 'id' | 'created_at'> = {
+        const supabaseData = {
           session_id: input.sessionId,
           nome_completo: input.nomeCompleto,
           email: input.email,
@@ -154,16 +154,13 @@ export class LocalSimulationService {
           valor_imovel: input.valorImovel,
           parcelas: input.parcelas,
           tipo_amortizacao: input.tipoAmortizacao,
-          valor_parcela: result.valor,
-          primeira_parcela: calculation.parcelaSac.inicial,
-          ultima_parcela: calculation.parcelaSac.final,
-          taxa_juros: taxaJuros * 100,
+          parcela_inicial: calculation.parcelaSac.inicial,
+          parcela_final: calculation.parcelaSac.final,
           user_agent: input.userAgent || '',
-          ip_address: input.ipAddress || '',
-          imovel_rural: isRuralProperty
+          ip_address: input.ipAddress || ''
         };
 
-        const supabaseResult = await supabaseApi.insertSimulacao(supabaseData);
+        const supabaseResult = await supabaseApi.createSimulacao(supabaseData);
         console.log('✅ Simulação salva no Supabase:', supabaseResult);
         
         // Usar ID do Supabase se disponível
@@ -214,7 +211,12 @@ export class LocalSimulationService {
       let simulationData = null;
       try {
         if (input.simulationId) {
-          simulationData = await supabaseApi.getSimulacao(input.simulationId);
+          const { data } = await supabase
+            .from('simulacoes')
+            .select('*')
+            .eq('id', input.simulationId)
+            .single();
+          simulationData = data;
           console.log('📊 Dados da simulação obtidos:', simulationData);
         }
       } catch (supabaseError) {
@@ -259,13 +261,16 @@ export class LocalSimulationService {
       // Atualizar contato no Supabase
       try {
         if (input.simulationId) {
-          await supabaseApi.updateSimulacaoContact(input.simulationId, {
-            nomeCompleto: input.nomeCompleto,
-            email: input.email,
-            telefone: input.telefone,
-            imovelProprio: input.imovelProprio,
-            observacoes: input.observacoes
-          });
+          await supabase
+            .from('simulacoes')
+            .update({
+              nome_completo: input.nomeCompleto,
+              email: input.email,
+              telefone: input.telefone,
+              imovel_proprio: input.imovelProprio,
+              status: 'lead_capturado'
+            })
+            .eq('id', input.simulationId);
           console.log('✅ Contato atualizado no Supabase');
         }
       } catch (supabaseError) {
