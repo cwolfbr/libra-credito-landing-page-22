@@ -27,16 +27,20 @@ export const analyzeLocalMessage = (message: string): ApiMessageAnalysis => {
     };
   }
   
-  // Padrão 2: Apenas imóveis rurais
-  // "Para a cidade [cidade], trabalhamos apenas com imóveis rurais."
-  if (lowerMessage.includes('apenas com imóveis rurais') || lowerMessage.includes('trabalhamos apenas')) {
+  // Padrão 2: Apenas imóveis rurais com limite de 30%
+  // "Para a cidade [cidade], trabalhamos apenas com imóveis rurais com limite de empréstimo de até 30% do valor do imóvel. Valor máximo: R$ [valor]"
+  if (lowerMessage.includes('apenas com imóveis rurais') && lowerMessage.includes('30%')) {
     const cityMatch = message.match(/cidade\s+([^,]+)/i) || message.match(/em\s+([^,]+)/i);
+    const valueMatch = message.match(/r\$?\s*([\d.,]+)/i);
+    
     const cidade = cityMatch ? cityMatch[1].trim() : undefined;
+    const valorSugerido = valueMatch ? parseMonetaryValue(valueMatch[1]) : undefined;
     
     return {
       type: 'limit_30_rural',
       originalMessage: message,
       cidade,
+      valorSugerido,
       shouldBlockSimulation: false,
       needsRuralConfirmation: true,
       shouldLimitTo30Percent: true

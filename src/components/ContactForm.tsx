@@ -106,7 +106,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
         imovelProprioTexto: imovelProprio === 'proprio' ? 'Imóvel Próprio' : 'Imóvel de Terceiro'
       });
       
-      // Usar o serviço local
+      // Usar o serviço local com dados da simulação
       await LocalSimulationService.processContact({
         simulationId: simulationResult.id,
         sessionId,
@@ -114,7 +114,12 @@ const ContactForm: React.FC<ContactFormProps> = ({
         email,
         telefone,
         imovelProprio,
-        observacoes: `Simulação: ${simulationResult.amortizacao} - ${simulationResult.parcelas}x - R$ ${simulationResult.valor.toLocaleString('pt-BR')}`
+        observacoes: `Simulação: ${simulationResult.amortizacao} - ${simulationResult.parcelas}x - R$ ${simulationResult.valor.toLocaleString('pt-BR')}`,
+        // Dados adicionais para API Ploomes
+        valorParcelaCalculada: simulationResult.valor,
+        tipoAmortizacao: simulationResult.amortizacao,
+        quantidadeParcelas: simulationResult.parcelas,
+        aceitaPolitica: aceitePrivacidade
       });
       
       // Mensagem de sucesso mais detalhada

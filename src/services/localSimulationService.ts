@@ -17,6 +17,7 @@
 import { validateCity, validateLTV } from '@/utils/cityLtvService';
 import { calculateLoan, getInterestRate, validateLoanParameters } from '@/utils/loanCalculator';
 import { validateEmail, validatePhone, formatPhone } from '@/utils/validations';
+import { supabaseApi, SimulacaoData } from '@/lib/supabase';
 
 // Reutilizar interfaces do serviço original
 export interface SimulationInput {
@@ -78,29 +79,40 @@ export class LocalSimulationService {
         throw new Error('Cidade não encontrada em nossa base de dados');
       }
 
-      if (!cityValidation.allowCalculation) {
-        // Retornar mensagens específicas baseadas no LTV da cidade
-        switch (cityValidation.status) {
-          case 'not_working':
-            throw new Error(`Ainda não trabalhamos em ${input.cidade}. Nossa equipe está expandindo nossa cobertura.`);
-          case 'rural_only':
-            throw new Error(`Para a cidade ${input.cidade}, trabalhamos apenas com imóveis rurais. Confirme se seu imóvel é rural.`);
-          default:
-            throw new Error(cityValidation.message);
-        }
+      // Para cidades que não trabalhamos (LTV 0), bloquear completamente
+      if (cityValidation.status === 'not_working') {
+        throw new Error(`Ainda não trabalhamos em ${input.cidade}. Nossa equipe está expandindo nossa cobertura.`);
       }
 
-      // 3. Validar LTV específico da cidade
-      const ltvValidation = validateLTV(input.valorEmprestimo, input.valorImovel, input.cidade);
-      console.log('📊 Validação de LTV:', ltvValidation);
+      // Para imóveis rurais (LTV 1), permitir cálculo mas com aviso
+      let isRuralProperty = false;
+      if (cityValidation.status === 'rural_only') {
+        isRuralProperty = true;
+        console.log('🏡 Imóvel rural detectado para', input.cidade);
+      }
+
+      // 3. Validar LTV específico da cidade (apenas se não for rural sem limitações)
+      let ltvValidation = { valid: true, message: 'OK' };
       
-      if (!ltvValidation.valid) {
-        // Retornar erro com sugestão de ajuste
-        let errorMessage = ltvValidation.message;
-        if (ltvValidation.suggestedLoanAmount) {
-          errorMessage += `. Valor máximo recomendado: R$ ${ltvValidation.suggestedLoanAmount.toLocaleString('pt-BR')}`;
+      if (cityValidation.status !== 'rural_only') {
+        ltvValidation = validateLTV(input.valorEmprestimo, input.valorImovel, input.cidade);
+        console.log('📊 Validação de LTV:', ltvValidation);
+        
+        if (!ltvValidation.valid) {
+          // Retornar erro com sugestão de ajuste
+          let errorMessage = ltvValidation.message;
+          if (ltvValidation.suggestedLoanAmount) {
+            errorMessage += `. Valor máximo recomendado: R$ ${ltvValidation.suggestedLoanAmount.toLocaleString('pt-BR')}`;
+          }
+          throw new Error(errorMessage);
         }
-        throw new Error(errorMessage);
+      } else {
+        // Para imóveis rurais (LTV 1), aplicar limite de 30% do valor do imóvel
+        const ltvCalculado = (input.valorEmprestimo / input.valorImovel) * 100;
+        if (ltvCalculado > 30) {
+          const valorMaximo = Math.floor((input.valorImovel * 30) / 100);
+          throw new Error(`Para a cidade ${input.cidade}, trabalhamos apenas com imóveis rurais com limite de empréstimo de até 30% do valor do imóvel. Valor máximo: R$ ${valorMaximo.toLocaleString('pt-BR')}`);
+        }
       }
 
       // 4. Validar parâmetros do empréstimo
@@ -116,8 +128,9 @@ export class LocalSimulationService {
       console.log('💰 Cálculo realizado:', calculation);
 
       // 6. Preparar resultado no formato esperado
+      const simulationId = this.generateSimulationId();
       const result: SimulationResult = {
-        id: this.generateSimulationId(),
+        id: simulationId,
         valor: input.tipoAmortizacao === 'PRICE' ? calculation.parcelaPrice : calculation.parcelaSac.inicial,
         amortizacao: input.tipoAmortizacao,
         parcelas: input.parcelas,
@@ -129,7 +142,39 @@ export class LocalSimulationService {
         sessionId: input.sessionId
       };
 
-      // 7. Armazenar localmente (opcional)
+      // 7. Salvar no Supabase (mantendo integração original)
+      try {
+        const supabaseData: Omit<SimulacaoData, 'id' | 'created_at'> = {
+          session_id: input.sessionId,
+          nome_completo: input.nomeCompleto,
+          email: input.email,
+          telefone: input.telefone,
+          cidade: input.cidade,
+          valor_emprestimo: input.valorEmprestimo,
+          valor_imovel: input.valorImovel,
+          parcelas: input.parcelas,
+          tipo_amortizacao: input.tipoAmortizacao,
+          valor_parcela: result.valor,
+          primeira_parcela: calculation.parcelaSac.inicial,
+          ultima_parcela: calculation.parcelaSac.final,
+          taxa_juros: taxaJuros * 100,
+          user_agent: input.userAgent || '',
+          ip_address: input.ipAddress || '',
+          imovel_rural: isRuralProperty
+        };
+
+        const supabaseResult = await supabaseApi.insertSimulacao(supabaseData);
+        console.log('✅ Simulação salva no Supabase:', supabaseResult);
+        
+        // Usar ID do Supabase se disponível
+        if (supabaseResult?.id) {
+          result.id = supabaseResult.id;
+        }
+      } catch (supabaseError) {
+        console.warn('⚠️ Erro ao salvar no Supabase (continuando):', supabaseError);
+      }
+
+      // 8. Armazenar localmente como backup
       this.saveSimulationLocally(result, input);
 
       console.log('✅ Simulação local realizada com sucesso:', result);
@@ -143,11 +188,18 @@ export class LocalSimulationService {
 
   /**
    * Processa contato pós-simulação
-   * Mantém interface do serviço original
+   * Integra com API Ploomes e Supabase
    */
-  static async processContact(input: ContactFormInput): Promise<{success: boolean, message: string}> {
+  static async processContact(input: ContactFormInput & {
+    valorDesejadoEmprestimo?: number;
+    valorImovelGarantia?: number;
+    quantidadeParcelas?: number;
+    tipoAmortizacao?: string;
+    valorParcelaCalculada?: number;
+    aceitaPolitica?: boolean;
+  }): Promise<{success: boolean, message: string}> {
     try {
-      console.log('📧 Processando contato local:', input);
+      console.log('📧 Processando contato com integração:', input);
       
       // Validar dados
       if (!validateEmail(input.email)) {
@@ -158,17 +210,88 @@ export class LocalSimulationService {
         throw new Error('Telefone inválido');
       }
 
-      // Salvar contato localmente
+      // Obter dados da simulação do Supabase
+      let simulationData = null;
+      try {
+        if (input.simulationId) {
+          simulationData = await supabaseApi.getSimulacao(input.simulationId);
+          console.log('📊 Dados da simulação obtidos:', simulationData);
+        }
+      } catch (supabaseError) {
+        console.warn('⚠️ Erro ao obter simulação do Supabase:', supabaseError);
+      }
+
+      // Preparar payload para API Ploomes
+      const ploomesPayload = {
+        cidade: simulationData?.cidade || 'Não informado',
+        valorDesejadoEmprestimo: input.valorDesejadoEmprestimo || simulationData?.valor_emprestimo || 0,
+        valorImovelGarantia: input.valorImovelGarantia || simulationData?.valor_imovel || 0,
+        quantidadeParcelas: input.quantidadeParcelas || simulationData?.parcelas || 36,
+        tipoAmortizacao: input.tipoAmortizacao || simulationData?.tipo_amortizacao || 'PRICE',
+        valorParcelaCalculada: input.valorParcelaCalculada || simulationData?.valor_parcela || 0,
+        nomeCompleto: input.nomeCompleto,
+        email: input.email,
+        telefone: input.telefone,
+        imovelProprio: input.imovelProprio === 'proprio' ? 'Imóvel próprio' : 'Imóvel de terceiro',
+        aceitaPolitica: input.aceitaPolitica || false
+      };
+
+      console.log('🚀 Enviando para API Ploomes:', ploomesPayload);
+
+      // Enviar para API Ploomes
+      const ploomesResponse = await fetch('https://api-ploomes.vercel.app/cadastro/online/env', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(ploomesPayload)
+      });
+
+      if (!ploomesResponse.ok) {
+        const errorText = await ploomesResponse.text();
+        console.error('❌ Erro na API Ploomes:', errorText);
+        throw new Error(`Erro na API Ploomes: ${ploomesResponse.status}`);
+      }
+
+      const ploomesResult = await ploomesResponse.json();
+      console.log('✅ Sucesso na API Ploomes:', ploomesResult);
+
+      // Atualizar contato no Supabase
+      try {
+        if (input.simulationId) {
+          await supabaseApi.updateSimulacaoContact(input.simulationId, {
+            nomeCompleto: input.nomeCompleto,
+            email: input.email,
+            telefone: input.telefone,
+            imovelProprio: input.imovelProprio,
+            observacoes: input.observacoes
+          });
+          console.log('✅ Contato atualizado no Supabase');
+        }
+      } catch (supabaseError) {
+        console.warn('⚠️ Erro ao atualizar contato no Supabase:', supabaseError);
+      }
+
+      // Salvar contato localmente como backup
       this.saveContactLocally(input);
 
-      console.log('✅ Contato processado localmente');
+      console.log('✅ Contato processado com sucesso');
       return {
         success: true,
-        message: 'Dados salvos com sucesso! Nossa equipe entrará em contato.'
+        message: 'Dados enviados com sucesso! Nossa equipe entrará em contato em breve.'
       };
 
     } catch (error) {
       console.error('❌ Erro ao processar contato:', error);
+      
+      // Salvar localmente mesmo em caso de erro
+      try {
+        this.saveContactLocally(input);
+        console.log('💾 Dados salvos localmente como backup');
+      } catch (localError) {
+        console.error('❌ Erro ao salvar localmente:', localError);
+      }
+      
       throw error;
     }
   }
