@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Link } from 'react-router-dom';
-import { SimulationService } from '@/services/simulationService';
+import { LocalSimulationService } from '@/services/localSimulationService';
 import { useUserJourney } from '@/hooks/useUserJourney';
 
 interface ContactFormProps {
@@ -106,8 +106,8 @@ const ContactForm: React.FC<ContactFormProps> = ({
         imovelProprioTexto: imovelProprio === 'proprio' ? 'Imóvel Próprio' : 'Imóvel de Terceiro'
       });
       
-      // Usar o serviço integrado
-      await SimulationService.submitContactForm({
+      // Usar o serviço local
+      await LocalSimulationService.processContact({
         simulationId: simulationResult.id,
         sessionId,
         nomeCompleto: nome,

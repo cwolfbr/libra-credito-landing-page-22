@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import LocalSimulationForm from '@/components/LocalSimulationForm';
+import SimulationForm from '@/components/SimulationForm';
 
 const Simulacao = () => {
   useEffect(() => {
@@ -20,7 +20,7 @@ const Simulacao = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1 bg-libra-light pt-header">
-        <LocalSimulationForm />
+        <SimulationForm />
       </main>
       <Footer />
     </div>

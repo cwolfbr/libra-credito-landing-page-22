@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { MapPin } from 'lucide-react';
+import { searchCities } from '@/utils/cityLtvService';
 
 /**
- * Autocomplete field for Brazilian cities using IBGE API.
- * Fetches city suggestions as user types and only allows
- * selection of valid cities.
+ * Autocomplete field for Brazilian cities using local JSON data.
+ * Searches city suggestions from LTV_Cidades.json as user types 
+ * and only allows selection of valid cities.
  */
 const CityAutocomplete = ({ value = '', onCityChange }) => {
   const [inputValue, setInputValue] = useState(value);
@@ -22,13 +23,13 @@ const CityAutocomplete = ({ value = '', onCityChange }) => {
     setInputValue(value);
   }, [value]);
 
-  // Fetch cities from IBGE with debounce
+  // Search cities from local JSON with debounce
   useEffect(() => {
     if (fetchTimeout.current) {
       clearTimeout(fetchTimeout.current);
     }
 
-    if (inputValue.length < 3) {
+    if (inputValue.length < 2) {
       setSuggestions([]);
       setIsLoading(false);
       setError('');
@@ -38,42 +39,19 @@ const CityAutocomplete = ({ value = '', onCityChange }) => {
     setIsLoading(true);
     setError('');
 
-    const controller = new AbortController();
     fetchTimeout.current = setTimeout(() => {
-      fetch(
-        `https://servicodados.ibge.gov.br/api/v1/localidades/municipios?nome=${encodeURIComponent(
-          inputValue
-        )}`,
-        { signal: controller.signal }
-      )
-        .then((res) => {
-          if (!res.ok) throw new Error('Erro ao buscar cidades');
-          return res.json();
-        })
-        .then((data) => {
-          const filtered = data.filter((c) =>
-            c.nome.toLowerCase().includes(inputValue.toLowerCase())
-          );
-          const mapped = filtered.map((c) => {
-            const uf =
-              c.microrregiao?.mesorregiao?.UF?.sigla ||
-              c['regiao-imediata']?.['regiao-intermediaria']?.UF?.sigla ||
-              '';
-            return `${c.nome} - ${uf}`;
-          });
-          setSuggestions(mapped.slice(0, 10));
-          setIsLoading(false);
-        })
-        .catch((err) => {
-          if (controller.signal.aborted) return;
-          console.error(err);
-          setError('Erro ao buscar cidades');
-          setIsLoading(false);
-        });
+      try {
+        const results = searchCities(inputValue);
+        setSuggestions(results);
+        setIsLoading(false);
+      } catch (err) {
+        console.error('Erro ao buscar cidades:', err);
+        setError('Erro ao buscar cidades');
+        setIsLoading(false);
+      }
     }, 300);
 
     return () => {
-      controller.abort();
       clearTimeout(fetchTimeout.current);
     };
   }, [inputValue]);
@@ -148,7 +126,7 @@ const CityAutocomplete = ({ value = '', onCityChange }) => {
   };
 
   // Check if we should show suggestions
-  const showSuggestions = isFocused && inputValue.length >= 3 && (isLoading || error || suggestions.length > 0);
+  const showSuggestions = isFocused && inputValue.length >= 2 && (isLoading || error || suggestions.length > 0);
 
   return (
     <div ref={containerRef} className="flex items-center gap-2 relative">
@@ -170,7 +148,7 @@ const CityAutocomplete = ({ value = '', onCityChange }) => {
           onFocus={handleFocus}
           onBlur={handleBlur}
           placeholder={
-            inputValue.length < 3 ? 'Digite 3 ou mais caracteres' : 'Busque a cidade'
+            inputValue.length < 2 ? 'Digite 2 ou mais caracteres' : 'Busque a cidade'
           }
           className="text-sm w-full px-3 py-2 rounded-md border-2 border-[#3CB371] focus:outline-none focus:border-[#2E8B57] transition-colors"
         />
