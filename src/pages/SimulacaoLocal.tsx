@@ -1,18 +1,17 @@
-
 import React, { useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import LocalSimulationForm from '@/components/LocalSimulationForm';
 
-const Simulacao = () => {
+const SimulacaoLocal = () => {
   useEffect(() => {
     // Atualiza o título da página para SEO
-    document.title = "Simulação de Crédito | Libra Crédito";
+    document.title = "Simulação Local de Crédito | Libra Crédito";
     
     // Adiciona meta description para SEO
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Simule seu crédito com garantia de imóvel em poucos cliques. Descubra o valor da sua parcela e as melhores condições do mercado.');
+      metaDescription.setAttribute('content', 'Simule seu crédito instantaneamente sem APIs. Calcule parcelas SAC e PRICE com base na sua cidade e valor do imóvel.');
     }
   }, []);
 
@@ -27,4 +26,4 @@ const Simulacao = () => {
   );
 };
 
-export default Simulacao;
+export default SimulacaoLocal;

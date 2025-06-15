@@ -24,6 +24,8 @@ const MobileDemo = lazy(() => import("./pages/MobileDemo"));
 const SimulacaoWizard = lazy(() => import("./pages/SimulacaoWizard"));
 const SimpleWizardTest = lazy(() => import("./pages/SimpleWizardTest"));
 const MobileNavDemo = lazy(() => import("./pages/MobileNavDemo"));
+const SimulacaoSapi = lazy(() => import("./pages/SimulacaoSapi"));
+const SimulacaoLocal = lazy(() => import("./pages/SimulacaoLocal"));
 
 const Loading = () => (
   <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -55,6 +57,8 @@ const App = () => (
               <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/parceiros" element={<Parceiros />} />
               <Route path="/simulacao" element={<Simulacao />} />
+              <Route path="/simulacao/sapi" element={<SimulacaoSapi />} />
+              <Route path="/simulacao/local" element={<SimulacaoLocal />} />
               <Route path="/politica-privacidade" element={<PoliticaPrivacidade />} />
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/test-supabase" element={<SupabaseTestPage />} />
