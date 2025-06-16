@@ -1036,7 +1036,7 @@ const AdminDashboard: React.FC = () => {
                         <span>•</span>
                         <span>Suporte a HTML</span>
                         <span>•</span>
-                        <span>Palavras: {postForm.content ? postForm.content.split(/\s+/).length : 0}</span>
+                        <span>Palavras: {postForm.content ? postForm.content.split(' ').filter(word => word.length > 0).length : 0}</span>
                       </div>
                     </div>
                     <textarea 
@@ -1284,12 +1284,12 @@ Bloco de código
               </div>
             </CardContent>
           </Card>
-        </>
+        </div>
       )}
       
-      {/* Configurações Tab */}
+      {/* Configuracoes Tab */}
       {activeTab === 'configuracoes' && (
-        <>
+        <div>
           <div className="space-y-8">
             {/* Parâmetros de Simulação */}
             <Card>
@@ -1451,7 +1451,7 @@ Bloco de código
               </CardContent>
             </Card>
           </div>
-        </>
+        </div>
       )}
     </div>
   );
