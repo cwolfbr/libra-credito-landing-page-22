@@ -27,6 +27,11 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const validateFile = (file: File): string | null => {
+    // Verificar se é arquivo
+    if (!file) {
+      return 'Nenhum arquivo selecionado';
+    }
+
     // Verificar tipo de arquivo
     if (!file.type.startsWith('image/')) {
       return 'Apenas arquivos de imagem são permitidos';
@@ -39,17 +44,29 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
     }
 
     // Verificar formatos específicos
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-    if (!allowedTypes.includes(file.type)) {
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+    if (!allowedTypes.includes(file.type.toLowerCase())) {
       return 'Formato não suportado. Use JPG, PNG, GIF ou WebP';
+    }
+
+    // Verificar se arquivo não está corrompido
+    if (file.size === 0) {
+      return 'Arquivo parece estar corrompido ou vazio';
     }
 
     return null;
   };
 
   const uploadFile = async (file: File) => {
+    console.log('Iniciando upload do arquivo:', {
+      name: file.name,
+      size: file.size,
+      type: file.type
+    });
+
     const validationError = validateFile(file);
     if (validationError) {
+      console.error('Erro de validação:', validationError);
       setError(validationError);
       return;
     }
@@ -58,19 +75,21 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
     setIsUploading(true);
     setUploadProgress(0);
 
-    try {
-      // Simular progresso de upload
-      const progressInterval = setInterval(() => {
-        setUploadProgress(prev => {
-          if (prev >= 90) {
-            clearInterval(progressInterval);
-            return 90;
-          }
-          return prev + 10;
-        });
-      }, 100);
+    // Simular progresso de upload
+    const progressInterval = setInterval(() => {
+      setUploadProgress(prev => {
+        if (prev >= 90) {
+          clearInterval(progressInterval);
+          return 90;
+        }
+        return prev + 10;
+      });
+    }, 100);
 
+    try {
+      console.log('Chamando BlogService.uploadImage...');
       const imageUrl = await BlogService.uploadImage(file);
+      console.log('Upload concluído com sucesso. URL:', imageUrl);
       
       clearInterval(progressInterval);
       setUploadProgress(100);
@@ -79,10 +98,18 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
         onImageUpload(imageUrl);
         setUploadProgress(0);
         setIsUploading(false);
+        setError(null);
       }, 500);
 
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Erro ao fazer upload');
+      console.error('Erro detalhado no upload:', error);
+      clearInterval(progressInterval);
+      
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : 'Erro inesperado ao fazer upload da imagem';
+      
+      setError(errorMessage);
       setIsUploading(false);
       setUploadProgress(0);
     }
@@ -225,6 +252,9 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
               </p>
               <p className="text-sm text-gray-500">
                 JPG, PNG, GIF ou WebP até {maxSize}MB
+              </p>
+              <p className="text-xs text-gray-400 mt-1">
+                ✨ Imagens serão otimizadas automaticamente
               </p>
             </div>
           </>

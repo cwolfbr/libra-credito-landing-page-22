@@ -783,11 +783,22 @@ export class BlogService {
    * Upload de imagem para blog
    */
   static async uploadImage(file: File, fileName?: string): Promise<string> {
+    const { ImageUploadService } = await import('@/services/imageUploadService');
+    
     try {
-      return await supabaseApi.uploadBlogImage(file, fileName);
+      // Otimizar imagem antes do upload
+      const optimizedFile = await ImageUploadService.optimizeImage(file);
+      
+      // Fazer upload
+      const result = await ImageUploadService.uploadImage(optimizedFile);
+      
+      // Limpeza periódica de imagens antigas
+      ImageUploadService.cleanupLocalImages();
+      
+      return result.url;
     } catch (error) {
       console.error('Erro ao fazer upload de imagem:', error);
-      throw new Error('Erro ao fazer upload da imagem. Verifique o formato e tamanho do arquivo.');
+      throw new Error(error instanceof Error ? error.message : 'Erro ao fazer upload da imagem');
     }
   }
 
@@ -795,8 +806,10 @@ export class BlogService {
    * Deletar imagem do blog
    */
   static async deleteImage(imageUrl: string): Promise<boolean> {
+    const { ImageUploadService } = await import('@/services/imageUploadService');
+    
     try {
-      return await supabaseApi.deleteBlogImage(imageUrl);
+      return await ImageUploadService.deleteImage(imageUrl);
     } catch (error) {
       console.error('Erro ao deletar imagem:', error);
       return false;
