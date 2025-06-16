@@ -212,12 +212,29 @@ export class LocalSimulationService {
       let simulationData = null;
       try {
         if (input.simulationId) {
-          const { data } = await supabase
-            .from('simulacoes')
-            .select('*')
-            .eq('id', input.simulationId)
-            .single();
-          simulationData = data;
+          // Verificar se é um ID local (que não existe no Supabase)
+          const isLocalId = input.simulationId.startsWith('local_');
+          
+          if (isLocalId) {
+            console.log('🏠 ID local detectado, buscando por session_id:', input.sessionId);
+            // Para IDs locais, buscar pela session_id mais recente
+            const { data } = await supabase
+              .from('simulacoes')
+              .select('*')
+              .eq('session_id', input.sessionId)
+              .order('created_at', { ascending: false })
+              .limit(1)
+              .single();
+            simulationData = data;
+          } else {
+            // Para IDs do Supabase, buscar normalmente
+            const { data } = await supabase
+              .from('simulacoes')
+              .select('*')
+              .eq('id', input.simulationId)
+              .single();
+            simulationData = data;
+          }
           console.log('📊 Dados da simulação obtidos:', simulationData);
         }
       } catch (supabaseError) {
@@ -307,25 +324,64 @@ export class LocalSimulationService {
             }
           });
           
-          // Primeiro verificar se a simulação existe
-          const { data: existingData, error: selectError } = await supabase
-            .from('simulacoes')
-            .select('id, nome_completo, email, telefone, imovel_proprio, status')
-            .eq('id', input.simulationId)
-            .single();
+          // Usar a mesma lógica de busca para atualização
+          const isLocalId = input.simulationId.startsWith('local_');
+          let existingData = null;
+          let updateResult = null;
+          
+          if (isLocalId) {
+            console.log('🏠 Atualizando por session_id:', input.sessionId);
+            // Para IDs locais, buscar e atualizar pela session_id mais recente
+            const { data: searchData, error: selectError } = await supabase
+              .from('simulacoes')
+              .select('id, nome_completo, email, telefone, imovel_proprio, status')
+              .eq('session_id', input.sessionId)
+              .order('created_at', { ascending: false })
+              .limit(1)
+              .single();
+              
+            if (selectError) {
+              console.error('❌ Erro ao buscar simulação por session_id:', selectError);
+              throw new Error(`Simulação não encontrada: ${selectError.message}`);
+            }
             
-          if (selectError) {
-            console.error('❌ Erro ao buscar simulação:', selectError);
-            throw new Error(`Simulação não encontrada: ${selectError.message}`);
+            existingData = searchData;
+            
+            // Atualizar usando o ID real do Supabase
+            const { data, error } = await supabase
+              .from('simulacoes')
+              .update(updateData)
+              .eq('id', existingData.id)
+              .select();
+              
+            updateResult = { data, error };
+          } else {
+            // Para IDs do Supabase, buscar e atualizar normalmente
+            const { data: searchData, error: selectError } = await supabase
+              .from('simulacoes')
+              .select('id, nome_completo, email, telefone, imovel_proprio, status')
+              .eq('id', input.simulationId)
+              .single();
+              
+            if (selectError) {
+              console.error('❌ Erro ao buscar simulação:', selectError);
+              throw new Error(`Simulação não encontrada: ${selectError.message}`);
+            }
+            
+            existingData = searchData;
+            
+            const { data, error } = await supabase
+              .from('simulacoes')
+              .update(updateData)
+              .eq('id', input.simulationId)
+              .select();
+              
+            updateResult = { data, error };
           }
           
           console.log('📊 Dados antes da atualização:', existingData);
           
-          const { data, error } = await supabase
-            .from('simulacoes')
-            .update(updateData)
-            .eq('id', input.simulationId)
-            .select();
+          const { data, error } = updateResult;
             
           if (error) {
             console.error('❌ Erro ao atualizar Supabase:', {
