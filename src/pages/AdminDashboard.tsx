@@ -28,6 +28,7 @@ import { PartnersService } from '@/services/partnersService';
 import { BlogService, type BlogPost } from '@/services/blogService';
 import { AuthService, type LoginCredentials, type AuthUser } from '@/services/authService';
 import AdminLogin from '@/components/AdminLogin';
+import ImageUploader from '@/components/ImageUploader';
 import { SimulacaoData, ParceiroData } from '@/lib/supabase';
 import { Eye, Download, RefreshCw, Users, Calculator, TrendingUp, Clock, Handshake, UserCheck, Building, FileText, Settings, Plus, Edit, Trash2, Save, LogOut } from 'lucide-react';
 import { formatBRL } from '@/utils/formatters';
@@ -63,6 +64,8 @@ const AdminDashboard: React.FC = () => {
   const [showPostEditor, setShowPostEditor] = useState(false);
   const [postForm, setPostForm] = useState<Partial<BlogPost>>({});
   const [loadingBlog, setLoadingBlog] = useState(false);
+  const [filtroStatusBlog, setFiltroStatusBlog] = useState<string>('todos');
+  const [filtroTituloBlog, setFiltroTituloBlog] = useState('');
   
   // Estados para configurações do simulador interno
   const [simulationConfig, setSimulationConfig] = useState({
@@ -337,6 +340,22 @@ const AdminDashboard: React.FC = () => {
     });
   };
   
+  const getFilteredBlogPosts = () => {
+    return blogPosts.filter(post => {
+      const matchStatus = 
+        filtroStatusBlog === 'todos' ||
+        (filtroStatusBlog === 'published' && post.published) ||
+        (filtroStatusBlog === 'draft' && !post.published) ||
+        (filtroStatusBlog === 'featured' && post.featuredPost);
+      
+      const matchTitle = !filtroTituloBlog || 
+        post.title.toLowerCase().includes(filtroTituloBlog.toLowerCase()) ||
+        post.description.toLowerCase().includes(filtroTituloBlog.toLowerCase());
+      
+      return matchStatus && matchTitle;
+    });
+  };
+  
   const exportParceirosToCsv = () => {
     const filteredData = getFilteredParceiros();
     const csv = [
@@ -511,181 +530,181 @@ const AdminDashboard: React.FC = () => {
         <>
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Total de Simulações</p>
-                <p className="text-3xl font-bold text-blue-600">{stats.total}</p>
-              </div>
-              <Calculator className="w-8 h-8 text-blue-600" />
-            </div>
-          </CardContent>
-        </Card>
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Total de Simulações</p>
+                    <p className="text-3xl font-bold text-blue-600">{stats.total}</p>
+                  </div>
+                  <Users className="w-8 h-8 text-blue-600" />
+                </div>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Novos Leads</p>
-                <p className="text-3xl font-bold text-green-600">{stats.novos}</p>
-              </div>
-              <Users className="w-8 h-8 text-green-600" />
-            </div>
-          </CardContent>
-        </Card>
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Leads Novos</p>
+                    <p className="text-3xl font-bold text-green-600">{stats.novos}</p>
+                  </div>
+                  <TrendingUp className="w-8 h-8 text-green-600" />
+                </div>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Interessados</p>
-                <p className="text-3xl font-bold text-purple-600">{stats.interessados}</p>
-              </div>
-              <TrendingUp className="w-8 h-8 text-purple-600" />
-            </div>
-          </CardContent>
-        </Card>
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Interessados</p>
+                    <p className="text-3xl font-bold text-yellow-600">{stats.interessados}</p>
+                  </div>
+                  <Clock className="w-8 h-8 text-yellow-600" />
+                </div>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Contatados</p>
-                <p className="text-3xl font-bold text-orange-600">{stats.contatados}</p>
-              </div>
-              <Clock className="w-8 h-8 text-orange-600" />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Filters and Actions */}
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle>Filtros e Ações</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-4 items-center">
-            <div className="flex-1 min-w-[200px]">
-              <Input
-                placeholder="Buscar por nome..."
-                value={filtroNome}
-                onChange={(e) => setFiltroNome(e.target.value)}
-              />
-            </div>
-            
-            <Select value={filtroStatus} onValueChange={setFiltroStatus}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="todos">Todos</SelectItem>
-                <SelectItem value="novo">Novo</SelectItem>
-                <SelectItem value="interessado">Interessado</SelectItem>
-                <SelectItem value="contatado">Contatado</SelectItem>
-                <SelectItem value="finalizado">Finalizado</SelectItem>
-              </SelectContent>
-            </Select>
-
-            <Button onClick={loadSimulacoes} disabled={loading} variant="outline">
-              <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-              Atualizar
-            </Button>
-
-            <Button onClick={exportToCSV} variant="outline">
-              <Download className="w-4 h-4 mr-2" />
-              Exportar CSV
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Simulações ({filteredSimulacoes.length})</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Data</TableHead>
-                  <TableHead>Nome</TableHead>
-                  <TableHead>Contato</TableHead>
-                  <TableHead>Cidade</TableHead>
-                  <TableHead>Empréstimo</TableHead>
-                  <TableHead>Sistema</TableHead>
-                  <TableHead>Parcelas</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Ações</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredSimulacoes.map((simulacao) => (
-                  <TableRow key={simulacao.id}>
-                    <TableCell className="text-sm">
-                      {new Date(simulacao.created_at!).toLocaleDateString()}
-                      <br />
-                      <span className="text-gray-500 text-xs">
-                        {new Date(simulacao.created_at!).toLocaleTimeString()}
-                      </span>
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {simulacao.nome_completo}
-                    </TableCell>
-                    <TableCell className="text-sm">
-                      <div>{formatEmail(simulacao.email)}</div>
-                      <div className="text-gray-500">{formatPhone(simulacao.telefone)}</div>
-                    </TableCell>
-                    <TableCell>{simulacao.cidade}</TableCell>
-                    <TableCell className="text-sm">
-                      <div className="font-semibold text-green-600">
-                        {formatBRL(simulacao.valor_emprestimo.toString())}
-                      </div>
-                      <div className="text-gray-500 text-xs">
-                        Imóvel: {formatBRL(simulacao.valor_imovel.toString())}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline">{simulacao.tipo_amortizacao}</Badge>
-                    </TableCell>
-                    <TableCell>{simulacao.parcelas}x</TableCell>
-                    <TableCell>
-                      <Select 
-                        value={simulacao.status || 'novo'} 
-                        onValueChange={(value) => updateStatus(simulacao.id!, value)}
-                      >
-                        <SelectTrigger className="w-[120px]">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="novo">Novo</SelectItem>
-                          <SelectItem value="interessado">Interessado</SelectItem>
-                          <SelectItem value="contatado">Contatado</SelectItem>
-                          <SelectItem value="finalizado">Finalizado</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </TableCell>
-                    <TableCell>
-                      <Button variant="ghost" size="sm">
-                        <Eye className="w-4 h-4" />
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Contatados</p>
+                    <p className="text-3xl font-bold text-purple-600">{stats.contatados}</p>
+                  </div>
+                  <UserCheck className="w-8 h-8 text-purple-600" />
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
-          {filteredSimulacoes.length === 0 && (
-            <div className="text-center py-8 text-gray-500">
-              Nenhuma simulação encontrada.
-            </div>
-          )}
-        </CardContent>
-      </Card>
+          {/* Filters and Actions */}
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle>Filtros e Ações</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-4 items-center">
+                <div className="flex-1 min-w-[200px]">
+                  <Input
+                    placeholder="Buscar por nome..."
+                    value={filtroNome}
+                    onChange={(e) => setFiltroNome(e.target.value)}
+                  />
+                </div>
+                
+                <Select value={filtroStatus} onValueChange={setFiltroStatus}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="todos">Todos</SelectItem>
+                    <SelectItem value="novo">Novo</SelectItem>
+                    <SelectItem value="interessado">Interessado</SelectItem>
+                    <SelectItem value="contatado">Contatado</SelectItem>
+                    <SelectItem value="finalizado">Finalizado</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                <Button onClick={loadSimulacoes} disabled={loading} variant="outline">
+                  <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+                  Atualizar
+                </Button>
+
+                <Button onClick={exportToCSV} variant="outline">
+                  <Download className="w-4 h-4 mr-2" />
+                  Exportar CSV
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Table */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Simulações ({filteredSimulacoes.length})</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Data</TableHead>
+                      <TableHead>Nome</TableHead>
+                      <TableHead>Contato</TableHead>
+                      <TableHead>Cidade</TableHead>
+                      <TableHead>Empréstimo</TableHead>
+                      <TableHead>Sistema</TableHead>
+                      <TableHead>Parcelas</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Ações</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredSimulacoes.map((simulacao) => (
+                      <TableRow key={simulacao.id}>
+                        <TableCell className="text-sm">
+                          {new Date(simulacao.created_at!).toLocaleDateString()}
+                          <br />
+                          <span className="text-gray-500 text-xs">
+                            {new Date(simulacao.created_at!).toLocaleTimeString()}
+                          </span>
+                        </TableCell>
+                        <TableCell className="font-medium">
+                          {simulacao.nome_completo}
+                        </TableCell>
+                        <TableCell className="text-sm">
+                          <div>{formatEmail(simulacao.email)}</div>
+                          <div className="text-gray-500">{formatPhone(simulacao.telefone)}</div>
+                        </TableCell>
+                        <TableCell>{simulacao.cidade}</TableCell>
+                        <TableCell className="text-sm">
+                          <div className="font-semibold text-green-600">
+                            {formatBRL(simulacao.valor_emprestimo.toString())}
+                          </div>
+                          <div className="text-gray-500 text-xs">
+                            Imóvel: {formatBRL(simulacao.valor_imovel.toString())}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="outline">{simulacao.tipo_amortizacao}</Badge>
+                        </TableCell>
+                        <TableCell>{simulacao.parcelas}x</TableCell>
+                        <TableCell>
+                          <Select 
+                            value={simulacao.status || 'novo'} 
+                            onValueChange={(value) => updateStatus(simulacao.id!, value)}
+                          >
+                            <SelectTrigger className="w-[120px]">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="novo">Novo</SelectItem>
+                              <SelectItem value="interessado">Interessado</SelectItem>
+                              <SelectItem value="contatado">Contatado</SelectItem>
+                              <SelectItem value="finalizado">Finalizado</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </TableCell>
+                        <TableCell>
+                          <Button variant="ghost" size="sm">
+                            <Eye className="w-4 h-4" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+
+              {filteredSimulacoes.length === 0 && (
+                <div className="text-center py-8 text-gray-500">
+                  Nenhuma simulação encontrada.
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </>
       )}
       
@@ -947,15 +966,16 @@ const AdminDashboard: React.FC = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium mb-1">URL da Imagem</label>
-                  <Input 
-                    placeholder="https://..." 
-                    value={postForm.imageUrl || ''}
-                    onChange={(e) => setPostForm({...postForm, imageUrl: e.target.value})}
+                  <label className="block text-sm font-medium mb-2">Imagem do Post</label>
+                  <ImageUploader
+                    currentImage={postForm.imageUrl}
+                    onImageUpload={(imageUrl) => setPostForm({...postForm, imageUrl})}
+                    onImageRemove={() => setPostForm({...postForm, imageUrl: ''})}
+                    maxSize={5}
                   />
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
                     <label className="block text-sm font-medium mb-1">Slug</label>
                     <Input 
@@ -963,6 +983,9 @@ const AdminDashboard: React.FC = () => {
                       value={postForm.slug || ''}
                       onChange={(e) => setPostForm({...postForm, slug: e.target.value})}
                     />
+                    <p className="text-xs text-gray-500 mt-1">
+                      {postForm.title ? `Sugestão: ${BlogService.generateSlug(postForm.title)}` : 'Deixe vazio para gerar automaticamente'}
+                    </p>
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-1">Tempo de Leitura (min)</label>
@@ -972,17 +995,76 @@ const AdminDashboard: React.FC = () => {
                       value={postForm.readTime || ''}
                       onChange={(e) => setPostForm({...postForm, readTime: parseInt(e.target.value) || 0})}
                     />
+                    <p className="text-xs text-gray-500 mt-1">
+                      {postForm.content ? `Auto: ${BlogService.calculateReadTime(postForm.content)} min` : 'Calculado automaticamente'}
+                    </p>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-2">
+                      <input 
+                        type="checkbox" 
+                        id="published"
+                        checked={postForm.published || false}
+                        onChange={(e) => setPostForm({...postForm, published: e.target.checked})}
+                        className="rounded"
+                      />
+                      <label htmlFor="published" className="text-sm font-medium">
+                        Publicar imediatamente
+                      </label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input 
+                        type="checkbox" 
+                        id="featured"
+                        checked={postForm.featuredPost || false}
+                        onChange={(e) => setPostForm({...postForm, featuredPost: e.target.checked})}
+                        className="rounded"
+                      />
+                      <label htmlFor="featured" className="text-sm font-medium">
+                        Post em destaque
+                      </label>
+                    </div>
                   </div>
                 </div>
                 
                 <div>
                   <label className="block text-sm font-medium mb-1">Conteúdo</label>
-                  <textarea 
-                    className="w-full h-64 p-3 border border-gray-300 rounded-md"
-                    placeholder="Conteúdo do post em Markdown..."
-                    value={postForm.content || ''}
-                    onChange={(e) => setPostForm({...postForm, content: e.target.value})}
-                  />
+                  <div className="border border-gray-300 rounded-md">
+                    <div className="bg-gray-50 px-3 py-2 border-b border-gray-300">
+                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <span>📝 Editor de Markdown</span>
+                        <span>•</span>
+                        <span>Suporte a HTML</span>
+                        <span>•</span>
+                        <span>Palavras: {postForm.content ? postForm.content.split(/\s+/).length : 0}</span>
+                      </div>
+                    </div>
+                    <textarea 
+                      className="w-full h-80 p-4 border-0 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-b-md resize-none"
+                      placeholder="# Título do Post
+
+## Introdução
+Escreva seu conteúdo aqui...
+
+### Subtítulo
+- Item 1
+- Item 2
+
+**Texto em negrito**
+*Texto em itálico*
+
+[Link para site](https://exemplo.com)
+
+```
+Bloco de código
+```"
+                      value={postForm.content || ''}
+                      onChange={(e) => setPostForm({...postForm, content: e.target.value})}
+                    />
+                  </div>
+                  <div className="mt-2 text-xs text-gray-500">
+                    💡 Dica: Use Markdown ou HTML para formatação. Imagens podem ser inseridas com: &lt;img src="url" alt="descrição" /&gt;
+                  </div>
                 </div>
                 
                 <div className="flex gap-2">
@@ -1005,64 +1087,198 @@ const AdminDashboard: React.FC = () => {
           )}
 
           {/* Lista de Posts */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Posts do Blog</CardTitle>
-            </CardHeader>
-            <CardContent>
+          {!showPostEditor && (
+            <Card>
+              <CardHeader>
+                <div className="flex justify-between items-center">
+                  <CardTitle>Posts do Blog</CardTitle>
+                  <div className="flex gap-2">
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => loadBlogPosts()}
+                      disabled={loadingBlog}
+                    >
+                      <RefreshCw className={`w-4 h-4 mr-1 ${loadingBlog ? 'animate-spin' : ''}`} />
+                      Atualizar
+                    </Button>
+                  </div>
+                </div>
+                
+                {/* Filtros */}
+                <div className="flex gap-4 mt-4">
+                  <Select 
+                    value={filtroStatusBlog} 
+                    onValueChange={setFiltroStatusBlog}
+                  >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="todos">Todos</SelectItem>
+                      <SelectItem value="published">Publicados</SelectItem>
+                      <SelectItem value="draft">Rascunhos</SelectItem>
+                      <SelectItem value="featured">Em Destaque</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  
+                  <Input 
+                    placeholder="Buscar por título..."
+                    value={filtroTituloBlog}
+                    onChange={(e) => setFiltroTituloBlog(e.target.value)}
+                    className="max-w-sm"
+                  />
+                </div>
+              </CardHeader>
+              <CardContent>
               <div className="space-y-4">
                 {loadingBlog ? (
                   <div className="text-center py-8 text-gray-500">
-                    Carregando posts...
+                    <div className="flex items-center justify-center gap-2">
+                      <RefreshCw className="w-4 h-4 animate-spin" />
+                      Carregando posts...
+                    </div>
                   </div>
-                ) : blogPosts.length > 0 ? (
-                  blogPosts.map((post) => (
-                    <div key={post.id} className="border rounded-lg p-4 flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <img 
-                          src={post.imageUrl} 
-                          alt={post.title} 
-                          className="w-16 h-16 object-cover rounded"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).src = '/images/blog/capital-giro.jpg';
-                          }}
-                        />
-                        <div>
-                          <h3 className="font-semibold">{post.title}</h3>
-                          <p className="text-sm text-gray-600">
-                            Categoria: {post.category} • {post.readTime} min
-                          </p>
-                          <p className="text-xs text-gray-500">
-                            {post.published ? 'Publicado' : 'Rascunho'} em {new Date(post.createdAt || '').toLocaleDateString()}
-                          </p>
+                ) : getFilteredBlogPosts().length > 0 ? (
+                  getFilteredBlogPosts().map((post) => (
+                    <div key={post.id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-start gap-4 flex-1">
+                          <img 
+                            src={post.imageUrl} 
+                            alt={post.title} 
+                            className="w-20 h-20 object-cover rounded-lg border"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = '/images/blog/capital-giro.jpg';
+                            }}
+                          />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-start justify-between gap-4">
+                              <div className="flex-1">
+                                <h3 className="font-semibold text-lg text-gray-900 truncate">
+                                  {post.title}
+                                </h3>
+                                <p className="text-sm text-gray-600 mt-1 line-clamp-2">
+                                  {post.description}
+                                </p>
+                                <div className="flex items-center gap-4 mt-2">
+                                  <span className="text-xs px-2 py-1 bg-gray-100 rounded-full">
+                                    {post.category}
+                                  </span>
+                                  <span className="text-xs text-gray-500">
+                                    📖 {post.readTime} min
+                                  </span>
+                                  <span className="text-xs text-gray-500">
+                                    🕒 {new Date(post.createdAt || '').toLocaleDateString()}
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-2 mt-2">
+                                  <Badge 
+                                    variant={post.published ? "default" : "secondary"}
+                                    className="text-xs"
+                                  >
+                                    {post.published ? '✅ Publicado' : '📝 Rascunho'}
+                                  </Badge>
+                                  {post.featuredPost && (
+                                    <Badge variant="outline" className="text-xs">
+                                      ⭐ Destaque
+                                    </Badge>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button 
-                          variant="ghost" 
-                          size="sm"
-                          onClick={() => {
-                            setEditingPost(post);
-                            setPostForm(post);
-                            setShowPostEditor(true);
-                          }}
-                        >
-                          <Edit className="w-4 h-4" />
-                        </Button>
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          className="text-red-500 hover:text-red-600"
-                          onClick={() => handleDeletePost(post.id!)}
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
+                        <div className="flex flex-col gap-1 ml-4">
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => {
+                              setEditingPost(post);
+                              setPostForm(post);
+                              setShowPostEditor(true);
+                            }}
+                          >
+                            <Edit className="w-4 h-4 mr-1" />
+                            Editar
+                          </Button>
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => window.open(`/blog/${post.slug}`, '_blank')}
+                          >
+                            <Eye className="w-4 h-4 mr-1" />
+                            Ver
+                          </Button>
+                          <Button 
+                            variant="destructive" 
+                            size="sm"
+                            onClick={() => handleDeletePost(post.id!)}
+                          >
+                            <Trash2 className="w-4 h-4 mr-1" />
+                            Excluir
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <div className="text-center py-8 text-gray-500">
-                    Nenhum post encontrado. Crie seu primeiro post!
+                  <div className="text-center py-12">
+                    <div className="text-gray-400 mb-4">
+                      <FileText className="w-16 h-16 mx-auto mb-4" />
+                    </div>
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">
+                      {filtroStatusBlog === 'todos' ? 'Nenhum post encontrado' : 'Nenhum post com este filtro'}
+                    </h3>
+                    <p className="text-gray-500 mb-6">
+                      {filtroStatusBlog === 'todos' 
+                        ? 'Comece criando seu primeiro post do blog!'
+                        : 'Tente ajustar os filtros ou crie um novo post.'
+                      }
+                    </p>
+                    <Button 
+                      onClick={() => {
+                        setEditingPost(null);
+                        setPostForm({});
+                        setShowPostEditor(true);
+                      }}
+                      className="bg-libra-blue hover:bg-libra-blue/90 text-white"
+                    >
+                      <Plus className="w-4 h-4 mr-2" />
+                      Criar Primeiro Post
+                    </Button>
+                  </div>
+                )}
+
+                {/* Estatísticas */}
+                {getFilteredBlogPosts().length > 0 && (
+                  <div className="mt-8 pt-4 border-t">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-gray-900">
+                          {blogPosts.length}
+                        </div>
+                        <div className="text-sm text-gray-500">Total de Posts</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-green-600">
+                          {blogPosts.filter(p => p.published).length}
+                        </div>
+                        <div className="text-sm text-gray-500">Publicados</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-yellow-600">
+                          {blogPosts.filter(p => !p.published).length}
+                        </div>
+                        <div className="text-sm text-gray-500">Rascunhos</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-blue-600">
+                          {blogPosts.filter(p => p.featuredPost).length}
+                        </div>
+                        <div className="text-sm text-gray-500">Em Destaque</div>
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>

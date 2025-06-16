@@ -98,6 +98,24 @@ export interface DeviceInfo {
   os: string;
 }
 
+export interface BlogPostData {
+  id?: string;
+  title: string;
+  description: string;
+  category: string;
+  content: string;
+  image_url?: string;
+  slug: string;
+  read_time?: number;
+  published: boolean;
+  featured_post: boolean;
+  meta_title?: string;
+  meta_description?: string;
+  tags?: string[];
+  created_at?: string;
+  updated_at?: string;
+}
+
 // Schema do banco para TypeScript
 export interface Database {
   public: {
@@ -116,6 +134,11 @@ export interface Database {
         Row: UserJourneyData;
         Insert: Omit<UserJourneyData, 'id' | 'created_at' | 'updated_at'>;
         Update: Partial<Omit<UserJourneyData, 'id' | 'created_at'>>;
+      };
+      blog_posts: {
+        Row: BlogPostData;
+        Insert: Omit<BlogPostData, 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Omit<BlogPostData, 'id' | 'created_at' | 'updated_at'>>;
       };
     };
   };
@@ -291,6 +314,146 @@ export const supabaseApi = {
     
     if (error) throw error;
     return data;
+  },
+
+  // Blog Posts
+  async getAllBlogPosts() {
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (error) throw error;
+    return data || [];
+  },
+
+  async getPublishedBlogPosts() {
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .eq('published', true)
+      .order('created_at', { ascending: false });
+    
+    if (error) throw error;
+    return data || [];
+  },
+
+  async getBlogPostById(id: string) {
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .eq('id', id)
+      .single();
+    
+    if (error) throw error;
+    return data;
+  },
+
+  async getBlogPostBySlug(slug: string) {
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .eq('slug', slug)
+      .single();
+    
+    if (error) throw error;
+    return data;
+  },
+
+  async createBlogPost(data: Database['public']['Tables']['blog_posts']['Insert']) {
+    const { data: result, error } = await supabase
+      .from('blog_posts')
+      .insert(data)
+      .select()
+      .single();
+    
+    if (error) throw error;
+    return result;
+  },
+
+  async updateBlogPost(id: string, data: Database['public']['Tables']['blog_posts']['Update']) {
+    const { data: result, error } = await supabase
+      .from('blog_posts')
+      .update({ ...data, updated_at: new Date().toISOString() })
+      .eq('id', id)
+      .select()
+      .single();
+    
+    if (error) throw error;
+    return result;
+  },
+
+  async deleteBlogPost(id: string) {
+    const { error } = await supabase
+      .from('blog_posts')
+      .delete()
+      .eq('id', id);
+    
+    if (error) throw error;
+    return true;
+  },
+
+  async getBlogPostsByCategory(category: string) {
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .eq('category', category)
+      .eq('published', true)
+      .order('created_at', { ascending: false });
+    
+    if (error) throw error;
+    return data || [];
+  },
+
+  async getFeaturedBlogPosts() {
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .eq('featured_post', true)
+      .eq('published', true)
+      .order('created_at', { ascending: false });
+    
+    if (error) throw error;
+    return data || [];
+  },
+
+  // Upload de imagem para Supabase Storage
+  async uploadBlogImage(file: File, fileName?: string): Promise<string> {
+    const fileExt = file.name.split('.').pop();
+    const finalFileName = fileName || `${Date.now()}-${Math.random().toString(36).substr(2, 9)}.${fileExt}`;
+    const filePath = `blog-images/${new Date().getFullYear()}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${finalFileName}`;
+
+    const { data, error } = await supabase.storage
+      .from('blog-images')
+      .upload(filePath, file, {
+        cacheControl: '3600',
+        upsert: false
+      });
+
+    if (error) throw error;
+
+    // Retornar URL pública da imagem
+    const { data: publicURL } = supabase.storage
+      .from('blog-images')
+      .getPublicUrl(filePath);
+
+    return publicURL.publicUrl;
+  },
+
+  async deleteBlogImage(imageUrl: string) {
+    // Extrair o path da URL
+    const urlParts = imageUrl.split('/');
+    const bucketIndex = urlParts.findIndex(part => part === 'blog-images');
+    if (bucketIndex === -1) return false;
+    
+    const filePath = urlParts.slice(bucketIndex + 1).join('/');
+    
+    const { error } = await supabase.storage
+      .from('blog-images')
+      .remove([`blog-images/${filePath}`]);
+    
+    if (error) throw error;
+    return true;
   }
 };
 
