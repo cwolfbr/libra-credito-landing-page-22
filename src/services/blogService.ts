@@ -458,7 +458,7 @@ export class BlogService {
   /**
    * Converter BlogPostData do Supabase para BlogPost
    */
-  static convertSupabaseToBloPOst(supabasePost: BlogPostData): BlogPost {
+  static convertSupabaseToBlogPost(supabasePost: BlogPostData): BlogPost {
     return {
       id: supabasePost.id,
       title: supabasePost.title,
@@ -510,12 +510,12 @@ export class BlogService {
     if (!post.content?.trim()) errors.push('Conteúdo é obrigatório');
     if (!post.imageUrl?.trim()) errors.push('URL da imagem é obrigatória');
     
-    if (post.title && post.title.length > 100) {
-      errors.push('Título deve ter no máximo 100 caracteres');
+    if (post.title && post.title.length > 200) {
+      errors.push('Título deve ter no máximo 200 caracteres');
     }
     
-    if (post.description && post.description.length > 200) {
-      errors.push('Descrição deve ter no máximo 200 caracteres');
+    if (post.description && post.description.length > 500) {
+      errors.push('Descrição deve ter no máximo 500 caracteres');
     }
     
     if (post.slug && !/^[a-z0-9-]+$/.test(post.slug)) {
@@ -538,7 +538,7 @@ export class BlogService {
       
       if (supabasePosts && supabasePosts.length >= 0) {
         // Converter formato Supabase para BlogPost
-        const convertedPosts = supabasePosts.map(this.convertSupabaseToBloPOst);
+        const convertedPosts = supabasePosts.map(this.convertSupabaseToBlogPost);
         
         // Se não há posts no Supabase, mas há posts locais, sincronizar
         if (convertedPosts.length === 0) {
@@ -548,7 +548,7 @@ export class BlogService {
           // Tentar buscar novamente após sync
           const reloadedPosts = await supabaseApi.getAllBlogPosts();
           if (reloadedPosts && reloadedPosts.length > 0) {
-            const reloadedConverted = reloadedPosts.map(this.convertSupabaseToBloPOst);
+            const reloadedConverted = reloadedPosts.map(this.convertSupabaseToBlogPost);
             localStorage.setItem(this.STORAGE_KEY, JSON.stringify(reloadedConverted));
             return reloadedConverted;
           }
@@ -695,7 +695,7 @@ export class BlogService {
 
       console.log('📤 Enviando para Supabase...', supabaseData);
       const createdPost = await supabaseApi.createBlogPost(supabaseData);
-      const convertedPost = this.convertSupabaseToBloPOst(createdPost);
+      const convertedPost = this.convertSupabaseToBlogPost(createdPost);
       
       console.log('✅ Post criado no Supabase:', convertedPost.id);
       
@@ -752,7 +752,7 @@ export class BlogService {
     try {
       const supabaseData = this.convertBlogPostToSupabase(postData as BlogPost);
       const updatedPost = await supabaseApi.updateBlogPost(id, supabaseData);
-      const convertedPost = this.convertSupabaseToBloPOst(updatedPost);
+      const convertedPost = this.convertSupabaseToBlogPost(updatedPost);
       
       // Sincronizar com localStorage
       const localPosts = await this.getAllPosts();
