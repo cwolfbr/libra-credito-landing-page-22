@@ -526,41 +526,75 @@ export class BlogService {
   }
 
   /**
-   * Obter todos os posts (Supabase como primary, localStorage como fallback)
+   * Obter todos os posts (Supabase como primary, localStorage como cache)
    */
   static async getAllPosts(): Promise<BlogPost[]> {
     try {
-      // Tentar buscar do Supabase primeiro
+      console.log('🔍 Buscando posts do Supabase...');
+      
+      // Tentar buscar do Supabase primeiro (SEMPRE)
       const supabasePosts = await supabaseApi.getAllBlogPosts();
-      if (supabasePosts && supabasePosts.length > 0) {
+      console.log(`📊 Posts encontrados no Supabase: ${supabasePosts?.length || 0}`);
+      
+      if (supabasePosts && supabasePosts.length >= 0) {
         // Converter formato Supabase para BlogPost
         const convertedPosts = supabasePosts.map(this.convertSupabaseToBloPOst);
-        // Sincronizar com localStorage
+        
+        // Se não há posts no Supabase, mas há posts locais, sincronizar
+        if (convertedPosts.length === 0) {
+          console.log('📤 Nenhum post no Supabase, verificando localStorage para sync...');
+          await this.syncLocalToSupabase();
+          
+          // Tentar buscar novamente após sync
+          const reloadedPosts = await supabaseApi.getAllBlogPosts();
+          if (reloadedPosts && reloadedPosts.length > 0) {
+            const reloadedConverted = reloadedPosts.map(this.convertSupabaseToBloPOst);
+            localStorage.setItem(this.STORAGE_KEY, JSON.stringify(reloadedConverted));
+            return reloadedConverted;
+          }
+        }
+        
+        // Atualizar cache local
         localStorage.setItem(this.STORAGE_KEY, JSON.stringify(convertedPosts));
+        console.log('✅ Posts carregados do Supabase e cache atualizado');
         return convertedPosts;
       }
     } catch (error) {
-      console.warn('Erro ao buscar posts do Supabase, usando localStorage:', error);
+      console.error('❌ Erro ao buscar posts do Supabase:', error);
+      
+      // Tentar sincronizar dados locais
+      try {
+        console.log('🔄 Tentando sincronização de emergência...');
+        await this.syncLocalToSupabase();
+      } catch (syncError) {
+        console.error('❌ Falha na sincronização de emergência:', syncError);
+      }
     }
 
-    // Fallback para localStorage
+    // Fallback para localStorage apenas se Supabase falhar completamente
+    console.log('📱 Usando fallback localStorage...');
     try {
       const stored = localStorage.getItem(this.STORAGE_KEY);
       if (stored) {
         const posts = JSON.parse(stored);
-        // Se temos poucos posts, reinicializar com todos os posts existentes
-        if (posts.length < 5) {
-          localStorage.setItem(this.STORAGE_KEY, JSON.stringify(EXISTING_POSTS));
-          return EXISTING_POSTS;
-        }
+        console.log(`📱 Posts encontrados no localStorage: ${posts.length}`);
         return posts;
       } else {
         // Primeira vez acessando - inicializar com posts existentes
+        console.log('🆕 Primeira execução - inicializando com posts padrão');
         localStorage.setItem(this.STORAGE_KEY, JSON.stringify(EXISTING_POSTS));
+        
+        // Tentar criar posts padrão no Supabase
+        try {
+          await this.initializeDefaultPosts();
+        } catch (initError) {
+          console.error('❌ Erro ao inicializar posts padrão no Supabase:', initError);
+        }
+        
         return EXISTING_POSTS;
       }
     } catch (error) {
-      console.error('Erro ao carregar posts do localStorage:', error);
+      console.error('❌ Erro ao carregar posts do localStorage:', error);
       return EXISTING_POSTS;
     }
   }
@@ -582,6 +616,66 @@ export class BlogService {
   }
 
   /**
+   * Sincronizar posts do localStorage para Supabase
+   */
+  static async syncLocalToSupabase(): Promise<void> {
+    try {
+      const stored = localStorage.getItem(this.STORAGE_KEY);
+      if (!stored) return;
+
+      const localPosts: BlogPost[] = JSON.parse(stored);
+      console.log(`🔄 Sincronizando ${localPosts.length} posts locais para Supabase...`);
+
+      let synced = 0;
+      for (const post of localPosts) {
+        try {
+          // Verificar se post já existe no Supabase
+          const existing = await supabaseApi.getBlogPostById(post.id!).catch(() => null);
+          
+          if (!existing) {
+            // Criar no Supabase
+            const supabaseData = this.convertBlogPostToSupabase(post);
+            await supabaseApi.createBlogPost(supabaseData);
+            synced++;
+            console.log(`✅ Post sincronizado: ${post.title}`);
+          }
+        } catch (error) {
+          console.error(`❌ Erro ao sincronizar post "${post.title}":`, error);
+        }
+      }
+
+      console.log(`🎉 Sincronização concluída: ${synced} posts sincronizados`);
+    } catch (error) {
+      console.error('❌ Erro na sincronização local → Supabase:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Inicializar posts padrão no Supabase
+   */
+  static async initializeDefaultPosts(): Promise<void> {
+    try {
+      console.log('🚀 Inicializando posts padrão no Supabase...');
+      
+      for (const post of EXISTING_POSTS) {
+        try {
+          const supabaseData = this.convertBlogPostToSupabase(post);
+          await supabaseApi.createBlogPost(supabaseData);
+          console.log(`✅ Post padrão criado: ${post.title}`);
+        } catch (error) {
+          console.error(`❌ Erro ao criar post padrão "${post.title}":`, error);
+        }
+      }
+      
+      console.log('🎉 Inicialização de posts padrão concluída');
+    } catch (error) {
+      console.error('❌ Erro na inicialização de posts padrão:', error);
+      throw error;
+    }
+  }
+
+  /**
    * Criar novo post (Supabase como primary, localStorage como fallback)
    */
   static async createPost(postData: Omit<BlogPost, 'id' | 'createdAt' | 'updatedAt'>): Promise<BlogPost> {
@@ -590,26 +684,33 @@ export class BlogService {
       throw new Error(`Dados inválidos: ${errors.join(', ')}`);
     }
 
-    // Tentar criar no Supabase primeiro
+    console.log('📝 Criando novo post:', postData.title);
+
+    // SEMPRE tentar criar no Supabase primeiro
     try {
       const supabaseData = this.convertBlogPostToSupabase({
         ...postData,
         readTime: postData.readTime || this.calculateReadTime(postData.content)
       } as BlogPost);
 
+      console.log('📤 Enviando para Supabase...', supabaseData);
       const createdPost = await supabaseApi.createBlogPost(supabaseData);
       const convertedPost = this.convertSupabaseToBloPOst(createdPost);
       
-      // Sincronizar com localStorage
+      console.log('✅ Post criado no Supabase:', convertedPost.id);
+      
+      // Atualizar cache local
       const localPosts = await this.getAllPosts();
-      localPosts.unshift(convertedPost);
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(localPosts));
+      const updatedPosts = [convertedPost, ...localPosts.filter(p => p.id !== convertedPost.id)];
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(updatedPosts));
       
       return convertedPost;
     } catch (error) {
-      console.warn('Erro ao criar post no Supabase, usando localStorage:', error);
+      console.error('❌ Erro ao criar post no Supabase:', error);
       
-      // Fallback para localStorage
+      // Fallback para localStorage mas avisar sobre o problema
+      console.warn('⚠️ Usando fallback localStorage - post NÃO estará disponível em outros dispositivos!');
+      
       const posts = await this.getAllPosts();
       
       // Verificar se slug já existe
@@ -620,7 +721,7 @@ export class BlogService {
 
       const newPost: BlogPost = {
         ...postData,
-        id: Date.now().toString(),
+        id: `local-${Date.now()}`,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         readTime: postData.readTime || this.calculateReadTime(postData.content)
@@ -629,7 +730,17 @@ export class BlogService {
       posts.unshift(newPost); // Adiciona no início
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(posts));
       
-      return newPost;
+      // Tentar sincronizar em background
+      setTimeout(async () => {
+        try {
+          console.log('🔄 Tentativa de sincronização em background...');
+          await this.syncLocalToSupabase();
+        } catch (syncError) {
+          console.error('❌ Falha na sincronização em background:', syncError);
+        }
+      }, 5000);
+      
+      throw new Error(`Post salvo localmente, mas falha na sincronização: ${error}. Use a ferramenta de sincronização em Configurações.`);
     }
   }
 
