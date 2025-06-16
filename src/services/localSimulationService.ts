@@ -161,15 +161,37 @@ export class LocalSimulationService {
           status: 'simulacao_realizada' // Status inicial
         };
 
+        console.log('💾 Tentando salvar simulação no Supabase:', {
+          session_id: supabaseData.session_id,
+          cidade: supabaseData.cidade,
+          valor_emprestimo: supabaseData.valor_emprestimo,
+          original_local_id: simulationId
+        });
+
         const supabaseResult = await supabaseApi.createSimulacao(supabaseData);
-        console.log('✅ Simulação salva no Supabase:', supabaseResult);
+        console.log('✅ Simulação salva no Supabase:', {
+          success: !!supabaseResult?.id,
+          supabase_id: supabaseResult?.id,
+          local_id: simulationId,
+          result: supabaseResult
+        });
         
         // Usar ID do Supabase se disponível
         if (supabaseResult?.id) {
+          console.log('🔄 Substituindo ID local pelo ID do Supabase:', {
+            antes: result.id,
+            depois: supabaseResult.id
+          });
           result.id = supabaseResult.id;
+        } else {
+          console.warn('⚠️ Supabase não retornou ID, mantendo ID local:', result.id);
         }
       } catch (supabaseError) {
-        console.warn('⚠️ Erro ao salvar no Supabase (continuando):', supabaseError);
+        console.error('❌ Erro ao salvar no Supabase (continuando):', {
+          error: supabaseError,
+          session_id: input.sessionId,
+          local_id: simulationId
+        });
       }
 
       // 8. Armazenar localmente como backup
@@ -218,13 +240,15 @@ export class LocalSimulationService {
           if (isLocalId) {
             console.log('🏠 ID local detectado, buscando por session_id:', input.sessionId);
             // Para IDs locais, buscar pela session_id mais recente
-            const { data, error: searchError } = await supabase
+            const { data: results, error: searchError } = await supabase
               .from('simulacoes')
               .select('*')
               .eq('session_id', input.sessionId)
               .order('created_at', { ascending: false })
-              .limit(1)
-              .single();
+              .limit(1);
+              
+            // Pegar o primeiro resultado se existir
+            const data = results && results.length > 0 ? results[0] : null;
             
             if (searchError) {
               console.warn('⚠️ Erro ao buscar por session_id:', searchError);
@@ -235,6 +259,8 @@ export class LocalSimulationService {
                 .eq('session_id', input.sessionId)
                 .order('created_at', { ascending: false });
               console.log('📋 Simulações encontradas:', allData);
+            } else if (!data) {
+              console.warn('⚠️ Nenhuma simulação encontrada com session_id:', input.sessionId);
             }
             simulationData = data;
           } else {
@@ -358,15 +384,17 @@ export class LocalSimulationService {
           if (isLocalId) {
             console.log('🏠 Atualizando por session_id:', input.sessionId);
             // Para IDs locais, buscar e atualizar pela session_id mais recente
-            const { data: searchData, error: selectError } = await supabase
+            const { data: searchResults, error: selectError } = await supabase
               .from('simulacoes')
               .select('id, nome_completo, email, telefone, imovel_proprio, status, session_id, created_at')
               .eq('session_id', input.sessionId)
               .order('created_at', { ascending: false })
-              .limit(1)
-              .single();
+              .limit(1);
               
-            if (selectError) {
+            // Pegar o primeiro resultado se existir
+            const searchData = searchResults && searchResults.length > 0 ? searchResults[0] : null;
+              
+            if (selectError || !searchData) {
               console.error('❌ Erro ao buscar simulação por session_id:', selectError);
               // Debug adicional
               console.log('🔍 Tentando buscar todas as simulações com este session_id...');
@@ -376,7 +404,12 @@ export class LocalSimulationService {
                 .eq('session_id', input.sessionId)
                 .order('created_at', { ascending: false });
               console.log('🔍 Simulações encontradas para debug:', debugData);
-              throw new Error(`Simulação não encontrada: ${selectError.message}`);
+              
+              if (selectError) {
+                throw new Error(`Erro na busca: ${selectError.message}`);
+              } else {
+                throw new Error(`Nenhuma simulação encontrada com session_id: ${input.sessionId}`);
+              }
             }
             
             existingData = searchData;
