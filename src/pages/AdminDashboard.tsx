@@ -31,6 +31,7 @@ import AdminLogin from '@/components/AdminLogin';
 import ImageUploader from '@/components/ImageUploader';
 import ImageUploadTester from '@/components/ImageUploadTester';
 import SupabaseDiagnostics from '@/components/SupabaseDiagnostics';
+import StorageStats from '@/components/StorageStats';
 import { SimulacaoData, ParceiroData } from '@/lib/supabase';
 import { Eye, Download, RefreshCw, Users, Calculator, TrendingUp, Clock, Handshake, UserCheck, Building, FileText, Settings, Plus, Edit, Trash2, Save, LogOut } from 'lucide-react';
 import { formatBRL } from '@/utils/formatters';
@@ -1251,6 +1252,7 @@ Escreva seu conteúdo aqui...
       {activeTab === 'configuracoes' && (
         <div>
           <div className="space-y-8">
+            <StorageStats />
             <SupabaseDiagnostics />
             <ImageUploadTester />
             <Card>

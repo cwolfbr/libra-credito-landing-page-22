@@ -549,13 +549,13 @@ export class BlogService {
           const reloadedPosts = await supabaseApi.getAllBlogPosts();
           if (reloadedPosts && reloadedPosts.length > 0) {
             const reloadedConverted = reloadedPosts.map(this.convertSupabaseToBlogPost);
-            localStorage.setItem(this.STORAGE_KEY, JSON.stringify(reloadedConverted));
+            this.saveToLocalStorageWithCleanup(reloadedConverted);
             return reloadedConverted;
           }
         }
         
         // Atualizar cache local
-        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(convertedPosts));
+        this.saveToLocalStorageWithCleanup(convertedPosts);
         console.log('✅ Posts carregados do Supabase e cache atualizado');
         return convertedPosts;
       }
@@ -582,7 +582,7 @@ export class BlogService {
       } else {
         // Primeira vez acessando - inicializar com posts existentes
         console.log('🆕 Primeira execução - inicializando com posts padrão');
-        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(EXISTING_POSTS));
+        this.saveToLocalStorageWithCleanup(EXISTING_POSTS);
         
         // Tentar criar posts padrão no Supabase
         try {
@@ -699,10 +699,16 @@ export class BlogService {
       
       console.log('✅ Post criado no Supabase:', convertedPost.id);
       
-      // Atualizar cache local
-      const localPosts = await this.getAllPosts();
-      const updatedPosts = [convertedPost, ...localPosts.filter(p => p.id !== convertedPost.id)];
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(updatedPosts));
+      // Atualizar cache local (com limpeza de espaço se necessário)
+      try {
+        const localPosts = await this.getAllPosts();
+        const updatedPosts = [convertedPost, ...localPosts.filter(p => p.id !== convertedPost.id)];
+        this.saveToLocalStorageWithCleanup(updatedPosts);
+      } catch (storageError) {
+        console.warn('⚠️ Erro ao atualizar cache local:', storageError);
+        // Se falhar, limpar localStorage e manter apenas os novos posts
+        this.clearLocalStorage();
+      }
       
       return convertedPost;
     } catch (error) {
@@ -728,7 +734,7 @@ export class BlogService {
       };
 
       posts.unshift(newPost); // Adiciona no início
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(posts));
+      this.saveToLocalStorageWithCleanup(posts);
       
       // Tentar sincronizar em background
       setTimeout(async () => {
@@ -759,7 +765,7 @@ export class BlogService {
       const index = localPosts.findIndex(post => post.id === id);
       if (index !== -1) {
         localPosts[index] = convertedPost;
-        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(localPosts));
+        this.saveToLocalStorageWithCleanup(localPosts);
       }
       
       return convertedPost;
@@ -792,7 +798,7 @@ export class BlogService {
       };
 
       posts[index] = updatedPost;
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(posts));
+      this.saveToLocalStorageWithCleanup(posts);
       
       return updatedPost;
     }
@@ -809,7 +815,7 @@ export class BlogService {
       throw new Error('Post não encontrado');
     }
 
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(filteredPosts));
+    this.saveToLocalStorageWithCleanup(filteredPosts);
     return true;
   }
 
@@ -948,6 +954,81 @@ export class BlogService {
       featured: featured.length,
       categoryCounts
     };
+  }
+
+  /**
+   * Salvar no localStorage com limpeza automática se exceder quota
+   */
+  private static saveToLocalStorageWithCleanup(posts: BlogPost[]): void {
+    try {
+      // Tentar salvar normalmente
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(posts));
+    } catch (error) {
+      console.warn('⚠️ Quota do localStorage excedida. Iniciando limpeza...');
+      
+      // Estratégia 1: Remover imagens base64 dos posts (manter apenas URLs do Supabase)
+      const optimizedPosts = posts.map(post => ({
+        ...post,
+        imageUrl: post.imageUrl?.startsWith('data:') ? '' : post.imageUrl
+      }));
+      
+      try {
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(optimizedPosts));
+        console.log('✅ Posts salvos após remover imagens base64');
+        return;
+      } catch (error2) {
+        console.warn('⚠️ Ainda excedendo quota. Limpeza mais agressiva...');
+      }
+      
+      // Estratégia 2: Manter apenas os 10 posts mais recentes
+      const recentPosts = optimizedPosts
+        .sort((a, b) => new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime())
+        .slice(0, 10);
+      
+      try {
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(recentPosts));
+        console.log('✅ Posts salvos após manter apenas 10 mais recentes');
+        return;
+      } catch (error3) {
+        console.warn('⚠️ Limpeza falhou. Removendo localStorage completamente...');
+        this.clearLocalStorage();
+      }
+    }
+  }
+
+  /**
+   * Limpar localStorage do blog
+   */
+  static clearLocalStorage(): void {
+    try {
+      localStorage.removeItem(this.STORAGE_KEY);
+      console.log('🧹 Cache local do blog limpo');
+    } catch (error) {
+      console.error('Erro ao limpar localStorage:', error);
+    }
+  }
+
+  /**
+   * Obter estatísticas de armazenamento
+   */
+  static getStorageStats(): { usedMB: number; posts: number; hasBase64Images: number } {
+    try {
+      const data = localStorage.getItem(this.STORAGE_KEY);
+      if (!data) return { usedMB: 0, posts: 0, hasBase64Images: 0 };
+      
+      const posts: BlogPost[] = JSON.parse(data);
+      const usedBytes = new Blob([data]).size;
+      const usedMB = Math.round(usedBytes / 1024 / 1024 * 100) / 100;
+      const hasBase64Images = posts.filter(p => p.imageUrl?.startsWith('data:')).length;
+      
+      return {
+        usedMB,
+        posts: posts.length,
+        hasBase64Images
+      };
+    } catch (error) {
+      return { usedMB: 0, posts: 0, hasBase64Images: 0 };
+    }
   }
 }
 
