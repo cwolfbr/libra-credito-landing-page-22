@@ -23,7 +23,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { SimulationService } from '@/services/simulationService';
+import { LocalSimulationService } from '@/services/localSimulationService';
 import { PartnersService } from '@/services/partnersService';
 import { BlogService, type BlogPost } from '@/services/blogService';
 import { AuthService, type LoginCredentials, type AuthUser } from '@/services/authService';
@@ -264,7 +264,7 @@ const AdminDashboard: React.FC = () => {
   const loadSimulacoes = async () => {
     setLoading(true);
     try {
-      const data = await SimulationService.getSimulacoes(100);
+      const data = await LocalSimulationService.getSimulacoes(100);
       setSimulacoes(data);
       calculateStats(data);
     } catch (error) {
@@ -286,7 +286,7 @@ const AdminDashboard: React.FC = () => {
 
   const updateStatus = async (id: string, newStatus: string) => {
     try {
-      await SimulationService.updateSimulationStatus(id, newStatus);
+      await LocalSimulationService.updateSimulationStatus(id, newStatus);
       await loadSimulacoes(); // Recarregar dados
     } catch (error) {
       console.error('Erro ao atualizar status:', error);
