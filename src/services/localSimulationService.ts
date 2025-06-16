@@ -218,13 +218,24 @@ export class LocalSimulationService {
           if (isLocalId) {
             console.log('🏠 ID local detectado, buscando por session_id:', input.sessionId);
             // Para IDs locais, buscar pela session_id mais recente
-            const { data } = await supabase
+            const { data, error: searchError } = await supabase
               .from('simulacoes')
               .select('*')
               .eq('session_id', input.sessionId)
               .order('created_at', { ascending: false })
               .limit(1)
               .single();
+            
+            if (searchError) {
+              console.warn('⚠️ Erro ao buscar por session_id:', searchError);
+              console.log('📋 Tentando buscar todas as simulações para debug...');
+              const { data: allData } = await supabase
+                .from('simulacoes')
+                .select('id, session_id, created_at')
+                .eq('session_id', input.sessionId)
+                .order('created_at', { ascending: false });
+              console.log('📋 Simulações encontradas:', allData);
+            }
             simulationData = data;
           } else {
             // Para IDs do Supabase, buscar normalmente
@@ -305,13 +316,28 @@ export class LocalSimulationService {
       // Atualizar contato no Supabase com dados completos
       try {
         if (input.simulationId) {
+          // Validar e preparar dados para atualização
           const updateData = {
-            nome_completo: input.nomeCompleto,
-            email: input.email,
-            telefone: input.telefone,
-            imovel_proprio: input.imovelProprio,
+            nome_completo: input.nomeCompleto.trim(),
+            email: input.email.trim().toLowerCase(),
+            telefone: input.telefone.replace(/\D/g, ''), // Limpar telefone
+            imovel_proprio: input.imovelProprio as 'proprio' | 'terceiro', // Garantir tipo correto
             status: 'lead_capturado'
           };
+          
+          // Validar dados antes da atualização
+          if (!updateData.nome_completo) {
+            throw new Error('Nome completo é obrigatório para atualização');
+          }
+          if (!updateData.email.includes('@')) {
+            throw new Error('Email válido é obrigatório para atualização');
+          }
+          if (!updateData.telefone || updateData.telefone.length < 10) {
+            throw new Error('Telefone válido é obrigatório para atualização');
+          }
+          if (!['proprio', 'terceiro'].includes(updateData.imovel_proprio)) {
+            throw new Error('Tipo de imóvel deve ser "proprio" ou "terceiro"');
+          }
           
           console.log('🔄 Atualizando simulação no Supabase:', {
             simulationId: input.simulationId,
@@ -334,7 +360,7 @@ export class LocalSimulationService {
             // Para IDs locais, buscar e atualizar pela session_id mais recente
             const { data: searchData, error: selectError } = await supabase
               .from('simulacoes')
-              .select('id, nome_completo, email, telefone, imovel_proprio, status')
+              .select('id, nome_completo, email, telefone, imovel_proprio, status, session_id, created_at')
               .eq('session_id', input.sessionId)
               .order('created_at', { ascending: false })
               .limit(1)
@@ -342,10 +368,24 @@ export class LocalSimulationService {
               
             if (selectError) {
               console.error('❌ Erro ao buscar simulação por session_id:', selectError);
+              // Debug adicional
+              console.log('🔍 Tentando buscar todas as simulações com este session_id...');
+              const { data: debugData } = await supabase
+                .from('simulacoes')
+                .select('id, session_id, created_at, nome_completo')
+                .eq('session_id', input.sessionId)
+                .order('created_at', { ascending: false });
+              console.log('🔍 Simulações encontradas para debug:', debugData);
               throw new Error(`Simulação não encontrada: ${selectError.message}`);
             }
             
             existingData = searchData;
+            console.log('✅ Simulação encontrada para atualização:', {
+              id: existingData.id,
+              session_id: existingData.session_id,
+              nome_atual: existingData.nome_completo,
+              novo_nome: updateData.nome_completo
+            });
             
             // Atualizar usando o ID real do Supabase
             const { data, error } = await supabase
@@ -353,7 +393,8 @@ export class LocalSimulationService {
               .update(updateData)
               .eq('id', existingData.id)
               .select();
-              
+            
+            console.log('🔄 Resultado da atualização:', { data, error });
             updateResult = { data, error };
           } else {
             // Para IDs do Supabase, buscar e atualizar normalmente
