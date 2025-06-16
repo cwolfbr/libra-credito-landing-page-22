@@ -87,8 +87,9 @@ export function calculateLoan(
   taxaJurosMensal: number, 
   numeroParcelas: number
 ): LoanCalculationResult {
-  // Aplicar taxa de custo operacional (11% sobre o valor)
-  const custoOperacional = valorEmprestimo * 0.11;
+  // Aplicar taxa de custo operacional configurável
+  const custoOperacionalPercent = getCustoOperacional();
+  const custoOperacional = valorEmprestimo * (custoOperacionalPercent / 100);
   const valorComCusto = valorEmprestimo + custoOperacional;
   
   // Calcular SAC
@@ -135,7 +136,66 @@ export function getInterestRate(): number {
 }
 
 /**
- * Valida se os parâmetros de cálculo estão dentro dos limites
+ * Obtém configuração de custo operacional do painel admin
+ * Fallback para 11% se não configurado
+ */
+export function getCustoOperacional(): number {
+  try {
+    const config = localStorage.getItem('libra_simulation_config');
+    if (config) {
+      const parsed = JSON.parse(config);
+      return parsed.custoOperacional || 11.0;
+    }
+  } catch (error) {
+    console.warn('Erro ao obter configuração de custo operacional:', error);
+  }
+  
+  // Fallback padrão: 11%
+  return 11.0;
+}
+
+/**
+ * Obtém limites de valor configurados no painel admin
+ */
+export function getValorLimits(): { min: number; max: number } {
+  try {
+    const config = localStorage.getItem('libra_simulation_config');
+    if (config) {
+      const parsed = JSON.parse(config);
+      return {
+        min: parsed.valorMinimo || 100000,
+        max: parsed.valorMaximo || 5000000
+      };
+    }
+  } catch (error) {
+    console.warn('Erro ao obter limites de valor:', error);
+  }
+  
+  return { min: 100000, max: 5000000 };
+}
+
+/**
+ * Obtém limites de parcelas configurados no painel admin
+ */
+export function getParcelasLimits(): { min: number; max: number } {
+  try {
+    const config = localStorage.getItem('libra_simulation_config');
+    if (config) {
+      const parsed = JSON.parse(config);
+      return {
+        min: parsed.parcelasMin || 36,
+        max: parsed.parcelasMax || 180
+      };
+    }
+  } catch (error) {
+    console.warn('Erro ao obter limites de parcelas:', error);
+  }
+  
+  return { min: 36, max: 180 };
+}
+
+/**
+ * Valida se os parâmetros de cálculo estão dentro dos limites configurados
  */
 export function validateLoanParameters(
   valorEmprestimo: number,
@@ -145,8 +205,20 @@ export function validateLoanParameters(
     return { valid: false, error: 'Valor do empréstimo deve ser maior que zero' };
   }
   
-  if (numeroParcelas < 36 || numeroParcelas > 180) {
-    return { valid: false, error: 'Número de parcelas deve estar entre 36 e 180 meses' };
+  const valorLimits = getValorLimits();
+  if (valorEmprestimo < valorLimits.min || valorEmprestimo > valorLimits.max) {
+    return { 
+      valid: false, 
+      error: `Valor do empréstimo deve estar entre R$ ${valorLimits.min.toLocaleString()} e R$ ${valorLimits.max.toLocaleString()}` 
+    };
+  }
+  
+  const parcelasLimits = getParcelasLimits();
+  if (numeroParcelas < parcelasLimits.min || numeroParcelas > parcelasLimits.max) {
+    return { 
+      valid: false, 
+      error: `Número de parcelas deve estar entre ${parcelasLimits.min} e ${parcelasLimits.max} meses` 
+    };
   }
   
   return { valid: true };

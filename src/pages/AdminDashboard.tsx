@@ -25,7 +25,7 @@ import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { SimulationService } from '@/services/simulationService';
 import { PartnersService } from '@/services/partnersService';
-import { BlogService, type BlogPost, type SimulationConfig } from '@/services/blogService';
+import { BlogService, type BlogPost } from '@/services/blogService';
 import { AuthService, type LoginCredentials, type AuthUser } from '@/services/authService';
 import AdminLogin from '@/components/AdminLogin';
 import { SimulacaoData, ParceiroData } from '@/lib/supabase';
@@ -64,16 +64,14 @@ const AdminDashboard: React.FC = () => {
   const [postForm, setPostForm] = useState<Partial<BlogPost>>({});
   const [loadingBlog, setLoadingBlog] = useState(false);
   
-  // Estados para configurações de simulação
-  const [simulationConfig, setSimulationConfig] = useState<SimulationConfig>({
+  // Estados para configurações do simulador interno
+  const [simulationConfig, setSimulationConfig] = useState({
     valorMinimo: 100000,
     valorMaximo: 5000000,
     parcelasMin: 36,
     parcelasMax: 180,
     juros: 1.19,
-    carencia: 1,
-    apiUrl: 'https://api-calculos.vercel.app/simulacao',
-    custoOperacional: 0.5
+    custoOperacional: 11.0
   });
   const [loadingConfig, setLoadingConfig] = useState(false);
   const [loadingParceiros, setLoadingParceiros] = useState(false);
@@ -148,11 +146,21 @@ const AdminDashboard: React.FC = () => {
     }
   };
   
-  // Carregar configurações de simulação
+  // Carregar configurações do simulador local
   const loadSimulationConfig = async () => {
     try {
-      const config = await BlogService.getSimulationConfig();
-      setSimulationConfig(config);
+      const storedConfig = localStorage.getItem('libra_simulation_config');
+      if (storedConfig) {
+        const config = JSON.parse(storedConfig);
+        setSimulationConfig({
+          valorMinimo: config.valorMinimo || 100000,
+          valorMaximo: config.valorMaximo || 5000000,
+          parcelasMin: config.parcelasMin || 36,
+          parcelasMax: config.parcelasMax || 180,
+          juros: config.juros || 1.19,
+          custoOperacional: config.custoOperacional || 11.0
+        });
+      }
     } catch (error) {
       console.error('Erro ao carregar configurações:', error);
     }
@@ -204,12 +212,14 @@ const AdminDashboard: React.FC = () => {
     }
   };
   
-  // Salvar configurações
+  // Salvar configurações do simulador local
   const handleSaveConfig = async () => {
     setLoadingConfig(true);
     try {
-      await BlogService.saveSimulationConfig(simulationConfig);
-      alert('Configurações salvas com sucesso!');
+      // Salvar no localStorage para uso pelo simulador local
+      localStorage.setItem('libra_simulation_config', JSON.stringify(simulationConfig));
+      console.log('✅ Configurações do simulador salvas:', simulationConfig);
+      alert('Configurações do simulador salvas com sucesso!');
     } catch (error) {
       console.error('Erro ao salvar configurações:', error);
       alert('Erro ao salvar configurações');
@@ -1068,8 +1078,8 @@ const AdminDashboard: React.FC = () => {
             {/* Parâmetros de Simulação */}
             <Card>
               <CardHeader>
-                <CardTitle>Parâmetros da API de Simulação</CardTitle>
-                <p className="text-gray-600">Configure os limites que serão aplicados em todas as simulações do site</p>
+                <CardTitle>Configurações do Simulador Interno</CardTitle>
+                <p className="text-gray-600">Configure os parâmetros do simulador local. Essas configurações serão aplicadas em todas as simulações do site.</p>
               </CardHeader>
               <CardContent className="space-y-6">
                 {/* Limites de Valor */}
@@ -1134,9 +1144,9 @@ const AdminDashboard: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Taxas de Juros */}
+                {/* Taxa de Juros e Custos */}
                 <div>
-                  <h4 className="font-medium text-gray-900 mb-3">Taxa de Juros</h4>
+                  <h4 className="font-medium text-gray-900 mb-3">Taxa de Juros e Custos Operacionais</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium mb-2">Taxa de Juros (% a.m.)</label>
@@ -1149,46 +1159,24 @@ const AdminDashboard: React.FC = () => {
                           juros: parseFloat(e.target.value)
                         })}
                       />
-                      <p className="text-xs text-gray-500 mt-1">Taxa enviada para a API (ex: 1.19 = 1,19% a.m.)</p>
+                      <p className="text-xs text-gray-500 mt-1">Taxa de juros mensal para cálculos (ex: 1.19 = 1,19% a.m.)</p>
                     </div>
-                  </div>
-                </div>
-
-                {/* Carência */}
-                <div>
-                  <h4 className="font-medium text-gray-900 mb-3">Carência</h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium mb-2">Carência (meses)</label>
+                      <label className="block text-sm font-medium mb-2">% de Custos da Operação</label>
                       <Input 
-                        type="number"
-                        value={simulationConfig.carencia}
+                        type="number" 
+                        step="0.1"
+                        value={simulationConfig.custoOperacional}
                         onChange={(e) => setSimulationConfig({
                           ...simulationConfig, 
-                          carencia: parseInt(e.target.value)
+                          custoOperacional: parseFloat(e.target.value)
                         })}
                       />
-                      <p className="text-xs text-gray-500 mt-1">Valor enviado para a API (ex: 1 = 1 mês de carência)</p>
+                      <p className="text-xs text-gray-500 mt-1">Percentual de custos inclusos (avaliação, cartório, impostos)</p>
                     </div>
                   </div>
                 </div>
 
-                {/* URL da API */}
-                <div>
-                  <h4 className="font-medium text-gray-900 mb-3">Configurações da API</h4>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">URL da API de Simulação</label>
-                    <Input 
-                      type="url"
-                      value={simulationConfig.apiUrl}
-                      onChange={(e) => setSimulationConfig({
-                        ...simulationConfig, 
-                        apiUrl: e.target.value
-                      })}
-                    />
-                    <p className="text-xs text-gray-500 mt-1">URL atual da API para simulações</p>
-                  </div>
-                </div>
                 
                 <div className="pt-4 border-t">
                   <Button 
@@ -1200,8 +1188,14 @@ const AdminDashboard: React.FC = () => {
                     {loadingConfig ? 'Salvando...' : 'Salvar Todas as Configurações'}
                   </Button>
                   <p className="text-sm text-gray-600 mt-2">
-                    ⚠️ Estas alterações afetarão todas as simulações realizadas no site
+                    ✅ Configurações são aplicadas automaticamente ao simulador interno
                   </p>
+                  <div className="text-xs text-gray-500 mt-3 space-y-1">
+                    <p><strong>Valores atuais:</strong></p>
+                    <p>• Empréstimo: R$ {simulationConfig.valorMinimo.toLocaleString()} a R$ {simulationConfig.valorMaximo.toLocaleString()}</p>
+                    <p>• Parcelas: {simulationConfig.parcelasMin} a {simulationConfig.parcelasMax} meses</p>
+                    <p>• Taxa: {simulationConfig.juros}% a.m. + {simulationConfig.custoOperacional}% de custos</p>
+                  </div>
                 </div>
               </CardContent>
             </Card>
