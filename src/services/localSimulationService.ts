@@ -146,9 +146,9 @@ export class LocalSimulationService {
       try {
         const supabaseData = {
           session_id: input.sessionId,
-          nome_completo: input.nomeCompleto,
-          email: input.email,
-          telefone: input.telefone,
+          nome_completo: input.nomeCompleto || 'Simulação Anônima', // Temporário até preenchimento do contato
+          email: input.email || 'nao-informado@temp.com',
+          telefone: input.telefone || '(00) 00000-0000',
           cidade: input.cidade,
           valor_emprestimo: input.valorEmprestimo,
           valor_imovel: input.valorImovel,
@@ -157,7 +157,8 @@ export class LocalSimulationService {
           parcela_inicial: calculation.parcelaSac.inicial,
           parcela_final: calculation.parcelaSac.final,
           user_agent: input.userAgent || '',
-          ip_address: input.ipAddress || ''
+          ip_address: input.ipAddress || '',
+          status: 'simulacao_realizada' // Status inicial
         };
 
         const supabaseResult = await supabaseApi.createSimulacao(supabaseData);
@@ -258,23 +259,81 @@ export class LocalSimulationService {
       const ploomesResult = await ploomesResponse.json();
       console.log('✅ Sucesso na API Ploomes:', ploomesResult);
 
-      // Atualizar contato no Supabase
+      // Atualizar contato no Supabase com dados completos
       try {
         if (input.simulationId) {
-          await supabase
-            .from('simulacoes')
-            .update({
-              nome_completo: input.nomeCompleto,
+          const updateData = {
+            nome_completo: input.nomeCompleto,
+            email: input.email,
+            telefone: input.telefone,
+            imovel_proprio: input.imovelProprio,
+            status: 'lead_capturado'
+          };
+          
+          console.log('🔄 Atualizando simulação no Supabase:', {
+            simulationId: input.simulationId,
+            updateData,
+            inputData: {
+              nomeCompleto: input.nomeCompleto,
               email: input.email,
               telefone: input.telefone,
-              imovel_proprio: input.imovelProprio,
-              status: 'lead_capturado'
-            })
-            .eq('id', input.simulationId);
-          console.log('✅ Contato atualizado no Supabase');
+              imovelProprio: input.imovelProprio
+            }
+          });
+          
+          // Primeiro verificar se a simulação existe
+          const { data: existingData, error: selectError } = await supabase
+            .from('simulacoes')
+            .select('id, nome_completo, email, telefone, imovel_proprio, status')
+            .eq('id', input.simulationId)
+            .single();
+            
+          if (selectError) {
+            console.error('❌ Erro ao buscar simulação:', selectError);
+            throw new Error(`Simulação não encontrada: ${selectError.message}`);
+          }
+          
+          console.log('📊 Dados antes da atualização:', existingData);
+          
+          const { data, error } = await supabase
+            .from('simulacoes')
+            .update(updateData)
+            .eq('id', input.simulationId)
+            .select();
+            
+          if (error) {
+            console.error('❌ Erro ao atualizar Supabase:', {
+              error,
+              code: error.code,
+              message: error.message,
+              details: error.details,
+              hint: error.hint
+            });
+            throw error;
+          }
+          
+          console.log('✅ Contato atualizado no Supabase:', {
+            antes: existingData,
+            depois: data?.[0],
+            success: !!data?.[0]
+          });
+          
+          if (!data || data.length === 0) {
+            throw new Error('Nenhuma linha foi atualizada no Supabase');
+          }
+        } else {
+          throw new Error('ID da simulação não fornecido para atualização');
         }
       } catch (supabaseError) {
-        console.warn('⚠️ Erro ao atualizar contato no Supabase:', supabaseError);
+        console.error('❌ Erro crítico ao atualizar contato no Supabase:', supabaseError);
+        // Re-throw para mostrar erro ao usuário se for crítico
+        if (supabaseError instanceof Error && 
+            (supabaseError.message.includes('não encontrada') || 
+             supabaseError.message.includes('ID da simulação'))) {
+          throw supabaseError;
+        }
+        // Para outros erros, apenas avisar mas continuar
+        console.warn('⚠️ Continuando apesar do erro no Supabase');
       }
 
       // Salvar contato localmente como backup
