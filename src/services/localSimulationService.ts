@@ -224,20 +224,40 @@ export class LocalSimulationService {
         console.warn('⚠️ Erro ao obter simulação do Supabase:', supabaseError);
       }
 
-      // Preparar payload para API Ploomes
+      // Preparar payload para API Ploomes com validação de tipos
       const ploomesPayload = {
         cidade: simulationData?.cidade || 'Não informado',
-        valorDesejadoEmprestimo: input.valorDesejadoEmprestimo || simulationData?.valor_emprestimo || 0,
-        valorImovelGarantia: input.valorImovelGarantia || simulationData?.valor_imovel || 0,
-        quantidadeParcelas: input.quantidadeParcelas || simulationData?.parcelas || 36,
-        tipoAmortizacao: input.tipoAmortizacao || simulationData?.tipo_amortizacao || 'PRICE',
-        valorParcelaCalculada: input.valorParcelaCalculada || simulationData?.valor_parcela || 0,
-        nomeCompleto: input.nomeCompleto,
-        email: input.email,
-        telefone: input.telefone,
+        valorDesejadoEmprestimo: Number(input.valorDesejadoEmprestimo || simulationData?.valor_emprestimo || 0),
+        valorImovelGarantia: Number(input.valorImovelGarantia || simulationData?.valor_imovel || 0),
+        quantidadeParcelas: Number(input.quantidadeParcelas || simulationData?.parcelas || 36),
+        tipoAmortizacao: (input.tipoAmortizacao || simulationData?.tipo_amortizacao || 'PRICE').toUpperCase(),
+        valorParcelaCalculada: Number(input.valorParcelaCalculada || simulationData?.parcela_inicial || 0),
+        nomeCompleto: input.nomeCompleto.trim(),
+        email: input.email.trim().toLowerCase(),
+        telefone: input.telefone.replace(/\D/g, ''), // Remove all non-digits
         imovelProprio: input.imovelProprio === 'proprio' ? 'Imóvel próprio' : 'Imóvel de terceiro',
-        aceitaPolitica: input.aceitaPolitica || false
+        aceitaPolitica: Boolean(input.aceitaPolitica)
       };
+
+      // Validar campos obrigatórios
+      if (!ploomesPayload.nomeCompleto) {
+        throw new Error('Nome completo é obrigatório');
+      }
+      if (!ploomesPayload.email || !ploomesPayload.email.includes('@')) {
+        throw new Error('Email válido é obrigatório');
+      }
+      if (!ploomesPayload.telefone || ploomesPayload.telefone.length < 10) {
+        throw new Error('Telefone válido é obrigatório');
+      }
+      if (ploomesPayload.valorDesejadoEmprestimo <= 0) {
+        throw new Error('Valor do empréstimo deve ser maior que zero');
+      }
+      if (ploomesPayload.valorImovelGarantia <= 0) {
+        throw new Error('Valor do imóvel deve ser maior que zero');
+      }
+      if (ploomesPayload.valorParcelaCalculada <= 0) {
+        throw new Error('Valor da parcela deve ser maior que zero');
+      }
 
       console.log('🚀 Enviando para API Ploomes:', ploomesPayload);
 
@@ -252,8 +272,14 @@ export class LocalSimulationService {
 
       if (!ploomesResponse.ok) {
         const errorText = await ploomesResponse.text();
-        console.error('❌ Erro na API Ploomes:', errorText);
-        throw new Error(`Erro na API Ploomes: ${ploomesResponse.status}`);
+        console.error('❌ Erro na API Ploomes:', {
+          status: ploomesResponse.status,
+          statusText: ploomesResponse.statusText,
+          headers: Object.fromEntries(ploomesResponse.headers.entries()),
+          errorText,
+          sentPayload: ploomesPayload
+        });
+        throw new Error(`Erro na API Ploomes: ${ploomesResponse.status} - ${errorText}`);
       }
 
       const ploomesResult = await ploomesResponse.json();

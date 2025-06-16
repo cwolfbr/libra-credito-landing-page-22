@@ -116,6 +116,8 @@ const ContactForm: React.FC<ContactFormProps> = ({
         imovelProprio,
         observacoes: `Simulação: ${simulationResult.amortizacao} - ${simulationResult.parcelas}x - R$ ${simulationResult.valor.toLocaleString('pt-BR')}`,
         // Dados adicionais para API Ploomes
+        valorDesejadoEmprestimo: simulationResult.valorEmprestimo,
+        valorImovelGarantia: simulationResult.valorImovel,
         valorParcelaCalculada: simulationResult.valor,
         tipoAmortizacao: simulationResult.amortizacao,
         quantidadeParcelas: simulationResult.parcelas,
