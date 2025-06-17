@@ -148,20 +148,11 @@ const HeroMinimal: React.FC = () => {
                     />
                   </div>
 
-                  {/* Indicadores minimalistas */}
-                  <div className="flex justify-center space-x-8 mt-6 text-sm text-white/80">
-                    <div className="text-center">
-                      <div className="font-bold text-lg text-[#00ccff]">24h</div>
-                      <div>Aprovação</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="font-bold text-lg text-[#00ccff]">0,99%</div>
-                      <div>ao mês</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="font-bold text-lg text-[#00ccff]">R$ 5M</div>
-                      <div>máximo</div>
-                    </div>
+                  {/* Mensagem personalizada */}
+                  <div className="text-center mt-6">
+                    <p className="text-lg font-semibold text-[#00ccff]">
+                      Crédito com Garantia de Imóvel - Simule Gratuitamente
+                    </p>
                   </div>
                 </div>
               </div>
