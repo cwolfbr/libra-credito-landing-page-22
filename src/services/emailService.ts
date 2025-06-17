@@ -93,6 +93,10 @@ export class EmailService {
    */
   static async sendAdminNotification(partnerData: PartnerEmailData): Promise<boolean> {
     try {
+      // Sempre inicializar EmailJS antes de enviar
+      emailjs.init(EMAIL_CONFIG.PUBLIC_KEY);
+      console.log('✅ EmailJS inicializado para envio');
+      
       const emailData = {
         to_email: EMAIL_CONFIG.ADMIN_EMAIL,
         from_name: EMAIL_CONFIG.FROM_NAME,
