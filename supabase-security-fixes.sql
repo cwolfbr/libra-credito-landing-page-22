@@ -270,10 +270,15 @@ $$;
 DO $$
 BEGIN
     IF EXISTS (SELECT 1 FROM pg_proc WHERE proname = 'update_posts_updated_at') THEN
-        -- Se existir, recriar com search_path fixo
+        -- Remover triggers dependentes primeiro
+        DROP TRIGGER IF EXISTS posts_updated_at_trigger ON public.posts;
+        DROP TRIGGER IF EXISTS update_posts_updated_at_trigger ON public.posts;
+        DROP TRIGGER IF EXISTS posts_update_trigger ON public.posts;
+        
+        -- Agora pode remover a função
         DROP FUNCTION IF EXISTS public.update_posts_updated_at();
         
-        -- Recriar função
+        -- Recriar função com search_path fixo
         CREATE OR REPLACE FUNCTION public.update_posts_updated_at()
         RETURNS TRIGGER 
         LANGUAGE plpgsql
@@ -285,6 +290,14 @@ BEGIN
             RETURN NEW;
         END;
         $func$;
+        
+        -- Recriar trigger se a tabela posts existir
+        IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'posts' AND table_schema = 'public') THEN
+            CREATE TRIGGER posts_updated_at_trigger
+                BEFORE UPDATE ON public.posts
+                FOR EACH ROW
+                EXECUTE FUNCTION public.update_posts_updated_at();
+        END IF;
     END IF;
 END
 $$;
