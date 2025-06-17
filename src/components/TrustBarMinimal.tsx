@@ -87,39 +87,39 @@ const TrustBarMinimal: React.FC = () => {
   return (
     <section 
       id="trustbar"
-      className="py-12 bg-white relative"
+      className="py-6 md:py-8 bg-gradient-to-b from-[#003399] to-[#00ccff] relative"
     >
       <div className="container mx-auto px-4">
-        {/* Grid de estatísticas minimalista */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Grid de estatísticas compacto */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
           {trustStats.map((stat, index) => (
             <div
               key={index}
-              className="text-center space-y-3 group"
+              className="text-center group"
             >
-              {/* Ícone */}
-              <div className="flex justify-center">
-                <div className="w-12 h-12 bg-gradient-to-br from-[#003399] to-[#00ccff] rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-[#00ccff]/25 transition-all duration-300 group-hover:scale-110">
-                  <stat.icon className="w-6 h-6 text-white" />
+              {/* Layout horizontal compacto */}
+              <div className="flex items-center justify-center gap-3 md:gap-4">
+                {/* Ícone menor */}
+                <div className="w-8 h-8 md:w-10 md:h-10 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center group-hover:bg-white/30 transition-all duration-300">
+                  <stat.icon className="w-4 h-4 md:w-5 md:h-5 text-white" />
                 </div>
-              </div>
 
-              {/* Valor animado */}
-              <div>
-                <div className="text-2xl md:text-3xl font-bold text-[#003399]">
-                  {stat.value}
-                  <span className="text-[#00ccff] font-bold">
-                    {stat.suffix}
-                  </span>
-                </div>
-                <div className="text-sm font-medium text-gray-600 mt-1">
-                  {stat.label}
+                {/* Valor e label em linha */}
+                <div className="text-left">
+                  <div className="text-xl md:text-2xl font-bold text-white leading-none">
+                    {stat.value}
+                    <span className="text-[#00ccff] font-bold bg-white/10 px-1 rounded">
+                      {stat.suffix}
+                    </span>
+                  </div>
+                  <div className="text-xs md:text-sm font-medium text-white/80 mt-0.5">
+                    {stat.label}
+                  </div>
                 </div>
               </div>
             </div>
           ))}
         </div>
-
       </div>
     </section>
   );
