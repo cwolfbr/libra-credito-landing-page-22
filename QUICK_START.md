@@ -11,15 +11,23 @@ cd libra-credito-landing-page-22
 npm install
 ```
 
-## 📊 2. Configurar Supabase (2 min)
+## 📊 2. Configurar Supabase (3 min)
 
+### **a) Setup Banco (1 min):**
 1. Acesse: https://app.supabase.com
 2. Crie/acesse seu projeto
 3. Vá em **SQL Editor**
 4. Execute o arquivo: `supabase-setup-complete.sql`
-5. Configurar Storage:
-   - Storage → Create Bucket → Nome: `blog-images`
-   - Policies → Enable RLS → Allow public access
+
+### **b) 🔥 Storage Bucket (2 min):**
+1. Vá em **Storage** → **"Create Bucket"**
+2. Configure:
+   - **Nome:** `blog-images`
+   - **Public bucket:** ✅ **HABILITADO**
+   - **File size limit:** 5 MB
+   - **MIME types:** `image/jpeg`, `image/png`, `image/gif`, `image/webp`
+
+> ⚠️ **Crítico para upload de imagens do blog!**
 
 ## 🧪 3. Testar Sistema (1 min)
 

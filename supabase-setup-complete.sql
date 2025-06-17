@@ -452,13 +452,26 @@ SELECT
     'Próximo passo: Teste a aplicação em /test-supabase' as proximo_passo;
 
 -- =====================================================
--- 📋 PRÓXIMOS PASSOS:
+-- 📋 PRÓXIMOS PASSOS CRÍTICOS:
 -- =====================================================
 -- 
--- 1. ✅ Configurar Storage Bucket 'blog-images' via interface do Supabase
+-- 1. 🔥 OBRIGATÓRIO: Configurar Storage Bucket 'blog-images'
+--    - Acesse: https://app.supabase.com → Seu Projeto → Storage
+--    - Clique em "Create Bucket"
+--    - Nome: blog-images
+--    - Public bucket: ✅ HABILITADO
+--    - File size limit: 5 MB
+--    - MIME types: image/jpeg, image/png, image/gif, image/webp
+--    
+--    OU usar o botão "📁 Criar Bucket Storage" no /admin
+--
 -- 2. 🧪 Testar aplicação em: http://localhost:5173/test-supabase
 -- 3. 🎛️ Acessar dashboard admin: http://localhost:5173/admin
 -- 4. 🧮 Fazer uma simulação: http://localhost:5173/simulacao
 -- 5. 📝 Testar blog: http://localhost:5173/blog
+-- 6. 🔧 Executar diagnósticos no admin para validar storage
+-- 
+-- ⚠️ IMPORTANTE: Sem o bucket 'blog-images', o upload de imagens 
+--    do blog usará apenas armazenamento local (base64)
 -- 
 -- =====================================================

@@ -24,11 +24,24 @@ npm install
 ```
 
 ### 2. **Configurar Supabase**
+
+#### **a) Setup do Banco:**
 ```bash
 # Execute no SQL Editor do Supabase:
 # https://app.supabase.com → SQL Editor → New Query
 ```
 Use o arquivo: `supabase-setup-complete.sql`
+
+#### **b) 🔥 CRÍTICO - Configurar Storage:**
+1. Acesse: https://app.supabase.com → Seu Projeto → **Storage**
+2. Clique em **"Create Bucket"**
+3. Configure:
+   - **Nome:** `blog-images`
+   - **Public bucket:** ✅ **HABILITADO**
+   - **File size limit:** 5 MB
+   - **MIME types:** `image/jpeg`, `image/png`, `image/gif`, `image/webp`
+
+> ⚠️ **Sem o bucket `blog-images`, as imagens do blog ficarão apenas no localStorage!**
 
 ### 3. **Executar**
 ```bash
