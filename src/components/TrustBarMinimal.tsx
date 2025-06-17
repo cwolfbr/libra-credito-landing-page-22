@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Shield, Users, TrendingUp, Award } from 'lucide-react';
+import { Shield, MapPin, Award } from 'lucide-react';
 
 const TrustBarMinimal: React.FC = () => {
   const [counters, setCounters] = useState({
-    clients: 0,
-    loans: 0,
+    cities: 0,
     satisfaction: 0,
     years: 0
   });
@@ -34,10 +33,9 @@ const TrustBarMinimal: React.FC = () => {
     if (!isVisible) return;
 
     const targets = {
-      clients: 50000,
-      loans: 5000,
+      cities: 3000,
       satisfaction: 98,
-      years: 15
+      years: 5
     };
 
     const duration = 2000;
@@ -51,8 +49,7 @@ const TrustBarMinimal: React.FC = () => {
       const progress = currentStep / steps;
 
       setCounters({
-        clients: Math.round(targets.clients * progress),
-        loans: Math.round(targets.loans * progress),
+        cities: Math.round(targets.cities * progress),
         satisfaction: Math.round(targets.satisfaction * progress),
         years: Math.round(targets.years * progress)
       });
@@ -68,16 +65,10 @@ const TrustBarMinimal: React.FC = () => {
 
   const trustStats = [
     {
-      icon: Users,
-      value: counters.clients.toLocaleString('pt-BR'),
+      icon: MapPin,
+      value: counters.cities.toLocaleString('pt-BR'),
       suffix: '+',
-      label: 'Clientes Atendidos'
-    },
-    {
-      icon: TrendingUp,
-      value: `R$ ${counters.loans}`,
-      suffix: 'M+',
-      label: 'Em Empréstimos'
+      label: 'Cidades Atendidas'
     },
     {
       icon: Award,
@@ -88,7 +79,7 @@ const TrustBarMinimal: React.FC = () => {
     {
       icon: Shield,
       value: counters.years,
-      suffix: ' anos',
+      suffix: '+ anos',
       label: 'De Experiência'
     }
   ];
@@ -100,7 +91,7 @@ const TrustBarMinimal: React.FC = () => {
     >
       <div className="container mx-auto px-4">
         {/* Grid de estatísticas minimalista */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {trustStats.map((stat, index) => (
             <div
               key={index}
@@ -129,13 +120,6 @@ const TrustBarMinimal: React.FC = () => {
           ))}
         </div>
 
-        {/* Badge de certificação minimalista */}
-        <div className="text-center mt-12">
-          <div className="inline-flex items-center space-x-3 bg-gradient-to-r from-[#003399] to-[#00ccff] text-white px-6 py-3 rounded-full text-sm font-medium shadow-lg">
-            <Shield className="w-4 h-4" />
-            <span>Regulamentada pelo Banco Central</span>
-          </div>
-        </div>
       </div>
     </section>
   );
