@@ -80,56 +80,53 @@ const HeroMinimal: React.FC = () => {
             {/* Lado Esquerdo - Conteúdo Minimalista */}
             <div className="text-white space-y-8">
               
-              {/* Título Principal */}
+              {/* Título Original */}
               <FloatingElement delay={200}>
                 <h1 
                   id="hero-heading"
-                  className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight"
+                  className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-white"
                 >
-                  <span className="block text-white">
-                    Empréstimo com
-                  </span>
-                  <span className="block text-[#00ccff] font-extrabold">
-                    Garantia Real
-                  </span>
+                  Transforme seu Patrimônio<br />
+                  em Oportunidades
                 </h1>
               </FloatingElement>
 
-              {/* Descrição Minimalista */}
+              {/* Copy Original */}
               <FloatingElement delay={400}>
-                <p className="text-xl md:text-2xl text-white/90 font-medium">
-                  <span className="text-[#00ccff] font-bold">Até R$ 5 milhões</span> com taxas a partir de{' '}
-                  <span className="text-[#00ccff] font-bold">0,99% ao mês</span>
-                </p>
-              </FloatingElement>
-
-              {/* Trust Badge Minimalista */}
-              <FloatingElement delay={600}>
-                <div className="flex items-center space-x-3 text-white/80">
-                  <Shield className="w-5 h-5 text-[#00ccff]" />
-                  <span className="text-sm font-medium">100% Seguro | Análise em 24h</span>
+                <div className="space-y-3 md:space-y-4">
+                  <p className="text-lg md:text-xl text-white/90 leading-relaxed font-medium">
+                    Crédito inteligente para quem construiu história.
+                    <span className="text-[#00ccff] font-bold"> Até R$ 5 milhões</span> com as menores taxas do mercado.
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <Shield className="w-5 h-5 text-[#00ccff] flex-shrink-0" aria-hidden="true" />
+                    <p className="text-base md:text-lg text-white/80 leading-relaxed">
+                      Regulamentado pelo Banco Central - Segurança e transparência
+                    </p>
+                  </div>
+                  <p className="text-base md:text-lg text-white/80 leading-relaxed">
+                    Taxas a partir de 1,19% a.m. • Até 180 meses • 100% online
+                  </p>
                 </div>
               </FloatingElement>
 
-              {/* CTAs Minimalistas */}
-              <FloatingElement delay={800}>
-                <div className="flex flex-col sm:flex-row gap-4 pt-6">
-                  <Button 
-                    onClick={scrollToSimulator}
-                    className="group bg-[#00ccff] hover:bg-[#00ccff]/90 text-[#003399] font-bold text-lg px-8 py-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-[#00ccff]/25"
+              {/* CTAs Originais */}
+              <FloatingElement delay={600}>
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                  <PremiumButton 
+                    onClick={scrollToSimulator} 
+                    variant="primary"
+                    className="w-full sm:w-auto bg-[#00ccff] hover:bg-[#00ccff]/90 text-[#003399] font-bold shadow-lg hover:shadow-[#00ccff]/25"
                   >
-                    <span className="flex items-center space-x-2">
-                      <span>Simular Agora</span>
-                      <ChevronDown className="w-5 h-5 group-hover:translate-y-1 transition-transform" />
-                    </span>
-                  </Button>
-                  
-                  <Button 
-                    onClick={goToVantagens}
-                    className="border-2 border-white/30 text-white hover:bg-white/10 font-medium text-lg px-8 py-6 rounded-lg transition-all duration-300 hover:border-[#00ccff] hover:text-[#00ccff]"
+                    Simular Agora
+                  </PremiumButton>
+                  <PremiumButton 
+                    onClick={goToVantagens} 
+                    variant="secondary"
+                    className="w-full sm:w-auto border-2 border-white/30 text-white hover:bg-white/10 hover:border-[#00ccff] hover:text-[#00ccff]"
                   >
-                    Ver Vantagens
-                  </Button>
+                    Conheça as Vantagens
+                  </PremiumButton>
                 </div>
               </FloatingElement>
             </div>
