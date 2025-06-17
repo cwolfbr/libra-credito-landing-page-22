@@ -91,24 +91,24 @@ const TrustBarMinimal: React.FC = () => {
     >
       <div className="container mx-auto px-4">
         {/* Grid de estatísticas compacto */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+        <div className="grid grid-cols-3 md:grid-cols-3 gap-2 md:gap-6">
           {trustStats.map((stat, index) => (
             <div
               key={index}
               className="text-center group"
             >
-              {/* Layout horizontal compacto */}
-              <div className="flex items-center justify-center gap-3 md:gap-4">
+              {/* Layout responsivo - vertical no mobile, horizontal no desktop */}
+              <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4">
                 {/* Ícone menor */}
                 <div className="w-8 h-8 md:w-10 md:h-10 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center group-hover:bg-white/30 transition-all duration-300">
                   <stat.icon className="w-4 h-4 md:w-5 md:h-5 text-white" />
                 </div>
 
                 {/* Valor e label em linha */}
-                <div className="text-left">
-                  <div className="text-xl md:text-2xl font-bold text-white leading-none">
+                <div className="text-center md:text-left">
+                  <div className="text-lg md:text-2xl font-bold text-white leading-none">
                     {stat.value}
-                    <span className="text-[#00ccff] font-bold bg-white/10 px-1 rounded">
+                    <span className="text-[#00ccff] font-bold bg-white/10 px-1 rounded text-sm md:text-xl">
                       {stat.suffix}
                     </span>
                   </div>
