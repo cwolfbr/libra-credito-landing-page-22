@@ -10,13 +10,13 @@
 
 import emailjs from '@emailjs/browser';
 
-// Configurações do EmailJS (deve ser configurado no dashboard do EmailJS)
+// Configurações do EmailJS (configurado com suas credenciais)
 const EMAIL_CONFIG = {
-  SERVICE_ID: 'service_libra_credito', // Configurar no EmailJS
-  TEMPLATE_ID_ADMIN: 'template_parceiro_admin', // Template para equipe
-  TEMPLATE_ID_PARTNER: 'template_parceiro_confirmacao', // Template para parceiro
-  PUBLIC_KEY: 'YOUR_PUBLIC_KEY', // Chave pública do EmailJS
-  ADMIN_EMAIL: 'admin@libracredito.com.br', // Email da equipe
+  SERVICE_ID: 'service_wxv7uqy', // ✅ Configurado
+  TEMPLATE_ID_ADMIN: 'template_parceiro_admin', // Criar no EmailJS
+  TEMPLATE_ID_PARTNER: 'template_parceiro_confirmacao', // Não usar por enquanto
+  PUBLIC_KEY: '091Z0UCMWjvGQplKU', // ✅ Configurado
+  ADMIN_EMAIL: 'contato@libracredito.com.br', // ✅ Configurado
   FROM_NAME: 'Libra Crédito - Sistema Automático'
 };
 

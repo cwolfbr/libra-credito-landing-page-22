@@ -103,15 +103,15 @@ export class PartnersService {
           userAgent: input.userAgent
         };
 
-        // Enviar emails em background (não aguarda resultado)
-        EmailService.sendPartnerEmails(emailData).then(result => {
-          if (result.success) {
-            console.log('✅ Emails enviados automaticamente para novo parceiro');
+        // Enviar email para equipe em background (não aguarda resultado)
+        EmailService.sendAdminNotification(emailData).then(success => {
+          if (success) {
+            console.log('✅ Email enviado automaticamente para equipe: contato@libracredito.com.br');
           } else {
-            console.warn('⚠️ Falha no envio automático de emails (parceiro foi salvo)');
+            console.warn('⚠️ Falha no envio automático de email para equipe (parceiro foi salvo)');
           }
         }).catch(emailError => {
-          console.error('❌ Erro no envio automático de emails:', emailError);
+          console.error('❌ Erro no envio automático de email:', emailError);
         });
         
       } catch (emailError) {
