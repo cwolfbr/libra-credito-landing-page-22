@@ -156,7 +156,27 @@ console.log('Arquivos no bucket:', data);
 3. **Execute diagnósticos** para confirmar tudo funcionando
 4. **Parabéns!** Sistema de blog totalmente funcional! 🎉
 
+---
+
+## 🔒 **Correções de Segurança Adicionais**
+
+Se você vir **avisos de segurança** no Supabase Dashboard:
+
+### **Executar Correções Automáticas:**
+1. Acesse: https://app.supabase.com → SQL Editor
+2. Execute o arquivo: `supabase-security-fixes.sql`
+3. Aguarde confirmação de sucesso
+
+### **Problemas Resolvidos:**
+- ✅ RLS habilitado em todas as tabelas
+- ✅ Funções com `search_path` fixo
+- ✅ Views sem `SECURITY DEFINER` desnecessário
+- ✅ Políticas de segurança otimizadas
+
+---
+
 **🔗 Links Úteis:**
 - Dashboard Admin: `/admin`
 - Diagnósticos: `/admin` → Seção "Diagnósticos Supabase"
 - Supabase Dashboard: https://app.supabase.com
+- Correções de Segurança: `supabase-security-fixes.sql`

@@ -43,6 +43,13 @@ Use o arquivo: `supabase-setup-complete.sql`
 
 > ⚠️ **Sem o bucket `blog-images`, as imagens do blog ficarão apenas no localStorage!**
 
+#### **c) 🔒 OPCIONAL - Correções de Segurança:**
+Se houver avisos de segurança no Dashboard:
+```bash
+# Execute no SQL Editor do Supabase:
+```
+Use o arquivo: `supabase-security-fixes.sql`
+
 ### 3. **Executar**
 ```bash
 npm run dev
