@@ -50,7 +50,14 @@ Se houver avisos de segurança no Dashboard:
 ```
 Use o arquivo: `supabase-security-fixes.sql`
 
-### 3. **Executar**
+### 3. **📧 OPCIONAL - Configurar Emails Automáticos:**
+Para ativar emails automáticos no formulário de parceiros:
+```bash
+# Siga o guia completo:
+```
+Use o arquivo: `EMAIL_SETUP_GUIDE.md`
+
+### 4. **Executar**
 ```bash
 npm run dev
 # Acesse: http://localhost:5173
@@ -117,6 +124,7 @@ public/
 ### **🤝 Parceiros**
 - Formulário específico
 - Validação de CNPJ
+- **📧 Email automático** para equipe e parceiro
 - Integração com CRM
 
 ---

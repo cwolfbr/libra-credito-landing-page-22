@@ -13,6 +13,7 @@
 
 import { supabaseApi, ParceiroData } from '@/lib/supabase';
 import { validateEmail, validatePhone, formatPhone } from '@/utils/validations';
+import { EmailService, PartnerEmailData } from './emailService';
 
 // Tipos para o serviço
 export interface PartnerInput {
@@ -83,7 +84,42 @@ export class PartnersService {
       
       console.log('✅ Parceiro salvo:', savedPartner);
       
-      // 4. Retornar resultado formatado
+      // 4. Enviar emails automáticos (não bloqueia o retorno)
+      try {
+        const emailData: PartnerEmailData = {
+          sessionId: input.sessionId,
+          nome: input.nome,
+          email: input.email,
+          telefone: input.telefone,
+          cidade: input.cidade,
+          cnpj: input.cnpj,
+          tempoHomeEquity: input.tempoHomeEquity,
+          perfilCliente: input.perfilCliente,
+          ramoAtuacao: input.ramoAtuacao,
+          origem: input.origem,
+          mensagem: input.mensagem,
+          dataSubmissao: new Date().toLocaleString('pt-BR'),
+          ipAddress: input.ipAddress,
+          userAgent: input.userAgent
+        };
+
+        // Enviar emails em background (não aguarda resultado)
+        EmailService.sendPartnerEmails(emailData).then(result => {
+          if (result.success) {
+            console.log('✅ Emails enviados automaticamente para novo parceiro');
+          } else {
+            console.warn('⚠️ Falha no envio automático de emails (parceiro foi salvo)');
+          }
+        }).catch(emailError => {
+          console.error('❌ Erro no envio automático de emails:', emailError);
+        });
+        
+      } catch (emailError) {
+        console.error('❌ Erro ao preparar emails automáticos:', emailError);
+        // Não falha o processo - parceiro já foi salvo
+      }
+      
+      // 5. Retornar resultado formatado
       return {
         id: savedPartner.id!,
         nome: savedPartner.nome,
