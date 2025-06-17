@@ -30,7 +30,25 @@ CREATE POLICY "System can insert cleanup logs" ON public.data_cleanup_log
     WITH CHECK (true);
 
 -- =====================================================
--- 2. RECRIAR VIEW simulacoes_dashboard SEM SECURITY DEFINER
+-- 2. VERIFICAR E ADICIONAR COLUNAS FALTANTES
+-- =====================================================
+
+-- Verificar e adicionar coluna integrado_crm se não existir
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM information_schema.columns 
+        WHERE table_name = 'simulacoes' 
+        AND column_name = 'integrado_crm'
+        AND table_schema = 'public'
+    ) THEN
+        ALTER TABLE public.simulacoes ADD COLUMN integrado_crm BOOLEAN DEFAULT false;
+    END IF;
+END
+$$;
+
+-- =====================================================
+-- 3. RECRIAR VIEW simulacoes_dashboard SEM SECURITY DEFINER
 -- =====================================================
 
 -- Remover view existente
@@ -66,10 +84,10 @@ ORDER BY s.created_at DESC;
 COMMENT ON VIEW public.simulacoes_dashboard IS 'View segura para dashboard de simulações sem SECURITY DEFINER';
 
 -- =====================================================
--- 3. CORRIGIR FUNÇÕES COM search_path MUTABLE
+-- 4. CORRIGIR FUNÇÕES COM search_path MUTABLE
 -- =====================================================
 
--- 3.1. Função update_updated_at_column
+-- 4.1. Função update_updated_at_column
 CREATE OR REPLACE FUNCTION public.update_updated_at_column()
 RETURNS TRIGGER 
 LANGUAGE plpgsql
@@ -82,7 +100,7 @@ BEGIN
 END;
 $$;
 
--- 3.2. Função generate_unique_slug
+-- 4.2. Função generate_unique_slug
 CREATE OR REPLACE FUNCTION public.generate_unique_slug(title_text TEXT, existing_id UUID DEFAULT NULL)
 RETURNS TEXT 
 LANGUAGE plpgsql
@@ -123,7 +141,7 @@ BEGIN
 END;
 $$;
 
--- 3.3. Função get_simulacao_stats
+-- 4.3. Função get_simulacao_stats
 CREATE OR REPLACE FUNCTION public.get_simulacao_stats()
 RETURNS TABLE (
     total_simulacoes BIGINT,
@@ -155,7 +173,7 @@ BEGIN
 END;
 $$;
 
--- 3.4. Função get_parceiros_stats
+-- 4.4. Função get_parceiros_stats
 CREATE OR REPLACE FUNCTION public.get_parceiros_stats()
 RETURNS TABLE (
     total_parceiros BIGINT,
@@ -182,7 +200,7 @@ BEGIN
 END;
 $$;
 
--- 3.5. Função cleanup_old_data
+-- 4.5. Função cleanup_old_data
 CREATE OR REPLACE FUNCTION public.cleanup_old_data()
 RETURNS INTEGER 
 LANGUAGE plpgsql
@@ -208,7 +226,7 @@ END;
 $$;
 
 -- =====================================================
--- 4. VERIFICAR E CORRIGIR FUNÇÃO get_simulacao_stats_v2 (se existir)
+-- 5. VERIFICAR E CORRIGIR FUNÇÃO get_simulacao_stats_v2 (se existir)
 -- =====================================================
 
 -- Verificar se a função existe e corrigi-la
@@ -246,7 +264,7 @@ END
 $$;
 
 -- =====================================================
--- 5. VERIFICAR E CORRIGIR FUNÇÃO update_posts_updated_at (se existir)
+-- 6. VERIFICAR E CORRIGIR FUNÇÃO update_posts_updated_at (se existir)
 -- =====================================================
 
 DO $$
@@ -272,7 +290,7 @@ END
 $$;
 
 -- =====================================================
--- 6. ADICIONAR COMENTÁRIOS DE SEGURANÇA
+-- 7. ADICIONAR COMENTÁRIOS DE SEGURANÇA
 -- =====================================================
 
 COMMENT ON FUNCTION public.update_updated_at_column() IS 'Função segura para atualizar timestamp com search_path fixo';
@@ -283,7 +301,7 @@ COMMENT ON FUNCTION public.cleanup_old_data() IS 'Função segura para limpeza d
 COMMENT ON TABLE public.data_cleanup_log IS 'Tabela de log de limpeza com RLS habilitado';
 
 -- =====================================================
--- 7. VERIFICAÇÃO FINAL DE SEGURANÇA
+-- 8. VERIFICAÇÃO FINAL DE SEGURANÇA
 -- =====================================================
 
 -- Verificar se RLS está habilitado em todas as tabelas públicas
@@ -321,10 +339,11 @@ SELECT
 -- =====================================================
 -- 
 -- 1. ✅ RLS habilitado na tabela data_cleanup_log
--- 2. ✅ View simulacoes_dashboard recriada sem SECURITY DEFINER
--- 3. ✅ Todas as funções atualizadas com SET search_path = public
--- 4. ✅ Políticas de segurança mantidas e otimizadas
--- 5. ✅ Comentários de documentação adicionados
+-- 2. ✅ Coluna integrado_crm adicionada se necessário
+-- 3. ✅ View simulacoes_dashboard recriada sem SECURITY DEFINER
+-- 4. ✅ Todas as funções atualizadas com SET search_path = public
+-- 5. ✅ Políticas de segurança mantidas e otimizadas
+-- 6. ✅ Comentários de documentação adicionados
 -- 
 -- Execute um novo lint no Supabase Dashboard para verificar
 -- que todos os avisos de segurança foram resolvidos.
