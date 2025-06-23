@@ -36,7 +36,7 @@ const Hero2: React.FC = () => {
         <div className="mb-8 relative">
           <div className="w-48 h-64 mx-auto rounded-2xl overflow-hidden shadow-2xl transform rotate-3">
             <img 
-              src="/api/placeholder/300/400" 
+              src="/images/hero-professional.png" 
               alt="Profissional analisando documentos"
               className="w-full h-full object-cover"
             />

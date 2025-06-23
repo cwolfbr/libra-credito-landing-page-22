@@ -9,7 +9,7 @@ const StepsSection: React.FC = () => {
       number: "1",
       title: "Simulação de valores",
       description: "Faça sua simulação online e descubra quanto pode obter",
-      image: "/api/placeholder/200/150",
+      image: "/images/hero-professional.png",
       bgColor: "bg-blue-50",
       textColor: "text-blue-600"
     },
@@ -17,7 +17,7 @@ const StepsSection: React.FC = () => {
       number: "2", 
       title: "Análise de crédito",
       description: "Nossa equipe analisa seu perfil e documenta o processo",
-      image: "/api/placeholder/200/150",
+      image: "/images/customer-testimonial.png",
       bgColor: "bg-green-50",
       textColor: "text-green-600"
     },
@@ -25,7 +25,7 @@ const StepsSection: React.FC = () => {
       number: "3",
       title: "Avaliação do imóvel", 
       description: "Realizamos a avaliação do seu imóvel de forma rápida",
-      image: "/api/placeholder/200/150",
+      image: "/images/hero-professional.png",
       bgColor: "bg-yellow-50",
       textColor: "text-yellow-600"
     },
@@ -33,7 +33,7 @@ const StepsSection: React.FC = () => {
       number: "4",
       title: "Proposta final e assinatura",
       description: "Receba sua proposta final e assine digitalmente",
-      image: "/api/placeholder/200/150", 
+      image: "/images/customer-testimonial.png", 
       bgColor: "bg-purple-50",
       textColor: "text-purple-600"
     }

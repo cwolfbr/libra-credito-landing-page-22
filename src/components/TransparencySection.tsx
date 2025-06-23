@@ -11,7 +11,7 @@ const TransparencySection: React.FC = () => {
             <div className="flex-shrink-0">
               <div className="w-32 h-32 rounded-full overflow-hidden shadow-lg">
                 <img 
-                  src="/api/placeholder/200/200" 
+                  src="/images/customer-testimonial.png" 
                   alt="Cliente satisfeita"
                   className="w-full h-full object-cover"
                 />

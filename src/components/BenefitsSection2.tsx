@@ -49,7 +49,7 @@ const BenefitsSection2: React.FC = () => {
           <div className="mb-8 relative">
             <div className="w-32 h-40 mx-auto rounded-xl overflow-hidden shadow-lg">
               <img 
-                src="/api/placeholder/200/250" 
+                src="/images/hero-professional.png" 
                 alt="Profissional sorrindo"
                 className="w-full h-full object-cover"
               />
@@ -99,20 +99,29 @@ const BenefitsSection2: React.FC = () => {
           ))}
         </div>
 
-        {/* Bottom Section */}
+        {/* Bottom Section - Libra na Mídia */}
         <div className="bg-gray-100 rounded-2xl p-6 text-center">
-          <h3 className="text-xl font-bold text-libra-blue mb-2">
+          <h3 className="text-xl font-bold text-libra-blue mb-6">
             Libra na mídia:
           </h3>
           
-          {/* Media Icons */}
+          {/* Media Icons - Grid 2x2 com logos reais */}
           <div className="grid grid-cols-2 gap-4 mt-6">
-            <div className="bg-white rounded-lg p-4 shadow-sm">
+            <a 
+              href="https://bluestudioexpress.estadao.com.br/conteudo/2023/08/24/libra-simplifica-processo-para-emprestimo-com-garantia-de-imovel/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+            >
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-libra-blue rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">L</span>
+                <div className="w-10 h-8 flex items-center justify-center">
+                  <img 
+                    src="/images/media/estadao-logo.png"
+                    alt="Estadão"
+                    className="max-w-full max-h-full object-contain"
+                  />
                 </div>
-                <div className="text-left">
+                <div className="text-left flex-1">
                   <div className="text-sm font-medium text-gray-800">
                     Libra simplifica processo
                   </div>
@@ -121,14 +130,23 @@ const BenefitsSection2: React.FC = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </a>
 
-            <div className="bg-white rounded-lg p-4 shadow-sm">
+            <a 
+              href="https://g1.globo.com/sp/ribeirao-preto-franca/especial-publicitario/libra-credito-solucoes-financeiras/noticia/2022/10/28/a-libra-credito-tem-solucoes-financeiras-com-as-menores-taxas-no-pos-pandemia.ghtml"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+            >
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">G1</span>
+                <div className="w-10 h-8 flex items-center justify-center">
+                  <img 
+                    src="/images/media/g1-logo.png"
+                    alt="G1 Globo"
+                    className="max-w-full max-h-full object-contain"
+                  />
                 </div>
-                <div className="text-left">
+                <div className="text-left flex-1">
                   <div className="text-sm font-medium text-gray-800">
                     A Libra Crédito tem soluções
                   </div>
@@ -137,14 +155,23 @@ const BenefitsSection2: React.FC = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </a>
 
-            <div className="bg-white rounded-lg p-4 shadow-sm">
+            <a 
+              href="https://www.acidadeon.com/ribeiraopreto/conteudo-patrocinado/libracredito/libra-credito-oferece-emprestimo-de-baixo-custo-e-personalizado/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+            >
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">BN</span>
+                <div className="w-10 h-8 flex items-center justify-center">
+                  <img 
+                    src="/images/media/acidadeon-logo.png"
+                    alt="A Cidade ON"
+                    className="max-w-full max-h-full object-contain"
+                  />
                 </div>
-                <div className="text-left">
+                <div className="text-left flex-1">
                   <div className="text-sm font-medium text-gray-800">
                     Libra Crédito oferece
                   </div>
@@ -153,14 +180,23 @@ const BenefitsSection2: React.FC = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </a>
 
-            <div className="bg-white rounded-lg p-4 shadow-sm">
+            <a 
+              href="https://www.revide.com.br/noticias/revista/a-revolucao-do-credito/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+            >
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">R</span>
+                <div className="w-10 h-8 flex items-center justify-center">
+                  <img 
+                    src="/images/media/revide-logo.png"
+                    alt="Revide"
+                    className="max-w-full max-h-full object-contain"
+                  />
                 </div>
-                <div className="text-left">
+                <div className="text-left flex-1">
                   <div className="text-sm font-medium text-gray-800">
                     A revolução do crédito
                   </div>
@@ -169,7 +205,7 @@ const BenefitsSection2: React.FC = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </a>
           </div>
         </div>
       </div>
