@@ -7,6 +7,8 @@ import LoadingSpinner from '@/components/ui/loading-spinner';
 // Hero não deve ser lazy loaded pois contém o LCP
 import Hero from '@/components/Hero';
 import TrustBar from '@/components/TrustBar';
+import WaveSeparator from '@/components/ui/WaveSeparator';
+import RateHighlight from '@/components/RateHighlight';
 
 // Lazy loading dos componentes pesados
 const Benefits = lazy(() => import('@/components/Benefits'));
@@ -41,6 +43,12 @@ const Index: React.FC = () => {
   return (
     <MobileLayout>
       <Hero />
+      
+      {/* Faixa Separadora com Ondas - Posição Exata da Libra */}
+      <WaveSeparator variant="hero" height="md" />
+      
+      {/* Seção de Destaque da Taxa 1,19% */}
+      <RateHighlight />
       
       <TrustBar />
       
