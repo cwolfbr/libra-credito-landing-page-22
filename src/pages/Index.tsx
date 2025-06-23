@@ -6,7 +6,7 @@ import LoadingSpinner from '@/components/ui/loading-spinner';
 
 // Hero não deve ser lazy loaded pois contém o LCP
 import Hero from '@/components/Hero';
-import TrustBar from '@/components/TrustBar';
+import TrustBarMinimal from '@/components/TrustBarMinimal';
 import WaveSeparator from '@/components/ui/WaveSeparator';
 
 // Lazy loading dos componentes pesados
@@ -46,7 +46,7 @@ const Index: React.FC = () => {
       {/* Faixa Separadora com Ondas - Apenas adicionada, sem alterar o resto */}
       <WaveSeparator variant="hero" height="md" />
       
-      <TrustBar />
+      <TrustBarMinimal />
       
       <Suspense fallback={<SectionLoader />}>
         <Benefits />
