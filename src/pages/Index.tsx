@@ -8,7 +8,6 @@ import LoadingSpinner from '@/components/ui/loading-spinner';
 import Hero from '@/components/Hero';
 import TrustBar from '@/components/TrustBar';
 import WaveSeparator from '@/components/ui/WaveSeparator';
-import RateHighlight from '@/components/RateHighlight';
 
 // Lazy loading dos componentes pesados
 const Benefits = lazy(() => import('@/components/Benefits'));
@@ -44,11 +43,8 @@ const Index: React.FC = () => {
     <MobileLayout>
       <Hero />
       
-      {/* Faixa Separadora com Ondas - Posição Exata da Libra */}
+      {/* Faixa Separadora com Ondas - Apenas adicionada, sem alterar o resto */}
       <WaveSeparator variant="hero" height="md" />
-      
-      {/* Seção de Destaque da Taxa 1,19% */}
-      <RateHighlight />
       
       <TrustBar />
       
