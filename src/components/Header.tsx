@@ -22,7 +22,6 @@
 
 import React, { memo, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useIsMobile } from '@/hooks/use-mobile';
 import { useDevice } from '@/hooks/useDevice';
 import DesktopHeader from './DesktopHeader';
 import MobileHeader from './MobileHeader';
@@ -42,8 +41,7 @@ const Header: React.FC = memo(() => {
   const [isInfoPopupOpen, setIsInfoPopupOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const isMobile = useIsMobile();
-  const { isMobile: isDeviceMobile } = useDevice();
+  const { isMobile, isDesktop } = useDevice();
 
   // Controla quando mostrar o popup baseado na página atual
   useEffect(() => {
@@ -77,13 +75,8 @@ const Header: React.FC = memo(() => {
 
   return (
     <>
-      {isDeviceMobile ? (
+      {isMobile ? (
         <SimpleMobileHeader onPortalClientes={handlePortalClientes} />
-      ) : isMobile ? (
-        <MobileHeader 
-          onPortalClientes={handlePortalClientes}
-          onSimulateNow={handleSimulateNow}
-        />
       ) : (
         <DesktopHeader 
           onPortalClientes={handlePortalClientes}

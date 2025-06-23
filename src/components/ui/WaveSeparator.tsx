@@ -16,9 +16,9 @@ const WaveSeparator: React.FC<WaveSeparatorProps> = ({
 }) => {
   // Configurações de altura responsiva
   const heightConfig = {
-    sm: { desktop: '60px', tablet: '40px', mobile: '30px' },
-    md: { desktop: '120px', tablet: '80px', mobile: '60px' },
-    lg: { desktop: '160px', tablet: '120px', mobile: '80px' }
+    sm: { desktop: '60px', tablet: '50px', mobile: '40px' },
+    md: { desktop: '120px', tablet: '80px', mobile: '70px' },
+    lg: { desktop: '160px', tablet: '120px', mobile: '90px' }
   };
 
   // Configurações de cores da marca Libra

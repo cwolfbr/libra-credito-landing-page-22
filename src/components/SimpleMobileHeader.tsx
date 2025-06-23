@@ -30,7 +30,10 @@ const SimpleMobileHeader: React.FC<SimpleMobileHeaderProps> = ({ onPortalCliente
   };
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-[9999] bg-white border-b border-gray-200 shadow-sm ${hasNotch ? 'safe-top' : ''}`} style={{ position: 'fixed !important' }}>
+    <header 
+      data-mobile="true"
+      className={`fixed top-0 left-0 right-0 z-[9999] bg-white border-b border-gray-200 shadow-sm ${hasNotch ? 'pt-safe-top' : ''}`}
+    >
       <div className="h-16 px-4 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center" aria-label="Ir para página inicial da Libra Crédito">
