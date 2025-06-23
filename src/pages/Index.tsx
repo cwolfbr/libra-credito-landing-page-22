@@ -41,6 +41,9 @@ const Index: React.FC = () => {
 
   return (
     <MobileLayout>
+      {/* Faixa Separadora Superior Invertida - Ondas para baixo */}
+      <WaveSeparator variant="hero" height="md" inverted />
+      
       <Hero />
       
       {/* Faixa Separadora com Ondas - Apenas adicionada, sem alterar o resto */}

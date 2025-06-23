@@ -39,7 +39,7 @@ const Hero: React.FC = () => {
 
   return (
     <section 
-      className="min-h-[90vh] pt-header pb-2 bg-white relative flex flex-col justify-center" 
+      className="min-h-[90vh] pb-2 bg-white relative flex flex-col justify-center" 
       aria-labelledby="hero-heading"
       role="banner"
     >

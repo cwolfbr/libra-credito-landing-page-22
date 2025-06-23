@@ -4,12 +4,14 @@ import { cn } from '@/lib/utils';
 interface WaveSeparatorProps {
   variant?: 'hero' | 'section' | 'inverted' | 'footer';
   height?: 'sm' | 'md' | 'lg';
+  inverted?: boolean; // Nova prop para inverter as ondas
   className?: string;
 }
 
 const WaveSeparator: React.FC<WaveSeparatorProps> = ({ 
   variant = 'hero', 
   height = 'md',
+  inverted = false, // Padrão: ondas normais (para baixo)
   className 
 }) => {
   // Configurações de altura responsiva
@@ -56,8 +58,14 @@ const WaveSeparator: React.FC<WaveSeparatorProps> = ({
     >
       {/* SVG com as 3 camadas de profundidade */}
       <svg
-        className="absolute bottom-0 left-0 w-full"
-        style={{ height: currentHeight.desktop }}
+        className={cn(
+          'absolute left-0 w-full',
+          inverted ? 'top-0' : 'bottom-0' // Posição baseada em inverted
+        )}
+        style={{ 
+          height: currentHeight.desktop,
+          transform: inverted ? 'scaleY(-1)' : 'none' // Inverter verticalmente se inverted
+        }}
         viewBox="0 0 1200 120"
         preserveAspectRatio="none"
         fill={config.fill}
