@@ -45,7 +45,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { validateForm } from '@/utils/validations';
-import { SimulationService, SimulationResult } from '@/services/simulationService';
+import { LocalSimulationService, SimulationResult } from '@/services/localSimulationService';
 import { useUserJourney } from '@/hooks/useUserJourney';
 import CityAutocomplete from './form/CityAutocomplete';
 import LoanAmountField from './form/LoanAmountField';
@@ -58,6 +58,7 @@ import ApiMessageDisplay from './ApiMessageDisplay';
 import SmartApiMessage from './messages/SmartApiMessage';
 import SimulationResultDisplay from './SimulationResultDisplay';
 import { analyzeApiMessage, ApiMessageAnalysis } from '@/utils/apiMessageAnalyzer';
+import { analyzeLocalMessage } from '@/utils/localMessageAnalyzer';
 import { formatBRL, norm } from '@/utils/formatters';
 
 const SimulationForm: React.FC = () => {
@@ -111,8 +112,8 @@ const SimulationForm: React.FC = () => {
 
       console.log('🎯 Iniciando simulação:', simulationInput);
 
-      // Usar o novo serviço integrado
-      const result = await SimulationService.performSimulation(simulationInput);
+      // Usar o serviço local sem APIs
+      const result = await LocalSimulationService.performSimulation(simulationInput);
 
       console.log('✅ Simulação realizada com sucesso:', result);
 
@@ -131,11 +132,11 @@ const SimulationForm: React.FC = () => {
       console.error('Erro na simulação:', error);
       
       if (error instanceof Error) {
-        // Analisar a mensagem para ver se é um dos padrões conhecidos
-        const analysis = analyzeApiMessage(error.message);
+        // Analisar a mensagem usando analisador local
+        const analysis = analyzeLocalMessage(error.message);
         
         if (analysis.type !== 'unknown_error') {
-          // É uma mensagem estruturada da API
+          // É uma mensagem estruturada do serviço local
           setApiMessage(analysis);
           setErro(''); // Limpar erro genérico
         } else {
@@ -222,7 +223,7 @@ const SimulationForm: React.FC = () => {
 
         console.log('🎯 Executando simulação automática após ajuste:', simulationInput);
 
-        const result = await SimulationService.performSimulation(simulationInput);
+        const result = await LocalSimulationService.performSimulation(simulationInput);
 
         console.log('✅ Simulação automática realizada com sucesso:', result);
 
@@ -241,7 +242,7 @@ const SimulationForm: React.FC = () => {
         console.error('Erro na simulação automática:', error);
         
         if (error instanceof Error) {
-          const analysis = analyzeApiMessage(error.message);
+          const analysis = analyzeLocalMessage(error.message);
           
           if (analysis.type !== 'unknown_error') {
             setApiMessage(analysis);

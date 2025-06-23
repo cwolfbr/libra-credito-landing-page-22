@@ -5,6 +5,8 @@
  * @description Gerencia CRUD de posts do blog, categorias e configurações
  */
 
+import { supabaseApi, type BlogPostData } from '@/lib/supabase';
+
 export interface BlogPost {
   id?: string;
   title: string;
@@ -454,6 +456,49 @@ export class BlogService {
   }
 
   /**
+   * Converter BlogPostData do Supabase para BlogPost
+   */
+  static convertSupabaseToBlogPost(supabasePost: BlogPostData): BlogPost {
+    return {
+      id: supabasePost.id,
+      title: supabasePost.title,
+      description: supabasePost.description,
+      category: supabasePost.category as BlogCategory,
+      imageUrl: supabasePost.image_url || '',
+      slug: supabasePost.slug,
+      content: supabasePost.content,
+      readTime: supabasePost.read_time || 5,
+      published: supabasePost.published,
+      featuredPost: supabasePost.featured_post,
+      metaTitle: supabasePost.meta_title,
+      metaDescription: supabasePost.meta_description,
+      tags: supabasePost.tags,
+      createdAt: supabasePost.created_at,
+      updatedAt: supabasePost.updated_at
+    };
+  }
+
+  /**
+   * Converter BlogPost para formato Supabase
+   */
+  static convertBlogPostToSupabase(post: BlogPost): Omit<BlogPostData, 'id' | 'created_at' | 'updated_at'> {
+    return {
+      title: post.title,
+      description: post.description,
+      category: post.category,
+      content: post.content,
+      image_url: post.imageUrl,
+      slug: post.slug,
+      read_time: post.readTime,
+      published: post.published,
+      featured_post: post.featuredPost,
+      meta_title: post.metaTitle,
+      meta_description: post.metaDescription,
+      tags: post.tags
+    };
+  }
+
+  /**
    * Validar post
    */
   static validatePost(post: Partial<BlogPost>): string[] {
@@ -465,12 +510,12 @@ export class BlogService {
     if (!post.content?.trim()) errors.push('Conteúdo é obrigatório');
     if (!post.imageUrl?.trim()) errors.push('URL da imagem é obrigatória');
     
-    if (post.title && post.title.length > 100) {
-      errors.push('Título deve ter no máximo 100 caracteres');
+    if (post.title && post.title.length > 200) {
+      errors.push('Título deve ter no máximo 200 caracteres');
     }
     
-    if (post.description && post.description.length > 200) {
-      errors.push('Descrição deve ter no máximo 200 caracteres');
+    if (post.description && post.description.length > 500) {
+      errors.push('Descrição deve ter no máximo 500 caracteres');
     }
     
     if (post.slug && !/^[a-z0-9-]+$/.test(post.slug)) {
@@ -481,26 +526,75 @@ export class BlogService {
   }
 
   /**
-   * Obter todos os posts (em produção viria do banco)
+   * Obter todos os posts (Supabase como primary, localStorage como cache)
    */
   static async getAllPosts(): Promise<BlogPost[]> {
+    try {
+      console.log('🔍 Buscando posts do Supabase...');
+      
+      // Tentar buscar do Supabase primeiro (SEMPRE)
+      const supabasePosts = await supabaseApi.getAllBlogPosts();
+      console.log(`📊 Posts encontrados no Supabase: ${supabasePosts?.length || 0}`);
+      
+      if (supabasePosts && supabasePosts.length >= 0) {
+        // Converter formato Supabase para BlogPost
+        const convertedPosts = supabasePosts.map(this.convertSupabaseToBlogPost);
+        
+        // Se não há posts no Supabase, mas há posts locais, sincronizar
+        if (convertedPosts.length === 0) {
+          console.log('📤 Nenhum post no Supabase, verificando localStorage para sync...');
+          await this.syncLocalToSupabase();
+          
+          // Tentar buscar novamente após sync
+          const reloadedPosts = await supabaseApi.getAllBlogPosts();
+          if (reloadedPosts && reloadedPosts.length > 0) {
+            const reloadedConverted = reloadedPosts.map(this.convertSupabaseToBlogPost);
+            this.saveToLocalStorageWithCleanup(reloadedConverted);
+            return reloadedConverted;
+          }
+        }
+        
+        // Atualizar cache local
+        this.saveToLocalStorageWithCleanup(convertedPosts);
+        console.log('✅ Posts carregados do Supabase e cache atualizado');
+        return convertedPosts;
+      }
+    } catch (error) {
+      console.error('❌ Erro ao buscar posts do Supabase:', error);
+      
+      // Tentar sincronizar dados locais
+      try {
+        console.log('🔄 Tentando sincronização de emergência...');
+        await this.syncLocalToSupabase();
+      } catch (syncError) {
+        console.error('❌ Falha na sincronização de emergência:', syncError);
+      }
+    }
+
+    // Fallback para localStorage apenas se Supabase falhar completamente
+    console.log('📱 Usando fallback localStorage...');
     try {
       const stored = localStorage.getItem(this.STORAGE_KEY);
       if (stored) {
         const posts = JSON.parse(stored);
-        // Se temos poucos posts, reinicializar com todos os posts existentes
-        if (posts.length < 5) {
-          localStorage.setItem(this.STORAGE_KEY, JSON.stringify(EXISTING_POSTS));
-          return EXISTING_POSTS;
-        }
+        console.log(`📱 Posts encontrados no localStorage: ${posts.length}`);
         return posts;
       } else {
         // Primeira vez acessando - inicializar com posts existentes
-        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(EXISTING_POSTS));
+        console.log('🆕 Primeira execução - inicializando com posts padrão');
+        this.saveToLocalStorageWithCleanup(EXISTING_POSTS);
+        
+        // Tentar criar posts padrão no Supabase
+        try {
+          await this.initializeDefaultPosts();
+        } catch (initError) {
+          console.error('❌ Erro ao inicializar posts padrão no Supabase:', initError);
+        }
+        
         return EXISTING_POSTS;
       }
     } catch (error) {
-      console.error('Erro ao carregar posts:', error);
+      console.error('❌ Erro ao carregar posts do localStorage:', error);
       return EXISTING_POSTS;
     }
   }
@@ -522,7 +616,67 @@ export class BlogService {
   }
 
   /**
-   * Criar novo post
+   * Sincronizar posts do localStorage para Supabase
+   */
+  static async syncLocalToSupabase(): Promise<void> {
+    try {
+      const stored = localStorage.getItem(this.STORAGE_KEY);
+      if (!stored) return;
+
+      const localPosts: BlogPost[] = JSON.parse(stored);
+      console.log(`🔄 Sincronizando ${localPosts.length} posts locais para Supabase...`);
+
+      let synced = 0;
+      for (const post of localPosts) {
+        try {
+          // Verificar se post já existe no Supabase
+          const existing = await supabaseApi.getBlogPostById(post.id!).catch(() => null);
+          
+          if (!existing) {
+            // Criar no Supabase
+            const supabaseData = this.convertBlogPostToSupabase(post);
+            await supabaseApi.createBlogPost(supabaseData);
+            synced++;
+            console.log(`✅ Post sincronizado: ${post.title}`);
+          }
+        } catch (error) {
+          console.error(`❌ Erro ao sincronizar post "${post.title}":`, error);
+        }
+      }
+
+      console.log(`🎉 Sincronização concluída: ${synced} posts sincronizados`);
+    } catch (error) {
+      console.error('❌ Erro na sincronização local → Supabase:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Inicializar posts padrão no Supabase
+   */
+  static async initializeDefaultPosts(): Promise<void> {
+    try {
+      console.log('🚀 Inicializando posts padrão no Supabase...');
+      
+      for (const post of EXISTING_POSTS) {
+        try {
+          const supabaseData = this.convertBlogPostToSupabase(post);
+          await supabaseApi.createBlogPost(supabaseData);
+          console.log(`✅ Post padrão criado: ${post.title}`);
+        } catch (error) {
+          console.error(`❌ Erro ao criar post padrão "${post.title}":`, error);
+        }
+      }
+      
+      console.log('🎉 Inicialização de posts padrão concluída');
+    } catch (error) {
+      console.error('❌ Erro na inicialização de posts padrão:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Criar novo post (Supabase como primary, localStorage como fallback)
    */
   static async createPost(postData: Omit<BlogPost, 'id' | 'createdAt' | 'updatedAt'>): Promise<BlogPost> {
     const errors = this.validatePost(postData);
@@ -530,75 +684,162 @@ export class BlogService {
       throw new Error(`Dados inválidos: ${errors.join(', ')}`);
     }
 
-    const posts = await this.getAllPosts();
-    
-    // Verificar se slug já existe
-    const existingSlug = posts.find(p => p.slug === postData.slug);
-    if (existingSlug) {
-      throw new Error('Slug já existe. Escolha outro.');
+    console.log('📝 Criando novo post:', postData.title);
+
+    // SEMPRE tentar criar no Supabase primeiro
+    try {
+      const supabaseData = this.convertBlogPostToSupabase({
+        ...postData,
+        readTime: postData.readTime || this.calculateReadTime(postData.content)
+      } as BlogPost);
+
+      console.log('📤 Enviando para Supabase...', supabaseData);
+      const createdPost = await supabaseApi.createBlogPost(supabaseData);
+      const convertedPost = this.convertSupabaseToBlogPost(createdPost);
+      
+      console.log('✅ Post criado no Supabase:', convertedPost.id);
+      
+      // Atualizar cache local (com limpeza de espaço se necessário)
+      try {
+        const localPosts = await this.getAllPosts();
+        const updatedPosts = [convertedPost, ...localPosts.filter(p => p.id !== convertedPost.id)];
+        this.saveToLocalStorageWithCleanup(updatedPosts);
+      } catch (storageError) {
+        console.warn('⚠️ Erro ao atualizar cache local:', storageError);
+        // Se falhar, limpar localStorage e manter apenas os novos posts
+        this.clearLocalStorage();
+      }
+      
+      return convertedPost;
+    } catch (error) {
+      console.error('❌ Erro ao criar post no Supabase:', error);
+      
+      // Fallback para localStorage mas avisar sobre o problema
+      console.warn('⚠️ Usando fallback localStorage - post NÃO estará disponível em outros dispositivos!');
+      
+      const posts = await this.getAllPosts();
+      
+      // Verificar se slug já existe
+      const existingSlug = posts.find(p => p.slug === postData.slug);
+      if (existingSlug) {
+        throw new Error('Slug já existe. Escolha outro.');
+      }
+
+      const newPost: BlogPost = {
+        ...postData,
+        id: `local-${Date.now()}`,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        readTime: postData.readTime || this.calculateReadTime(postData.content)
+      };
+
+      posts.unshift(newPost); // Adiciona no início
+      this.saveToLocalStorageWithCleanup(posts);
+      
+      // Tentar sincronizar em background
+      setTimeout(async () => {
+        try {
+          console.log('🔄 Tentativa de sincronização em background...');
+          await this.syncLocalToSupabase();
+        } catch (syncError) {
+          console.error('❌ Falha na sincronização em background:', syncError);
+        }
+      }, 5000);
+      
+      throw new Error(`Post salvo localmente, mas falha na sincronização: ${error}. Use a ferramenta de sincronização em Configurações.`);
     }
-
-    const newPost: BlogPost = {
-      ...postData,
-      id: Date.now().toString(),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      readTime: postData.readTime || this.calculateReadTime(postData.content)
-    };
-
-    posts.unshift(newPost); // Adiciona no início
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(posts));
-    
-    return newPost;
   }
 
   /**
-   * Atualizar post existente
+   * Atualizar post existente (Supabase como primary, localStorage como fallback)
    */
   static async updatePost(id: string, postData: Partial<BlogPost>): Promise<BlogPost> {
-    const posts = await this.getAllPosts();
-    const index = posts.findIndex(post => post.id === id);
-    
-    if (index === -1) {
-      throw new Error('Post não encontrado');
+    // Tentar atualizar no Supabase primeiro
+    try {
+      const supabaseData = this.convertBlogPostToSupabase(postData as BlogPost);
+      const updatedPost = await supabaseApi.updateBlogPost(id, supabaseData);
+      const convertedPost = this.convertSupabaseToBlogPost(updatedPost);
+      
+      // Sincronizar com localStorage
+      const localPosts = await this.getAllPosts();
+      const index = localPosts.findIndex(post => post.id === id);
+      if (index !== -1) {
+        localPosts[index] = convertedPost;
+        this.saveToLocalStorageWithCleanup(localPosts);
+      }
+      
+      return convertedPost;
+    } catch (error) {
+      console.warn('Erro ao atualizar post no Supabase, usando localStorage:', error);
+      
+      // Fallback para localStorage
+      const posts = await this.getAllPosts();
+      const index = posts.findIndex(post => post.id === id);
+      
+      if (index === -1) {
+        throw new Error('Post não encontrado');
+      }
+
+      const errors = this.validatePost({ ...posts[index], ...postData });
+      if (errors.length > 0) {
+        throw new Error(`Dados inválidos: ${errors.join(', ')}`);
+      }
+
+      // Verificar se novo slug já existe em outro post
+      if (postData.slug && posts.some(p => p.id !== id && p.slug === postData.slug)) {
+        throw new Error('Slug já existe. Escolha outro.');
+      }
+
+      const updatedPost: BlogPost = {
+        ...posts[index],
+        ...postData,
+        updatedAt: new Date().toISOString(),
+        readTime: postData.content ? this.calculateReadTime(postData.content) : posts[index].readTime
+      };
+
+      posts[index] = updatedPost;
+      this.saveToLocalStorageWithCleanup(posts);
+      
+      return updatedPost;
     }
-
-    const errors = this.validatePost({ ...posts[index], ...postData });
-    if (errors.length > 0) {
-      throw new Error(`Dados inválidos: ${errors.join(', ')}`);
-    }
-
-    // Verificar se novo slug já existe em outro post
-    if (postData.slug && posts.some(p => p.id !== id && p.slug === postData.slug)) {
-      throw new Error('Slug já existe. Escolha outro.');
-    }
-
-    const updatedPost: BlogPost = {
-      ...posts[index],
-      ...postData,
-      updatedAt: new Date().toISOString(),
-      readTime: postData.content ? this.calculateReadTime(postData.content) : posts[index].readTime
-    };
-
-    posts[index] = updatedPost;
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(posts));
-    
-    return updatedPost;
   }
 
   /**
    * Deletar post
    */
   static async deletePost(id: string): Promise<boolean> {
-    const posts = await this.getAllPosts();
-    const filteredPosts = posts.filter(post => post.id !== id);
-    
-    if (filteredPosts.length === posts.length) {
-      throw new Error('Post não encontrado');
-    }
+    try {
+      // Primeiro, tentar deletar do Supabase
+      await supabaseApi.deleteBlogPost(id);
+      console.log('✅ Post deletado do Supabase com sucesso');
+      
+      // Atualizar cache local
+      const posts = await this.getAllPosts();
+      const filteredPosts = posts.filter(post => post.id !== id);
+      
+      if (filteredPosts.length === posts.length) {
+        throw new Error('Post não encontrado no cache local');
+      }
 
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(filteredPosts));
-    return true;
+      this.saveToLocalStorageWithCleanup(filteredPosts);
+      return true;
+      
+    } catch (error) {
+      console.error('❌ Erro ao deletar post do Supabase:', error);
+      
+      // Fallback: tentar deletar apenas do localStorage
+      const posts = await this.getAllPosts();
+      const filteredPosts = posts.filter(post => post.id !== id);
+      
+      if (filteredPosts.length === posts.length) {
+        throw new Error('Post não encontrado');
+      }
+      
+      this.saveToLocalStorageWithCleanup(filteredPosts);
+      
+      // Alertar sobre exclusão incompleta
+      throw new Error(`Post removido localmente, mas falhou no Supabase: ${error instanceof Error ? error.message : error}`);
+    }
   }
 
   /**
@@ -679,6 +920,43 @@ export class BlogService {
   }
 
   /**
+   * Upload de imagem para blog
+   */
+  static async uploadImage(file: File, fileName?: string): Promise<string> {
+    const { ImageUploadService } = await import('@/services/imageUploadService');
+    
+    try {
+      // Otimizar imagem antes do upload
+      const optimizedFile = await ImageUploadService.optimizeImage(file);
+      
+      // Fazer upload
+      const result = await ImageUploadService.uploadImage(optimizedFile);
+      
+      // Limpeza periódica de imagens antigas
+      ImageUploadService.cleanupLocalImages();
+      
+      return result.url;
+    } catch (error) {
+      console.error('Erro ao fazer upload de imagem:', error);
+      throw new Error(error instanceof Error ? error.message : 'Erro ao fazer upload da imagem');
+    }
+  }
+
+  /**
+   * Deletar imagem do blog
+   */
+  static async deleteImage(imageUrl: string): Promise<boolean> {
+    const { ImageUploadService } = await import('@/services/imageUploadService');
+    
+    try {
+      return await ImageUploadService.deleteImage(imageUrl);
+    } catch (error) {
+      console.error('Erro ao deletar imagem:', error);
+      return false;
+    }
+  }
+
+  /**
    * Estatísticas do blog
    */
   static async getBlogStats() {
@@ -699,6 +977,81 @@ export class BlogService {
       featured: featured.length,
       categoryCounts
     };
+  }
+
+  /**
+   * Salvar no localStorage com limpeza automática se exceder quota
+   */
+  private static saveToLocalStorageWithCleanup(posts: BlogPost[]): void {
+    try {
+      // Tentar salvar normalmente
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(posts));
+    } catch (error) {
+      console.warn('⚠️ Quota do localStorage excedida. Iniciando limpeza...');
+      
+      // Estratégia 1: Remover imagens base64 dos posts (manter apenas URLs do Supabase)
+      const optimizedPosts = posts.map(post => ({
+        ...post,
+        imageUrl: post.imageUrl?.startsWith('data:') ? '' : post.imageUrl
+      }));
+      
+      try {
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(optimizedPosts));
+        console.log('✅ Posts salvos após remover imagens base64');
+        return;
+      } catch (error2) {
+        console.warn('⚠️ Ainda excedendo quota. Limpeza mais agressiva...');
+      }
+      
+      // Estratégia 2: Manter apenas os 10 posts mais recentes
+      const recentPosts = optimizedPosts
+        .sort((a, b) => new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime())
+        .slice(0, 10);
+      
+      try {
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(recentPosts));
+        console.log('✅ Posts salvos após manter apenas 10 mais recentes');
+        return;
+      } catch (error3) {
+        console.warn('⚠️ Limpeza falhou. Removendo localStorage completamente...');
+        this.clearLocalStorage();
+      }
+    }
+  }
+
+  /**
+   * Limpar localStorage do blog
+   */
+  static clearLocalStorage(): void {
+    try {
+      localStorage.removeItem(this.STORAGE_KEY);
+      console.log('🧹 Cache local do blog limpo');
+    } catch (error) {
+      console.error('Erro ao limpar localStorage:', error);
+    }
+  }
+
+  /**
+   * Obter estatísticas de armazenamento
+   */
+  static getStorageStats(): { usedMB: number; posts: number; hasBase64Images: number } {
+    try {
+      const data = localStorage.getItem(this.STORAGE_KEY);
+      if (!data) return { usedMB: 0, posts: 0, hasBase64Images: 0 };
+      
+      const posts: BlogPost[] = JSON.parse(data);
+      const usedBytes = new Blob([data]).size;
+      const usedMB = Math.round(usedBytes / 1024 / 1024 * 100) / 100;
+      const hasBase64Images = posts.filter(p => p.imageUrl?.startsWith('data:')).length;
+      
+      return {
+        usedMB,
+        posts: posts.length,
+        hasBase64Images
+      };
+    } catch (error) {
+      return { usedMB: 0, posts: 0, hasBase64Images: 0 };
+    }
   }
 }
 
