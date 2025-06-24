@@ -109,7 +109,7 @@ const Blog = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <WaveSeparator variant="page" height="md" inverted />
+      <WaveSeparator variant="hero" height="md" inverted />
       
       <main className="flex-1 pb-8 md:pb-12">
         <div className="container mx-auto px-4">

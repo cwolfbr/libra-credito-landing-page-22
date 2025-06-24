@@ -56,7 +56,7 @@ const QuemSomos = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <WaveSeparator variant="page" height="md" inverted />
+      <WaveSeparator variant="hero" height="md" inverted />
       <main>
         {/* Hero Section - Otimizado */}
         <section className="py-3 lg:py-4">

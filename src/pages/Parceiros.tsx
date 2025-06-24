@@ -323,7 +323,7 @@ const Parceiros = () => {
   return (
     <div className="min-h-screen flex flex-col bg-[#F8F9FF]">
       <Header />
-      <WaveSeparator variant="page" height="md" inverted />
+      <WaveSeparator variant="hero" height="md" inverted />
       
       <main className="flex-1 pb-4 md:pb-8">
         <div className="container mx-auto px-4 mt-4">
