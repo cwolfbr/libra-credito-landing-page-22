@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
       {/* Wave separator before footer */}
       <WaveSeparator variant="footer" height="md" />
       
-      <footer className="bg-gradient-to-b from-[#00ccff] to-[#003399] text-white">
+      <footer className="bg-[#003399] text-white">
         <div className="container mx-auto py-8 md:py-16 px-4">
         {/* Logo e Slogan */}
         <div className="text-center mb-8 md:mb-12">
