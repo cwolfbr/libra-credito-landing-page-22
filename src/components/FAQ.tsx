@@ -58,8 +58,8 @@ const FAQ: React.FC = () => {
                 value={`item-${index}`}
                 className="bg-libra-blue rounded-lg shadow-sm border border-libra-blue/20"
               >
-                <AccordionTrigger className={`${isMobile ? 'px-4 py-3' : 'px-6 py-4'} text-left hover:no-underline`}>
-                  <span className={`${isMobile ? 'text-sm' : 'text-base'} font-semibold text-white pr-2`}>{faq.question}</span>
+                <AccordionTrigger className={`${isMobile ? 'px-4 py-3' : 'px-6 py-4'} text-left hover:no-underline hover:bg-libra-blue`}>
+                  <span className={`${isMobile ? 'text-sm' : 'text-base'} font-semibold text-white pr-2 hover:text-white`}>{faq.question}</span>
                 </AccordionTrigger>
                 <AccordionContent className={`${isMobile ? 'px-4 pb-3' : 'px-6 pb-4'} bg-white rounded-b-lg`}>
                   <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 leading-relaxed`}>{faq.answer}</p>
