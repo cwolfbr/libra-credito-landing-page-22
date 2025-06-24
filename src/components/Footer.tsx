@@ -18,9 +18,9 @@ const Footer: React.FC = () => {
       <WaveSeparator variant="footer" height="md" />
       
       <footer className="bg-[#003399] text-white">
-        <div className="container mx-auto py-6 md:py-8 px-4">
+        <div className="container mx-auto py-6 lg:py-8 px-4">
         {/* Grid Principal - Layout mais compacto */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-6 md:mb-8 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-6 lg:mb-8 items-center">
           {/* Navegação */}
           <div className="text-center md:text-left">
             <h3 className="text-xl font-bold mb-4 text-white">Navegação</h3>
@@ -39,7 +39,7 @@ const Footer: React.FC = () => {
             <ImageOptimizer 
               src="/images/logos/libra-logo.png" 
               alt="Libra Crédito" 
-              className="h-32 w-auto"
+              className="h-20 lg:h-24 xl:h-32 w-auto"
               aspectRatio={1}
               priority={false}
             />

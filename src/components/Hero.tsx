@@ -39,16 +39,16 @@ const Hero: React.FC = () => {
 
   return (
     <section 
-      className="min-h-[60vh] md:min-h-[65vh] lg:min-h-[70vh] xl:min-h-[calc(100vh-280px)] pb-2 bg-white relative flex flex-col justify-center" 
+      className="min-h-[60vh] md:min-h-[65vh] lg:min-h-[65vh] xl:min-h-[calc(100vh-280px)] pb-2 bg-white relative flex flex-col justify-center" 
       aria-labelledby="hero-heading"
       role="banner"
     >
       <div className="container mx-auto px-4 relative z-10 flex-grow flex flex-col justify-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center">
           {/* Lado Esquerdo */}
-          <div className="text-[#003399] space-y-3 md:space-y-4 lg:space-y-4 xl:space-y-5">
+          <div className="text-[#003399] space-y-3 md:space-y-4 lg:space-y-3 xl:space-y-5">
             <div>
-              <h1 id="hero-heading" className="text-2xl md:text-3xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-bold mb-3 md:mb-3 lg:mb-4 leading-tight">
+              <h1 id="hero-heading" className="text-2xl md:text-3xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-bold mb-3 md:mb-3 lg:mb-3 leading-tight">
                 Transforme seu Patrimônio<br />
                 em Oportunidades
               </h1>
@@ -70,7 +70,7 @@ const Hero: React.FC = () => {
             </div>
 
             {/* Botões */}
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-3 lg:gap-2">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-3 lg:gap-3">
               <PremiumButton 
                 onClick={scrollToSimulator} 
                 variant="primary"

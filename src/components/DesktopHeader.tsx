@@ -63,15 +63,15 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
       {/* Faixa principal */}
       <div className="border-b border-gray-100">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-24">
+          <div className="flex items-center justify-between h-20 lg:h-24">
             {/* Logo e slogan */}
             <div className="flex items-center gap-6">
               <Link to="/" className="flex items-center">
-                <div className="h-16 overflow-hidden flex items-center">
+                <div className="h-12 lg:h-16 overflow-hidden flex items-center">
                   <ImageOptimizer 
                     src="/images/logos/libra-logo.png" 
                     alt="Libra Crédito" 
-                    className="h-20 w-auto transform scale-110"
+                    className="h-16 lg:h-20 w-auto transform scale-110"
                     aspectRatio={1}
                     priority={true}
                     style={{
@@ -86,12 +86,12 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
             </div>
 
             {/* Navegação */}
-            <nav className="flex items-center space-x-10">
+            <nav className="flex items-center space-x-6 xl:space-x-10">
               {navigationItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`relative text-2xl font-medium transition-all duration-200 hover:text-libra-blue ${
+                  className={`relative text-lg xl:text-2xl font-medium transition-all duration-200 hover:text-libra-blue ${
                     location.pathname === item.path 
                       ? 'text-libra-blue after:absolute after:bottom-[-24px] after:left-0 after:w-full after:h-0.5 after:bg-libra-blue' 
                       : 'text-libra-navy hover:text-libra-blue'
@@ -103,22 +103,22 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
             </nav>
 
             {/* Botões à direita */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 lg:gap-4">
               <Button
                 variant="outline"
-                size="default"
+                size="sm"
                 onClick={onPortalClientes}
                 aria-label="Acessar Portal de Clientes"
-                className="bg-transparent text-libra-navy border-2 border-libra-navy hover:bg-libra-navy hover:text-white transition-colors"
+                className="bg-transparent text-libra-navy border-2 border-libra-navy hover:bg-libra-navy hover:text-white transition-colors text-sm lg:text-base"
               >
                 Portal de Clientes
               </Button>
               
               <Button 
                 onClick={onSimulateNow}
-                size="default"
+                size="sm"
                 aria-label="Simular crédito agora"
-                className="px-6 font-bold bg-libra-navy text-white hover:bg-libra-navy/90 shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5"
+                className="px-4 lg:px-6 font-bold bg-libra-navy text-white hover:bg-libra-navy/90 shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 text-sm lg:text-base"
               >
                 Simule Agora
               </Button>
