@@ -55,10 +55,10 @@ const TestimonialCard = memo(({ name, age, text, isMobile, isActive, currentInde
                   currentIndex === index ? 'bg-libra-navy' : 'bg-gray-300 hover:bg-gray-400'
                 }`}
                 style={{
-                  width: isMobile ? '3px' : '2px',
-                  height: isMobile ? '3px' : '2px',
-                  minWidth: isMobile ? '3px' : '2px',
-                  minHeight: isMobile ? '3px' : '2px'
+                  width: isMobile ? '6px' : '4px',
+                  height: isMobile ? '6px' : '4px',
+                  minWidth: isMobile ? '6px' : '4px',
+                  minHeight: isMobile ? '6px' : '4px'
                 }}
                 onClick={() => onNavigate(index)}
                 aria-label={`Ver depoimento ${index + 1}`}
