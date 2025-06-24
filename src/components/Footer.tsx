@@ -17,21 +17,13 @@ const Footer: React.FC = () => {
       <WaveSeparator variant="footer" height="md" />
       
       <footer className="bg-[#003399] text-white">
-        <div className="container mx-auto py-8 md:py-16 px-4">
-        {/* Logo e Slogan */}
-        <div className="text-center mb-8 md:mb-12">
-          <h2 className="text-2xl md:text-4xl font-bold mb-2 text-white">
-            <span className="text-white">LIBRA</span> CRÉDITO
-          </h2>
-          <p className="text-white/90 text-lg">Vem que a gente equiLIBRA</p>
-        </div>
-
-        {/* Grid Principal */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 mb-8 md:mb-12">
+        <div className="container mx-auto py-6 md:py-8 px-4">
+        {/* Grid Principal - Layout mais compacto */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-6 md:mb-8 items-start">
           {/* Navegação */}
           <div className="text-center md:text-left">
-            <h3 className="text-xl font-bold mb-6 text-white">Navegação</h3>
-            <ul className="space-y-3">
+            <h3 className="text-xl font-bold mb-4 text-white">Navegação</h3>
+            <ul className="space-y-2">
               <li><Link to="/" className="text-white/80 hover:text-white transition-colors text-base">Início</Link></li>
               <li><Link to="/simulacao" className="text-white/80 hover:text-white transition-colors text-base">Simulação</Link></li>
               <li><Link to="/vantagens" className="text-white/80 hover:text-white transition-colors text-base">Vantagens</Link></li>
@@ -41,59 +33,41 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Contato */}
-          <div className="text-center md:text-left">
-            <h3 className="text-xl font-bold mb-6 text-white">Entre em Contato</h3>
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 justify-center md:justify-start">
-                <div className="bg-white/20 rounded-full p-2 flex-shrink-0">
-                  <Phone className="w-5 h-5 text-white" />
-                </div>
-                <div className="text-left">
-                  <p className="text-white font-medium">16 99636 0424</p>
-                  <p className="text-white/80 text-sm">Segunda a sexta, 9h às 18h</p>
-                </div>
-              </div>
-              
-              <div className="flex items-center gap-3 justify-center md:justify-start">
-                <div className="bg-white/20 rounded-full p-2 flex-shrink-0">
-                  <Mail className="w-5 h-5 text-white" />
-                </div>
-                <div className="text-left">
-                  <p className="text-white font-medium">contato@libracredito.com.br</p>
-                  <p className="text-white/80 text-sm">Resposta em até 24h úteis</p>
-                </div>
-              </div>
-            </div>
+          {/* Logo e Slogan - Centralizado */}
+          <div className="text-center">
+            <h2 className="text-2xl md:text-3xl font-bold mb-2 text-white">
+              <span className="text-white">LIBRA</span> CRÉDITO
+            </h2>
+            <p className="text-white/90 text-base md:text-lg">Vem que a gente equiLIBRA</p>
           </div>
 
           {/* Redes Sociais */}
-          <div className="text-center lg:text-left md:col-span-2 lg:col-span-1">
-            <h3 className="text-xl font-bold mb-6 text-white">Nos Acompanhe</h3>
-            <div className="flex justify-center lg:justify-start gap-4 mb-6">
-              <a href="https://www.facebook.com/LibraCreditoOficial/" target="_blank" rel="noopener noreferrer" className="bg-white/20 hover:bg-white text-white hover:text-[#003399] p-3 rounded-full transition-colors" aria-label="Facebook">
-                <Facebook className="w-6 h-6" />
+          <div className="text-center md:text-right">
+            <h3 className="text-xl font-bold mb-4 text-white">Nos Acompanhe</h3>
+            <div className="flex justify-center md:justify-end gap-3 mb-4">
+              <a href="https://www.facebook.com/LibraCreditoOficial/" target="_blank" rel="noopener noreferrer" className="bg-white/20 hover:bg-white text-white hover:text-[#003399] p-2 rounded-full transition-colors" aria-label="Facebook">
+                <Facebook className="w-5 h-5" />
               </a>
-              <a href="https://www.instagram.com/libracredito/" target="_blank" rel="noopener noreferrer" className="bg-white/20 hover:bg-white text-white hover:text-[#003399] p-3 rounded-full transition-colors" aria-label="Instagram">
-                <Instagram className="w-6 h-6" />
+              <a href="https://www.instagram.com/libracredito/" target="_blank" rel="noopener noreferrer" className="bg-white/20 hover:bg-white text-white hover:text-[#003399] p-2 rounded-full transition-colors" aria-label="Instagram">
+                <Instagram className="w-5 h-5" />
               </a>
-              <a href="https://www.linkedin.com/company/libracredito/" target="_blank" rel="noopener noreferrer" className="bg-white/20 hover:bg-white text-white hover:text-[#003399] p-3 rounded-full transition-colors" aria-label="LinkedIn">
-                <Linkedin className="w-6 h-6" />
+              <a href="https://www.linkedin.com/company/libracredito/" target="_blank" rel="noopener noreferrer" className="bg-white/20 hover:bg-white text-white hover:text-[#003399] p-2 rounded-full transition-colors" aria-label="LinkedIn">
+                <Linkedin className="w-5 h-5" />
               </a>
-              <a href="https://www.youtube.com/channel/UCXpuj7LlTLT_kdbwwJHS0qA" target="_blank" rel="noopener noreferrer" className="bg-white/20 hover:bg-white text-white hover:text-[#003399] p-3 rounded-full transition-colors" aria-label="YouTube">
-                <Youtube className="w-6 h-6" />
+              <a href="https://www.youtube.com/channel/UCXpuj7LlTLT_kdbwwJHS0qA" target="_blank" rel="noopener noreferrer" className="bg-white/20 hover:bg-white text-white hover:text-[#003399] p-2 rounded-full transition-colors" aria-label="YouTube">
+                <Youtube className="w-5 h-5" />
               </a>
-              <a href="https://www.reclameaqui.com.br/empresa/libra-credito-solucoes-financeiras/" target="_blank" rel="noopener noreferrer" className="bg-white/20 hover:bg-white text-white hover:text-[#003399] p-3 rounded-full transition-colors" aria-label="Reclame Aqui">
-                <ExternalLink className="w-6 h-6" />
+              <a href="https://www.reclameaqui.com.br/empresa/libra-credito-solucoes-financeiras/" target="_blank" rel="noopener noreferrer" className="bg-white/20 hover:bg-white text-white hover:text-[#003399] p-2 rounded-full transition-colors" aria-label="Reclame Aqui">
+                <ExternalLink className="w-5 h-5" />
               </a>
             </div>
             
             <button 
               onClick={scrollToTop} 
-              className="flex items-center gap-2 mx-auto lg:mx-0 text-white/80 hover:text-white transition-colors"
+              className="flex items-center gap-2 mx-auto md:ml-auto md:mr-0 text-white/80 hover:text-white transition-colors text-sm"
               aria-label="Voltar ao topo"
             >
-              <ChevronUp className="w-5 h-5" />
+              <ChevronUp className="w-4 h-4" />
               Voltar ao topo
             </button>
           </div>
