@@ -73,7 +73,7 @@ const BlogSection: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-8 md:mb-12">
           <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-[#003399] mb-4`}>
-            Últimas do Blog
+            Blog Libra
           </h2>
           <p className={`${isMobile ? 'text-base px-2' : 'text-lg'} text-gray-600 max-w-2xl mx-auto mb-6 md:mb-8`}>
             Fique por dentro das novidades e dicas sobre crédito com garantia de imóvel

@@ -47,7 +47,7 @@ const Footer: React.FC = () => {
 
           {/* Redes Sociais */}
           <div className="text-center md:text-right">
-            <h3 className="text-xl font-bold mb-4 text-white">Nos Acompanhe</h3>
+            <h3 className="text-xl font-bold mb-4 text-white">Redes Sociais</h3>
             <div className="flex justify-center md:justify-end items-center gap-4 mb-4">
               <a href="https://www.facebook.com/LibraCreditoOficial/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="Facebook">
                 <Facebook className="w-7 h-7" />
