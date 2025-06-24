@@ -20,7 +20,7 @@ const Footer: React.FC = () => {
       <footer className="bg-[#003399] text-white">
         <div className="container mx-auto py-6 md:py-8 px-4">
         {/* Grid Principal - Layout mais compacto */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-6 md:mb-8 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-6 md:mb-8 items-center">
           {/* Navegação */}
           <div className="text-center md:text-left">
             <h3 className="text-xl font-bold mb-4 text-white">Navegação</h3>
@@ -35,11 +35,11 @@ const Footer: React.FC = () => {
           </div>
 
           {/* Logo - Centralizado */}
-          <div className="text-center flex justify-center">
+          <div className="flex justify-center items-center">
             <ImageOptimizer 
               src="/images/logos/libra-logo.png" 
               alt="Libra Crédito" 
-              className="h-24 w-auto"
+              className="h-32 w-auto"
               aspectRatio={1}
               priority={false}
             />
@@ -48,7 +48,7 @@ const Footer: React.FC = () => {
           {/* Redes Sociais */}
           <div className="text-center md:text-right">
             <h3 className="text-xl font-bold mb-4 text-white">Nos Acompanhe</h3>
-            <div className="flex justify-center md:justify-end gap-3 mb-4">
+            <div className="flex justify-center md:justify-end items-center gap-3 mb-4">
               <a href="https://www.facebook.com/LibraCreditoOficial/" target="_blank" rel="noopener noreferrer" className="bg-white/20 hover:bg-white text-white hover:text-[#003399] p-2 rounded-full transition-colors" aria-label="Facebook">
                 <Facebook className="w-5 h-5" />
               </a>
