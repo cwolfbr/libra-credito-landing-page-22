@@ -61,12 +61,16 @@ const WaveSeparator: React.FC<WaveSeparatorProps> = ({
       {/* SVG com as 3 camadas de profundidade originais */}
       <svg
         className={cn(
-          'absolute inset-0 w-full h-full', 
+          'absolute w-full h-full', 
+          inverted ? '-bottom-1' : '-top-1', // Estende 1px para fora em ambas direções
           inverted && 'transform scale-y-[-1]'
         )}
         style={{ 
-          marginBottom: '-1px', // Previne linha azul
-          shapeRendering: 'geometricPrecision' // Anti-aliasing otimizado
+          left: 0,
+          right: 0,
+          height: 'calc(100% + 2px)', // Aumenta altura em 2px
+          shapeRendering: 'auto', // Melhor para anti-aliasing
+          vectorEffect: 'non-scaling-stroke' // Previne problemas de escala
         }}
         viewBox="0 0 1200 120"
         preserveAspectRatio="none"
