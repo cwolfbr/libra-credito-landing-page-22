@@ -20,7 +20,7 @@ const Simulacao = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <WaveSeparator variant="hero" height="md" />
+      <WaveSeparator variant="page" height="md" />
       <main className="flex-1 bg-libra-light">
         <SimulationForm />
       </main>

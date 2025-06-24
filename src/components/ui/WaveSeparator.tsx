@@ -2,7 +2,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 
 interface WaveSeparatorProps {
-  variant?: 'hero' | 'section' | 'inverted' | 'footer';
+  variant?: 'hero' | 'section' | 'inverted' | 'footer' | 'page';
   height?: 'sm' | 'md' | 'lg';
   inverted?: boolean; // Nova prop para inverter as ondas
   className?: string;
@@ -38,6 +38,10 @@ const WaveSeparator: React.FC<WaveSeparatorProps> = ({
     footer: {
       background: 'bg-gradient-to-b from-[#00ccff] to-[#003399]', // Gradiente azul claro para escuro
       fill: '#ffffff',
+    },
+    page: {
+      background: 'bg-[#00ccff]', // Azul claro para páginas internas
+      fill: '#ffffff', // Branco
     }
   };
 
