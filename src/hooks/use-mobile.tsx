@@ -4,7 +4,7 @@
  * @hook useIsMobile
  * @description Detecta se a viewport atual está em tamanho mobile usando media queries
  * 
- * @returns {boolean} Retorna true se a viewport for menor que MOBILE_BREAKPOINT (768px)
+ * @returns {boolean} Retorna true se a viewport for menor que MOBILE_BREAKPOINT (1024px)
  * 
  * @example
  * ```tsx
@@ -20,7 +20,7 @@
 
 import * as React from "react"
 
-const MOBILE_BREAKPOINT = 768
+const MOBILE_BREAKPOINT = 1024
 
 export function useIsMobile() {
   const [isMobile, setIsMobile] = React.useState<boolean | undefined>(undefined)
