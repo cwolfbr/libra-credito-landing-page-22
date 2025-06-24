@@ -1,0 +1,1 @@
+git push origin main && git tag -d v23 2>NUL && git tag v23 && git push origin v23 --force && echo "SUCCESS! Deploy completo - Teste em: https://libra-credito-landing-page-22.vercel.app/"

@@ -1,0 +1,1 @@
+cd "C:\Users\raulp\OneDrive\Documentos\GitHub\libra-credito-landing-page-22" && git add . && git commit -m "📚 docs: Scripts e docs do fix breakpoint mobile - MCP Auto" && git push origin main && echo "✅ MCP COMMIT SUCCESS! Teste: https://libra-credito-landing-page-22.vercel.app/"

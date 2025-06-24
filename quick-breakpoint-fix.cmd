@@ -1,0 +1,1 @@
+git add . && git commit -m "🔧 fix(responsive): Breakpoint mobile 768px→1024px - prevenir quebras layout" && git push origin main && echo "✅ BREAKPOINT CORRIGIDO! Menu lateral agora ativa em 1024px - teste: https://libra-credito-landing-page-22.vercel.app/"
