@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronUp, Phone, Mail, Facebook, Instagram, Linkedin, Youtube, ExternalLink } from 'lucide-react';
 import WaveSeparator from '@/components/ui/WaveSeparator';
+import ImageOptimizer from '@/components/ImageOptimizer';
 
 const Footer: React.FC = () => {
   const scrollToTop = () => {
@@ -33,12 +34,15 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Logo e Slogan - Centralizado */}
-          <div className="text-center">
-            <h2 className="text-2xl md:text-3xl font-bold mb-2 text-white">
-              <span className="text-white">LIBRA</span> CRÉDITO
-            </h2>
-            <p className="text-white/90 text-base md:text-lg">Vem que a gente equiLIBRA</p>
+          {/* Logo - Centralizado */}
+          <div className="text-center flex justify-center">
+            <ImageOptimizer 
+              src="/images/logos/libra-logo.png" 
+              alt="Libra Crédito" 
+              className="h-16 w-auto"
+              aspectRatio={1}
+              priority={false}
+            />
           </div>
 
           {/* Redes Sociais */}
