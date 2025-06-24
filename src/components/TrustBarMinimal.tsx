@@ -87,7 +87,7 @@ const TrustBarMinimal: React.FC = () => {
   return (
     <section 
       id="trustbar"
-      className="py-6 md:py-8 bg-gradient-to-b from-[#003399] to-[#00ccff] relative"
+      className="py-6 md:py-8 bg-gradient-to-b from-[#003399] to-white relative"
     >
       <div className="container mx-auto px-4">
         {/* Grid de estatísticas compacto */}
