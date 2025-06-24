@@ -80,9 +80,6 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
                   />
                 </div>
               </Link>
-              <span className="text-libra-blue text-sm font-medium">
-                Vem que a gente equiLIBRA
-              </span>
             </div>
 
             {/* Navegação */}
