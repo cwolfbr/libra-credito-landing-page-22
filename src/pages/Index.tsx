@@ -55,6 +55,8 @@ const Index: React.FC = () => {
         <Benefits />
       </Suspense>
       
+      <WaveSeparator variant="section" height="md" />
+      
       <Suspense fallback={<SectionLoader />}>
         <Testimonials />
       </Suspense>
