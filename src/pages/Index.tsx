@@ -75,14 +75,15 @@ const Index: React.FC = () => {
       
       {/* Botão Conheça a Libra */}
       <section 
-        className="py-8 bg-libra-light"
+        className="py-8"
+        style={{ backgroundColor: '#003399' }}
         aria-label="Conheça mais sobre a Libra Crédito"
       >
         <div className="container mx-auto px-4">
           <div className="flex justify-center items-center">
             <Button 
               onClick={goToQuemSomos}
-              className="min-h-[48px] min-w-[200px] bg-libra-navy text-white hover:bg-libra-navy/90"
+              className="min-h-[48px] min-w-[200px] bg-white text-[#003399] hover:bg-gray-50 border-0"
               size="xl"
               aria-label="Clique para conhecer mais sobre a Libra Crédito"
             >
