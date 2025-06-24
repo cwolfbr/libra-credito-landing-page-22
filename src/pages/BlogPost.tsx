@@ -44,8 +44,7 @@ const BlogPost = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col">
-        <Header />
+      <MobileLayout>
         <WaveSeparator variant="hero" height="md" inverted />
         <div className="bg-white flex-1 pb-8 flex items-center justify-center">
           <div className="text-center">
@@ -59,8 +58,7 @@ const BlogPost = () => {
 
   if (!post) {
     return (
-      <div className="min-h-screen flex flex-col">
-        <Header />
+      <MobileLayout>
         <WaveSeparator variant="hero" height="md" inverted />
         <div className="bg-white flex-1 pb-8 flex items-center justify-center">
           <div className="text-center">
@@ -113,8 +111,7 @@ const BlogPost = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
+    <MobileLayout>
       <WaveSeparator variant="hero" height="md" inverted />
       
       <div className="bg-white flex-1 pb-8 md:pb-12">
@@ -187,10 +184,8 @@ const BlogPost = () => {
             </div>
           </div>
         </div>
-      </main>
-
-      <Footer />
-    </div>
+      </div>
+    </MobileLayout>
   );
 };
 
