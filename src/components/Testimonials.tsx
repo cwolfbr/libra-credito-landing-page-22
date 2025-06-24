@@ -50,8 +50,8 @@ const TestimonialCard = memo(({ name, age, text, isMobile, isActive, currentInde
           {Array.from({ length: totalTestimonials }).map((_, index) => (
             <button
               key={index}
-              className={`${isMobile ? 'w-1.5 h-1.5' : 'w-1 h-1'} rounded-full transition-all duration-300 touch-target ${
-                currentIndex === index ? 'bg-libra-navy' : 'bg-gray-300'
+              className={`${isMobile ? 'w-2 h-2' : 'w-1.5 h-1.5'} rounded-full transition-all duration-300 hover:scale-110 ${
+                currentIndex === index ? 'bg-libra-navy' : 'bg-gray-300 hover:bg-gray-400'
               }`}
               onClick={() => onNavigate(index)}
               aria-label={`Ver depoimento ${index + 1}`}
