@@ -78,7 +78,7 @@ const Testimonials: React.FC = () => {
   }, []);
   
   return (
-    <section id="testimonials" className={`${isMobile ? 'py-8' : 'py-16 md:py-24'} bg-gray-50 scroll-mt-[88px]`}>
+    <section id="testimonials" className={`${isMobile ? 'py-4' : 'py-8 md:py-12'} bg-white scroll-mt-[88px]`}>
       <div className="container mx-auto px-4">
         <div className="text-center mb-6 md:mb-12">
           <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy mb-2 md:mb-4`}>
