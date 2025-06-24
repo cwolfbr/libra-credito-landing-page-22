@@ -39,7 +39,7 @@ const Footer: React.FC = () => {
             <ImageOptimizer 
               src="/images/logos/libra-logo.png" 
               alt="Libra Crédito" 
-              className="h-16 w-auto"
+              className="h-24 w-auto"
               aspectRatio={1}
               priority={false}
             />
