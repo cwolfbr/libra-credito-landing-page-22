@@ -17,6 +17,7 @@ const BlogPost = lazy(() => import("./pages/BlogPost"));
 const Parceiros = lazy(() => import("./pages/Parceiros"));
 const Simulacao = lazy(() => import("./pages/Simulacao"));
 const PoliticaPrivacidade = lazy(() => import("./pages/PoliticaPrivacidade"));
+const PoliticaCookies = lazy(() => import("./pages/PoliticaCookies"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const SupabaseTestPage = lazy(() => import("./pages/SupabaseTestPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -62,6 +63,7 @@ const App = () => (
               <Route path="/simulacao/sapi" element={<SimulacaoSapi />} />
               <Route path="/simulacao/local" element={<SimulacaoLocal />} />
               <Route path="/politica-privacidade" element={<PoliticaPrivacidade />} />
+              <Route path="/politica-cookies" element={<PoliticaCookies />} />
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/test-supabase" element={<SupabaseTestPage />} />
               <Route path="/test-webhook" element={<TestWebhook />} />
