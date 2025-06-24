@@ -60,9 +60,9 @@ const Benefits: React.FC = () => {
   };
   
   return (
-    <section id="benefits" className={`${isMobile ? 'pt-6 pb-8' : 'pt-8 pb-10'} bg-white scroll-mt-[88px]`}>
+    <section id="benefits" className={`${isMobile ? 'pt-4 pb-6' : 'pt-6 md:pt-8 lg:pt-8 xl:pt-10 pb-6 md:pb-8 lg:pb-8 xl:pb-10'} bg-white scroll-mt-[88px]`}>
       <div className="container mx-auto px-4">
-        <div className="text-center mb-8">
+        <div className="text-center mb-6 md:mb-8 lg:mb-8 xl:mb-10">
           <p className={`${isMobile ? 'text-sm' : 'text-lg'} text-libra-blue font-semibold uppercase tracking-wider mb-4`}>
             Soluções para cada necessidade
           </p>

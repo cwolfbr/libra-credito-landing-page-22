@@ -16,9 +16,9 @@ const WaveSeparator: React.FC<WaveSeparatorProps> = ({
 }) => {
   // Alturas responsivas usando Tailwind classes (mantém fix mobile)
   const heightClasses = {
-    sm: 'h-10 md:h-12 lg:h-16', // 40px, 48px, 64px
-    md: 'h-16 md:h-20 lg:h-28', // 64px, 80px, 112px  
-    lg: 'h-20 md:h-28 lg:h-36'  // 80px, 112px, 144px
+    sm: 'h-8 md:h-10 lg:h-12 xl:h-16', // 32px, 40px, 48px, 64px
+    md: 'h-12 md:h-16 lg:h-20 xl:h-24 2xl:h-28', // 48px, 64px, 80px, 96px, 112px  
+    lg: 'h-16 md:h-20 lg:h-24 xl:h-28 2xl:h-36'  // 64px, 80px, 96px, 112px, 144px
   };
 
   // Configurações de cores da marca Libra (versão original)
