@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Clock, Calendar, Tag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import MobileLayout from '@/components/MobileLayout';
 import WaveSeparator from '@/components/ui/WaveSeparator';
 import { BlogService, type BlogPost as BlogPostType } from '@/services/blogService';
 
