@@ -61,9 +61,13 @@ const Index: React.FC = () => {
         <Testimonials />
       </Suspense>
       
+      <WaveSeparator variant="hero" height="md" />
+      
       <Suspense fallback={<SectionLoader />}>
         <MediaSection />
       </Suspense>
+      
+      <WaveSeparator variant="hero" height="md" inverted />
       
       <Suspense fallback={<SectionLoader />}>
         <FAQ />

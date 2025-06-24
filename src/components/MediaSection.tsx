@@ -34,7 +34,7 @@ const MediaSection: React.FC = () => {
   const isMobile = useIsMobile();
 
   return (
-    <section className={`${isMobile ? 'py-8' : 'py-10'} bg-gray-50`}>
+    <section className={`${isMobile ? 'py-8' : 'py-10'} bg-white`}>
       <div className="container mx-auto px-4">
         <div className={`text-center ${isMobile ? 'mb-6' : 'mb-6'}`}>
           <div className="flex items-center justify-center gap-2 mb-4">
