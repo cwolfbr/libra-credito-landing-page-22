@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import MobileLayout from '@/components/MobileLayout';
 import ModernCTA from '@/components/ModernCTA';
 import WaveSeparator from '@/components/ui/WaveSeparator';
 import { Progress } from '@/components/ui/progress';
@@ -95,11 +94,11 @@ const Vantagens: React.FC = () => {
   const maxTaxa = Math.max(...taxasJuros.map(item => item.taxa));
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
+    <MobileLayout>
       {/* Faixa Separadora Superior Invertida - EXATAMENTE igual à home */}
       <WaveSeparator variant="hero" height="md" inverted />
-      <main className="bg-gray-50">
+      
+      <div className="bg-gray-50">
         {/* Hero Section - Otimizado */}
         <section className={`${isMobile ? 'py-6' : 'py-8'}`}>
           <div className="container mx-auto px-4">
@@ -177,9 +176,8 @@ const Vantagens: React.FC = () => {
           title="Viu as vantagens? Hora de agir!"
           subtitle="Use nossa tecnologia inteligente para simular suas condições personalizadas"
         />
-      </main>
-      <Footer />
-    </div>
+      </div>
+    </MobileLayout>
   );
 };
 
