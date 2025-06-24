@@ -112,7 +112,7 @@ const Vantagens: React.FC = () => {
         </section>
 
         {/* Grid de Vantagens e Comparativo */}
-        <section className={`${isMobile ? 'py-4' : 'py-6'}`}>
+        <section className={`${isMobile ? 'pt-1 pb-4' : 'pt-1 pb-6'}`}>
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6">
               {/* Vantagens */}

@@ -114,11 +114,10 @@ const QuemSomos = () => {
                     const Icon = valor.icon;
                     return (
                       <div key={index} className="bg-white p-3 md:p-4 rounded-lg shadow-lg border border-gray-100">
-                        <div className="flex items-center mb-2 md:mb-3">
+                        <div className="flex items-center">
                           <Icon className="w-5 h-5 md:w-6 md:h-6 text-libra-blue mr-2" />
                           <h3 className="text-base md:text-lg font-bold text-libra-navy">{valor.title}</h3>
                         </div>
-                        <p className="text-sm md:text-base text-gray-600">{valor.description}</p>
                       </div>
                     );
                   })}
