@@ -97,6 +97,10 @@ const Vantagens: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
+      {/* Teste de visibilidade - faixa temporária */}
+      <div className="w-full h-24 bg-red-500 flex items-center justify-center text-white font-bold">
+        TESTE: Se você vê esta faixa vermelha, o WaveSeparator deveria aparecer aqui
+      </div>
       <WaveSeparator variant="page" height="md" />
       <main className="bg-gray-50">
         {/* Hero Section - Otimizado */}
