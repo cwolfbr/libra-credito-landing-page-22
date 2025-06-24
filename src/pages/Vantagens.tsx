@@ -95,10 +95,8 @@ const Vantagens: React.FC = () => {
 
   return (
     <MobileLayout>
-      {/* Faixa Separadora Superior - posicionamento correto para mobile */}
-      <div className={`${isMobile ? 'relative -mt-20' : 'relative'}`}>
-        <WaveSeparator variant="hero" height="md" inverted />
-      </div>
+      {/* Faixa Separadora Superior Invertida - Exatamente como na home */}
+      <WaveSeparator variant="hero" height={isMobile ? "sm" : "md"} inverted />
       
       <div className="bg-white">
         {/* Hero Section - Otimizado */}
