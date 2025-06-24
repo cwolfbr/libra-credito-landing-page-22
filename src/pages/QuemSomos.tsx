@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import MobileLayout from '@/components/MobileLayout';
 import ImageOptimizer from '@/components/ImageOptimizer';
 import ModernCTA from '@/components/ModernCTA';
 import WaveSeparator from '@/components/ui/WaveSeparator';
@@ -54,10 +53,9 @@ const QuemSomos = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
+    <MobileLayout>
       <WaveSeparator variant="hero" height="md" inverted />
-      <main>
+      <div className="bg-white">
         {/* Hero Section - Otimizado */}
         <section className="py-3 lg:py-4">
           <div className="container mx-auto px-4">
@@ -147,9 +145,8 @@ const QuemSomos = () => {
           title="Conhece nossa história? Faça parte dela!"
           subtitle="Junte-se aos milhares de clientes que já transformaram suas vidas conosco"
         />
-      </main>
-      <Footer />
-    </div>
+      </div>
+    </MobileLayout>
   );
 };
 

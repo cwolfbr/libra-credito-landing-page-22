@@ -98,7 +98,7 @@ const Vantagens: React.FC = () => {
       {/* Faixa Separadora Superior Invertida - EXATAMENTE igual à home */}
       <WaveSeparator variant="hero" height="md" inverted />
       
-      <div className="bg-gray-50">
+      <div className="bg-white">
         {/* Hero Section - Otimizado */}
         <section className={`${isMobile ? 'py-6' : 'py-8'}`}>
           <div className="container mx-auto px-4">

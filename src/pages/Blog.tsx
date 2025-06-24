@@ -3,8 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Search, TrendingUp, Wallet, Home, Building, FileText, CreditCard, BookOpen } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import MobileLayout from '@/components/MobileLayout';
 import ModernCTA from '@/components/ModernCTA';
 import WaveSeparator from '@/components/ui/WaveSeparator';
 import { BlogService, type BlogPost as BlogPostType } from '@/services/blogService';
@@ -107,11 +106,10 @@ const Blog = () => {
   });
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
+    <MobileLayout>
       <WaveSeparator variant="hero" height="md" inverted />
       
-      <main className="flex-1 pb-8 md:pb-12">
+      <div className="bg-white pb-8 md:pb-12">
         <div className="container mx-auto px-4">
           {/* Hero Section */}
           <div className="text-center mb-12 mt-8">
@@ -226,10 +224,8 @@ const Blog = () => {
           title="Já tem o conhecimento? Agora é a hora!"
           subtitle="Aplique o que aprendeu e descubra suas condições personalizadas"
         />
-      </main>
-
-      <Footer />
-    </div>
+      </div>
+    </MobileLayout>
   );
 };
 

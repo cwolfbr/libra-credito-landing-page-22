@@ -1,7 +1,6 @@
 
 import React, { useEffect } from 'react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import MobileLayout from '@/components/MobileLayout';
 import SimulationForm from '@/components/SimulationForm';
 import WaveSeparator from '@/components/ui/WaveSeparator';
 
@@ -18,14 +17,12 @@ const Simulacao = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
+    <MobileLayout>
       <WaveSeparator variant="hero" height="md" inverted />
-      <main className="flex-1 bg-libra-light">
+      <div className="bg-white">
         <SimulationForm />
-      </main>
-      <Footer />
-    </div>
+      </div>
+    </MobileLayout>
   );
 };
 
