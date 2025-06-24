@@ -51,7 +51,7 @@ const WaveSeparator: React.FC<WaveSeparatorProps> = ({
   return (
     <div 
       className={cn(
-        'relative w-full flex-shrink-0', // Mantém flex-shrink-0 para mobile
+        'relative w-full flex-shrink-0 overflow-hidden', // Adiciona overflow-hidden
         config.background,
         heightClass,
         className
@@ -61,9 +61,13 @@ const WaveSeparator: React.FC<WaveSeparatorProps> = ({
       {/* SVG com as 3 camadas de profundidade originais */}
       <svg
         className={cn(
-          'absolute inset-0 w-full h-full', // Usa inset-0 em vez de left-0 bottom-0
+          'absolute inset-0 w-full h-full', 
           inverted && 'transform scale-y-[-1]'
         )}
+        style={{ 
+          marginBottom: '-1px', // Previne linha azul
+          shapeRendering: 'geometricPrecision' // Anti-aliasing otimizado
+        }}
         viewBox="0 0 1200 120"
         preserveAspectRatio="none"
         fill={config.fill}

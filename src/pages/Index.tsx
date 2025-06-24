@@ -78,15 +78,17 @@ const Index: React.FC = () => {
         className="py-8 bg-libra-light"
         aria-label="Conheça mais sobre a Libra Crédito"
       >
-        <div className="container mx-auto text-center">
-          <Button 
-            onClick={goToQuemSomos}
-            className="min-h-[48px] min-w-[200px] bg-libra-navy text-white hover:bg-libra-navy/90"
-            size="xl"
-            aria-label="Clique para conhecer mais sobre a Libra Crédito"
-          >
-            Conheça a Libra
-          </Button>
+        <div className="container mx-auto px-4">
+          <div className="flex justify-center items-center">
+            <Button 
+              onClick={goToQuemSomos}
+              className="min-h-[48px] min-w-[200px] bg-libra-navy text-white hover:bg-libra-navy/90"
+              size="xl"
+              aria-label="Clique para conhecer mais sobre a Libra Crédito"
+            >
+              Conheça a Libra
+            </Button>
+          </div>
         </div>
       </section>
       
