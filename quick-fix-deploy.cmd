@@ -1,0 +1,1 @@
+cd "C:\Users\raulp\OneDrive\Documentos\GitHub\libra-credito-landing-page-22" && git stash && git checkout main && git pull origin main && git stash pop && git add . && git commit -m "🎨 fix(mobile): Menu mobile - títulos grandes, centralizados - MAIN FIXED" && git push origin main && echo "✅ DEPLOY CONCLUÍDO - Mudanças locais resolvidas!"
