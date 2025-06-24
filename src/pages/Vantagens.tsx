@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ModernCTA from '@/components/ModernCTA';
+import WaveSeparator from '@/components/ui/WaveSeparator';
 import { Progress } from '@/components/ui/progress';
 import { TrendingDown, Clock, Calculator, ShieldCheck, Wallet, BadgeCheck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -96,7 +97,8 @@ const Vantagens: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="pt-header bg-gray-50">
+      <WaveSeparator variant="hero" height="md" />
+      <main className="bg-gray-50">
         {/* Hero Section - Otimizado */}
         <section className={`${isMobile ? 'py-6' : 'py-8'}`}>
           <div className="container mx-auto px-4">

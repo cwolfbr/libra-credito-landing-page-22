@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ModernCTA from '@/components/ModernCTA';
+import WaveSeparator from '@/components/ui/WaveSeparator';
 import { BlogService, type BlogPost as BlogPostType } from '@/services/blogService';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -108,8 +109,9 @@ const Blog = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
+      <WaveSeparator variant="hero" height="md" />
       
-      <main className="flex-1 pt-header pb-8 md:pb-12">
+      <main className="flex-1 pb-8 md:pb-12">
         <div className="container mx-auto px-4">
           {/* Hero Section */}
           <div className="text-center mb-12 mt-8">

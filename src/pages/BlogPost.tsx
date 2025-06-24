@@ -4,6 +4,7 @@ import { ArrowLeft, Clock, Calendar, Tag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import WaveSeparator from '@/components/ui/WaveSeparator';
 import { BlogService, type BlogPost as BlogPostType } from '@/services/blogService';
 
 type BlogPost = BlogPostType;
@@ -45,7 +46,8 @@ const BlogPost = () => {
     return (
       <div className="min-h-screen flex flex-col">
         <Header />
-        <main className="flex-1 pt-header pb-8 flex items-center justify-center">
+        <WaveSeparator variant="hero" height="md" />
+        <main className="flex-1 pb-8 flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-libra-blue mx-auto mb-4"></div>
             <p className="text-gray-600">Carregando post...</p>
@@ -60,7 +62,8 @@ const BlogPost = () => {
     return (
       <div className="min-h-screen flex flex-col">
         <Header />
-        <main className="flex-1 pt-header pb-8 flex items-center justify-center">
+        <WaveSeparator variant="hero" height="md" />
+        <main className="flex-1 pb-8 flex items-center justify-center">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-libra-navy mb-4">Post não encontrado</h1>
             <p className="text-gray-600 mb-6">O post que você está procurando não existe ou foi removido.</p>
@@ -114,8 +117,9 @@ const BlogPost = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
+      <WaveSeparator variant="hero" height="md" />
       
-      <main className="flex-1 pt-header pb-8 md:pb-12">
+      <main className="flex-1 pb-8 md:pb-12">
         <div className="container mx-auto px-4 max-w-4xl">
           {/* Back Button */}
           <div className="mb-6 mt-8">

@@ -5,6 +5,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { SelectItem } from "@/components/ui/select";
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import WaveSeparator from '@/components/ui/WaveSeparator';
 import { PartnersService } from '@/services/partnersService';
 import { useUserJourney } from '@/hooks/useUserJourney';
 import { validateEmail, validatePhone, formatPhone } from '@/utils/validations';
@@ -322,8 +323,9 @@ const Parceiros = () => {
   return (
     <div className="min-h-screen flex flex-col bg-[#F8F9FF]">
       <Header />
+      <WaveSeparator variant="hero" height="md" />
       
-      <main className="flex-1 pt-header pb-4 md:pb-8">
+      <main className="flex-1 pb-4 md:pb-8">
         <div className="container mx-auto px-4 mt-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
             {/* Formulário para Novos Parceiros */}

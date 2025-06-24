@@ -3,6 +3,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ImageOptimizer from '@/components/ImageOptimizer';
 import ModernCTA from '@/components/ModernCTA';
+import WaveSeparator from '@/components/ui/WaveSeparator';
 import { Users, Target, Award, Shield, TrendingUp } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -55,7 +56,8 @@ const QuemSomos = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="pt-header">
+      <WaveSeparator variant="hero" height="md" />
+      <main>
         {/* Hero Section - Otimizado */}
         <section className="py-3 lg:py-4">
           <div className="container mx-auto px-4">
