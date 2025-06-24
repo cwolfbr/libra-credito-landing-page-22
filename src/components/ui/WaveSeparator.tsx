@@ -40,7 +40,7 @@ const WaveSeparator: React.FC<WaveSeparatorProps> = ({
       fill: '#ffffff',
     },
     page: {
-      background: 'bg-[#00ccff]', // Azul claro para páginas internas
+      background: 'bg-[#003399]', // Azul escuro da marca para páginas internas
       fill: '#ffffff', // Branco
     }
   };

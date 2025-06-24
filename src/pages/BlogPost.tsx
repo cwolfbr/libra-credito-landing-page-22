@@ -46,7 +46,7 @@ const BlogPost = () => {
     return (
       <div className="min-h-screen flex flex-col">
         <Header />
-        <WaveSeparator variant="page" height="md" />
+        <WaveSeparator variant="page" height="md" inverted />
         <main className="flex-1 pb-8 flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-libra-blue mx-auto mb-4"></div>
@@ -62,7 +62,7 @@ const BlogPost = () => {
     return (
       <div className="min-h-screen flex flex-col">
         <Header />
-        <WaveSeparator variant="page" height="md" />
+        <WaveSeparator variant="page" height="md" inverted />
         <main className="flex-1 pb-8 flex items-center justify-center">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-libra-navy mb-4">Post não encontrado</h1>
@@ -117,7 +117,7 @@ const BlogPost = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <WaveSeparator variant="page" height="md" />
+      <WaveSeparator variant="page" height="md" inverted />
       
       <main className="flex-1 pb-8 md:pb-12">
         <div className="container mx-auto px-4 max-w-4xl">
