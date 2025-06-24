@@ -4,7 +4,6 @@ import { Search, TrendingUp, Wallet, Home, Building, FileText, CreditCard, BookO
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import MobileLayout from '@/components/MobileLayout';
-import ModernCTA from '@/components/ModernCTA';
 import WaveSeparator from '@/components/ui/WaveSeparator';
 import { BlogService, type BlogPost as BlogPostType } from '@/services/blogService';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -112,17 +111,14 @@ const Blog = () => {
       <div className="bg-white pb-8 md:pb-12">
         <div className="container mx-auto px-4">
           {/* Hero Section */}
-          <div className="text-center mb-12 mt-8">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-libra-navy mb-4">
+          <div className="text-center mb-4 mt-8">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-libra-navy mb-2">
               Blog Libra Crédito
             </h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Conteúdo relevante sobre finanças, crédito e investimentos para você tomar as melhores decisões.
-            </p>
           </div>
 
           {/* Search Bar */}
-          <div className="max-w-2xl mx-auto mb-12">
+          <div className="max-w-2xl mx-auto mb-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <Input
@@ -136,23 +132,22 @@ const Blog = () => {
           </div>
 
           {/* Categories */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2 mb-8">
             {CATEGORIES.map((category) => {
               const Icon = category.icon;
               return (
                 <Button
                   key={category.id}
                   variant="outline"
-                  className={`h-auto ${isMobile ? 'p-6' : 'p-4'} flex flex-col items-center gap-2 hover:bg-libra-blue/5 ${
+                  className={`h-auto ${isMobile ? 'p-3' : 'p-2'} flex flex-col items-center gap-1 hover:bg-libra-blue/5 ${
                     selectedCategory === category.id ? 'border-libra-blue text-libra-blue' : ''
                   }`}
                   onClick={() => setSelectedCategory(
                     selectedCategory === category.id ? null : category.id
                   )}
                 >
-                  <Icon className="w-6 h-6" />
-                  <span className={`${isMobile ? 'text-base' : 'text-sm'} font-semibold text-center`}>{category.name}</span>
-                  <p className={`${isMobile ? 'text-sm' : 'text-xs'} text-gray-600 text-center hidden lg:block`}>{category.description}</p>
+                  <Icon className="w-4 h-4" />
+                  <span className={`${isMobile ? 'text-xs' : 'text-xs'} font-semibold text-center leading-tight`}>{category.name}</span>
                 </Button>
               );
             })}
@@ -219,11 +214,26 @@ const Blog = () => {
           )}
         </div>
 
-        <ModernCTA 
-          onSimulate={handleSimular}
-          title="Já tem o conhecimento? Agora é a hora!"
-          subtitle="Aplique o que aprendeu e descubra suas condições personalizadas"
-        />
+        {/* CTA Section */}
+        <section className="py-12 bg-libra-blue">
+          <div className="container mx-auto px-4">
+            <div className="text-center max-w-3xl mx-auto">
+              <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-white mb-4`}>
+                Já tem o conhecimento? Agora é a hora!
+              </h2>
+              <p className={`${isMobile ? 'text-base' : 'text-lg'} text-white/90 mb-6`}>
+                Aplique o que aprendeu e descubra suas condições personalizadas
+              </p>
+              <Button 
+                onClick={handleSimular}
+                size="lg"
+                className="bg-white text-libra-blue hover:bg-gray-50 font-semibold px-8 py-3 text-lg"
+              >
+                Simular Agora
+              </Button>
+            </div>
+          </div>
+        </section>
       </div>
     </MobileLayout>
   );

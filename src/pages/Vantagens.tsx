@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import MobileLayout from '@/components/MobileLayout';
-import ModernCTA from '@/components/ModernCTA';
 import WaveSeparator from '@/components/ui/WaveSeparator';
 import { Progress } from '@/components/ui/progress';
+import { Button } from '@/components/ui/button';
 import { TrendingDown, Clock, Calculator, ShieldCheck, Wallet, BadgeCheck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -171,11 +171,26 @@ const Vantagens: React.FC = () => {
           </div>
         </section>
 
-        <ModernCTA 
-          onSimulate={handleSimular}
-          title="Viu as vantagens? Hora de agir!"
-          subtitle="Use nossa tecnologia inteligente para simular suas condições personalizadas"
-        />
+        {/* CTA Section */}
+        <section className="py-12 bg-libra-blue">
+          <div className="container mx-auto px-4">
+            <div className="text-center max-w-3xl mx-auto">
+              <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-white mb-4`}>
+                Viu as vantagens? Hora de agir!
+              </h2>
+              <p className={`${isMobile ? 'text-base' : 'text-lg'} text-white/90 mb-6`}>
+                Use nossa tecnologia inteligente para simular suas condições personalizadas
+              </p>
+              <Button 
+                onClick={handleSimular}
+                size="lg"
+                className="bg-white text-libra-blue hover:bg-gray-50 font-semibold px-8 py-3 text-lg"
+              >
+                Simular Agora
+              </Button>
+            </div>
+          </div>
+        </section>
       </div>
     </MobileLayout>
   );

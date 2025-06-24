@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import MobileLayout from '@/components/MobileLayout';
 import ImageOptimizer from '@/components/ImageOptimizer';
-import ModernCTA from '@/components/ModernCTA';
 import WaveSeparator from '@/components/ui/WaveSeparator';
+import { Button } from '@/components/ui/button';
 import { Users, Target, Award, Shield, TrendingUp } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -138,11 +138,26 @@ const QuemSomos = () => {
         </section>
 
 
-        <ModernCTA 
-          onSimulate={handleSimular}
-          title="Conhece nossa história? Faça parte dela!"
-          subtitle="Junte-se aos milhares de clientes que já transformaram suas vidas conosco"
-        />
+        {/* CTA Section */}
+        <section className="py-12 bg-libra-blue">
+          <div className="container mx-auto px-4">
+            <div className="text-center max-w-3xl mx-auto">
+              <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-white mb-4`}>
+                Conhece nossa história? Faça parte dela!
+              </h2>
+              <p className={`${isMobile ? 'text-base' : 'text-lg'} text-white/90 mb-6`}>
+                Junte-se aos milhares de clientes que já transformaram suas vidas conosco
+              </p>
+              <Button 
+                onClick={handleSimular}
+                size="lg"
+                className="bg-white text-libra-blue hover:bg-gray-50 font-semibold px-8 py-3 text-lg"
+              >
+                Simular Agora
+              </Button>
+            </div>
+          </div>
+        </section>
       </div>
     </MobileLayout>
   );
