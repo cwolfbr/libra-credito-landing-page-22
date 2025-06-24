@@ -2,7 +2,7 @@ import React from 'react';
 import { TrendingUp, Building, Home } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const usageOptions = [
   {
@@ -22,15 +22,30 @@ const usageOptions = [
   }
 ];
 
-const UsageCard: React.FC<{title: string, description: string, icon: React.ComponentType<any>, isMobile: boolean}> = ({ title, description, icon: IconComponent, isMobile }) => {
+const UsageCard: React.FC<{title: string, description: string, icon: React.ComponentType<any>, isMobile: boolean, onClick: () => void}> = ({ title, description, icon: IconComponent, isMobile, onClick }) => {
   return (
-    <div className={`bg-white rounded-lg shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300 ${isMobile ? 'p-4' : 'p-5'}`}>
+    <div 
+      className={`bg-white rounded-lg shadow-lg border border-gray-100 hover:shadow-xl hover:border-libra-blue/30 transition-all duration-300 cursor-pointer transform hover:scale-105 ${isMobile ? 'p-4' : 'p-5'}`}
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick();
+        }
+      }}
+      aria-label={`Simular ${title}`}
+    >
       <div className="text-center">
-        <div className="bg-libra-blue rounded-full p-3 w-fit mx-auto mb-3">
+        <div className="bg-libra-blue rounded-full p-3 w-fit mx-auto mb-3 group-hover:bg-libra-navy transition-colors">
           <IconComponent className={`${isMobile ? 'w-6 h-6' : 'w-7 h-7'} text-white`} />
         </div>
         <h3 className={`${isMobile ? 'text-lg font-bold' : 'text-xl font-bold'} text-libra-navy mb-2`}>{title}</h3>
         <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600`}>{description}</p>
+        <div className="mt-4 text-libra-blue text-sm font-medium">
+          Clique para simular →
+        </div>
       </div>
     </div>
   );
@@ -38,6 +53,11 @@ const UsageCard: React.FC<{title: string, description: string, icon: React.Compo
 
 const Benefits: React.FC = () => {
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate('/simulacao');
+  };
   
   return (
     <section id="benefits" className={`${isMobile ? 'pt-6 pb-8' : 'pt-8 pb-10'} bg-white scroll-mt-[88px]`}>
@@ -61,7 +81,8 @@ const Benefits: React.FC = () => {
               title={option.title}
               description={option.description}
               icon={option.icon}
-              isMobile={isMobile} 
+              isMobile={isMobile}
+              onClick={handleCardClick}
             />
           ))}
         </div>

@@ -39,7 +39,7 @@ const FAQ: React.FC = () => {
   ];
 
   return (
-    <section id="faq" className={`${isMobile ? 'py-8' : 'py-16'} bg-gray-50`}>
+    <section id="faq" className={`${isMobile ? 'py-8' : 'py-16'} bg-white`}>
       <div className="container mx-auto px-4">
         <div className="text-center mb-8 md:mb-12">
           <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy mb-3 md:mb-4`}>
