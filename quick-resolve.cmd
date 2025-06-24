@@ -1,0 +1,1 @@
+git checkout --ours src/hooks/use-mobile.tsx && git add src/hooks/use-mobile.tsx && git commit --no-edit && git push origin main && echo "✅ CONFLITO RESOLVIDO! Breakpoint 1024px mantido - Teste: https://libra-credito-landing-page-22.vercel.app/"
