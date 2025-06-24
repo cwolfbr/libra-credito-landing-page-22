@@ -1,0 +1,1 @@
+cd "C:\Users\raulp\OneDrive\Documentos\GitHub\libra-credito-landing-page-22" && copy /Y use-mobile-clean.tsx src\hooks\use-mobile.tsx && git add src/hooks/use-mobile.tsx && git commit -m "🔧 fix: Resolver conflito GitHub - breakpoint 1024px limpo" && git push origin main && echo "✅ CONFLITO GITHUB RESOLVIDO! Atualize a página do PR"
