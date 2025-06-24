@@ -43,9 +43,6 @@ const UsageCard: React.FC<{title: string, description: string, icon: React.Compo
         </div>
         <h3 className={`${isMobile ? 'text-lg font-bold' : 'text-xl font-bold'} text-libra-navy mb-2`}>{title}</h3>
         <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600`}>{description}</p>
-        <div className="mt-4 text-libra-blue text-sm font-medium">
-          Clique para simular →
-        </div>
       </div>
     </div>
   );
@@ -69,9 +66,6 @@ const Benefits: React.FC = () => {
           <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy mb-3`}>
             Como usar o Crédito com Garantia de Imóvel
           </h2>
-          <p className={`${isMobile ? 'text-base' : 'text-lg'} text-gray-600 max-w-3xl mx-auto`}>
-            Descubra as principais formas de usar o crédito com garantia de imóvel para transformar sua vida financeira
-          </p>
         </div>
         
         <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-3 gap-5'} animate-slide-up max-w-6xl mx-auto mb-6`}>
