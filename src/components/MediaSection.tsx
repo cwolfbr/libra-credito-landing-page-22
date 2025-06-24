@@ -34,16 +34,16 @@ const MediaSection: React.FC = () => {
   const isMobile = useIsMobile();
 
   return (
-    <section className={`${isMobile ? 'py-8' : 'py-10'} bg-white`}>
+    <section className={`${isMobile ? 'py-8' : 'py-10'} bg-[#003399]`}>
       <div className="container mx-auto px-4">
         <div className={`text-center ${isMobile ? 'mb-6' : 'mb-6'}`}>
           <div className="flex items-center justify-center gap-2 mb-4">
-            <Newspaper className={`${isMobile ? 'w-5 h-5' : 'w-6 h-6'} text-libra-blue`} />
-            <h2 className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold text-libra-navy`}>
+            <Newspaper className={`${isMobile ? 'w-5 h-5' : 'w-6 h-6'} text-white`} />
+            <h2 className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold text-white`}>
               A Libra na Mídia
             </h2>
           </div>
-          <p className={`${isMobile ? 'text-sm px-2' : 'text-base'} text-gray-600 max-w-2xl mx-auto`}>
+          <p className={`${isMobile ? 'text-sm px-2' : 'text-base'} text-white/80 max-w-2xl mx-auto`}>
             Confira as principais matérias sobre a Libra Crédito
           </p>
         </div>
@@ -82,7 +82,7 @@ const MediaSection: React.FC = () => {
                     loading="lazy"
                   />
                 </div>
-                <p className="text-libra-navy font-medium mb-3 flex-grow text-sm leading-tight" 
+                <p className="text-[#003399] font-medium mb-3 flex-grow text-sm leading-tight" 
                    style={{display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>
                   {media.title}
                 </p>
@@ -90,7 +90,7 @@ const MediaSection: React.FC = () => {
                   onClick={() => window.open(media.url, '_blank')}
                   variant="outline"
                   size="sm"
-                  className="w-full border-libra-navy text-libra-navy hover:bg-libra-navy hover:text-white transition-colors text-xs py-2"
+                  className="w-full border-[#003399] text-[#003399] hover:bg-[#003399] hover:text-white transition-colors text-xs py-2"
                 >
                   ACESSAR
                 </Button>
