@@ -36,7 +36,7 @@ const WaveSeparator: React.FC<WaveSeparatorProps> = ({
       fill: '#003399', // Azul escuro da marca
     },
     footer: {
-      background: 'bg-[#001f5c]', // Azul mais escuro
+      background: 'bg-gradient-to-b from-[#00ccff] to-[#003399]', // Gradiente azul claro para escuro
       fill: '#ffffff',
     }
   };
