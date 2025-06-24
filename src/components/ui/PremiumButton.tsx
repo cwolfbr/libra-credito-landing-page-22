@@ -16,7 +16,7 @@ const PremiumButton: React.FC<PremiumButtonProps> = ({
   
   const variantStyles = {
     primary: "bg-libra-blue text-white border-0",
-    secondary: "bg-transparent text-white border-2 border-white hover:bg-white hover:text-libra-blue"
+    secondary: "bg-transparent text-[#003399] border-2 border-[#003399] hover:bg-[#003399] hover:text-white"
   };
 
   return (

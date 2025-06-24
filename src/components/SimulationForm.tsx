@@ -43,32 +43,36 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { formatBRL } from '@/utils/formatters';
+import { Input } from '@/components/ui/input';
 import { validateForm } from '@/utils/validations';
-import { simulateCredit } from '@/services/simulationApi';
-import CityField from './form/CityField';
+import { LocalSimulationService, SimulationResult } from '@/services/localSimulationService';
+import { useUserJourney } from '@/hooks/useUserJourney';
+import CityAutocomplete from './form/CityAutocomplete';
 import LoanAmountField from './form/LoanAmountField';
 import GuaranteeAmountField from './form/GuaranteeAmountField';
 import InstallmentsField from './form/InstallmentsField';
 import AmortizationField from './form/AmortizationField';
 import ResultCard from './ResultCard';
 import ContactForm from './ContactForm';
+import ApiMessageDisplay from './ApiMessageDisplay';
+import SmartApiMessage from './messages/SmartApiMessage';
+import SimulationResultDisplay from './SimulationResultDisplay';
+import { analyzeApiMessage, ApiMessageAnalysis } from '@/utils/apiMessageAnalyzer';
+import { analyzeLocalMessage } from '@/utils/localMessageAnalyzer';
+import { formatBRL, norm } from '@/utils/formatters';
 
 const SimulationForm: React.FC = () => {
+  const { sessionId, trackSimulation } = useUserJourney();
   const [emprestimo, setEmprestimo] = useState('');
   const [garantia, setGarantia] = useState('');
   const [parcelas, setParcelas] = useState<number>(36);
   const [amortizacao, setAmortizacao] = useState('');
   const [cidade, setCidade] = useState('');
   const [loading, setLoading] = useState(false);
-  const [resultado, setResultado] = useState<{
-    valor: number;
-    amortizacao: string;
-    parcelas: number;
-    primeiraParcela?: number;
-    ultimaParcela?: number;
-  } | null>(null);
+  const [resultado, setResultado] = useState<SimulationResult | null>(null);
   const [erro, setErro] = useState('');
+  const [apiMessage, setApiMessage] = useState<ApiMessageAnalysis | null>(null);
+  const [isRuralProperty, setIsRuralProperty] = useState(false);
 
   // Validações
   const validation = validateForm(emprestimo, garantia, parcelas, amortizacao, cidade);
@@ -84,82 +88,74 @@ const SimulationForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!validation.formularioValido) return;
+    if (!validation.formularioValido || !sessionId) return;
 
     setLoading(true);
     setErro('');
     setResultado(null);
 
     try {
-      const payload = {
-        valor_solicitado: validation.emprestimoValue,
-        vlr_imovel: validation.garantiaValue,
-        numero_parcelas: parcelas,
-        amortizacao: amortizacao,
-        juros: 1.19,
-        carencia: 1
+      // Preparar dados para o serviço (sem dados pessoais ainda)
+      const simulationInput = {
+        sessionId,
+        nomeCompleto: 'Lead Anônimo', // Temporário até preenchimento do contato
+        email: 'nao-informado@temp.com',
+        telefone: '(00) 00000-0000',
+        cidade: cidade,
+        valorEmprestimo: validation.emprestimoValue,
+        valorImovel: validation.garantiaValue,
+        parcelas: parcelas,
+        tipoAmortizacao: amortizacao,
+        userAgent: navigator.userAgent,
+        ipAddress: undefined
       };
 
-      console.log('Enviando payload:', payload);
+      console.log('🎯 Iniciando simulação:', simulationInput);
 
-      const data = await simulateCredit(payload);
+      // Usar o serviço local sem APIs
+      const result = await LocalSimulationService.performSimulation(simulationInput);
 
-      console.log('Resposta recebida:', data);
+      console.log('✅ Simulação realizada com sucesso:', result);
 
-      // Verificar se a resposta tem dados válidos
-      if (!data || !data.parcelas || !Array.isArray(data.parcelas) || data.parcelas.length === 0) {
-        console.error('Estrutura de resposta inválida:', data);
-        throw new Error('API retornou estrutura de dados inválida');
-      }
-
-      // Buscar a primeira parcela com valor válido em parcela_final
-      const parcelaComValor = data.parcelas.find((p, index) => 
-        index > 0 && p.parcela_final && p.parcela_final[0] > 0
-      );
-
-      if (!parcelaComValor) {
-        console.error('Nenhuma parcela com valor válido encontrada:', data.parcelas);
-        throw new Error('API não retornou parcelas com valores válidos');
-      }
-
-      const valorParcela = parcelaComValor.parcela_final[0];
-      console.log('Valor da parcela extraído:', valorParcela);
-
-      let primeiraParcela = undefined;
-      let ultimaParcela = undefined;
-
-      if (amortizacao === 'SAC') {
-        // Para SAC, buscar primeira parcela não vazia
-        const primeiraParcelaObj = data.parcelas.find((p, index) => 
-          index > 0 && p.parcela_final && p.parcela_final[0] > 0
-        );
-        
-        if (primeiraParcelaObj?.parcela_final?.[0]) {
-          primeiraParcela = primeiraParcelaObj.parcela_final[0];
-        }
-
-        // Para SAC, buscar última parcela não vazia
-        const ultimaParcelaObj = data.parcelas.slice().reverse().find(p => 
-          p.parcela_final && p.parcela_final[0] > 0
-        );
-        
-        if (ultimaParcelaObj?.parcela_final?.[0]) {
-          ultimaParcela = ultimaParcelaObj.parcela_final[0];
-        }
-      }
-
-      setResultado({
-        valor: valorParcela,
-        amortizacao: amortizacao,
-        parcelas: parcelas,
-        primeiraParcela: primeiraParcela,
-        ultimaParcela: ultimaParcela
+      // Rastrear simulação na jornada do usuário
+      trackSimulation({
+        simulationId: result.id,
+        valorEmprestimo: result.valorEmprestimo,
+        valorImovel: result.valorImovel,
+        parcelas: result.parcelas,
+        cidade: result.cidade
       });
+
+      setResultado(result);
 
     } catch (error) {
       console.error('Erro na simulação:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
-      setErro(`Erro ao realizar simulação: ${errorMessage}`);
+      
+      if (error instanceof Error) {
+        // Analisar a mensagem usando analisador local
+        const analysis = analyzeLocalMessage(error.message);
+        
+        if (analysis.type !== 'unknown_error') {
+          // É uma mensagem estruturada do serviço local
+          setApiMessage(analysis);
+          setErro(''); // Limpar erro genérico
+        } else {
+          // É um erro genérico
+          let errorMessage = 'Erro desconhecido ao realizar simulação';
+          
+          if (error.message.includes('HTTP') || error.message.includes('fetch')) {
+            errorMessage = 'Erro de conexão com o servidor. Verifique sua internet e tente novamente.';
+          } else {
+            errorMessage = error.message;
+          }
+          
+          setErro(errorMessage);
+          setApiMessage(null);
+        }
+      } else {
+        setErro('Erro desconhecido ao realizar simulação');
+        setApiMessage(null);
+      }
     } finally {
       setLoading(false);
     }
@@ -173,33 +169,144 @@ const SimulationForm: React.FC = () => {
     setCidade('');
     setResultado(null);
     setErro('');
+    setApiMessage(null);
+    setIsRuralProperty(false);
+  };
+
+  // Função para ajustar valores automaticamente (30%) e executar simulação
+  const handleAdjustValues = async (novoEmprestimo: number, isRural: boolean = false) => {
+    // Ajustar os valores
+    setEmprestimo(formatBRL(novoEmprestimo.toString()));
+    setIsRuralProperty(isRural);
+    setApiMessage(null);
+    setErro('');
+
+    // Aguardar um pouco para garantir que os estados sejam atualizados
+    setTimeout(async () => {
+      // Verificar se temos todos os dados necessários para simular
+      if (!sessionId || !cidade || !amortizacao) {
+        console.log('⚠️ Dados insuficientes para simulação automática');
+        return;
+      }
+
+      // Recalcular validação com novos valores
+      const newValidation = validateForm(
+        formatBRL(novoEmprestimo.toString()), 
+        garantia, 
+        parcelas, 
+        amortizacao, 
+        cidade
+      );
+
+      if (!newValidation.formularioValido) {
+        console.log('⚠️ Formulário inválido após ajuste');
+        return;
+      }
+
+      // Executar simulação automaticamente
+      setLoading(true);
+
+      try {
+        const simulationInput = {
+          sessionId,
+          nomeCompleto: 'Lead Anônimo',
+          email: 'nao-informado@temp.com',
+          telefone: '(00) 00000-0000',
+          cidade: cidade,
+          valorEmprestimo: newValidation.emprestimoValue,
+          valorImovel: newValidation.garantiaValue,
+          parcelas: parcelas,
+          tipoAmortizacao: amortizacao,
+          userAgent: navigator.userAgent,
+          ipAddress: undefined
+        };
+
+        console.log('🎯 Executando simulação automática após ajuste:', simulationInput);
+
+        const result = await LocalSimulationService.performSimulation(simulationInput);
+
+        console.log('✅ Simulação automática realizada com sucesso:', result);
+
+        // Rastrear simulação na jornada do usuário
+        trackSimulation({
+          simulationId: result.id,
+          valorEmprestimo: result.valorEmprestimo,
+          valorImovel: result.valorImovel,
+          parcelas: result.parcelas,
+          cidade: result.cidade
+        });
+
+        setResultado(result);
+
+      } catch (error) {
+        console.error('Erro na simulação automática:', error);
+        
+        if (error instanceof Error) {
+          const analysis = analyzeLocalMessage(error.message);
+          
+          if (analysis.type !== 'unknown_error') {
+            setApiMessage(analysis);
+            setErro('');
+          } else {
+            let errorMessage = 'Erro ao processar simulação automática';
+            
+            if (error.message.includes('HTTP') || error.message.includes('fetch')) {
+              errorMessage = 'Erro de conexão. Tente novamente.';
+            } else {
+              errorMessage = error.message;
+            }
+            
+            setErro(errorMessage);
+            setApiMessage(null);
+          }
+        } else {
+          setErro('Erro desconhecido na simulação automática');
+          setApiMessage(null);
+        }
+      } finally {
+        setLoading(false);
+      }
+    }, 100); // Pequeno delay para garantir que os estados sejam atualizados
+  };
+
+  // Função para tentar novamente
+  const handleTryAgain = () => {
+    setApiMessage(null);
+    setErro('');
+    setResultado(null);
+    // Manter os valores preenchidos para facilitar nova tentativa
+  };
+
+  // Função para nova simulação (limpa resultado mas mantém valores)
+  const handleNewSimulation = () => {
+    setResultado(null);
+    setApiMessage(null);
+    setErro('');
+    // Manter valores para facilitar nova simulação
   };
 
   return (
-    <div className="container mx-auto px-3 py-2 max-w-xl min-h-[calc(100vh-4rem)]">
-      <Card className="shadow-lg">
-        <CardHeader className="text-center pb-2">
-          <CardTitle className="text-lg md:text-xl font-bold text-libra-navy mb-1">
-            Sua simulação em um clique!
-          </CardTitle>
-          <p className="text-gray-600 text-xs">
-            Com apenas algumas informações você já encontrará a proposta ideal, com parcelas que cabem no seu bolso!
-          </p>
-        </CardHeader>
-        
-        <CardContent className="p-3 md:p-4">
-          {!resultado ? (
+    <div className={`container mx-auto px-3 py-2 min-h-[calc(100vh-4rem)] ${
+      resultado ? 'max-w-6xl' : 'max-w-xl'
+    }`}>
+      <div className={`${resultado ? 'grid grid-cols-1 lg:grid-cols-2 gap-6' : ''}`}>
+        {/* Formulário de Simulação */}
+        <Card className="shadow-lg">
+          <CardHeader className="text-center pb-2">
+            <CardTitle className="text-lg md:text-xl font-bold text-libra-navy mb-1">
+              Sua simulação em um clique!
+            </CardTitle>
+            <p className="text-gray-600 text-xs">
+              Com apenas algumas informações você já encontrará a proposta ideal, com parcelas que cabem no seu bolso!
+            </p>
+          </CardHeader>
+          
+          <CardContent className="p-3 md:p-4">
             <form onSubmit={handleSubmit} className="space-y-2">
               
-              <CityField value={cidade} onChange={setCidade} />
+              <CityAutocomplete value={cidade} onCityChange={setCidade} />
 
               <LoanAmountField value={emprestimo} onChange={handleEmprestimoChange} />
-              
-              {validation.emprestimoForaRange && (
-                <div className="text-red-500 text-xs">
-                  O empréstimo deve estar entre R$ 100.000 e R$ 5.000.000
-                </div>
-              )}
 
               <GuaranteeAmountField 
                 value={garantia} 
@@ -214,9 +321,9 @@ const SimulationForm: React.FC = () => {
               {/* Botões */}
               <div className="flex gap-2 pt-2">
                 <Button
-                  type="submit"
-                  disabled={!validation.formularioValido || loading}
-                  className="flex-1 bg-libra-blue hover:bg-libra-blue/90 text-white py-2 text-sm font-semibold min-h-[44px]"
+                type="submit"
+                disabled={!validation.formularioValido || loading}
+                className="flex-1 bg-libra-blue hover:bg-libra-blue/90 text-white py-2 text-sm font-semibold min-h-[44px]"
                 >
                   {loading ? (
                     <div className="flex items-center gap-2">
@@ -237,17 +344,49 @@ const SimulationForm: React.FC = () => {
                 </Button>
               </div>
 
-              {erro && (
-                <div className="text-red-500 text-center text-xs mt-2">
-                  {erro}
+              {/* Mensagem inteligente da API */}
+              {apiMessage && (
+                <div className="mt-3">
+                  <SmartApiMessage
+                    analysis={apiMessage}
+                    valorImovel={validation.garantiaValue}
+                    onAdjustValues={handleAdjustValues}
+                    onTryAgain={handleTryAgain}
+                  />
+                </div>
+              )}
+              
+              {/* Erro genérico */}
+              {erro && !apiMessage && (
+                <div className="mt-3">
+                  <ApiMessageDisplay 
+                    message={erro}
+                    type="error"
+                    onRetry={() => {
+                      setErro('');
+                      if (validation.formularioValido) {
+                        handleSubmit(new Event('submit') as any);
+                      }
+                    }}
+                    showRetryButton={validation.formularioValido}
+                  />
                 </div>
               )}
             </form>
-          ) : (
-            <ContactForm simulationResult={resultado} />
-          )}
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+
+        {/* Resultado da Simulação */}
+        {resultado && (
+          <SimulationResultDisplay
+            resultado={resultado}
+            valorEmprestimo={validation.emprestimoValue}
+            valorImovel={validation.garantiaValue}
+            cidade={cidade}
+            onNewSimulation={handleNewSimulation}
+          />
+        )}
+      </div>
     </div>
   );
 };

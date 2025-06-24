@@ -1,87 +1,156 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calendar, ArrowRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Calendar, ArrowRight, Clock } from 'lucide-react';
+import { useNavigate, Link } from 'react-router-dom';
+import { BlogService, type BlogPost } from '@/services/blogService';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const BlogSection: React.FC = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadLatestPosts = async () => {
+      try {
+        const allPosts = await BlogService.getPublishedPosts();
+        // Pegar apenas os 3 posts mais recentes
+        setPosts(allPosts.slice(0, 3));
+      } catch (error) {
+        console.error('Erro ao carregar posts do blog:', error);
+        // Fallback para posts fictícios se houver erro
+        setPosts([
+          {
+            id: '1',
+            title: "Como calcular o valor do empréstimo com garantia de imóvel",
+            description: "Descubra como determinar o valor ideal para seu empréstimo baseado no valor do seu imóvel.",
+            imageUrl: "/images/blog/capital-giro.jpg",
+            category: "home-equity",
+            readTime: 5,
+            slug: "como-calcular-valor-emprestimo",
+            createdAt: new Date().toISOString(),
+            published: true
+          },
+          {
+            id: '2',
+            title: "Vantagens do Home Equity vs Financiamento Tradicional",
+            description: "Compare as modalidades e entenda qual é a melhor opção para seu perfil e necessidades.",
+            imageUrl: "/images/blog/consolidacao.jpg",
+            category: "home-equity",
+            readTime: 7,
+            slug: "vantagens-home-equity",
+            createdAt: new Date().toISOString(),
+            published: true
+          },
+          {
+            id: '3',
+            title: "Documentos necessários para crédito com garantia de imóvel",
+            description: "Lista completa dos documentos necessários para agilizar seu processo de aprovação.",
+            imageUrl: "/images/blog/reforma.jpg",
+            category: "documentacao",
+            readTime: 4,
+            slug: "documentos-necessarios",
+            createdAt: new Date().toISOString(),
+            published: true
+          }
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadLatestPosts();
+  }, []);
 
   const handleGoToBlog = () => {
     navigate('/blog');
   };
 
-  const latestPosts = [
-    {
-      title: "Como calcular o valor do empréstimo com garantia de imóvel",
-      excerpt: "Descubra como determinar o valor ideal para seu empréstimo baseado no valor do seu imóvel.",
-      date: "15 de Janeiro, 2024",
-      readTime: "5 min"
-    },
-    {
-      title: "Vantagens do Home Equity vs Financiamento Tradicional",
-      excerpt: "Compare as modalidades e entenda qual é a melhor opção para seu perfil e necessidades.",
-      date: "10 de Janeiro, 2024",
-      readTime: "7 min"
-    },
-    {
-      title: "Documentos necessários para crédito com garantia de imóvel",
-      excerpt: "Lista completa dos documentos necessários para agilizar seu processo de aprovação.",
-      date: "5 de Janeiro, 2024",
-      readTime: "4 min"
-    }
-  ];
-
   return (
-    <section className="py-16 bg-white">
+    <section className={`${isMobile ? 'py-12' : 'py-16'} bg-white`}>
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-libra-navy mb-4">
-            Blog Libra Crédito
+        <div className="text-center mb-8 md:mb-12">
+          <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-[#003399] mb-4`}>
+            Últimas do Blog
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+          <p className={`${isMobile ? 'text-base px-2' : 'text-lg'} text-gray-600 max-w-2xl mx-auto mb-6 md:mb-8`}>
             Fique por dentro das novidades e dicas sobre crédito com garantia de imóvel
           </p>
           
           <Button 
             onClick={handleGoToBlog}
-            size="lg"
-            className="mb-12 bg-libra-navy hover:bg-libra-navy/90 text-white"
+            size={isMobile ? "default" : "lg"}
+            className={`${isMobile ? 'mb-8' : 'mb-12'} bg-[#003399] hover:bg-[#003399]/90 text-white`}
           >
             Ver Todos os Posts
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {latestPosts.map((post, index) => (
-            <Card key={index} className="hover:shadow-lg transition-shadow duration-300">
-              <CardHeader className="pb-3">
-                <div className="flex items-center text-sm text-gray-500 mb-2">
-                  <Calendar className="w-4 h-4 mr-2" />
-                  {post.date} • {post.readTime} de leitura
-                </div>
-                <CardTitle className="text-lg leading-tight text-libra-navy">
-                  {post.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                  {post.excerpt}
-                </p>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="p-0 h-auto text-libra-navy hover:text-libra-navy/80"
-                  onClick={handleGoToBlog}
-                >
-                  Ler mais
-                  <ArrowRight className="ml-1 h-3 w-3" />
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {[...Array(3)].map((_, i) => (
+              <Card key={i} className="animate-pulse">
+                <div className="w-full h-48 bg-gray-200 rounded-t-lg"></div>
+                <CardHeader className="pb-3">
+                  <div className="h-4 bg-gray-200 rounded w-1/3 mb-2"></div>
+                  <div className="h-6 bg-gray-200 rounded w-full"></div>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
+                  <div className="h-4 bg-gray-200 rounded w-2/3 mb-4"></div>
+                  <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {posts.map((post) => (
+              <Link 
+                key={post.id} 
+                to={`/blog/${post.slug}`}
+                className="block group"
+              >
+                <Card className="hover:shadow-lg transition-all duration-300 group-hover:-translate-y-1 overflow-hidden h-full">
+                  {/* Imagem do post */}
+                  <div className="aspect-video overflow-hidden">
+                    <img
+                      src={post.imageUrl}
+                      alt={post.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                    />
+                  </div>
+                  
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center text-sm text-gray-500 mb-2">
+                      <Calendar className="w-4 h-4 mr-2" />
+                      {new Date(post.createdAt || '').toLocaleDateString('pt-BR')}
+                      <Clock className="w-4 h-4 ml-4 mr-1" />
+                      {post.readTime} min
+                    </div>
+                    <CardTitle className={`${isMobile ? 'text-base' : 'text-lg'} leading-tight text-[#003399] group-hover:text-[#0044aa] transition-colors`}>
+                      {post.title}
+                    </CardTitle>
+                  </CardHeader>
+                  
+                  <CardContent>
+                    <p className={`text-gray-600 ${isMobile ? 'text-sm' : 'text-sm'} leading-relaxed mb-4 line-clamp-2`}>
+                      {post.description}
+                    </p>
+                    <div className="flex items-center text-[#003399] group-hover:text-[#0044aa] transition-colors">
+                      <span className="text-sm font-medium">Ler mais</span>
+                      <ArrowRight className="ml-1 h-3 w-3 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

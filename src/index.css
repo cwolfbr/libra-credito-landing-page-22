@@ -2,6 +2,199 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Mobile-First Performance CSS */
+
+/* Mobile-First CSS com Performance Otimizada */
+
+@layer base {
+  /* Variáveis CSS para Mobile */
+  :root {
+    /* Touch Target Sizes */
+    --touch-target-min: 48px;
+    --touch-target-comfortable: 56px;
+    
+    /* Mobile Typography Scale */
+    --text-xs-mobile: 0.75rem;     /* 12px */
+    --text-sm-mobile: 0.875rem;    /* 14px */
+    --text-base-mobile: 1rem;      /* 16px - mínimo recomendado */
+    --text-lg-mobile: 1.125rem;    /* 18px */
+    --text-xl-mobile: 1.25rem;     /* 20px */
+    --text-2xl-mobile: 1.5rem;     /* 24px */
+    --text-3xl-mobile: 1.875rem;   /* 30px */
+    
+    /* Mobile Spacing */
+    --space-xs: 0.25rem;  /* 4px */
+    --space-sm: 0.5rem;   /* 8px */
+    --space-md: 1rem;     /* 16px */
+    --space-lg: 1.5rem;   /* 24px */
+    --space-xl: 2rem;     /* 32px */
+    --space-2xl: 3rem;    /* 48px */
+    
+    /* Safe Areas for Modern Phones */
+    --safe-area-top: env(safe-area-inset-top);
+    --safe-area-bottom: env(safe-area-inset-bottom);
+    --safe-area-left: env(safe-area-inset-left);
+    --safe-area-right: env(safe-area-inset-right);
+  
+  /* Mobile Header Heights - Corrigidos */
+  --mobile-header-height: 64px;
+  --mobile-header-padding: 20px;
+    
+    /* Performance Optimizations */
+    --animation-duration: 200ms;
+    --transition-duration: 150ms;
+  }
+}
+
+@layer components {
+  /* Mobile Performance Optimizations */
+  @media (max-width: 767px) {
+    /* Garantir que headers funcionem corretamente */
+    header[data-mobile="true"] {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      z-index: 9999 !important;
+    }
+    
+    /* Garantir espaçamento correto para conteúdo */
+    main[data-has-header="true"] {
+      padding-top: calc(var(--mobile-header-height) + var(--mobile-header-padding)) !important;
+    }
+    /* Desabilitar animações complexas em mobile */
+    *, *::before, *::after {
+      animation-duration: var(--animation-duration) !important;
+      transition-duration: var(--transition-duration) !important;
+    }
+    
+    /* Remover sombras pesadas */
+    .shadow-lg, .shadow-xl, .shadow-2xl {
+      @apply shadow-md;
+    }
+    
+    /* Remover backdrop filters em mobile (performance) */
+    .backdrop-blur-sm,
+    .backdrop-blur,
+    .backdrop-blur-md,
+    .backdrop-blur-lg {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+    
+    /* Otimizar hover states para touch */
+    @media (hover: none) and (pointer: coarse) {
+      button:hover,
+      a:hover {
+        transform: none !important;
+        box-shadow: none !important;
+      }
+    }
+  }
+  
+  /* Touch-Friendly Components */
+  .touch-target {
+    @apply min-h-[48px] min-w-[48px] flex items-center justify-center;
+  }
+  
+  .touch-target-lg {
+    @apply min-h-[56px] min-w-[56px] flex items-center justify-center;
+  }
+  
+  /* Mobile Button Styles */
+  .mobile-button {
+    @apply touch-target font-semibold rounded-lg px-6 transition-colors;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  
+  .mobile-button-primary {
+    @apply mobile-button bg-libra-blue text-white active:bg-blue-700;
+  }
+  
+  .mobile-button-secondary {
+    @apply mobile-button bg-gray-100 text-gray-900 active:bg-gray-200;
+  }
+  
+  /* Mobile Input Styles */
+  .mobile-input {
+    @apply w-full px-4 py-3 text-base rounded-lg border border-gray-300;
+    @apply focus:outline-none focus:ring-2 focus:ring-libra-blue focus:border-transparent;
+    font-size: 16px; /* Previne zoom no iOS */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+  
+  /* Mobile Select */
+  .mobile-select {
+    @apply mobile-input pr-10 bg-white;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+  }
+  
+  /* Mobile Card Component */
+  .mobile-card {
+    @apply bg-white rounded-lg p-4 shadow-sm;
+    /* Usar contain para melhor performance */
+    contain: layout style;
+  }
+}
+
+@layer components {
+  /* Classes utilitárias para compensar header fixo */
+  .pt-header {
+    padding-top: var(--header-offset-mobile);
+  }
+  
+  /* Safe Area Classes */
+  .pt-safe-top {
+    padding-top: var(--safe-area-top);
+  }
+  
+  .pb-safe-bottom {
+    padding-bottom: var(--safe-area-bottom);
+  }
+  
+  .pl-safe-left {
+    padding-left: var(--safe-area-left);
+  }
+  
+  .pr-safe-right {
+    padding-right: var(--safe-area-right);
+  }
+  
+  @media (min-width: 768px) {
+    .pt-header {
+      padding-top: var(--header-offset-desktop);
+    }
+  }
+  
+  /* Para páginas que precisam de espaçamento específico */
+  .mt-header {
+    margin-top: var(--header-offset-mobile);
+  }
+  
+  @media (min-width: 768px) {
+    .mt-header {
+      margin-top: var(--header-offset-desktop);
+    }
+  }
+  
+  /* Para Hero sections que ocupam viewport completo */
+  .min-h-screen-header {
+    min-height: calc(100vh - var(--header-offset-mobile));
+  }
+  
+  @media (min-width: 768px) {
+    .min-h-screen-header {
+      min-height: calc(100vh - var(--header-offset-desktop));
+    }
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -49,45 +242,14 @@
     --sidebar-border: 220 13% 91%;
 
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Header Heights - Calculadas com base nos componentes */
+    --header-height-mobile: 80px; /* py-2 (16px) + h-16 (64px) = 80px */
+    --header-height-desktop: 104px; /* py-3 (24px) + h-20 (80px) = 104px */
+    --header-offset-mobile: 96px; /* altura + 16px de segurança */
+    --header-offset-desktop: 120px; /* altura + 16px de segurança */
   }
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
 }
 
 @layer base {
@@ -227,4 +389,163 @@
 /* Container padrão com padding responsivo */
 .container {
   @apply px-4 md:px-6 lg:px-8;
+}
+
+/* Wizard Animations */
+@keyframes slide-left {
+  0% { transform: translateX(100%); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slide-right {
+  0% { transform: translateX(-100%); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+.animate-slide-left {
+  animation: slide-left 0.3s ease-out;
+}
+
+.animate-slide-right {
+  animation: slide-right 0.3s ease-out;
+}
+
+/* Wizard specific styles */
+.wizard-container {
+  height: 100vh;
+  height: -webkit-fill-available;
+  height: 100dvh;
+}
+
+/* Bottom Navigation Safe Area */
+.bottom-nav-padding {
+  padding-bottom: calc(var(--touch-target-comfortable, 56px) + var(--safe-area-bottom, 0px));
+}
+
+/* Bottom Navigation Styles */
+@layer components {
+  /* Safe padding for bottom navigation */
+  .pb-safe-nav {
+    padding-bottom: calc(80px + env(safe-area-inset-bottom));
+  }
+  
+  /* Bottom Navigation Bar */
+  .bottom-nav {
+    @apply fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  /* Special center button */
+  .bottom-nav-special {
+    @apply absolute -top-6 left-1/2 -translate-x-1/2;
+    @apply w-14 h-14 bg-libra-blue rounded-full shadow-lg;
+    @apply flex items-center justify-center;
+    @apply transform transition-transform active:scale-95;
+  }
+  
+  /* Navigation item */
+  .bottom-nav-item {
+    @apply flex flex-col items-center justify-center h-full;
+    @apply transition-all duration-200;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Active indicator */
+  .bottom-nav-active::before {
+    content: '';
+    @apply absolute top-0 left-1/2 -translate-x-1/2;
+    @apply w-8 h-0.5 bg-libra-blue rounded-full;
+  }
+  
+  /* Mobile menu overlay */
+  .mobile-menu-overlay {
+    @apply fixed inset-0 z-50 bg-black/50;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .mobile-menu-panel {
+    @apply fixed right-0 top-0 bottom-0 w-4/5 max-w-sm bg-white shadow-xl;
+    transform: translateX(0);
+    transition: transform 0.3s ease-out;
+  }
+  
+  .mobile-menu-panel.closing {
+    transform: translateX(100%);
+  }
+
+  /* Modern CTA Animations */
+  @keyframes gradient-shift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(0, 204, 255, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(0, 204, 255, 0.6);
+    }
+  }
+
+  .bg-gradient-radial {
+    background: radial-gradient(circle, var(--tw-gradient-stops));
+  }
+
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient-shift 3s ease infinite;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-glow {
+    animation: glow-pulse 2s ease-in-out infinite;
+  }
+
+  /* Melhorar performance das animações */
+  .modern-cta * {
+    will-change: transform;
+  }
+
+  /* Efeitos de hover mais suaves */
+  .modern-cta-button {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .modern-cta-button:hover {
+    transform: translateY(-2px) scale(1.02);
+  }
+
+  /* Reduzir animações em dispositivos de baixa performance */
+  @media (prefers-reduced-motion: reduce) {
+    .modern-cta * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Line clamp utility */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 }

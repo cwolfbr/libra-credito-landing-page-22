@@ -8,68 +8,37 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
-    historyApiFallback: true
+    historyApiFallback: true,
   },
   plugins: [
-    react({
-      jsxRuntime: 'automatic',
-      jsxImportSource: 'react',
-    }),
-    mode === 'development' &&
-    componentTagger(),
+    react(),
+    mode === 'development' && componentTagger(),
   ].filter(Boolean),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      "react": path.resolve(__dirname, "node_modules/react"),
     },
   },
   build: {
-    // Otimizações de performance
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: false,
-        drop_debugger: false,
-      }
-    },
-    // Melhora o code splitting
-    cssCodeSplit: true,
-    // Otimiza o tamanho dos chunks
+    target: 'esnext',
+    minify: 'esbuild',
     rollupOptions: {
       output: {
-        manualChunks: (id) => {
-          // Separa vendors em chunks específicos
-          if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
-              return 'react-vendor';
-            }
-            if (id.includes('@radix-ui') || id.includes('tailwind')) {
-              return 'ui-vendor';
-            }
-            if (id.includes('@tanstack')) {
-              return 'query-vendor';
-            }
-            if (id.includes('lucide-react')) {
-              return 'icons-vendor';
-            }
-            return 'vendor';
+        assetFileNames: (assetInfo) => {
+          const info = assetInfo.name.split('.');
+          let extType = info[info.length - 1];
+          if (/png|jpe?g|svg|gif|tiff|bmp|ico|webp|avif/i.test(extType)) {
+            extType = 'images';
+          } else if (/woff2?|eot|ttf|otf/i.test(extType)) {
+            extType = 'fonts';
+          } else if (/css/i.test(extType)) {
+            extType = 'css';
           }
+          return `assets/${extType}/[name]-[hash][extname]`;
         },
-      },
-    },
-    // Otimiza o tamanho dos assets
-    assetsInlineLimit: 4096,
-    // Habilita source maps em produção para debug
-    sourcemap: true,
-    // Melhora o tree shaking
-    reportCompressedSize: true,
-  },
-  // Otimizações de performance
-  optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom'],
-    esbuildOptions: {
-      jsx: 'automatic',
-    },
-  },
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        entryFileNames: 'assets/js/[name]-[hash].js'
+      }
+    }
+  }
 }));

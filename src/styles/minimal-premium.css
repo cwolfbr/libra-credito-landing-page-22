@@ -1,0 +1,335 @@
+/* === MINIMAL PREMIUM STYLES - LIBRA CRÉDITO === */
+/* Focado nas cores da marca: #003399 e #00ccff */
+
+/* Variáveis CSS para consistência */
+:root {
+  --libra-navy: #003399;
+  --libra-cyan: #00ccff;
+  --libra-navy-light: #0046cc;
+  --libra-cyan-light: #33d4ff;
+  --libra-navy-dark: #002266;
+  --libra-cyan-dark: #0099cc;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Gradientes da marca */
+.gradient-libra-primary {
+  background: linear-gradient(135deg, var(--libra-navy) 0%, var(--libra-cyan) 100%);
+}
+
+.gradient-libra-soft {
+  background: linear-gradient(135deg, var(--libra-navy) 0%, var(--libra-navy-light) 50%, var(--libra-cyan) 100%);
+}
+
+.gradient-libra-text {
+  background: linear-gradient(135deg, var(--libra-navy) 0%, var(--libra-cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Sombras premium com cores da marca */
+.shadow-libra-navy {
+  box-shadow: 0 4px 20px rgba(0, 51, 153, 0.15);
+}
+
+.shadow-libra-cyan {
+  box-shadow: 0 4px 20px rgba(0, 204, 255, 0.15);
+}
+
+.shadow-libra-glow {
+  box-shadow: 
+    0 0 20px rgba(0, 204, 255, 0.3),
+    0 4px 20px rgba(0, 51, 153, 0.1);
+}
+
+/* Botões premium minimalistas */
+.btn-libra-primary {
+  background: var(--libra-cyan);
+  color: var(--libra-navy);
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.btn-libra-primary:hover {
+  background: var(--libra-cyan-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 204, 255, 0.3);
+}
+
+.btn-libra-secondary {
+  background: transparent;
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-libra-secondary:hover {
+  border-color: var(--libra-cyan);
+  color: var(--libra-cyan);
+  background: rgba(0, 204, 255, 0.1);
+}
+
+/* Cards minimalistas */
+.card-minimal {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.card-minimal:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 51, 153, 0.1);
+}
+
+.card-glass-libra {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+}
+
+/* Animações minimalistas */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.6s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Otimizações mobile */
+@media (max-width: 768px) {
+  /* Touch targets otimizados */
+  button, 
+  [role="button"] {
+    min-height: 48px;
+    min-width: 48px;
+  }
+
+  /* Prevenção de zoom no input */
+  input, select, textarea {
+    font-size: 16px;
+  }
+
+  /* Spacing otimizado para mobile */
+  .space-y-mobile > * + * {
+    margin-top: 1.5rem;
+  }
+
+  /* Typography responsiva */
+  .text-hero-mobile {
+    font-size: 2.25rem;
+    line-height: 1.1;
+    font-weight: 800;
+  }
+}
+
+/* Acessibilidade */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus states */
+.focus-libra:focus {
+  outline: 2px solid var(--libra-cyan);
+  outline-offset: 2px;
+}
+
+.focus-libra:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Estados de loading minimalistas */
+.loading-libra {
+  background: linear-gradient(
+    90deg,
+    var(--libra-navy) 25%,
+    var(--libra-cyan) 50%,
+    var(--libra-navy) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmerLibra 2s infinite;
+}
+
+@keyframes shimmerLibra {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Elementos decorativos minimalistas */
+.decoration-circle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(0, 204, 255, 0.1);
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+.decoration-circle-large {
+  width: 300px;
+  height: 300px;
+}
+
+.decoration-circle-medium {
+  width: 200px;
+  height: 200px;
+}
+
+.decoration-circle-small {
+  width: 100px;
+  height: 100px;
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 51, 153, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 204, 255, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 204, 255, 0.5);
+}
+
+/* Performance otimizations */
+.will-change-transform {
+  will-change: transform;
+}
+
+.gpu-accelerated {
+  transform: translateZ(0);
+}
+
+/* Container minimalista */
+.container-minimal {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-minimal {
+    padding: 0 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-minimal {
+    padding: 0 3rem;
+  }
+}
+
+/* Utilitários para as cores da marca */
+.text-libra-navy {
+  color: var(--libra-navy);
+}
+
+.text-libra-cyan {
+  color: var(--libra-cyan);
+}
+
+.bg-libra-navy {
+  background-color: var(--libra-navy);
+}
+
+.bg-libra-cyan {
+  background-color: var(--libra-cyan);
+}
+
+.border-libra-navy {
+  border-color: var(--libra-navy);
+}
+
+.border-libra-cyan {
+  border-color: var(--libra-cyan);
+}
+
+/* Hover states para cores da marca */
+.hover-libra-navy:hover {
+  color: var(--libra-navy);
+}
+
+.hover-libra-cyan:hover {
+  color: var(--libra-cyan);
+}
+
+.hover-bg-libra-navy:hover {
+  background-color: var(--libra-navy);
+}
+
+.hover-bg-libra-cyan:hover {
+  background-color: var(--libra-cyan);
+}
+
+/* Estados de interação premium */
+.interactive-libra {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.interactive-libra:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+
+.interactive-libra:active {
+  transform: translateY(0) scale(0.98);
+}

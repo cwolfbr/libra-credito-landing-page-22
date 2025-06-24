@@ -1,0 +1,29 @@
+{
+  "name": "Libra Crédito",
+  "short_name": "Libra",
+  "description": "Empréstimo com garantia de imóvel com as melhores taxas do mercado",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#003399",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

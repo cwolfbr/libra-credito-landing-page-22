@@ -1,0 +1,91 @@
+import React from 'react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { AlertCircle, CheckCircle } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+interface ValidatedSelectProps {
+  label?: string;
+  value: string;
+  onChange: (value: string) => void;
+  onBlur?: () => void;
+  error?: string;
+  touched?: boolean;
+  placeholder?: string;
+  required?: boolean;
+  className?: string;
+  children: React.ReactNode;
+}
+
+export const ValidatedSelect: React.FC<ValidatedSelectProps> = ({
+  label,
+  value,
+  onChange,
+  onBlur,
+  error,
+  touched,
+  placeholder,
+  required = false,
+  className,
+  children
+}) => {
+  const hasError = touched && error;
+  const isValid = touched && !error && value;
+
+  return (
+    <div className={cn("space-y-1", className)}>
+      {label && (
+        <label className="block text-sm font-medium text-gray-700">
+          {label}
+          {required && <span className="text-red-500 ml-1">*</span>}
+        </label>
+      )}
+      
+      <div className="relative">
+        <Select 
+          value={value} 
+          onValueChange={onChange}
+          onOpenChange={(open) => !open && onBlur?.()}
+        >
+          <SelectTrigger 
+            className={cn(
+              "transition-colors",
+              hasError && "border-red-500 focus:border-red-500 focus:ring-red-500",
+              isValid && "border-green-500 focus:border-green-500 focus:ring-green-500"
+            )}
+          >
+            <SelectValue placeholder={placeholder} />
+            {/* Ícone de status */}
+            {(hasError || isValid) && (
+              <div className="absolute right-8 flex items-center">
+                {hasError ? (
+                  <AlertCircle className="h-4 w-4 text-red-500" />
+                ) : (
+                  <CheckCircle className="h-4 w-4 text-green-500" />
+                )}
+              </div>
+            )}
+          </SelectTrigger>
+          <SelectContent>
+            {children}
+          </SelectContent>
+        </Select>
+      </div>
+      
+      {/* Mensagem de erro */}
+      {hasError && (
+        <p className="text-sm text-red-600 flex items-center gap-1">
+          <AlertCircle className="h-3 w-3" />
+          {error}
+        </p>
+      )}
+    </div>
+  );
+};
+
+export default ValidatedSelect;

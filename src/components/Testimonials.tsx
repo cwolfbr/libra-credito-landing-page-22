@@ -46,12 +46,12 @@ const TestimonialCard = memo(({ name, age, text, isMobile, isActive, currentInde
         <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 italic flex-grow mb-2`}>{text}</p>
         
         {/* Navegação dentro do card */}
-        <div className="flex justify-center gap-1 pt-2 border-t border-gray-100">
+        <div className="flex justify-center gap-2 pt-3 border-t border-gray-100">
           {Array.from({ length: totalTestimonials }).map((_, index) => (
             <button
               key={index}
-              className={`w-1 h-1 rounded-full transition-all duration-300 ${
-                currentIndex === index ? 'bg-libra-navy' : 'bg-gray-200'
+              className={`${isMobile ? 'w-3 h-3' : 'w-2 h-2'} rounded-full transition-all duration-300 touch-target ${
+                currentIndex === index ? 'bg-libra-navy' : 'bg-gray-300'
               }`}
               onClick={() => onNavigate(index)}
               aria-label={`Ver depoimento ${index + 1}`}
@@ -78,7 +78,7 @@ const Testimonials: React.FC = () => {
   }, []);
   
   return (
-    <section className={`${isMobile ? 'py-8' : 'py-16 md:py-24'} bg-white`}>
+    <section id="testimonials" className={`${isMobile ? 'py-8' : 'py-16 md:py-24'} bg-gray-50 scroll-mt-[88px]`}>
       <div className="container mx-auto px-4">
         <div className="text-center mb-6 md:mb-12">
           <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy mb-2 md:mb-4`}>

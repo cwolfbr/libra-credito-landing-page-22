@@ -49,11 +49,11 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white" role="banner">
       {/* Faixa superior com aviso */}
-      <div className="bg-gray-50">
+      <div className="bg-libra-navy">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center py-3">
-            <div className="flex items-center text-libra-navy text-sm">
-              <Info className="w-4 h-4 mr-2 text-libra-blue" />
+            <div className="flex items-center text-white text-sm font-semibold">
+              <Info className="w-4 h-4 mr-2 text-white" />
               A Libra não realiza nenhum tipo de cobrança até a liberação do crédito
             </div>
           </div>
@@ -66,17 +66,18 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
           <div className="flex items-center justify-between h-20">
             {/* Logo e slogan */}
             <div className="flex items-center gap-6">
-              <Link to="/" className="flex items-center gap-3">
-                <ImageOptimizer 
-                  src="/images/logos/libra-logo.png" 
-                  alt="Libra Crédito" 
-                  className="h-10 w-auto"
-                  aspectRatio={1}
-                  priority={true}
-                />
-                <div className="text-libra-navy">
-                  <span className="font-bold text-xl">Libra</span>
-                  <span className="text-sm font-medium block -mt-1">crédito</span>
+              <Link to="/" className="flex items-center">
+                <div className="h-16 overflow-hidden flex items-center">
+                  <ImageOptimizer 
+                    src="/images/logos/libra-logo.png" 
+                    alt="Libra Crédito" 
+                    className="h-20 w-auto transform scale-110"
+                    aspectRatio={1}
+                    priority={true}
+                    style={{
+                      clipPath: 'inset(25% 0 25% 0)'
+                    }}
+                  />
                 </div>
               </Link>
               <span className="text-libra-blue text-sm font-medium">

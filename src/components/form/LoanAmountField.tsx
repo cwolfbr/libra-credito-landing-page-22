@@ -10,8 +10,8 @@ interface LoanAmountFieldProps {
 
 const LoanAmountField: React.FC<LoanAmountFieldProps> = ({ value, onChange }) => {
   return (
-    <div className="flex items-start gap-2">
-      <div className="bg-libra-light p-1.5 rounded-full mt-0.5">
+    <div className="flex items-center gap-2">
+      <div className="bg-libra-light p-1.5 rounded-full flex-shrink-0">
         <DollarSign className="w-4 h-4 text-libra-blue" />
       </div>
       <div className="flex-1">
@@ -23,6 +23,7 @@ const LoanAmountField: React.FC<LoanAmountFieldProps> = ({ value, onChange }) =>
           onChange={(e) => onChange(e.target.value)}
           placeholder="R$ 100.000,00"
           className="text-sm"
+          inputMode="numeric"
         />
         <p className="text-xs text-gray-500 mt-1">
           Entre R$ 100.000 e R$ 5.000.000

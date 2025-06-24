@@ -3,69 +3,266 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Libra Crédito | Empréstimo com Garantia de Imóvel | Home Equity</title>
-    <meta name="description" content="Crédito com garantia de imóvel com as melhores taxas do mercado. Home Equity e empréstimo com garantia para consolidação de dívidas, capital de giro e mais." />
+    <title>Libra Crédito | Empréstimo com Garantia de Imóvel</title>
+    <meta name="description" content="Crédito com garantia de imóvel com as melhores taxas do mercado." />
     
-    <!-- Preconnect para recursos críticos -->
+    <!-- Performance Critical Resource Hints -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://img.youtube.com">
-    <link rel="preconnect" href="https://i.ytimg.com">
-    <link rel="dns-prefetch" href="https://www.youtube.com">
+    <link rel="preconnect" href="https://api-calculos.vercel.app">
+    <link rel="dns-prefetch" href="https://www.youtube-nocookie.com">
+    <link rel="dns-prefetch" href="https://vercel.app">
     
-    <!-- Font crítica -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Preload LCP Images -->
+    <link rel="preload" href="/images/video-thumbnail.webp" as="image" fetchpriority="high">
+    <link rel="preload" href="/images/logos/libra-logo.webp" as="image" fetchpriority="high">
     
-    <!-- Recursos críticos -->
-    <link rel="prefetch" href="/images/logos/libra-logo.png">
-    <link rel="prefetch" href="https://i.ytimg.com/vi/E9lwL6R2l1s/hqdefault.jpg">
-    <link rel="prefetch" href="https://fonts.gstatic.com/s/montserrat/v26/JTUSjIg1_i6t8kCHKm459WRhyyTh89ZNpQ.woff2">
-
-    <!-- Open Graph -->
-    <meta property="og:title" content="Libra Crédito | Empréstimo com Garantia de Imóvel" />
-    <meta property="og:description" content="Crédito com garantia de imóvel com as melhores taxas do mercado." />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="/images/logos/libra-logo.png" />
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <!-- Prefetch Important Pages -->
+    <link rel="prefetch" href="/simulacao">
+    <link rel="prefetch" href="/vantagens">
     
-    <!-- Performance optimization -->
-    <meta name="format-detection" content="telephone=no">
+    <!-- Preload Critical Font -->
+    <link rel="preload" href="https://fonts.gstatic.com/s/montserrat/v26/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtr6Hw5aXp-obK4.woff2" as="font" type="font/woff2" crossorigin>
     
-    <!-- Schema.org markup para SEO -->
+    <!-- Critical CSS Inline for Above-the-fold -->
+    <style>
+      /* Critical Above-the-fold CSS */
+      *, *::before, *::after { box-sizing: border-box; }
+      * { margin: 0; }
+      body { 
+        line-height: 1.5; 
+        -webkit-font-smoothing: antialiased;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        background: #ffffff;
+      }
+      
+      :root {
+        --libra-blue: #003399;
+        --libra-navy: #001166;
+        --libra-gold: #D4AF37;
+        --header-height: 80px;
+      }
+      
+      html, body { height: 100%; }
+      #root { height: 100%; }
+      
+      /* Header Critical */
+      .header-fixed { 
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 50;
+        height: var(--header-height);
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+      }
+      
+      /* Hero Critical */
+      .hero-section {
+        min-height: 100vh;
+        padding-top: var(--header-height);
+        background: linear-gradient(135deg, #003399 0%, #0066cc 50%, #00ccff 100%);
+        color: white;
+        display: flex;
+        align-items: center;
+      }
+      
+      .hero-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        align-items: center;
+      }
+      
+      @media (min-width: 1024px) {
+        .hero-container {
+          grid-template-columns: 1fr 1fr;
+          gap: 3rem;
+        }
+      }
+      
+      .hero-h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 1rem;
+      }
+      
+      @media (min-width: 768px) {
+        .hero-h1 { font-size: 3rem; }
+      }
+      
+      @media (min-width: 1024px) {
+        .hero-h1 { font-size: 3.5rem; }
+      }
+      
+      .hero-video {
+        aspect-ratio: 16/9;
+        border-radius: 0.75rem;
+        overflow: hidden;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        position: relative;
+        background: #000;
+      }
+      
+      .video-thumbnail {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      
+      /* Loading States */
+      .loading-spinner {
+        width: 3rem;
+        height: 3rem;
+        border: 3px solid rgba(0, 51, 153, 0.3);
+        border-top: 3px solid var(--libra-blue);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      
+      .page-loading {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f9fafb;
+      }
+      
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      
+      /* Content Visibility Optimization */
+      .content-auto {
+        content-visibility: auto;
+        contain-intrinsic-size: 300px;
+      }
+      
+      /* Enhanced Focus Styles for Accessibility */
+      :focus {
+        outline: 2px solid var(--libra-gold);
+        outline-offset: 2px;
+      }
+      
+      :focus:not(:focus-visible) {
+        outline: none;
+      }
+      
+      :focus-visible {
+        outline: 2px solid var(--libra-gold);
+        outline-offset: 2px;
+      }
+      
+      /* Screen Reader Only utility */
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      
+      .focus\:not-sr-only:focus {
+        position: static;
+        width: auto;
+        height: auto;
+        padding: inherit;
+        margin: inherit;
+        overflow: visible;
+        clip: auto;
+        white-space: normal;
+      }
+    </style>
+    
+    <!-- Font Display Optimized (Async) -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"></noscript>
+    
+    <!-- Favicon - Libra Crédito -->
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    
+    <!-- PWA Icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- PWA and Mobile Meta Tags -->
+    <meta name="application-name" content="Libra Crédito" />
+    <meta name="apple-mobile-web-app-title" content="Libra Crédito" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="msapplication-TileColor" content="#003399" />
+    <meta name="msapplication-TileImage" content="/icon-192.png" />
+    
+    <!-- Performance Meta Tags -->
+    <meta name="theme-color" content="#003399">
+    <meta name="color-scheme" content="light">
+    
+    <!-- Schema Markup for Better SEO -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "FinancialService",
       "name": "Libra Crédito",
-      "description": "Empréstimo com garantia de imóvel com as melhores taxas do mercado. Home Equity para consolidação de dívidas, capital de giro e realização de projetos.",
+      "description": "Empréstimo com garantia de imóvel com as melhores taxas do mercado",
       "url": "https://libracredito.com.br",
       "logo": "https://libracredito.com.br/images/logos/libra-logo.png",
-      "telephone": "+55-11-4003-4818",
       "priceRange": "R$ 100.000 - R$ 5.000.000",
       "areaServed": {
         "@type": "Country",
         "name": "Brasil"
       },
-      "serviceType": ["Home Equity", "Empréstimo com Garantia de Imóvel", "Crédito Imobiliário"],
       "aggregateRating": {
         "@type": "AggregateRating",
         "ratingValue": "4.8",
-        "reviewCount": "1250",
-        "bestRating": "5"
-      },
-      "sameAs": [
-        "https://www.facebook.com/libracredito",
-        "https://www.instagram.com/libracredito",
-        "https://www.linkedin.com/company/libracredito"
-      ]
+        "reviewCount": "1250"
+      }
     }
     </script>
   </head>
 
   <body>
     <div id="root"></div>
+    
+    <!-- EmailJS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('SW registered: ', registration);
+            })
+            .catch((registrationError) => {
+              console.log('SW registration failed: ', registrationError);
+            });
+        });
+      }
+    </script>
   </body>
 </html>

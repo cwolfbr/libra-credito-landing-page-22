@@ -17,7 +17,7 @@ const PoliticaPrivacidade = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 bg-libra-light pt-20">
+      <main className="flex-1 bg-libra-light pt-header">
         <div className="container mx-auto px-4 py-8 max-w-4xl">
           <Card>
             <CardHeader>

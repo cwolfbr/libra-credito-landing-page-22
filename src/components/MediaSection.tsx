@@ -34,16 +34,16 @@ const MediaSection: React.FC = () => {
   const isMobile = useIsMobile();
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className={`${isMobile ? 'py-8' : 'py-10'} bg-gray-50`}>
       <div className="container mx-auto px-4">
-        <div className="text-center mb-8">
+        <div className={`text-center ${isMobile ? 'mb-6' : 'mb-6'}`}>
           <div className="flex items-center justify-center gap-2 mb-4">
-            <Newspaper className="w-6 h-6 text-libra-blue" />
-            <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-libra-navy`}>
+            <Newspaper className={`${isMobile ? 'w-5 h-5' : 'w-6 h-6'} text-libra-blue`} />
+            <h2 className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold text-libra-navy`}>
               A Libra na Mídia
             </h2>
           </div>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className={`${isMobile ? 'text-sm px-2' : 'text-base'} text-gray-600 max-w-2xl mx-auto`}>
             Confira as principais matérias sobre a Libra Crédito
           </p>
         </div>
@@ -62,7 +62,7 @@ const MediaSection: React.FC = () => {
               >
                 <img
                   src={media.logo}
-                  alt={`Logo ${media.name}`}
+                  alt={`${media.name} - acesse matéria sobre Libra Crédito`}
                   className="max-w-full max-h-[40px] object-contain"
                   loading="lazy"
                 />
@@ -70,25 +70,27 @@ const MediaSection: React.FC = () => {
             ))}
           </div>
         ) : (
-          // Layout Desktop - Cards completos
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          // Layout Desktop - 4 Cards horizontais
+          <div className="grid grid-cols-4 gap-4 max-w-6xl mx-auto">
             {mediaLinks.map((media) => (
-              <div key={media.name} className="bg-white rounded-lg shadow-sm p-6 flex flex-col">
-                <div className="h-12 mb-4 flex items-center">
+              <div key={media.name} className="bg-white rounded-lg shadow-sm p-4 flex flex-col">
+                <div className="h-10 mb-3 flex items-center justify-center">
                   <img
                     src={media.logo}
-                    alt={`Logo ${media.name}`}
-                    className="max-h-full object-contain"
+                    alt={`${media.name} - veículo de mídia que destaca a Libra Crédito`}
+                    className="max-h-full max-w-full object-contain"
                     loading="lazy"
                   />
                 </div>
-                <p className="text-libra-navy font-medium mb-4 flex-grow">
+                <p className="text-libra-navy font-medium mb-3 flex-grow text-sm leading-tight" 
+                   style={{display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>
                   {media.title}
                 </p>
                 <Button
                   onClick={() => window.open(media.url, '_blank')}
                   variant="outline"
-                  className="w-full border-libra-navy text-libra-navy hover:bg-libra-navy hover:text-white transition-colors"
+                  size="sm"
+                  className="w-full border-libra-navy text-libra-navy hover:bg-libra-navy hover:text-white transition-colors text-xs py-2"
                 >
                   ACESSAR
                 </Button>

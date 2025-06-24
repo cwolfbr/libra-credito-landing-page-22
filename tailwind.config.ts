@@ -2,7 +2,6 @@
 import type { Config } from "tailwindcss";
 
 export default {
-	darkMode: ["class"],
 	content: [
 		"./pages/**/*.{ts,tsx}",
 		"./components/**/*.{ts,tsx}",
@@ -13,14 +12,52 @@ export default {
 	theme: {
 		container: {
 			center: true,
-			padding: '2rem',
-			screens: {
-				'2xl': '1400px'
-			}
+			padding: {
+				DEFAULT: '1rem',
+				sm: '1.5rem',
+				md: '2rem',
+				lg: '4rem',
+				xl: '5rem',
+			},
+		},
+		// Mobile-first breakpoints otimizados para dispositivos premium
+		screens: {
+			'xs': '375px',    // iPhone 13/14 Standard
+			'sm': '414px',    // iPhone Plus/Pro Max
+			'md': '768px',    // iPad Mini
+			'lg': '1024px',   // iPad Pro / Desktop básico
+			'xl': '1280px',   // Desktop padrão
+			'2xl': '1536px',  // Desktop grande
 		},
 		extend: {
 			fontFamily: {
 				sans: ['Montserrat', 'sans-serif'],
+			},
+			// Tamanhos de fonte otimizados para mobile
+			fontSize: {
+				'xs': ['0.75rem', { lineHeight: '1rem' }],
+				'sm': ['0.875rem', { lineHeight: '1.25rem' }],
+				'base': ['1rem', { lineHeight: '1.5rem' }],      // 16px base
+				'lg': ['1.125rem', { lineHeight: '1.75rem' }],
+				'xl': ['1.25rem', { lineHeight: '1.75rem' }],
+				'2xl': ['1.5rem', { lineHeight: '2rem' }],       // 24px mobile h1
+				'3xl': ['1.875rem', { lineHeight: '2.25rem' }],  // 30px desktop h1
+				'4xl': ['2.25rem', { lineHeight: '2.5rem' }],
+				'5xl': ['3rem', { lineHeight: '1' }],
+			},
+			// Espaçamentos otimizados para touch
+			spacing: {
+				'18': '4.5rem',
+				'88': '22rem',
+				'safe-top': 'env(safe-area-inset-top)',
+				'safe-bottom': 'env(safe-area-inset-bottom)',
+				'safe-left': 'env(safe-area-inset-left)',
+				'safe-right': 'env(safe-area-inset-right)',
+			},
+			// Altura mínima para elementos touch (48px recomendado)
+			minHeight: {
+				'touch': '48px',
+				'touch-lg': '56px',
 			},
 			colors: {
 				border: 'hsl(var(--border))',
@@ -70,7 +107,7 @@ export default {
 					navy: '#003399', // Cor principal
 					gold: '#D4AF37',
 					silver: '#F0F0F0',
-					blue: '#00ccff', // Cor secundária
+					blue: '#003399', // Cor de enfase alterada
 					light: '#F8F9FA'
 				}
 			},

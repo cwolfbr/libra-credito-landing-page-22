@@ -40,6 +40,7 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ onPortalClientes, onSimulat
 
   const navigationItems = [
     { name: 'Home', path: '/' },
+    { name: 'Simulação', path: '/simulacao', highlight: true },
     { name: 'Vantagens', path: '/vantagens' },
     { name: 'Quem Somos', path: '/quem-somos' },
     { name: 'Blog', path: '/blog' },
@@ -47,13 +48,13 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ onPortalClientes, onSimulat
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md" role="banner">
+    <header className="fixed top-0 left-0 right-0 z-[9999] bg-white shadow-md" role="banner" style={{ position: 'fixed !important' }}>
       {/* Barra superior compacta */}
-      <div className="bg-gray-50 border-b border-gray-100">
-        <div className="container mx-auto px-4 py-1">
+      <div className="bg-libra-navy border-b border-blue-800">
+        <div className="container mx-auto px-4 py-2">
           <div className="flex items-center justify-center">
-            <div className="flex items-center text-libra-navy text-xs font-medium">
-              <Info className="w-3 h-3 mr-1 text-libra-blue" />
+            <div className="flex items-center text-white text-xs font-semibold">
+              <Info className="w-3 h-3 mr-1 text-white" />
               A Libra não realiza cobrança até a liberação
             </div>
           </div>
@@ -63,34 +64,35 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ onPortalClientes, onSimulat
       {/* Header principal */}
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center">
             <Link to="/" aria-label="Página inicial da Libra Crédito">
-              <ImageOptimizer 
-                src="/images/logos/libra-logo.png" 
-                alt="Libra Crédito" 
-                className="h-8 w-auto"
-                aspectRatio={1}
-                priority={true}
-              />
+              <div className="h-12 overflow-hidden flex items-center">
+                <ImageOptimizer 
+                  src="/images/logos/libra-logo.png" 
+                  alt="Libra Crédito" 
+                  className="h-16 w-auto transform scale-105"
+                  aspectRatio={1}
+                  priority={true}
+                  style={{
+                    clipPath: 'inset(30% 0 30% 0)'
+                  }}
+                />
+              </div>
             </Link>
-            <div className="flex flex-col">
-              <span className="text-libra-navy font-bold text-base">Libra Crédito</span>
-              <span className="text-libra-blue text-xs font-medium">Vem que a gente equiLIBRA</span>
-            </div>
           </div>
 
           <div className="flex items-center gap-2">
             <Button 
-              className="min-h-[40px] px-3 text-xs bg-libra-navy text-white hover:bg-libra-navy/90"
+              className="min-h-[40px] px-4 text-sm font-semibold bg-libra-navy text-white hover:bg-libra-navy/90 shadow-md"
               size="sm"
               onClick={onSimulateNow}
               aria-label="Simular crédito agora"
             >
-              Simular
+              Simular Agora
             </Button>
 
             <button
-              className="lg:hidden p-2 min-w-[40px] min-h-[40px] flex items-center justify-center"
+              className="lg:hidden p-2 min-w-[40px] min-h-[40px] flex items-center justify-center hover:bg-gray-100 rounded-md transition-colors"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Abrir menu de navegação"
             >
@@ -104,15 +106,17 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ onPortalClientes, onSimulat
       {isMenuOpen && (
         <nav className="bg-white border-t border-gray-100 shadow-lg">
           <div className="container mx-auto px-4 py-4">
-            <ul className="space-y-4">
+            <ul className="space-y-3">
               {navigationItems.map((item) => (
                 <li key={item.path}>
                   <Link
                     to={item.path}
-                    className={`block py-2 text-base font-medium ${
-                      location.pathname === item.path 
-                        ? 'text-libra-blue' 
-                        : 'text-libra-navy hover:text-libra-blue'
+                    className={`block py-3 px-3 text-base font-medium rounded-md transition-colors ${
+                      item.highlight 
+                        ? 'bg-libra-navy text-white hover:bg-libra-navy/90 font-semibold' 
+                        : location.pathname === item.path 
+                          ? 'text-libra-blue bg-blue-50' 
+                          : 'text-libra-navy hover:text-libra-blue hover:bg-gray-50'
                     }`}
                     onClick={() => setIsMenuOpen(false)}
                   >

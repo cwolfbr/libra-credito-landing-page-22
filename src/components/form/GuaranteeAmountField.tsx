@@ -15,8 +15,8 @@ const GuaranteeAmountField: React.FC<GuaranteeAmountFieldProps> = ({
   showError 
 }) => {
   return (
-    <div className="flex items-start gap-2">
-      <div className="bg-libra-light p-1.5 rounded-full mt-0.5">
+    <div className="flex items-center gap-2">
+      <div className="bg-libra-light p-1.5 rounded-full flex-shrink-0">
         <Home className="w-4 h-4 text-libra-blue" />
       </div>
       <div className="flex-1">
@@ -28,6 +28,7 @@ const GuaranteeAmountField: React.FC<GuaranteeAmountFieldProps> = ({
           onChange={(e) => onChange(e.target.value)}
           placeholder="R$ 300.000,00"
           className="text-sm"
+          inputMode="numeric"
         />
         {showError && (
           <p className="text-red-500 text-xs mt-1">

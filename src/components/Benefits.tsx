@@ -40,13 +40,13 @@ const Benefits: React.FC = () => {
   const isMobile = useIsMobile();
   
   return (
-    <section id="benefits" className={`${isMobile ? 'pt-16 pb-12' : 'pt-24 pb-16'} bg-libra-light scroll-mt-[88px]`}>
+    <section id="benefits" className={`${isMobile ? 'pt-6 pb-8' : 'pt-8 pb-10'} bg-white scroll-mt-[88px]`}>
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <p className={`${isMobile ? 'text-sm' : 'text-lg'} text-libra-blue font-semibold uppercase tracking-wider mb-6`}>
+        <div className="text-center mb-8">
+          <p className={`${isMobile ? 'text-sm' : 'text-lg'} text-libra-blue font-semibold uppercase tracking-wider mb-4`}>
             Soluções para cada necessidade
           </p>
-          <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy mb-4`}>
+          <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy mb-3`}>
             Como usar o Crédito com Garantia de Imóvel
           </h2>
           <p className={`${isMobile ? 'text-base' : 'text-lg'} text-gray-600 max-w-3xl mx-auto`}>
@@ -54,7 +54,7 @@ const Benefits: React.FC = () => {
           </p>
         </div>
         
-        <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-3 gap-5'} animate-slide-up max-w-6xl mx-auto mb-8`}>
+        <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-3 gap-5'} animate-slide-up max-w-6xl mx-auto mb-6`}>
           {usageOptions.map((option, index) => (
             <UsageCard 
               key={index} 
@@ -66,7 +66,7 @@ const Benefits: React.FC = () => {
           ))}
         </div>
         
-        <div className="text-center">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
           <Link to="/vantagens">
             <Button 
               size={isMobile ? "default" : "lg"} 
@@ -75,6 +75,47 @@ const Benefits: React.FC = () => {
               Conheça Mais Vantagens
             </Button>
           </Link>
+          {!isMobile && (
+            <Button 
+              size="lg"
+              variant="outline"
+              className="border-libra-blue text-libra-blue hover:bg-libra-blue hover:text-white px-8 py-3"
+              onClick={() => {
+                const testimonialsSection = document.getElementById('testimonials');
+                if (testimonialsSection) {
+                  // Procura pelo vídeo especificamente dentro da seção de testimonials
+                  const videoContainer = testimonialsSection.querySelector('.aspect-video');
+                  if (videoContainer) {
+                    const videoPosition = videoContainer.getBoundingClientRect().top;
+                    const videoHeight = videoContainer.getBoundingClientRect().height;
+                    const windowHeight = window.innerHeight;
+                    const headerOffset = 120;
+                    
+                    // Calcula a posição para centralizar o vídeo na tela
+                    const centerOffset = (windowHeight - videoHeight) / 2;
+                    const targetPosition = videoPosition + window.pageYOffset - centerOffset - headerOffset;
+                    
+                    window.scrollTo({
+                      top: targetPosition,
+                      behavior: 'smooth'
+                    });
+                  } else {
+                    // Fallback para a seção inteira se não encontrar o vídeo
+                    const headerOffset = 120;
+                    const elementPosition = testimonialsSection.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    
+                    window.scrollTo({
+                      top: offsetPosition,
+                      behavior: 'smooth'
+                    });
+                  }
+                }
+              }}
+            >
+              O que Falam da Libra
+            </Button>
+          )}
         </div>
       </div>
     </section>
