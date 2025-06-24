@@ -43,21 +43,23 @@ const TestimonialCard = memo(({ name, age, text, isMobile, isActive, currentInde
             <p className="text-sm text-gray-500">{age}</p>
           </div>
         </div>
-        {/* Navegação fixa acima do texto */}
-        <div className="flex justify-center gap-1 pb-3 border-b border-gray-100 mb-3">
-          {Array.from({ length: totalTestimonials }).map((_, index) => (
-            <button
-              key={index}
-              className={`${isMobile ? 'w-1.5 h-1.5' : 'w-1 h-1'} rounded-full transition-all duration-300 hover:scale-125 ${
-                currentIndex === index ? 'bg-libra-navy' : 'bg-gray-300 hover:bg-gray-400'
-              }`}
-              onClick={() => onNavigate(index)}
-              aria-label={`Ver depoimento ${index + 1}`}
-            />
-          ))}
-        </div>
+        <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 italic flex-grow mb-3`}>{text}</p>
         
-        <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 italic flex-grow`}>{text}</p>
+        {/* Faixa separadora fixa acima das bolas */}
+        <div className="border-t border-gray-100 pt-2">
+          <div className="flex justify-center gap-1">
+            {Array.from({ length: totalTestimonials }).map((_, index) => (
+              <button
+                key={index}
+                className={`${isMobile ? 'w-1 h-1' : 'w-0.5 h-0.5'} rounded-full transition-all duration-300 hover:scale-150 ${
+                  currentIndex === index ? 'bg-libra-navy' : 'bg-gray-300 hover:bg-gray-400'
+                }`}
+                onClick={() => onNavigate(index)}
+                aria-label={`Ver depoimento ${index + 1}`}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -82,11 +84,8 @@ const Testimonials: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-6 md:mb-12">
           <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy mb-2 md:mb-4`}>
-            O que nossos clientes dizem
+            Quem conhece, Confia!
           </h2>
-          <p className={`${isMobile ? 'text-sm px-4' : 'text-lg'} text-gray-600 max-w-3xl mx-auto`}>
-            Veja como o crédito com garantia de imóvel transformou a vida financeira de nossos clientes com taxas a partir de 1,19% a.m. e prazo de até 180 meses.
-          </p>
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center max-w-6xl mx-auto">
