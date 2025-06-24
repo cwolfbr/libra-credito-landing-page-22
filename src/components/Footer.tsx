@@ -48,21 +48,21 @@ const Footer: React.FC = () => {
           {/* Redes Sociais */}
           <div className="text-center md:text-right">
             <h3 className="text-xl font-bold mb-4 text-white">Nos Acompanhe</h3>
-            <div className="flex justify-center md:justify-end items-center gap-3 mb-4">
-              <a href="https://www.facebook.com/LibraCreditoOficial/" target="_blank" rel="noopener noreferrer" className="bg-white/20 hover:bg-white text-white hover:text-[#003399] p-2 rounded-full transition-colors" aria-label="Facebook">
-                <Facebook className="w-5 h-5" />
+            <div className="flex justify-center md:justify-end items-center gap-4 mb-4">
+              <a href="https://www.facebook.com/LibraCreditoOficial/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="Facebook">
+                <Facebook className="w-7 h-7" />
               </a>
-              <a href="https://www.instagram.com/libracredito/" target="_blank" rel="noopener noreferrer" className="bg-white/20 hover:bg-white text-white hover:text-[#003399] p-2 rounded-full transition-colors" aria-label="Instagram">
-                <Instagram className="w-5 h-5" />
+              <a href="https://www.instagram.com/libracredito/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="Instagram">
+                <Instagram className="w-7 h-7" />
               </a>
-              <a href="https://www.linkedin.com/company/libracredito/" target="_blank" rel="noopener noreferrer" className="bg-white/20 hover:bg-white text-white hover:text-[#003399] p-2 rounded-full transition-colors" aria-label="LinkedIn">
-                <Linkedin className="w-5 h-5" />
+              <a href="https://www.linkedin.com/company/libracredito/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="LinkedIn">
+                <Linkedin className="w-7 h-7" />
               </a>
-              <a href="https://www.youtube.com/channel/UCXpuj7LlTLT_kdbwwJHS0qA" target="_blank" rel="noopener noreferrer" className="bg-white/20 hover:bg-white text-white hover:text-[#003399] p-2 rounded-full transition-colors" aria-label="YouTube">
-                <Youtube className="w-5 h-5" />
+              <a href="https://www.youtube.com/channel/UCXpuj7LlTLT_kdbwwJHS0qA" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="YouTube">
+                <Youtube className="w-7 h-7" />
               </a>
-              <a href="https://www.reclameaqui.com.br/empresa/libra-credito-solucoes-financeiras/" target="_blank" rel="noopener noreferrer" className="bg-white/20 hover:bg-white text-white hover:text-[#003399] p-2 rounded-full transition-colors" aria-label="Reclame Aqui">
-                <ExternalLink className="w-5 h-5" />
+              <a href="https://www.reclameaqui.com.br/empresa/libra-credito-solucoes-financeiras/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="Reclame Aqui">
+                <ExternalLink className="w-7 h-7" />
               </a>
             </div>
             
