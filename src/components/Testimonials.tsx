@@ -43,14 +43,12 @@ const TestimonialCard = memo(({ name, age, text, isMobile, isActive, currentInde
             <p className="text-sm text-gray-500">{age}</p>
           </div>
         </div>
-        <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 italic flex-grow mb-2`}>{text}</p>
-        
-        {/* Navegação dentro do card */}
-        <div className="flex justify-center gap-1 pt-2 border-t border-gray-100">
+        {/* Navegação fixa acima do texto */}
+        <div className="flex justify-center gap-1 pb-3 border-b border-gray-100 mb-3">
           {Array.from({ length: totalTestimonials }).map((_, index) => (
             <button
               key={index}
-              className={`${isMobile ? 'w-2 h-2' : 'w-1.5 h-1.5'} rounded-full transition-all duration-300 hover:scale-110 ${
+              className={`${isMobile ? 'w-1.5 h-1.5' : 'w-1 h-1'} rounded-full transition-all duration-300 hover:scale-125 ${
                 currentIndex === index ? 'bg-libra-navy' : 'bg-gray-300 hover:bg-gray-400'
               }`}
               onClick={() => onNavigate(index)}
@@ -58,6 +56,8 @@ const TestimonialCard = memo(({ name, age, text, isMobile, isActive, currentInde
             />
           ))}
         </div>
+        
+        <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 italic flex-grow`}>{text}</p>
       </div>
     </div>
   );
