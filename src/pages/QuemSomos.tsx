@@ -139,19 +139,19 @@ const QuemSomos = () => {
 
 
         {/* CTA Section */}
-        <section className="py-12 bg-libra-blue">
+        <section className="py-12 bg-white border-t border-gray-200">
           <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto">
-              <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-white mb-4`}>
+              <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-libra-navy mb-4`}>
                 Conhece nossa história? Faça parte dela!
               </h2>
-              <p className={`${isMobile ? 'text-base' : 'text-lg'} text-white/90 mb-6`}>
+              <p className={`${isMobile ? 'text-base' : 'text-lg'} text-gray-600 mb-6`}>
                 Junte-se aos milhares de clientes que já transformaram suas vidas conosco
               </p>
               <Button 
                 onClick={handleSimular}
                 size="lg"
-                className="bg-white text-libra-blue hover:bg-gray-50 font-semibold px-8 py-3 text-lg"
+                className="bg-libra-blue text-white hover:bg-libra-navy font-semibold px-8 py-3 text-lg"
               >
                 Simular Agora
               </Button>
