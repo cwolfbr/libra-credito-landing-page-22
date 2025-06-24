@@ -27,6 +27,7 @@ const MobileNavDemo = lazy(() => import("./pages/MobileNavDemo"));
 const SimulacaoSapi = lazy(() => import("./pages/SimulacaoSapi"));
 const SimulacaoLocal = lazy(() => import("./pages/SimulacaoLocal"));
 const Home2 = lazy(() => import("./pages/Home2"));
+const TestWebhook = lazy(() => import("./pages/TestWebhook"));
 
 const Loading = () => (
   <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -63,6 +64,7 @@ const App = () => (
               <Route path="/politica-privacidade" element={<PoliticaPrivacidade />} />
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/test-supabase" element={<SupabaseTestPage />} />
+              <Route path="/test-webhook" element={<TestWebhook />} />
               <Route path="/mobile-demo" element={<MobileDemo />} />
               <Route path="/mobile-nav" element={<MobileNavDemo />} />
               <Route path="/simulacao-wizard" element={<SimulacaoWizard />} />

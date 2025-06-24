@@ -23,6 +23,7 @@ import { supabaseApi, SimulacaoData } from '@/lib/supabase';
 import { simulateCredit } from '@/services/simulationApi';
 import { validateEmail, validatePhone, formatPhone } from '@/utils/validations';
 import { PloomesService } from '@/services/ploomesService';
+import { WebhookService } from '@/services/webhookService';
 
 // Tipos para o serviço
 export interface SimulationInput {
@@ -240,6 +241,42 @@ export class SimulationService {
         
         // Para outros erros, não propagar - o lead já foi salvo no Supabase
         console.warn('Erro não crítico na integração - lead salvo localmente');
+      }
+      
+      // Enviar dados para webhook após processamento completo
+      try {
+        console.log('🪝 Enviando dados para webhook...');
+        
+        const webhookPayload = {
+          simulationId: input.simulationId,
+          sessionId: input.sessionId,
+          nomeCompleto: input.nomeCompleto,
+          email: input.email,
+          telefone: input.telefone,
+          cidade: updatedSimulation.cidade,
+          imovelProprio: input.imovelProprio,
+          observacoes: input.observacoes,
+          valorEmprestimo: updatedSimulation.valor_emprestimo,
+          valorImovel: updatedSimulation.valor_imovel,
+          parcelas: updatedSimulation.parcelas,
+          tipoAmortizacao: updatedSimulation.tipo_amortizacao,
+          valorParcela: valorParcela,
+          primeiraParcela: updatedSimulation.parcela_inicial,
+          ultimaParcela: updatedSimulation.parcela_final,
+          status: updatedSimulation.status
+        };
+        
+        const webhookResult = await WebhookService.sendSimulationData(webhookPayload);
+        
+        if (webhookResult.success) {
+          console.log('✅ Webhook enviado com sucesso');
+        } else {
+          console.warn('⚠️ Falha no webhook (não crítico):', webhookResult.message);
+        }
+        
+      } catch (webhookError) {
+        console.error('❌ Erro no webhook (não crítico):', webhookError);
+        // Não propagamos erro do webhook para não afetar o fluxo principal
       }
       
     } catch (error) {

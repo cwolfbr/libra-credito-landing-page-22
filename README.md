@@ -32,6 +32,17 @@ npm install
 ```
 Use o arquivo: `supabase-setup-complete.sql`
 
+### 3. **Configurar Variáveis de Ambiente**
+```bash
+# Copie o arquivo de exemplo
+cp .env.example .env
+
+# Configure suas variáveis no arquivo .env:
+# - VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY (obrigatório)
+# - VITE_WEBHOOK_URL (opcional - para webhook de simulações)
+# - Outras conforme necessário
+```
+
 #### **b) 🔥 CRÍTICO - Configurar Storage:**
 1. Acesse: https://app.supabase.com → Seu Projeto → **Storage**
 2. Clique em **"Create Bucket"**
