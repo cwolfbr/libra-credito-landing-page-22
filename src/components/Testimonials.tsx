@@ -46,11 +46,11 @@ const TestimonialCard = memo(({ name, age, text, isMobile, isActive, currentInde
         <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 italic flex-grow mb-2`}>{text}</p>
         
         {/* Navegação dentro do card */}
-        <div className="flex justify-center gap-2 pt-3 border-t border-gray-100">
+        <div className="flex justify-center gap-1 pt-2 border-t border-gray-100">
           {Array.from({ length: totalTestimonials }).map((_, index) => (
             <button
               key={index}
-              className={`${isMobile ? 'w-3 h-3' : 'w-2 h-2'} rounded-full transition-all duration-300 touch-target ${
+              className={`${isMobile ? 'w-1.5 h-1.5' : 'w-1 h-1'} rounded-full transition-all duration-300 touch-target ${
                 currentIndex === index ? 'bg-libra-navy' : 'bg-gray-300'
               }`}
               onClick={() => onNavigate(index)}
