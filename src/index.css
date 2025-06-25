@@ -38,7 +38,7 @@
   
   /* Mobile Header Heights - Corrigidos */
   --mobile-header-height: 64px;
-  --mobile-header-padding: 20px;
+  --mobile-header-padding: 0px;
     
     /* Performance Optimizations */
     --animation-duration: 200ms;
@@ -60,7 +60,7 @@
     
     /* Garantir espaçamento correto para conteúdo */
     main[data-has-header="true"] {
-      padding-top: calc(var(--mobile-header-height) + var(--mobile-header-padding)) !important;
+      padding-top: var(--mobile-header-height) !important;
     }
     /* Desabilitar animações complexas em mobile */
     *, *::before, *::after {
