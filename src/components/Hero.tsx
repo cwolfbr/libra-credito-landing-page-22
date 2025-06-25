@@ -19,17 +19,19 @@ const Hero: React.FC = () => {
   };
 
   const scrollToBenefits = () => {
+    const cta = document.getElementById('benefits-cta');
     const trustbarSection = document.getElementById('trustbar');
-    if (trustbarSection) {
+    if (cta) {
       // Usar valores CSS dinâmicos para offset
       const headerOffsetMobile = 96; // var(--header-offset-mobile)
       const headerOffsetDesktop = 108; // var(--header-offset-desktop)
       const isMobileScreen = window.innerWidth < 768;
       const headerOffset = isMobileScreen ? headerOffsetMobile : headerOffsetDesktop;
-      
-      const elementPosition = trustbarSection.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-      
+
+      const trustbarHeight = trustbarSection ? trustbarSection.getBoundingClientRect().height : 0;
+      const elementPosition = cta.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset - trustbarHeight;
+
       window.scrollTo({
         top: offsetPosition,
         behavior: 'smooth'
