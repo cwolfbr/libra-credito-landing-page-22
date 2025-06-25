@@ -24,7 +24,7 @@
  */
 
 import React from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Info } from 'lucide-react';
 import ImageOptimizer from '@/components/ImageOptimizer';
@@ -36,7 +36,6 @@ interface DesktopHeaderProps {
 
 const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimulateNow }) => {
   const location = useLocation();
-  const navigate = useNavigate();
 
   const navigationItems = [
     { name: 'Home', path: '/' },
@@ -69,7 +68,7 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
         {/* Faixa principal */}
         <div className="border-b border-gray-100">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-16 lg:h-20">
+          <div className="flex items-center justify-between h-[58px] lg:h-[72px]">
             {/* Logo e slogan */}
             <div className="flex items-center gap-6">
               <Link to="/" className="flex items-center">
@@ -89,14 +88,14 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
             </div>
 
             {/* Navegação */}
-            <nav className="flex items-center space-x-6 xl:space-x-10">
+            <nav className="flex items-center h-full space-x-6 xl:space-x-10">
               {navigationItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`relative text-base lg:text-lg xl:text-xl font-medium transition-all duration-200 hover:text-libra-blue ${
-                    location.pathname === item.path 
-                      ? 'text-libra-blue after:absolute after:bottom-[-24px] after:left-0 after:w-full after:h-0.5 after:bg-libra-blue' 
+                  className={`relative flex items-center h-full leading-none text-[0.9rem] lg:text-[1.0125rem] xl:text-[1.125rem] font-medium transition-all duration-200 hover:text-libra-blue ${
+                    location.pathname === item.path
+                      ? 'text-libra-blue after:absolute after:bottom-[-22px] after:left-0 after:w-full after:h-0.5 after:bg-libra-blue'
                       : 'text-libra-navy hover:text-libra-blue'
                   }`}
                 >
