@@ -19,22 +19,23 @@ const Hero: React.FC = () => {
   };
 
   const scrollToBenefits = () => {
-    const trustbarSection = document.getElementById('trustbar');
-    if (trustbarSection) {
-      // Usar valores CSS dinâmicos para offset
-      const headerOffsetMobile = 96; // var(--header-offset-mobile)
-      const headerOffsetDesktop = 108; // var(--header-offset-desktop)
-      const isMobileScreen = window.innerWidth < 768;
-      const headerOffset = isMobileScreen ? headerOffsetMobile : headerOffsetDesktop;
-      
-      const elementPosition = trustbarSection.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-      
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-    }
+    const card = document.getElementById('card-capital');
+    if (!card) return;
+
+    const headerOffsetMobile = 96; // var(--header-offset-mobile)
+    const headerOffsetDesktop = 108; // var(--header-offset-desktop)
+    const isMobileScreen = window.innerWidth < 768;
+    const headerOffset = isMobileScreen ? headerOffsetMobile : headerOffsetDesktop;
+
+    const cardRect = card.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    const offsetPosition =
+      cardRect.top + window.pageYOffset - headerOffset - (viewportHeight - cardRect.height) / 2;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    });
   };
 
   return (
