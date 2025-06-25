@@ -19,27 +19,22 @@ const Hero: React.FC = () => {
   };
 
   const scrollToBenefits = () => {
-    const card = document.getElementById('card-capital');
-    if (!card) return;
+    const cta = document.getElementById('benefits-cta');
+    const trustbarSection = document.getElementById('trustbar');
 
-    const trustbar = document.getElementById('trustbar');
+    if (!cta) return;
 
     const headerOffsetMobile = 96; // var(--header-offset-mobile)
     const headerOffsetDesktop = 108; // var(--header-offset-desktop)
     const isMobileScreen = window.innerWidth < 768;
     const headerOffset = isMobileScreen ? headerOffsetMobile : headerOffsetDesktop;
 
-    const cardRect = card.getBoundingClientRect();
-    const viewportHeight = window.innerHeight;
+    const trustbarHeight = trustbarSection
+      ? trustbarSection.getBoundingClientRect().height
+      : 0;
 
-    const trustbarHeight = trustbar ? trustbar.getBoundingClientRect().height : 0;
-
-    const offsetPosition =
-      cardRect.top +
-      window.pageYOffset -
-      headerOffset -
-      (viewportHeight - cardRect.height) / 2 +
-      trustbarHeight * 0.3;
+    const elementPosition = cta.getBoundingClientRect().top + window.pageYOffset;
+    const offsetPosition = elementPosition - headerOffset - trustbarHeight * 0.5;
 
     window.scrollTo({
       top: offsetPosition,
