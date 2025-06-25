@@ -23,7 +23,7 @@
  * ```
  */
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Info } from 'lucide-react';
@@ -37,8 +37,6 @@ interface DesktopHeaderProps {
 const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimulateNow }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
 
   const navigationItems = [
     { name: 'Home', path: '/' },
@@ -48,29 +46,11 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
     { name: 'Parceiros', path: '/parceiros' },
   ];
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        // Scrolling down
-        setIsHeaderVisible(false);
-      } else {
-        // Scrolling up
-        setIsHeaderVisible(true);
-      }
-      
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
 
   return (
     <>
-      {/* Faixa superior fixa com aviso */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-libra-navy">
+      {/* Faixa superior informativa */}
+      <div className="w-full bg-libra-navy">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center py-3">
             <div className="flex items-center text-white text-sm font-semibold">
@@ -81,12 +61,9 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
         </div>
       </div>
 
-      {/* Header principal que some/aparece no scroll */}
-      <header 
-        className={`fixed left-0 right-0 z-40 bg-white transition-transform duration-300 ${
-          isHeaderVisible ? 'translate-y-0' : '-translate-y-full'
-        }`} 
-        style={{top: '52px'}} 
+      {/* Header de navegação que permanece no topo após o scroll */}
+      <header
+        className="sticky top-0 left-0 right-0 z-40 bg-white shadow-sm"
         role="banner"
       >
         {/* Faixa principal */}
