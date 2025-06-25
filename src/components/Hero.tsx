@@ -23,7 +23,7 @@ const Hero: React.FC = () => {
     if (trustbarSection) {
       // Usar valores CSS dinâmicos para offset
       const headerOffsetMobile = 96; // var(--header-offset-mobile)
-      const headerOffsetDesktop = 120; // var(--header-offset-desktop)
+      const headerOffsetDesktop = 108; // var(--header-offset-desktop)
       const isMobileScreen = window.innerWidth < 768;
       const headerOffset = isMobileScreen ? headerOffsetMobile : headerOffsetDesktop;
       
