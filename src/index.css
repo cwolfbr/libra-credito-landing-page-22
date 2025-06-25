@@ -245,9 +245,9 @@
 
     /* Header Heights - Calculadas com base nos componentes */
     --header-height-mobile: 80px; /* py-2 (16px) + h-16 (64px) = 80px */
-    --header-height-desktop: 104px; /* py-3 (24px) + h-20 (80px) = 104px */
+    --header-height-desktop: 156px; /* 52px (faixa aviso) + 104px (header) = 156px */
     --header-offset-mobile: 96px; /* altura + 16px de segurança */
-    --header-offset-desktop: 120px; /* altura + 16px de segurança */
+    --header-offset-desktop: 172px; /* altura + 16px de segurança */
   }
 
 }
