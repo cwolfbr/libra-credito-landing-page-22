@@ -52,7 +52,7 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
       {/* Faixa superior informativa */}
       <div className="w-full bg-libra-navy">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-center py-3">
+          <div className="flex items-center justify-center py-2">
             <div className="flex items-center text-white text-sm font-semibold">
               <Info className="w-4 h-4 mr-2 text-white" />
               A Libra não realiza nenhum tipo de cobrança até a liberação do crédito
@@ -69,15 +69,15 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
         {/* Faixa principal */}
         <div className="border-b border-gray-100">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-20 lg:h-24">
+          <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo e slogan */}
             <div className="flex items-center gap-6">
               <Link to="/" className="flex items-center">
-                <div className="h-12 lg:h-16 overflow-hidden flex items-center">
+                <div className="h-10 lg:h-12 overflow-hidden flex items-center">
                   <ImageOptimizer 
                     src="/images/logos/libra-logo.png" 
                     alt="Libra Crédito" 
-                    className="h-16 lg:h-20 w-auto transform scale-110"
+                    className="h-14 lg:h-16 w-auto transform scale-110"
                     aspectRatio={1}
                     priority={true}
                     style={{
