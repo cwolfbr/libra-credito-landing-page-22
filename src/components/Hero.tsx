@@ -26,12 +26,14 @@ const Hero: React.FC = () => {
       const trustbarHeight = trustbar ? trustbar.getBoundingClientRect().height : 0;
       const cardHeight = card.getBoundingClientRect().height;
       const centerOffset = (window.innerHeight - cardHeight) / 2;
+      const extraOffset = 24; // scroll slightly more for better framing
       const target =
         card.getBoundingClientRect().top +
         window.pageYOffset -
         headerOffset -
         trustbarHeight -
-        centerOffset;
+        centerOffset -
+        extraOffset;
       window.scrollTo({ top: target, behavior: 'smooth' });
     }
   };
