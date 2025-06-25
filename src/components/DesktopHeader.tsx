@@ -24,7 +24,7 @@
  */
 
 import React from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Info } from 'lucide-react';
 import ImageOptimizer from '@/components/ImageOptimizer';
@@ -36,7 +36,6 @@ interface DesktopHeaderProps {
 
 const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimulateNow }) => {
   const location = useLocation();
-  const navigate = useNavigate();
 
   const navigationItems = [
     { name: 'Home', path: '/' },
