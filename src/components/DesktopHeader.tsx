@@ -69,7 +69,7 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
         {/* Faixa principal */}
         <div className="border-b border-gray-100">
         <div className="container mx-auto px-4">
-          <div className="flex items-center h-[52px] lg:h-[65px]">
+          <div className="relative flex items-center h-[52px] lg:h-[65px]">
             {/* Logo e slogan */}
             <div className="flex items-center gap-6">
               <Link to="/" className="flex items-center">
@@ -89,7 +89,7 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
             </div>
 
             {/* Navegação */}
-            <nav className="flex-1 flex items-center justify-center space-x-6 xl:space-x-10">
+            <nav className="absolute left-1/2 -translate-x-1/2 flex items-center space-x-6 xl:space-x-10">
               {navigationItems.map((item) => (
                 <Link
                   key={item.path}
