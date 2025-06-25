@@ -22,9 +22,17 @@ const usageOptions = [
   }
 ];
 
-const UsageCard: React.FC<{title: string, description: string, icon: React.ComponentType<any>, isMobile: boolean, onClick: () => void}> = ({ title, description, icon: IconComponent, isMobile, onClick }) => {
+const UsageCard: React.FC<{
+  title: string;
+  description: string;
+  icon: React.ComponentType<any>;
+  isMobile: boolean;
+  onClick: () => void;
+  id?: string;
+}> = ({ title, description, icon: IconComponent, isMobile, onClick, id }) => {
   return (
-    <div 
+    <div
+      id={id}
       className={`bg-white rounded-lg shadow-lg border border-gray-100 hover:shadow-xl hover:border-libra-blue/30 transition-all duration-300 cursor-pointer transform hover:scale-105 ${isMobile ? 'p-3' : 'p-4'}`}
       onClick={onClick}
       role="button"
@@ -70,8 +78,9 @@ const Benefits: React.FC = () => {
         
         <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-3 gap-5'} animate-slide-up max-w-6xl mx-auto mb-6`}>
           {usageOptions.map((option, index) => (
-            <UsageCard 
-              key={index} 
+            <UsageCard
+              key={index}
+              id={index === 1 ? 'capital-giro-card' : undefined}
               title={option.title}
               description={option.description}
               icon={option.icon}

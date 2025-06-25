@@ -19,23 +19,20 @@ const Hero: React.FC = () => {
   };
 
   const scrollToBenefits = () => {
-    const cta = document.getElementById('benefits-cta');
-    const trustbarSection = document.getElementById('trustbar');
-    if (cta) {
-      // Usar valores CSS dinâmicos para offset
-      const headerOffsetMobile = 96; // var(--header-offset-mobile)
-      const headerOffsetDesktop = 108; // var(--header-offset-desktop)
-      const isMobileScreen = window.innerWidth < 768;
-      const headerOffset = isMobileScreen ? headerOffsetMobile : headerOffsetDesktop;
-
-      const trustbarHeight = trustbarSection ? trustbarSection.getBoundingClientRect().height : 0;
-      const elementPosition = cta.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset - trustbarHeight;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
+    const card = document.getElementById('capital-giro-card');
+    const trustbar = document.getElementById('trustbar');
+    if (card) {
+      const headerOffset = window.innerWidth < 768 ? 96 : 108;
+      const trustbarHeight = trustbar ? trustbar.getBoundingClientRect().height : 0;
+      const cardHeight = card.getBoundingClientRect().height;
+      const centerOffset = (window.innerHeight - cardHeight) / 2;
+      const target =
+        card.getBoundingClientRect().top +
+        window.pageYOffset -
+        headerOffset -
+        trustbarHeight -
+        centerOffset;
+      window.scrollTo({ top: target, behavior: 'smooth' });
     }
   };
 
