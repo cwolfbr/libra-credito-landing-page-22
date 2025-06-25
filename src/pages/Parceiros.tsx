@@ -526,7 +526,7 @@ const Parceiros = () => {
             </div>
 
             {/* Área de Acesso para Parceiros */}
-            <div className="lg:flex lg:items-start">
+            <div className="lg:flex lg:items-center h-full">
               <div className="bg-libra-navy rounded-xl p-4 md:p-6 text-white text-center w-full">
                 <div className="flex justify-center mb-4">
                   <LockKeyhole className="w-12 h-12 text-libra-blue" />
