@@ -36,9 +36,6 @@
     --safe-area-left: env(safe-area-inset-left);
     --safe-area-right: env(safe-area-inset-right);
   
-  /* Mobile Header Heights - Corrigidos */
-  --mobile-header-height: 64px;
-  --mobile-header-padding: 20px;
     
     /* Performance Optimizations */
     --animation-duration: 200ms;
@@ -60,7 +57,7 @@
     
     /* Garantir espaçamento correto para conteúdo */
     main[data-has-header="true"] {
-      padding-top: calc(var(--mobile-header-height) + var(--mobile-header-padding)) !important;
+      padding-top: var(--header-height-mobile) !important;
     }
     /* Desabilitar animações complexas em mobile */
     *, *::before, *::after {
