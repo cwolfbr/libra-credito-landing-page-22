@@ -6,25 +6,29 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const usageOptions = [
   {
+    id: "card-dividas",
     title: "Consolidação de Dívidas",
     icon: TrendingUp,
     description: "Quite suas dívidas com juros altos e tenha uma única parcela menor"
   },
   {
+    id: "card-capital",
     title: "Capital de Giro",
     icon: Building,
     description: "Invista no seu negócio e faça ele crescer com capital de giro"
   },
   {
+    id: "card-investimentos",
     title: "Investimentos/Reformas",
     icon: Home,
     description: "Reforme seu imóvel ou invista em novos projetos pessoais"
   }
 ];
 
-const UsageCard: React.FC<{title: string, description: string, icon: React.ComponentType<any>, isMobile: boolean, onClick: () => void}> = ({ title, description, icon: IconComponent, isMobile, onClick }) => {
+const UsageCard: React.FC<{title: string, description: string, icon: React.ComponentType<any>, isMobile: boolean, onClick: () => void, id?: string}> = ({ title, description, icon: IconComponent, isMobile, onClick, id }) => {
   return (
-    <div 
+    <div
+      id={id}
       className={`bg-white rounded-lg shadow-lg border border-gray-100 hover:shadow-xl hover:border-libra-blue/30 transition-all duration-300 cursor-pointer transform hover:scale-105 ${isMobile ? 'p-3' : 'p-4'}`}
       onClick={onClick}
       role="button"
@@ -70,8 +74,9 @@ const Benefits: React.FC = () => {
         
         <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-3 gap-5'} animate-slide-up max-w-6xl mx-auto mb-6`}>
           {usageOptions.map((option, index) => (
-            <UsageCard 
-              key={index} 
+            <UsageCard
+              key={index}
+              id={option.id}
               title={option.title}
               description={option.description}
               icon={option.icon}
@@ -81,10 +86,10 @@ const Benefits: React.FC = () => {
           ))}
         </div>
         
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
+        <div id="benefits-cta" className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
           <Link to="/vantagens">
-            <Button 
-              size={isMobile ? "default" : "lg"} 
+            <Button
+              size={isMobile ? "default" : "lg"}
               className="bg-libra-navy hover:bg-libra-navy/90 text-white px-8 py-3"
             >
               Conheça Mais Vantagens
