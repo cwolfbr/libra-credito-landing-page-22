@@ -81,7 +81,7 @@ const Benefits: React.FC = () => {
           ))}
         </div>
         
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
           <Link to="/vantagens">
             <Button 
               size={isMobile ? "default" : "lg"} 
