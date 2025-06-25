@@ -245,9 +245,10 @@
 
     /* Header Heights - Calculadas com base nos componentes */
     --header-height-mobile: 80px; /* py-2 (16px) + h-16 (64px) = 80px */
-    --header-height-desktop: 156px; /* 52px (faixa aviso) + 104px (header) = 156px */
+    /* Altura aproximada do header em desktop */
+    --header-height-desktop: 96px;
     --header-offset-mobile: 96px; /* altura + 16px de segurança */
-    --header-offset-desktop: 172px; /* altura + 16px de segurança */
+    --header-offset-desktop: 112px; /* altura + 16px de segurança */
   }
 
 }
