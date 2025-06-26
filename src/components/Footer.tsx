@@ -20,7 +20,7 @@ const Footer: React.FC = () => {
       <footer className="bg-[#003399] text-white">
         <div className="container mx-auto py-6 lg:py-8 px-4">
         {/* Grid Principal - Layout 3 colunas para mobile e desktop */}
-        <div className="grid grid-cols-3 gap-2 md:gap-6 lg:gap-8 mb-6 lg:mb-8 items-center md:items-start">
+        <div className="grid grid-cols-3 gap-2 md:gap-6 lg:gap-8 mb-6 lg:mb-8 items-start">
           {/* Navegação - Esquerda */}
           <div className="text-left">
             <h3 className="text-sm md:text-xl font-bold mb-2 md:mb-4 text-white">Navegação</h3>
@@ -34,8 +34,8 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Logo - Centro (centralizado horizontal e verticalmente no mobile) */}
-          <div className="text-center flex items-center justify-center h-full">
+          {/* Logo - Centro (centralizado horizontal e verticalmente) */}
+          <div className="text-center flex items-center justify-center">
             <ImageOptimizer 
               src="/images/logos/libra-logo.png" 
               alt="Libra Crédito" 
@@ -48,23 +48,25 @@ const Footer: React.FC = () => {
           {/* Redes Sociais - Direita */}
           <div className="text-right">
             <h3 className="text-sm md:text-xl font-bold mb-2 md:mb-4 text-white">Redes Sociais</h3>
-            {/* Layout mobile: 2 colunas alinhadas à direita */}
-            <div className="grid grid-cols-2 gap-x-1 gap-y-0.5 justify-items-end md:hidden mb-2 w-fit ml-auto">
-              <a href="https://www.facebook.com/LibraCreditoOficial/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="Facebook">
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a href="https://www.instagram.com/libracredito/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="Instagram">
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a href="https://www.linkedin.com/company/libracredito/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="LinkedIn">
-                <Linkedin className="w-5 h-5" />
-              </a>
-              <a href="https://www.youtube.com/channel/UCXpuj7LlTLT_kdbwwJHS0qA" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="YouTube">
-                <Youtube className="w-5 h-5" />
-              </a>
-              <a href="https://www.reclameaqui.com.br/empresa/libra-credito-solucoes-financeiras/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="Reclame Aqui">
-                <ExternalLink className="w-5 h-5" />
-              </a>
+            {/* Layout mobile: 2 colunas compactas à direita */}
+            <div className="flex flex-col items-end md:hidden mb-2">
+              <div className="grid grid-cols-2 gap-1 justify-items-end w-fit">
+                <a href="https://www.facebook.com/LibraCreditoOficial/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="Facebook">
+                  <Facebook className="w-4 h-4" />
+                </a>
+                <a href="https://www.instagram.com/libracredito/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="Instagram">
+                  <Instagram className="w-4 h-4" />
+                </a>
+                <a href="https://www.linkedin.com/company/libracredito/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="LinkedIn">
+                  <Linkedin className="w-4 h-4" />
+                </a>
+                <a href="https://www.youtube.com/channel/UCXpuj7LlTLT_kdbwwJHS0qA" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="YouTube">
+                  <Youtube className="w-4 h-4" />
+                </a>
+                <a href="https://www.reclameaqui.com.br/empresa/libra-credito-solucoes-financeiras/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="Reclame Aqui">
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+              </div>
             </div>
             
             {/* Layout desktop: horizontal */}
