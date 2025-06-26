@@ -49,7 +49,7 @@ const Footer: React.FC = () => {
           <div className="text-right">
             <h3 className="text-sm md:text-xl font-bold mb-2 md:mb-4 text-white">Redes Sociais</h3>
             {/* Layout mobile: coluna vertical alinhada à direita */}
-            <div className="flex flex-col items-end gap-1 md:hidden mb-2">
+            <div className="flex flex-col items-end gap-0.5 md:hidden mb-2">
               <a href="https://www.facebook.com/LibraCreditoOficial/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="Facebook">
                 <Facebook className="w-5 h-5" />
               </a>
