@@ -43,10 +43,12 @@ const TestimonialCard = memo(({ name, age, text, isMobile, isActive, currentInde
             <p className="text-sm text-gray-500">{age}</p>
           </div>
         </div>
-        <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 italic flex-grow mb-3`}>{text}</p>
+        <div className="flex-grow flex items-center">
+          <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 italic`}>{text}</p>
+        </div>
         
         {/* Faixa separadora fixa acima das bolas */}
-        <div className="border-t border-gray-100 pt-2">
+        <div className="border-t border-gray-100 pt-2 mt-4">
           <div className="flex justify-center gap-1">
             {Array.from({ length: totalTestimonials }).map((_, index) => (
               <button
@@ -114,7 +116,7 @@ const Testimonials: React.FC = () => {
               </h3>
             </div>
             
-            <div className="relative h-[200px] md:h-[180px]">
+            <div className="relative h-[220px] md:h-[200px]">
               {testimonials.map((testimonial, index) => (
                 <TestimonialCard 
                   key={index}
