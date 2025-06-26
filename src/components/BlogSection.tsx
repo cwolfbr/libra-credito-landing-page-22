@@ -116,12 +116,16 @@ const BlogSection: React.FC = () => {
               >
                 <Card className="hover:shadow-lg transition-all duration-300 group-hover:-translate-y-1 overflow-hidden h-full">
                   {/* Imagem do post */}
-                  <div className="aspect-video overflow-hidden">
+                  <div className="aspect-video overflow-hidden rounded-t-lg">
                     <img
                       src={post.imageUrl}
                       alt={post.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
                       loading="lazy"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = '/images/blog/default-blog.jpg';
+                      }}
                     />
                   </div>
                   
