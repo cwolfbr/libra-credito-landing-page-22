@@ -48,9 +48,9 @@ const Footer: React.FC = () => {
           {/* Redes Sociais - Direita */}
           <div className="text-right">
             <h3 className="text-sm md:text-xl font-bold mb-2 md:mb-4 text-white">Redes Sociais</h3>
-            {/* Layout mobile: 3 colunas compactas organizadas da direita para esquerda */}
+            {/* Layout mobile: 2 colunas em 3 linhas organizadas da direita para esquerda */}
             <div className="flex flex-col items-end md:hidden mb-2">
-              <div className="grid grid-cols-3 gap-1 w-fit" style={{ direction: 'rtl' }}>
+              <div className="grid grid-cols-2 gap-1 w-fit" style={{ direction: 'rtl' }}>
                 <a href="https://www.facebook.com/LibraCreditoOficial/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="Facebook">
                   <Facebook className="w-4 h-4" />
                 </a>
