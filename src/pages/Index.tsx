@@ -73,6 +73,8 @@ const Index: React.FC = () => {
         <FAQ />
       </Suspense>
       
+      <WaveSeparator variant="hero" height="md" />
+      
       {/* Botão Conheça a Libra */}
       <section 
         className="py-8"
@@ -92,6 +94,8 @@ const Index: React.FC = () => {
           </div>
         </div>
       </section>
+      
+      <WaveSeparator variant="hero" height="md" inverted />
       
       <Suspense fallback={<SectionLoader />}>
         <BlogSection />
