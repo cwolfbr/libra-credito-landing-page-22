@@ -51,6 +51,9 @@ const Hero: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center">
           {/* Lado Esquerdo */}
           <div className="text-[#003399] space-y-3 md:space-y-4 lg:space-y-3 xl:space-y-5">
+            {/* Espaçamento extra para mobile */}
+            {isMobile && <div className="h-8"></div>}
+            
             <div>
               <h1 id="hero-heading" className="text-xl md:text-2xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold mb-3 md:mb-3 lg:mb-3 leading-tight">
                 Transforme seu Patrimônio<br />
