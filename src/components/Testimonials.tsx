@@ -114,7 +114,7 @@ const Testimonials: React.FC = () => {
               </h3>
             </div>
             
-            <div className="relative h-[300px] md:h-[260px]">
+            <div className="relative h-[200px] md:h-[180px]">
               {testimonials.map((testimonial, index) => (
                 <TestimonialCard 
                   key={index}
