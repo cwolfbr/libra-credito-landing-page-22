@@ -33,8 +33,8 @@ const Hero: React.FC = () => {
         trustbarHeight -
         centerOffset;
       
-      // Adicionar 20% mais de rolagem
-      const additionalScroll = window.innerHeight * 0.2;
+      // Adicionar 10% mais de rolagem
+      const additionalScroll = window.innerHeight * 0.1;
       const target = baseTarget + additionalScroll;
       
       window.scrollTo({ top: target, behavior: 'smooth' });
