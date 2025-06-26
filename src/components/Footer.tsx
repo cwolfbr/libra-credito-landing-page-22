@@ -19,10 +19,10 @@ const Footer: React.FC = () => {
       
       <footer className="bg-[#003399] text-white">
         <div className="container mx-auto py-6 lg:py-8 px-4">
-        {/* Grid Principal - Layout mais compacto */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-6 lg:mb-8 items-center">
-          {/* Navegação */}
-          <div className="text-center md:text-left">
+        {/* Grid Principal - Layout responsivo */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-6 lg:gap-8 mb-6 lg:mb-8 items-start">
+          {/* Navegação - Esquerda no mobile, esquerda no desktop */}
+          <div className="text-left">
             <h3 className="text-xl font-bold mb-4 text-white">Navegação</h3>
             <ul className="space-y-2">
               <li><Link to="/" className="text-white/80 hover:text-white transition-colors text-base">Início</Link></li>
@@ -34,21 +34,55 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Logo - Centralizado */}
-          <div className="flex justify-center items-center">
-            <ImageOptimizer 
-              src="/images/logos/libra-logo.png" 
-              alt="Libra Crédito" 
-              className="h-20 lg:h-24 xl:h-32 w-auto"
-              aspectRatio={1}
-              priority={false}
-            />
+          {/* Logo + Redes Sociais - Direita no mobile, separados no desktop */}
+          <div className="text-right md:text-center md:col-start-2">
+            {/* Logo - Centralizado no desktop */}
+            <div className="flex justify-end md:justify-center items-center mb-4 md:mb-0">
+              <ImageOptimizer 
+                src="/images/logos/libra-logo.png" 
+                alt="Libra Crédito" 
+                className="h-16 md:h-20 lg:h-24 xl:h-32 w-auto"
+                aspectRatio={1}
+                priority={false}
+              />
+            </div>
+            
+            {/* Redes Sociais - Visível no mobile, oculta no desktop (será mostrada na próxima coluna) */}
+            <div className="md:hidden">
+              <h3 className="text-lg font-bold mb-3 text-white">Redes Sociais</h3>
+              <div className="flex justify-end items-center gap-3 mb-3">
+                <a href="https://www.facebook.com/LibraCreditoOficial/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="Facebook">
+                  <Facebook className="w-6 h-6" />
+                </a>
+                <a href="https://www.instagram.com/libracredito/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="Instagram">
+                  <Instagram className="w-6 h-6" />
+                </a>
+                <a href="https://www.linkedin.com/company/libracredito/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="LinkedIn">
+                  <Linkedin className="w-6 h-6" />
+                </a>
+                <a href="https://www.youtube.com/channel/UCXpuj7LlTLT_kdbwwJHS0qA" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="YouTube">
+                  <Youtube className="w-6 h-6" />
+                </a>
+                <a href="https://www.reclameaqui.com.br/empresa/libra-credito-solucoes-financeiras/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="Reclame Aqui">
+                  <ExternalLink className="w-6 h-6" />
+                </a>
+              </div>
+              
+              <button 
+                onClick={scrollToTop} 
+                className="flex items-center gap-2 ml-auto text-white/80 hover:text-white transition-colors text-sm"
+                aria-label="Voltar ao topo"
+              >
+                <ChevronUp className="w-4 h-4" />
+                Voltar ao topo
+              </button>
+            </div>
           </div>
 
-          {/* Redes Sociais */}
-          <div className="text-center md:text-right">
+          {/* Redes Sociais - Apenas visível no desktop */}
+          <div className="hidden md:block text-right">
             <h3 className="text-xl font-bold mb-4 text-white">Redes Sociais</h3>
-            <div className="flex justify-center md:justify-end items-center gap-4 mb-4">
+            <div className="flex justify-end items-center gap-4 mb-4">
               <a href="https://www.facebook.com/LibraCreditoOficial/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="Facebook">
                 <Facebook className="w-7 h-7" />
               </a>
@@ -68,7 +102,7 @@ const Footer: React.FC = () => {
             
             <button 
               onClick={scrollToTop} 
-              className="flex items-center gap-2 mx-auto md:ml-auto md:mr-0 text-white/80 hover:text-white transition-colors text-sm"
+              className="flex items-center gap-2 ml-auto text-white/80 hover:text-white transition-colors text-sm"
               aria-label="Voltar ao topo"
             >
               <ChevronUp className="w-4 h-4" />
