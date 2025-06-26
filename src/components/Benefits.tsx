@@ -46,13 +46,27 @@ const UsageCard: React.FC<{
       }}
       aria-label={`Simular ${title}`}
     >
-      <div className="text-center">
-        <div className="bg-libra-blue rounded-full p-2 w-fit mx-auto mb-2 group-hover:bg-libra-navy transition-colors">
-          <IconComponent className={`${isMobile ? 'w-5 h-5' : 'w-6 h-6'} text-white`} />
+      {isMobile ? (
+        /* Layout horizontal para mobile - ícone e título lado a lado */
+        <div>
+          <div className="flex items-center gap-3 mb-2">
+            <div className="bg-libra-blue rounded-full p-2 group-hover:bg-libra-navy transition-colors">
+              <IconComponent className="w-5 h-5 text-white" />
+            </div>
+            <h3 className="text-base font-bold text-libra-navy">{title}</h3>
+          </div>
+          <p className="text-xs text-gray-600">{description}</p>
         </div>
-        <h3 className={`${isMobile ? 'text-base font-bold' : 'text-lg font-bold'} text-libra-navy mb-2`}>{title}</h3>
-        <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-gray-600`}>{description}</p>
-      </div>
+      ) : (
+        /* Layout vertical centralizado para desktop */
+        <div className="text-center">
+          <div className="bg-libra-blue rounded-full p-2 w-fit mx-auto mb-2 group-hover:bg-libra-navy transition-colors">
+            <IconComponent className="w-6 h-6 text-white" />
+          </div>
+          <h3 className="text-lg font-bold text-libra-navy mb-2">{title}</h3>
+          <p className="text-sm text-gray-600">{description}</p>
+        </div>
+      )}
     </div>
   );
 };
