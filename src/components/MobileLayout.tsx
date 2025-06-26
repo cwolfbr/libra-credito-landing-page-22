@@ -36,8 +36,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
       <main
         id="main-content"
         data-has-header={showHeader ? "true" : "false"}
-        className="flex-1"
-        style={showHeader && isMobile ? { marginTop: '64px' } : undefined}
+        className={`flex-1 ${showHeader && isMobile ? 'pt-16' : ''}`}
         role="main"
         aria-label="Conteúdo principal"
       >
