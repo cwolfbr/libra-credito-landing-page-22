@@ -34,7 +34,7 @@ const TrustBarMinimal: React.FC = () => {
 
     const targets = {
       cities: 3000,
-      satisfaction: 98,
+      satisfaction: 24,
       years: 5
     };
 
@@ -73,8 +73,8 @@ const TrustBarMinimal: React.FC = () => {
     {
       icon: Award,
       value: counters.satisfaction,
-      suffix: '%',
-      label: 'Satisfação'
+      suffix: 'h',
+      label: 'para Pré-Proposta'
     },
     {
       icon: Shield,
