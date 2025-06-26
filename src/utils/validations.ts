@@ -1,5 +1,5 @@
 
-import { norm } from './formatters';
+import { norm, normThousands } from './formatters';
 
 export interface FormValidation {
   emprestimoValue: number;
@@ -136,8 +136,8 @@ export const validateForm = (
   email?: string,
   telefone?: string
 ): FormValidation => {
-  const emprestimoValue = norm(emprestimo);
-  const garantiaValue = norm(garantia);
+  const emprestimoValue = normThousands(emprestimo);
+  const garantiaValue = normThousands(garantia);
   
   // Empréstimo deve estar entre 100k e 5M
   const emprestimoForaRange = emprestimoValue < 100000 || emprestimoValue > 5000000;

@@ -60,13 +60,13 @@ import SmartApiMessage from './messages/SmartApiMessage';
 import SimulationResultDisplay from './SimulationResultDisplay';
 import { analyzeApiMessage, ApiMessageAnalysis } from '@/utils/apiMessageAnalyzer';
 import { analyzeLocalMessage } from '@/utils/localMessageAnalyzer';
-import { formatBRL, norm } from '@/utils/formatters';
+import { formatBRL, formatBRLThousands, norm, normThousands } from '@/utils/formatters';
 
 const SimulationForm: React.FC = () => {
   const { sessionId, trackSimulation } = useUserJourney();
   const isMobile = useIsMobile();
-  const [emprestimo, setEmprestimo] = useState('000');
-  const [garantia, setGarantia] = useState('000');
+  const [emprestimo, setEmprestimo] = useState('');
+  const [garantia, setGarantia] = useState('');
   const [parcelas, setParcelas] = useState<number>(180);
   const [amortizacao, setAmortizacao] = useState('');
   const [cidade, setCidade] = useState('');
@@ -80,11 +80,11 @@ const SimulationForm: React.FC = () => {
   const validation = validateForm(emprestimo, garantia, parcelas, amortizacao, cidade);
 
   const handleEmprestimoChange = (value: string) => {
-    setEmprestimo(formatBRL(value));
+    setEmprestimo(formatBRLThousands(value));
   };
 
   const handleGarantiaChange = (value: string) => {
-    setGarantia(formatBRL(value));
+    setGarantia(formatBRLThousands(value));
   };
 
   // Função para rolar para o resultado no mobile
@@ -186,8 +186,8 @@ const SimulationForm: React.FC = () => {
   };
 
   const handleClear = () => {
-    setEmprestimo('000');
-    setGarantia('000');
+    setEmprestimo('');
+    setGarantia('');
     setParcelas(180);
     setAmortizacao('');
     setCidade('');
