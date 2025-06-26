@@ -19,7 +19,7 @@ const InstallmentsField: React.FC<InstallmentsFieldProps> = ({ value, onChange }
             Em quantas parcelas?
           </label>
           <span className="bg-libra-blue text-white px-2 py-0.5 rounded text-xs font-bold">
-            {value}
+            {value} meses ({Math.round(value / 12)} anos)
           </span>
         </div>
         <div className="relative">
@@ -35,10 +35,10 @@ const InstallmentsField: React.FC<InstallmentsFieldProps> = ({ value, onChange }
             } as React.CSSProperties}
           />
           <div className="flex justify-between text-xs text-gray-500 mt-1">
-            <span>36</span>
-            <span>60</span>
-            <span>120</span>
-            <span>180</span>
+            <span>36<br/>3 anos</span>
+            <span>60<br/>5 anos</span>
+            <span>120<br/>10 anos</span>
+            <span>180<br/>15 anos</span>
           </div>
         </div>
       </div>

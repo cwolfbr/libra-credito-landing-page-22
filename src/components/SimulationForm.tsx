@@ -65,9 +65,9 @@ import { formatBRL, norm } from '@/utils/formatters';
 const SimulationForm: React.FC = () => {
   const { sessionId, trackSimulation } = useUserJourney();
   const isMobile = useIsMobile();
-  const [emprestimo, setEmprestimo] = useState('');
-  const [garantia, setGarantia] = useState('');
-  const [parcelas, setParcelas] = useState<number>(36);
+  const [emprestimo, setEmprestimo] = useState('000');
+  const [garantia, setGarantia] = useState('000');
+  const [parcelas, setParcelas] = useState<number>(180);
   const [amortizacao, setAmortizacao] = useState('');
   const [cidade, setCidade] = useState('');
   const [loading, setLoading] = useState(false);
@@ -186,9 +186,9 @@ const SimulationForm: React.FC = () => {
   };
 
   const handleClear = () => {
-    setEmprestimo('');
-    setGarantia('');
-    setParcelas(36);
+    setEmprestimo('000');
+    setGarantia('000');
+    setParcelas(180);
     setAmortizacao('');
     setCidade('');
     setResultado(null);

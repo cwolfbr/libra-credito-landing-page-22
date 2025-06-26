@@ -26,7 +26,7 @@ const GuaranteeAmountField: React.FC<GuaranteeAmountFieldProps> = ({
         <Input
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          placeholder="R$ 300.000,00"
+          placeholder="Digite valor em R$ (ex: 300.000)"
           className="text-sm"
           inputMode="numeric"
         />
