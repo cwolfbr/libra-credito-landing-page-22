@@ -18,15 +18,22 @@ const LoanAmountField: React.FC<LoanAmountFieldProps> = ({ value, onChange }) =>
         <label className="block text-xs font-medium text-libra-navy mb-1">
           Digite o valor desejado do Empréstimo
         </label>
-        <Input
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder="Digite em milhares (ex: 300 = R$ 300.000)"
-          className="text-sm"
-          inputMode="numeric"
-        />
+        <div className="relative">
+          <Input
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder="300"
+            className="text-sm pr-20"
+            inputMode="numeric"
+          />
+          {value && (
+            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">
+              = R$ {Number(value).toLocaleString('pt-BR')}.000
+            </div>
+          )}
+        </div>
         <p className="text-xs text-gray-500 mt-1">
-          Entre R$ 100.000 e R$ 5.000.000
+          Digite em milhares • Entre 100 e 5.000
         </p>
       </div>
     </div>

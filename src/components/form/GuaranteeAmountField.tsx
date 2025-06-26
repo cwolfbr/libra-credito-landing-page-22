@@ -23,13 +23,20 @@ const GuaranteeAmountField: React.FC<GuaranteeAmountFieldProps> = ({
         <label className="block text-xs font-medium text-libra-navy mb-1">
           Digite o valor do Imóvel em Garantia
         </label>
-        <Input
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder="Digite em milhares (ex: 600 = R$ 600.000)"
-          className="text-sm"
-          inputMode="numeric"
-        />
+        <div className="relative">
+          <Input
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder="600"
+            className="text-sm pr-20"
+            inputMode="numeric"
+          />
+          {value && (
+            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">
+              = R$ {Number(value).toLocaleString('pt-BR')}.000
+            </div>
+          )}
+        </div>
         {showError && (
           <p className="text-red-500 text-xs mt-1">
             O valor da garantia deve ser pelo menos 2x o valor do empréstimo
