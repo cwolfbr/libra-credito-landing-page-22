@@ -36,7 +36,7 @@ const WaveSeparator: React.FC<WaveSeparatorProps> = ({
       fill: '#003399',
     },
     footer: {
-      background: 'bg-gradient-to-b from-[#00ccff] to-[#003399]',
+      background: 'bg-[#003399]',
       fill: '#ffffff',
     },
     page: {
