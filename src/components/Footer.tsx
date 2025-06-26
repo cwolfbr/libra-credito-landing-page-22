@@ -39,7 +39,7 @@ const Footer: React.FC = () => {
             <ImageOptimizer 
               src="/images/logos/libra-logo.png" 
               alt="Libra Crédito" 
-              className="h-20 md:h-20 lg:h-24 xl:h-32 w-auto max-w-full"
+              className="h-24 md:h-20 lg:h-24 xl:h-32 w-auto max-w-full"
               aspectRatio={1}
               priority={false}
             />
@@ -47,9 +47,9 @@ const Footer: React.FC = () => {
 
           {/* Redes Sociais - Direita */}
           <div className="text-right">
-            <h3 className="text-sm md:text-xl font-bold mb-1 md:mb-4 text-white">Redes Sociais</h3>
-            {/* Layout mobile: grid 2x3 para as 5 redes sociais com espaçamento reduzido */}
-            <div className="grid grid-cols-2 gap-1 md:hidden justify-items-end mb-2">
+            <h3 className="text-sm md:text-xl font-bold mb-2 md:mb-4 text-white">Redes Sociais</h3>
+            {/* Layout mobile: coluna vertical alinhada à direita */}
+            <div className="flex flex-col items-end gap-1 md:hidden mb-2">
               <a href="https://www.facebook.com/LibraCreditoOficial/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="Facebook">
                 <Facebook className="w-5 h-5" />
               </a>
@@ -62,7 +62,7 @@ const Footer: React.FC = () => {
               <a href="https://www.youtube.com/channel/UCXpuj7LlTLT_kdbwwJHS0qA" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="YouTube">
                 <Youtube className="w-5 h-5" />
               </a>
-              <a href="https://www.reclameaqui.com.br/empresa/libra-credito-solucoes-financeiras/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors col-span-2 justify-self-center" aria-label="Reclame Aqui">
+              <a href="https://www.reclameaqui.com.br/empresa/libra-credito-solucoes-financeiras/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="Reclame Aqui">
                 <ExternalLink className="w-5 h-5" />
               </a>
             </div>

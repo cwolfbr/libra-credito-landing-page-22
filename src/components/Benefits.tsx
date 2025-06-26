@@ -67,8 +67,8 @@ const Benefits: React.FC = () => {
   
   return (
     <>
-      {/* Ondas orientadas para baixo antes da seção - apenas mobile */}
-      {isMobile && <WaveSeparator variant="hero" height="md" />}
+      {/* Ondas orientadas para cima antes da seção - apenas mobile */}
+      {isMobile && <WaveSeparator variant="hero" height="md" inverted />}
       
       <section id="benefits" className={`${isMobile ? 'pt-4 pb-6' : 'pt-6 md:pt-8 lg:pt-8 xl:pt-10 pb-6 md:pb-8 lg:pb-8 xl:pb-10'} bg-white scroll-mt-[88px]`}>
         <div className="container mx-auto px-4">
