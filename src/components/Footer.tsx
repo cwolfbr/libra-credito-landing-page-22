@@ -48,9 +48,9 @@ const Footer: React.FC = () => {
           {/* Redes Sociais - Direita */}
           <div className="text-right">
             <h3 className="text-sm md:text-xl font-bold mb-2 md:mb-4 text-white">Redes Sociais</h3>
-            {/* Layout mobile: 2 colunas compactas organizadas da direita para esquerda */}
+            {/* Layout mobile: 3 colunas compactas organizadas da direita para esquerda */}
             <div className="flex flex-col items-end md:hidden mb-2">
-              <div className="grid grid-cols-2 gap-1 w-fit" style={{ direction: 'rtl' }}>
+              <div className="grid grid-cols-3 gap-1 w-fit" style={{ direction: 'rtl' }}>
                 <a href="https://www.facebook.com/LibraCreditoOficial/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="Facebook">
                   <Facebook className="w-4 h-4" />
                 </a>
@@ -66,6 +66,13 @@ const Footer: React.FC = () => {
                 <a href="https://www.reclameaqui.com.br/empresa/libra-credito-solucoes-financeiras/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="Reclame Aqui">
                   <ExternalLink className="w-4 h-4" />
                 </a>
+                <button 
+                  onClick={scrollToTop} 
+                  className="text-white hover:text-white/70 transition-colors" 
+                  aria-label="Voltar ao topo"
+                >
+                  <ChevronUp className="w-4 h-4" />
+                </button>
               </div>
             </div>
             
@@ -88,14 +95,14 @@ const Footer: React.FC = () => {
               </a>
             </div>
             
+            {/* Botão Voltar ao Topo - apenas desktop */}
             <button 
               onClick={scrollToTop} 
-              className="flex items-center gap-1 md:gap-2 ml-auto text-white/80 hover:text-white transition-colors text-xs md:text-sm"
+              className="hidden md:flex items-center gap-1 md:gap-2 ml-auto text-white/80 hover:text-white transition-colors text-xs md:text-sm"
               aria-label="Voltar ao topo"
             >
               <ChevronUp className="w-3 h-3 md:w-4 md:h-4" />
               <span className="hidden md:inline">Voltar ao topo</span>
-              <span className="md:hidden">Topo</span>
             </button>
           </div>
         </div>
