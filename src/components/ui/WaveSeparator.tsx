@@ -54,6 +54,7 @@ const WaveSeparator: React.FC<WaveSeparatorProps> = ({
         'relative w-full flex-shrink-0 overflow-hidden', // Adiciona overflow-hidden
         config.background,
         heightClass,
+        inverted && '-mt-1', // Margem negativa para ondas invertidas grudarem no header
         className
       )}
       aria-hidden="true"
