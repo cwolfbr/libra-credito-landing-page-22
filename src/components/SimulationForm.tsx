@@ -313,7 +313,7 @@ const SimulationForm: React.FC = () => {
   };
 
   return (
-    <div className={`container mx-auto px-3 py-2 min-h-[calc(100vh-4rem)] ${
+    <div className={`container mx-auto px-3 ${isMobile ? 'py-2 pb-4' : 'py-2 min-h-[calc(100vh-4rem)]'} ${
       resultado ? 'max-w-6xl' : 'max-w-xl'
     }`}>
       <div className={`${resultado ? 'grid grid-cols-1 lg:grid-cols-2 gap-6' : ''}`}>

@@ -24,11 +24,9 @@ const Simulacao = () => {
       <WaveSeparator variant="hero" height="md" inverted />
       <div className="bg-white">
         <SimulationForm />
-        {/* Espaçamento reduzido antes das ondas no mobile */}
-        {isMobile && <div className="h-4"></div>}
       </div>
-      {/* Ondas mais próximas do formulário no mobile */}
-      {isMobile && <WaveSeparator variant="hero" height="md" />}
+      {/* Ondas após o formulário - mais próximas no mobile */}
+      <WaveSeparator variant="hero" height="md" />
     </MobileLayout>
   );
 };
