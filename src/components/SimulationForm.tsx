@@ -47,6 +47,7 @@ import { Input } from '@/components/ui/input';
 import { validateForm } from '@/utils/validations';
 import { LocalSimulationService, SimulationResult } from '@/services/localSimulationService';
 import { useUserJourney } from '@/hooks/useUserJourney';
+import { useIsMobile } from '@/hooks/use-mobile';
 import CityAutocomplete from './form/CityAutocomplete';
 import LoanAmountField from './form/LoanAmountField';
 import GuaranteeAmountField from './form/GuaranteeAmountField';
@@ -63,6 +64,7 @@ import { formatBRL, norm } from '@/utils/formatters';
 
 const SimulationForm: React.FC = () => {
   const { sessionId, trackSimulation } = useUserJourney();
+  const isMobile = useIsMobile();
   const [emprestimo, setEmprestimo] = useState('');
   const [garantia, setGarantia] = useState('');
   const [parcelas, setParcelas] = useState<number>(36);
@@ -83,6 +85,25 @@ const SimulationForm: React.FC = () => {
 
   const handleGarantiaChange = (value: string) => {
     setGarantia(formatBRL(value));
+  };
+
+  // Função para rolar para o resultado no mobile
+  const scrollToResult = () => {
+    if (isMobile) {
+      setTimeout(() => {
+        const resultElement = document.querySelector('[data-result-section="true"]');
+        if (resultElement) {
+          const offset = 20; // Pequeno offset para melhor visualização
+          const elementPosition = resultElement.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - offset;
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
+      }, 300); // Delay para garantir que o resultado seja renderizado
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -127,6 +148,9 @@ const SimulationForm: React.FC = () => {
       });
 
       setResultado(result);
+      
+      // Rolar para o resultado no mobile
+      scrollToResult();
 
     } catch (error) {
       console.error('Erro na simulação:', error);
@@ -237,6 +261,9 @@ const SimulationForm: React.FC = () => {
         });
 
         setResultado(result);
+        
+        // Rolar para o resultado no mobile
+        scrollToResult();
 
       } catch (error) {
         console.error('Erro na simulação automática:', error);
@@ -378,13 +405,15 @@ const SimulationForm: React.FC = () => {
 
         {/* Resultado da Simulação */}
         {resultado && (
-          <SimulationResultDisplay
-            resultado={resultado}
-            valorEmprestimo={validation.emprestimoValue}
-            valorImovel={validation.garantiaValue}
-            cidade={cidade}
-            onNewSimulation={handleNewSimulation}
-          />
+          <div data-result-section="true">
+            <SimulationResultDisplay
+              resultado={resultado}
+              valorEmprestimo={validation.emprestimoValue}
+              valorImovel={validation.garantiaValue}
+              cidade={cidade}
+              onNewSimulation={handleNewSimulation}
+            />
+          </div>
         )}
       </div>
     </div>

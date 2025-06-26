@@ -3,8 +3,11 @@ import React, { useEffect } from 'react';
 import MobileLayout from '@/components/MobileLayout';
 import SimulationForm from '@/components/SimulationForm';
 import WaveSeparator from '@/components/ui/WaveSeparator';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Simulacao = () => {
+  const isMobile = useIsMobile();
+
   useEffect(() => {
     // Atualiza o título da página para SEO
     document.title = "Simulação de Crédito | Libra Crédito";
@@ -21,7 +24,11 @@ const Simulacao = () => {
       <WaveSeparator variant="hero" height="md" inverted />
       <div className="bg-white">
         <SimulationForm />
+        {/* Espaçamento reduzido antes das ondas no mobile */}
+        {isMobile && <div className="h-4"></div>}
       </div>
+      {/* Ondas mais próximas do formulário no mobile */}
+      {isMobile && <WaveSeparator variant="hero" height="md" />}
     </MobileLayout>
   );
 };

@@ -95,19 +95,20 @@ const Benefits: React.FC = () => {
             ))}
           </div>
           
-          <div
-            id="benefits-cta"
-            className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center"
-          >
-            <Link to="/vantagens">
-              <Button 
-                size={isMobile ? "default" : "lg"} 
-                className="bg-libra-navy hover:bg-libra-navy/90 text-white px-8 py-3"
-              >
-                Conheça Mais Vantagens
-              </Button>
-            </Link>
-            {!isMobile && (
+          {/* CTA Desktop */}
+          {!isMobile && (
+            <div
+              id="benefits-cta"
+              className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center"
+            >
+              <Link to="/vantagens">
+                <Button 
+                  size="lg" 
+                  className="bg-libra-navy hover:bg-libra-navy/90 text-white px-8 py-3"
+                >
+                  Conheça Mais Vantagens
+                </Button>
+              </Link>
               <Button 
                 size="lg"
                 variant="outline"
@@ -147,13 +148,37 @@ const Benefits: React.FC = () => {
               >
                 O que Falam da Libra
               </Button>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </section>
       
-      {/* Ondas viradas para cima ao final da seção - apenas mobile */}
-      {isMobile && <WaveSeparator variant="hero" height="md" inverted />}
+      {/* Seção CTA Mobile com ondas e background azul */}
+      {isMobile && (
+        <>
+          <WaveSeparator variant="hero" height="md" />
+          <section 
+            className="py-8"
+            style={{ backgroundColor: '#003399' }}
+            aria-label="Conheça mais vantagens do crédito"
+          >
+            <div className="container mx-auto px-4">
+              <div className="flex justify-center items-center">
+                <Link to="/vantagens">
+                  <Button 
+                    className="min-h-[48px] min-w-[200px] bg-white text-[#003399] hover:bg-gray-50 border-0"
+                    size="default"
+                    aria-label="Clique para conhecer mais vantagens do crédito"
+                  >
+                    Conheça Mais Vantagens
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </section>
+          <WaveSeparator variant="hero" height="md" inverted />
+        </>
+      )}
     </>
   );
 };
