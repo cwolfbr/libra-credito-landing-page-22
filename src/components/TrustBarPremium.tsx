@@ -130,7 +130,7 @@ const TrustBarPremium: React.FC = () => {
   return (
     <section 
       id="trustbar-premium"
-      className="py-16 bg-gradient-to-br from-blue-50 to-indigo-100 relative overflow-hidden"
+      className="py-16 bg-blue-600 relative overflow-hidden"
     >
       {/* Background decorativo */}
       <div className="absolute inset-0">
