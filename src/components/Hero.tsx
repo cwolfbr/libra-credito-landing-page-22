@@ -26,12 +26,17 @@ const Hero: React.FC = () => {
       const trustbarHeight = trustbar ? trustbar.getBoundingClientRect().height : 0;
       const cardHeight = card.getBoundingClientRect().height;
       const centerOffset = (window.innerHeight - cardHeight) / 2;
-      const target =
+      const baseTarget =
         card.getBoundingClientRect().top +
         window.pageYOffset -
         headerOffset -
         trustbarHeight -
         centerOffset;
+      
+      // Adicionar 20% mais de rolagem
+      const additionalScroll = window.innerHeight * 0.2;
+      const target = baseTarget + additionalScroll;
+      
       window.scrollTo({ top: target, behavior: 'smooth' });
     }
   };
