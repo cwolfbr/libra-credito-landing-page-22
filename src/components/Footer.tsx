@@ -35,7 +35,7 @@ const Footer: React.FC = () => {
           </div>
 
           {/* Logo - Centro (centralizado horizontal e verticalmente) */}
-          <div className="text-center flex items-center justify-center">
+          <div className="text-center flex items-center justify-center h-full">
             <ImageOptimizer 
               src="/images/logos/libra-logo.png" 
               alt="Libra Crédito" 
@@ -48,9 +48,9 @@ const Footer: React.FC = () => {
           {/* Redes Sociais - Direita */}
           <div className="text-right">
             <h3 className="text-sm md:text-xl font-bold mb-2 md:mb-4 text-white">Redes Sociais</h3>
-            {/* Layout mobile: 2 colunas compactas à direita */}
+            {/* Layout mobile: 2 colunas compactas organizadas da direita para esquerda */}
             <div className="flex flex-col items-end md:hidden mb-2">
-              <div className="grid grid-cols-2 gap-1 justify-items-end w-fit">
+              <div className="grid grid-cols-2 gap-1 w-fit" style={{ direction: 'rtl' }}>
                 <a href="https://www.facebook.com/LibraCreditoOficial/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="Facebook">
                   <Facebook className="w-4 h-4" />
                 </a>
