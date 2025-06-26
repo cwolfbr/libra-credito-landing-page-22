@@ -77,7 +77,7 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
                   <ImageOptimizer 
                     src="/images/logos/libra-logo.png" 
                     alt="Libra Crédito" 
-                    className="h-14 lg:h-16 w-auto transform scale-110"
+                    className="h-16 lg:h-20 w-auto transform scale-110"
                     aspectRatio={1}
                     priority={true}
                     style={{
