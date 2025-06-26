@@ -25,8 +25,6 @@ const Simulacao = () => {
       <div className="bg-white">
         <SimulationForm />
       </div>
-      {/* Ondas após o formulário - mais próximas no mobile */}
-      <WaveSeparator variant="hero" height="md" />
     </MobileLayout>
   );
 };
