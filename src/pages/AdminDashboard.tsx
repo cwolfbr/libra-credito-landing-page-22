@@ -66,6 +66,8 @@ const AdminDashboard: React.FC = () => {
   const [loadingBlog, setLoadingBlog] = useState(false);
   const [filtroStatusBlog, setFiltroStatusBlog] = useState<string>('todos');
   const [filtroTituloBlog, setFiltroTituloBlog] = useState('');
+  const [showPreview, setShowPreview] = useState(false);
+  const [editorMode, setEditorMode] = useState<'write' | 'preview' | 'split'>('write');
   
   // Estados para configurações do simulador interno
   const [simulationConfig, setSimulationConfig] = useState({
@@ -173,6 +175,61 @@ const AdminDashboard: React.FC = () => {
   const countWords = (text: string): number => {
     if (!text) return 0;
     return text.trim().split(' ').filter(word => word.length > 0).length;
+  };
+
+  // Função para renderizar preview do markdown
+  const renderMarkdownPreview = (content: string) => {
+    if (!content) return '';
+    
+    // Conversão aprimorada de Markdown para HTML (similar à do BlogPost)
+    const html = content
+      // Headers com classes para estilização
+      .replace(/^### (.*$)/gim, '<h3 class="text-xl font-semibold text-gray-900 mt-8 mb-4 border-l-4 border-blue-500 pl-4">$1</h3>')
+      .replace(/^## (.*$)/gim, '<h2 class="text-2xl font-bold text-gray-900 mt-10 mb-6 border-l-4 border-blue-500 pl-4">$1</h2>')
+      .replace(/^# (.*$)/gim, '<h1 class="text-3xl font-bold text-gray-900 mt-12 mb-8 border-l-4 border-blue-500 pl-4">$1</h1>')
+      // Bold e Italic
+      .replace(/\*\*(.*)\*\*/gim, '<strong class="font-semibold text-gray-900">$1</strong>')
+      .replace(/\*(.*)\*/gim, '<em class="italic text-gray-700">$1</em>')
+      // Links
+      .replace(/\[([^\]]*)\]\(([^)]*)\)/gim, '<a href="$2" class="text-blue-600 hover:text-blue-800 underline" target="_blank" rel="noopener noreferrer">$1</a>')
+      // Quotes
+      .replace(/^> (.*$)/gim, '<blockquote class="border-l-4 border-blue-500 bg-gray-50 p-4 my-6 italic text-gray-700">$1</blockquote>')
+      // Code blocks (inline)
+      .replace(/`([^`]+)`/gim, '<code class="bg-gray-100 text-gray-900 px-2 py-1 rounded font-mono text-sm">$1</code>')
+      // Line breaks
+      .replace(/\n\n/gim, '</p><p class="mb-6 text-gray-700 leading-relaxed">')
+      // Lists
+      .replace(/^\* (.*$)/gim, '<li class="mb-2 text-gray-700">$1</li>')
+      .replace(/^- (.*$)/gim, '<li class="mb-2 text-gray-700">$1</li>')
+      .replace(/(<li class="mb-2 text-gray-700">.*<\/li>)/s, '<ul class="list-disc list-inside space-y-2 my-6 ml-4">$1</ul>')
+      // Numbered lists
+      .replace(/^\d+\. (.*$)/gim, '<li class="mb-2 text-gray-700">$1</li>')
+      // Wrap in paragraphs
+      .replace(/^(?!<[hul])/gim, '<p class="mb-6 text-gray-700 leading-relaxed">')
+      .replace(/(?!<\/[hul]>)$/gim, '</p>');
+    
+    return html;
+  };
+
+  // Função para inserir texto no editor
+  const insertText = (before: string, after: string = '', placeholder: string = '') => {
+    const textarea = document.querySelector('textarea[placeholder*="Título do Post"]') as HTMLTextAreaElement;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = textarea.value.substring(start, end);
+    const textToInsert = before + (selectedText || placeholder) + after;
+    
+    const newContent = textarea.value.substring(0, start) + textToInsert + textarea.value.substring(end);
+    setPostForm({...postForm, content: newContent});
+
+    // Restore cursor position
+    setTimeout(() => {
+      textarea.focus();
+      const newPosition = start + before.length + (selectedText || placeholder).length;
+      textarea.setSelectionRange(newPosition, newPosition);
+    }, 0);
   };
   
   // Salvar post
@@ -995,18 +1052,131 @@ const AdminDashboard: React.FC = () => {
                 <div>
                   <label className="block text-sm font-medium mb-1">Conteúdo</label>
                   <div className="border border-gray-300 rounded-md">
+                    {/* Editor Header */}
                     <div className="bg-gray-50 px-3 py-2 border-b border-gray-300">
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <span>📝 Editor de Markdown</span>
-                        <span>•</span>
-                        <span>Suporte a HTML</span>
-                        <span>•</span>
-                        <span>Palavras: {countWords(postForm.content || '')}</span>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 text-sm text-gray-600">
+                          <span>📝 Editor de Markdown</span>
+                          <span>•</span>
+                          <span>Palavras: {countWords(postForm.content || '')}</span>
+                        </div>
+                        
+                        {/* Editor Mode Toggle */}
+                        <div className="flex items-center gap-1">
+                          <Button
+                            size="sm"
+                            variant={editorMode === 'write' ? 'default' : 'outline'}
+                            onClick={() => setEditorMode('write')}
+                            className="h-7 text-xs"
+                          >
+                            Escrever
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant={editorMode === 'preview' ? 'default' : 'outline'}
+                            onClick={() => setEditorMode('preview')}
+                            className="h-7 text-xs"
+                          >
+                            Preview
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant={editorMode === 'split' ? 'default' : 'outline'}
+                            onClick={() => setEditorMode('split')}
+                            className="h-7 text-xs"
+                          >
+                            Dividido
+                          </Button>
+                        </div>
                       </div>
+                      
+                      {/* Formatting Toolbar */}
+                      {editorMode !== 'preview' && (
+                        <div className="flex items-center gap-1 mt-2 pt-2 border-t border-gray-200">
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => insertText('**', '**', 'texto em negrito')}
+                            className="h-7 text-xs font-bold"
+                            title="Negrito"
+                          >
+                            B
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => insertText('*', '*', 'texto em itálico')}
+                            className="h-7 text-xs italic"
+                            title="Itálico"
+                          >
+                            I
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => insertText('[', '](url)', 'texto do link')}
+                            className="h-7 text-xs"
+                            title="Link"
+                          >
+                            🔗
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => insertText('## ', '', 'Título da seção')}
+                            className="h-7 text-xs"
+                            title="Título H2"
+                          >
+                            H2
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => insertText('### ', '', 'Subtítulo')}
+                            className="h-7 text-xs"
+                            title="Título H3"
+                          >
+                            H3
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => insertText('- ', '', 'item da lista')}
+                            className="h-7 text-xs"
+                            title="Lista"
+                          >
+                            •
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => insertText('> ', '', 'citação')}
+                            className="h-7 text-xs"
+                            title="Citação"
+                          >
+                            "
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => insertText('`', '`', 'código')}
+                            className="h-7 text-xs font-mono"
+                            title="Código Inline"
+                          >
+                            &lt;/&gt;
+                          </Button>
+                        </div>
+                      )}
                     </div>
-                    <textarea 
-                      className="w-full h-80 p-4 border-0 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-b-md resize-none"
-                      placeholder="# Título do Post
+                    
+                    {/* Editor Content */}
+                    <div className={`flex ${editorMode === 'split' ? 'divide-x' : ''}`}>
+                      {/* Text Editor */}
+                      {(editorMode === 'write' || editorMode === 'split') && (
+                        <div className={editorMode === 'split' ? 'w-1/2' : 'w-full'}>
+                          <textarea 
+                            className="w-full h-80 p-4 border-0 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                            placeholder="# Título do Post
 
 ## Introdução
 Escreva seu conteúdo aqui...
@@ -1018,13 +1188,32 @@ Escreva seu conteúdo aqui...
 **Texto em negrito**
 *Texto em itálico*
 
-[Link para site](https://exemplo.com)"
-                      value={postForm.content || ''}
-                      onChange={(e) => setPostForm({...postForm, content: e.target.value})}
-                    />
+[Link para site](https://exemplo.com)
+
+> Esta é uma citação
+
+`código inline`"
+                            value={postForm.content || ''}
+                            onChange={(e) => setPostForm({...postForm, content: e.target.value})}
+                          />
+                        </div>
+                      )}
+                      
+                      {/* Preview */}
+                      {(editorMode === 'preview' || editorMode === 'split') && (
+                        <div className={`${editorMode === 'split' ? 'w-1/2' : 'w-full'} h-80 overflow-y-auto`}>
+                          <div 
+                            className="p-4 prose prose-sm max-w-none"
+                            dangerouslySetInnerHTML={{ 
+                              __html: renderMarkdownPreview(postForm.content || '') || '<p class="text-gray-400 italic">Nada para mostrar ainda. Digite algo no editor.</p>'
+                            }}
+                          />
+                        </div>
+                      )}
+                    </div>
                   </div>
                   <div className="mt-2 text-xs text-gray-500">
-                    💡 Dica: Use Markdown ou HTML para formatação. Imagens podem ser inseridas com: &lt;img src="url" alt="descrição" /&gt;
+                    💡 Dica: Use os botões de formatação ou digite Markdown diretamente. Imagens: &lt;img src="url" alt="descrição" /&gt;
                   </div>
                 </div>
                 

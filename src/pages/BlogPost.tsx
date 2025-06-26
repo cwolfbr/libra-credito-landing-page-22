@@ -75,7 +75,7 @@ const BlogPost = () => {
     );
   }
 
-  // Função para renderizar Markdown como HTML simples
+  // Função para renderizar Markdown como HTML com melhor formatação
   const renderContent = (content: string) => {
     if (!content) return '';
     
@@ -84,26 +84,31 @@ const BlogPost = () => {
       return content;
     }
     
-    // Conversão básica de Markdown para HTML
-    let html = content
-      // Headers
-      .replace(/^### (.*$)/gim, '<h3>$1</h3>')
-      .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-      .replace(/^# (.*$)/gim, '<h1>$1</h1>')
-      // Bold
-      .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
-      // Italic
-      .replace(/\*(.*)\*/gim, '<em>$1</em>')
-      // Links
-      .replace(/\[([^\]]*)\]\(([^\)]*)\)/gim, '<a href="$2" class="text-libra-blue hover:underline">$1</a>')
+    // Conversão aprimorada de Markdown para HTML
+    const html = content
+      // Headers com classes para estilização
+      .replace(/^### (.*$)/gim, '<h3 class="text-xl font-semibold text-libra-navy mt-8 mb-4 border-l-4 border-libra-blue pl-4">$1</h3>')
+      .replace(/^## (.*$)/gim, '<h2 class="text-2xl font-bold text-libra-navy mt-10 mb-6 border-l-4 border-libra-blue pl-4">$1</h2>')
+      .replace(/^# (.*$)/gim, '<h1 class="text-3xl font-bold text-libra-navy mt-12 mb-8 border-l-4 border-libra-blue pl-4">$1</h1>')
+      // Bold e Italic
+      .replace(/\*\*(.*)\*\*/gim, '<strong class="font-semibold text-libra-navy">$1</strong>')
+      .replace(/\*(.*)\*/gim, '<em class="italic text-gray-700">$1</em>')
+      // Links com melhor estilo
+      .replace(/\[([^\]]*)\]\(([^)]*)\)/gim, '<a href="$2" class="text-libra-blue hover:text-libra-navy underline decoration-libra-blue hover:decoration-libra-navy transition-colors font-medium" target="_blank" rel="noopener noreferrer">$1</a>')
+      // Quotes
+      .replace(/^> (.*$)/gim, '<blockquote class="border-l-4 border-libra-blue bg-gray-50 p-4 my-6 italic text-gray-700">$1</blockquote>')
+      // Code blocks (inline)
+      .replace(/`([^`]+)`/gim, '<code class="bg-gray-100 text-libra-navy px-2 py-1 rounded font-mono text-sm">$1</code>')
       // Line breaks
-      .replace(/\n\n/gim, '</p><p>')
-      // Lists (basic)
-      .replace(/^\* (.*$)/gim, '<li>$1</li>')
-      .replace(/^\- (.*$)/gim, '<li>$1</li>')
-      .replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>')
-      // Wrap in paragraphs if not already wrapped
-      .replace(/^(?!<[hul])/gim, '<p>')
+      .replace(/\n\n/gim, '</p><p class="mb-6 text-gray-700 leading-relaxed">')
+      // Lists com melhor formatação
+      .replace(/^\* (.*$)/gim, '<li class="mb-2 text-gray-700">$1</li>')
+      .replace(/^- (.*$)/gim, '<li class="mb-2 text-gray-700">$1</li>')
+      .replace(/(<li class="mb-2 text-gray-700">.*<\/li>)/s, '<ul class="list-disc list-inside space-y-2 my-6 ml-4">$1</ul>')
+      // Numbered lists
+      .replace(/^\d+\. (.*$)/gim, '<li class="mb-2 text-gray-700">$1</li>')
+      // Wrap in paragraphs se não estiver wrapped
+      .replace(/^(?!<[hul])/gim, '<p class="mb-6 text-gray-700 leading-relaxed">')
       .replace(/(?!<\/[hul]>)$/gim, '</p>');
     
     return html;
@@ -126,60 +131,90 @@ const BlogPost = () => {
           </div>
 
           {/* Post Header */}
-          <article className="bg-white rounded-xl shadow-sm overflow-hidden">
-            <img
-              src={post.imageUrl}
-              alt={post.title}
-              className="w-full h-64 md:h-96 object-cover"
-            />
+          <article className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+            <div className="relative overflow-hidden">
+              <img
+                src={post.imageUrl}
+                alt={post.title}
+                className="w-full h-64 md:h-96 object-cover transition-transform duration-300 hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+            </div>
             
-            <div className="p-6 md:p-8">
+            <div className="p-6 md:p-10">
               {/* Meta Info */}
-              <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-4">
-                <span className="flex items-center gap-1">
+              <div className="flex flex-wrap items-center gap-6 text-sm mb-6">
+                <span className="flex items-center gap-2 bg-libra-blue/10 text-libra-navy px-3 py-1 rounded-full font-medium">
                   <Tag className="w-4 h-4" />
                   {post.category}
                 </span>
-                <span className="flex items-center gap-1">
+                <span className="flex items-center gap-2 text-gray-600">
                   <Calendar className="w-4 h-4" />
-                  {new Date(post.createdAt || '').toLocaleDateString('pt-BR')}
+                  {new Date(post.createdAt || '').toLocaleDateString('pt-BR', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                  })}
                 </span>
-                <span className="flex items-center gap-1">
+                <span className="flex items-center gap-2 text-gray-600">
                   <Clock className="w-4 h-4" />
                   {post.readTime} min de leitura
                 </span>
               </div>
 
               {/* Title and Description */}
-              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-libra-navy mb-4">
+              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-libra-navy mb-6 leading-tight">
                 {post.title}
               </h1>
-              <p className="text-lg text-gray-600 mb-8">
+              <div className="h-1 w-16 bg-gradient-to-r from-libra-blue to-libra-navy rounded-full mb-6"></div>
+              <p className="text-lg md:text-xl text-gray-600 mb-10 leading-relaxed font-light">
                 {post.description}
               </p>
 
               {/* Content */}
-              <div 
-                className="prose prose-lg max-w-none prose-headings:text-libra-navy prose-links:text-libra-blue prose-a:text-libra-blue hover:prose-a:text-libra-navy"
-                dangerouslySetInnerHTML={{ __html: renderContent(post.content || '') }}
-              />
+              <div className="mt-8">
+                <div 
+                  className="prose prose-lg max-w-none 
+                           prose-headings:font-bold prose-headings:text-libra-navy 
+                           prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-6 
+                           prose-a:text-libra-blue prose-a:font-medium prose-a:underline 
+                           prose-a:decoration-libra-blue hover:prose-a:text-libra-navy 
+                           hover:prose-a:decoration-libra-navy 
+                           prose-strong:text-libra-navy prose-strong:font-semibold 
+                           prose-em:text-gray-700 
+                           prose-ul:space-y-2 prose-ol:space-y-2 
+                           prose-li:text-gray-700 prose-li:leading-relaxed 
+                           prose-blockquote:border-l-4 prose-blockquote:border-libra-blue 
+                           prose-blockquote:bg-gray-50 prose-blockquote:p-4 
+                           prose-blockquote:italic prose-blockquote:text-gray-700 
+                           prose-code:bg-gray-100 prose-code:text-libra-navy 
+                           prose-code:px-2 prose-code:py-1 prose-code:rounded 
+                           prose-code:font-mono prose-code:text-sm 
+                           prose-img:rounded-lg prose-img:shadow-md prose-img:my-8
+                           text-base md:text-lg"
+                  dangerouslySetInnerHTML={{ __html: renderContent(post.content || '') }}
+                />
+              </div>
             </div>
           </article>
 
           {/* Call to Action */}
-          <div className="mt-12 text-center">
-            <div className="bg-gradient-to-br from-libra-blue to-libra-navy rounded-xl p-8 text-white">
-              <h2 className="text-2xl font-bold mb-4">
-                Precisa de crédito com garantia de imóvel?
-              </h2>
-              <p className="text-lg mb-6">
-                Simule agora e descubra as melhores condições para você
-              </p>
-              <Link to="/simulacao">
-                <Button variant="secondary" size="lg">
-                  Fazer Simulação
-                </Button>
-              </Link>
+          <div className="mt-16 text-center">
+            <div className="bg-gradient-to-br from-libra-blue to-libra-navy rounded-2xl p-8 md:p-12 text-white shadow-xl relative overflow-hidden">
+              <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-20"></div>
+              <div className="relative z-10">
+                <h2 className="text-2xl md:text-3xl font-bold mb-4">
+                  Precisa de crédito com garantia de imóvel?
+                </h2>
+                <p className="text-lg md:text-xl mb-8 opacity-90 max-w-2xl mx-auto">
+                  Simule agora e descubra as melhores condições para você. Processo 100% digital e sem complicações.
+                </p>
+                <Link to="/simulacao">
+                  <Button variant="secondary" size="lg" className="bg-white text-libra-navy hover:bg-gray-50 font-semibold px-8 py-3 text-lg shadow-lg hover:shadow-xl transition-all duration-300">
+                    Fazer Simulação Gratuita
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
