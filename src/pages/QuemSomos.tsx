@@ -91,16 +91,33 @@ const QuemSomos = () => {
         </section>
 
         {/* Nossa Missão - Seção separada */}
-        <section className="py-3 lg:py-4 bg-gray-50">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-libra-navy mb-3 lg:mb-4">Nossa Missão</h2>
-              <p className="text-base md:text-lg text-gray-600 leading-relaxed">
-                Democratizar o acesso ao crédito no Brasil, oferecendo soluções financeiras justas e transparentes que ajudem nossos clientes a realizarem seus sonhos e alcançarem a liberdade financeira.
-              </p>
+        {isMobile ? (
+          <>
+            <WaveSeparator variant="hero" height="md" />
+            <section className="py-8" style={{ backgroundColor: '#003399' }}>
+              <div className="container mx-auto px-4">
+                <div className="max-w-4xl mx-auto text-center">
+                  <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-white mb-3 lg:mb-4">Nossa Missão</h2>
+                  <p className="text-base md:text-lg text-white/90 leading-relaxed">
+                    Democratizar o acesso ao crédito no Brasil, oferecendo soluções financeiras justas e transparentes que ajudem nossos clientes a realizarem seus sonhos e alcançarem a liberdade financeira.
+                  </p>
+                </div>
+              </div>
+            </section>
+            <WaveSeparator variant="hero" height="md" inverted />
+          </>
+        ) : (
+          <section className="py-3 lg:py-4 bg-gray-50">
+            <div className="container mx-auto px-4">
+              <div className="max-w-4xl mx-auto text-center">
+                <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-libra-navy mb-3 lg:mb-4">Nossa Missão</h2>
+                <p className="text-base md:text-lg text-gray-600 leading-relaxed">
+                  Democratizar o acesso ao crédito no Brasil, oferecendo soluções financeiras justas e transparentes que ajudem nossos clientes a realizarem seus sonhos e alcançarem a liberdade financeira.
+                </p>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* Nossos Valores e Imagem Institucional lado a lado */}
         <section className="py-3 lg:py-4">
