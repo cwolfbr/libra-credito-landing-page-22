@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import MobileLayout from '@/components/MobileLayout';
 import LoadingSpinner from '@/components/ui/loading-spinner';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 // Hero não deve ser lazy loaded pois contém o LCP
 import Hero from '@/components/Hero';
@@ -25,6 +26,7 @@ const SectionLoader: React.FC = () => (
 
 const Index: React.FC = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     document.title = "Libra Crédito | Empréstimo com Garantia de Imóvel";
@@ -71,7 +73,8 @@ const Index: React.FC = () => {
         <FAQ />
       </Suspense>
       
-      <WaveSeparator variant="hero" height="md" />
+      {/* Ondas antes do botão "Conheça a Libra" - apenas mobile */}
+      {isMobile && <WaveSeparator variant="hero" height="md" />}
       
       {/* Botão Conheça a Libra */}
       <section 
