@@ -3,6 +3,7 @@ import { TrendingUp, Building, Home } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
+import WaveSeparator from '@/components/ui/WaveSeparator';
 
 const usageOptions = [
   {
@@ -65,87 +66,95 @@ const Benefits: React.FC = () => {
   };
   
   return (
-    <section id="benefits" className={`${isMobile ? 'pt-4 pb-6' : 'pt-6 md:pt-8 lg:pt-8 xl:pt-10 pb-6 md:pb-8 lg:pb-8 xl:pb-10'} bg-white scroll-mt-[88px]`}>
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-6 md:mb-8 lg:mb-8 xl:mb-10">
-          <p className={`${isMobile ? 'text-sm' : 'text-lg'} text-libra-blue font-semibold uppercase tracking-wider mb-4`}>
-            Soluções para cada necessidade
-          </p>
-          <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy mb-3`}>
-            Como usar o Crédito com Garantia de Imóvel
-          </h2>
-        </div>
-        
-        <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-3 gap-5'} animate-slide-up max-w-6xl mx-auto mb-6`}>
-          {usageOptions.map((option, index) => (
-            <UsageCard
-              key={index}
-              id={index === 1 ? 'capital-giro-card' : undefined}
-              title={option.title}
-              description={option.description}
-              icon={option.icon}
-              isMobile={isMobile}
-              onClick={handleCardClick}
-            />
-          ))}
-        </div>
-        
-        <div
-          id="benefits-cta"
-          className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center"
-        >
-          <Link to="/vantagens">
-            <Button 
-              size={isMobile ? "default" : "lg"} 
-              className="bg-libra-navy hover:bg-libra-navy/90 text-white px-8 py-3"
-            >
-              Conheça Mais Vantagens
-            </Button>
-          </Link>
-          {!isMobile && (
-            <Button 
-              size="lg"
-              variant="outline"
-              className="border-libra-blue text-libra-blue hover:bg-libra-blue hover:text-white px-8 py-3"
-              onClick={() => {
-                const testimonialsSection = document.getElementById('testimonials');
-                if (testimonialsSection) {
-                  // Procura pelo vídeo especificamente dentro da seção de testimonials
-                  const videoContainer = testimonialsSection.querySelector('.aspect-video');
-                  if (videoContainer) {
-                    const videoPosition = videoContainer.getBoundingClientRect().top;
-                    const videoHeight = videoContainer.getBoundingClientRect().height;
-                    const windowHeight = window.innerHeight;
-                    const headerOffset = 120;
-                    
-                    // Calcula a posição para centralizar o vídeo na tela
-                    const centerOffset = (windowHeight - videoHeight) / 2;
-                    const targetPosition = videoPosition + window.pageYOffset - centerOffset - headerOffset;
-                    
-                    window.scrollTo({
-                      top: targetPosition,
-                      behavior: 'smooth'
-                    });
-                  } else {
-                    // Fallback para a seção inteira se não encontrar o vídeo
-                    const headerOffset = 120;
-                    const elementPosition = testimonialsSection.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                    
-                    window.scrollTo({
-                      top: offsetPosition,
-                      behavior: 'smooth'
-                    });
+    <>
+      {/* Ondas orientadas para baixo antes da seção - apenas mobile */}
+      {isMobile && <WaveSeparator variant="hero" height="md" />}
+      
+      <section id="benefits" className={`${isMobile ? 'pt-4 pb-6' : 'pt-6 md:pt-8 lg:pt-8 xl:pt-10 pb-6 md:pb-8 lg:pb-8 xl:pb-10'} bg-white scroll-mt-[88px]`}>
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-6 md:mb-8 lg:mb-8 xl:mb-10">
+            <p className={`${isMobile ? 'text-sm' : 'text-lg'} text-libra-blue font-semibold uppercase tracking-wider mb-4`}>
+              Soluções para cada necessidade
+            </p>
+            <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy mb-3`}>
+              Como usar o Crédito com Garantia de Imóvel
+            </h2>
+          </div>
+          
+          <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-3 gap-5'} animate-slide-up max-w-6xl mx-auto mb-6`}>
+            {usageOptions.map((option, index) => (
+              <UsageCard
+                key={index}
+                id={index === 1 ? 'capital-giro-card' : undefined}
+                title={option.title}
+                description={option.description}
+                icon={option.icon}
+                isMobile={isMobile}
+                onClick={handleCardClick}
+              />
+            ))}
+          </div>
+          
+          <div
+            id="benefits-cta"
+            className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center"
+          >
+            <Link to="/vantagens">
+              <Button 
+                size={isMobile ? "default" : "lg"} 
+                className="bg-libra-navy hover:bg-libra-navy/90 text-white px-8 py-3"
+              >
+                Conheça Mais Vantagens
+              </Button>
+            </Link>
+            {!isMobile && (
+              <Button 
+                size="lg"
+                variant="outline"
+                className="border-libra-blue text-libra-blue hover:bg-libra-blue hover:text-white px-8 py-3"
+                onClick={() => {
+                  const testimonialsSection = document.getElementById('testimonials');
+                  if (testimonialsSection) {
+                    // Procura pelo vídeo especificamente dentro da seção de testimonials
+                    const videoContainer = testimonialsSection.querySelector('.aspect-video');
+                    if (videoContainer) {
+                      const videoPosition = videoContainer.getBoundingClientRect().top;
+                      const videoHeight = videoContainer.getBoundingClientRect().height;
+                      const windowHeight = window.innerHeight;
+                      const headerOffset = 120;
+                      
+                      // Calcula a posição para centralizar o vídeo na tela
+                      const centerOffset = (windowHeight - videoHeight) / 2;
+                      const targetPosition = videoPosition + window.pageYOffset - centerOffset - headerOffset;
+                      
+                      window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                      });
+                    } else {
+                      // Fallback para a seção inteira se não encontrar o vídeo
+                      const headerOffset = 120;
+                      const elementPosition = testimonialsSection.getBoundingClientRect().top;
+                      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                      
+                      window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                      });
+                    }
                   }
-                }
-              }}
-            >
-              O que Falam da Libra
-            </Button>
-          )}
+                }}
+              >
+                O que Falam da Libra
+              </Button>
+            )}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+      
+      {/* Ondas viradas para cima ao final da seção - apenas mobile */}
+      {isMobile && <WaveSeparator variant="hero" height="md" inverted />}
+    </>
   );
 };
 

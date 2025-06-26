@@ -20,7 +20,7 @@ const Footer: React.FC = () => {
       <footer className="bg-[#003399] text-white">
         <div className="container mx-auto py-6 lg:py-8 px-4">
         {/* Grid Principal - Layout 3 colunas para mobile e desktop */}
-        <div className="grid grid-cols-3 gap-2 md:gap-6 lg:gap-8 mb-6 lg:mb-8 items-start">
+        <div className="grid grid-cols-3 gap-2 md:gap-6 lg:gap-8 mb-6 lg:mb-8 items-center md:items-start">
           {/* Navegação - Esquerda */}
           <div className="text-left">
             <h3 className="text-sm md:text-xl font-bold mb-2 md:mb-4 text-white">Navegação</h3>
@@ -34,24 +34,22 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Logo - Centro */}
-          <div className="text-center">
-            <div className="flex justify-center items-center">
-              <ImageOptimizer 
-                src="/images/logos/libra-logo.png" 
-                alt="Libra Crédito" 
-                className="h-12 md:h-20 lg:h-24 xl:h-32 w-auto"
-                aspectRatio={1}
-                priority={false}
-              />
-            </div>
+          {/* Logo - Centro (centralizado horizontal e verticalmente no mobile) */}
+          <div className="text-center flex items-center justify-center h-full">
+            <ImageOptimizer 
+              src="/images/logos/libra-logo.png" 
+              alt="Libra Crédito" 
+              className="h-20 md:h-20 lg:h-24 xl:h-32 w-auto max-w-full"
+              aspectRatio={1}
+              priority={false}
+            />
           </div>
 
           {/* Redes Sociais - Direita */}
           <div className="text-right">
-            <h3 className="text-sm md:text-xl font-bold mb-2 md:mb-4 text-white">Redes Sociais</h3>
-            {/* Layout mobile: grid 2x3 para as 5 redes sociais */}
-            <div className="grid grid-cols-2 gap-2 md:hidden justify-items-end mb-3">
+            <h3 className="text-sm md:text-xl font-bold mb-1 md:mb-4 text-white">Redes Sociais</h3>
+            {/* Layout mobile: grid 2x3 para as 5 redes sociais com espaçamento reduzido */}
+            <div className="grid grid-cols-2 gap-1 md:hidden justify-items-end mb-2">
               <a href="https://www.facebook.com/LibraCreditoOficial/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="Facebook">
                 <Facebook className="w-5 h-5" />
               </a>
