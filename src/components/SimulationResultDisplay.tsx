@@ -54,7 +54,7 @@ const SwitchPriceTip: React.FC<{ onSwitchToPrice?: () => void }> = ({
 }) => {
   const [showTip, setShowTip] = useState(false);
   return (
-    <div className="relative inline-block text-yellow-800">
+    <div className="relative inline-block text-libra-navy">
       <div
         onMouseEnter={() => setShowTip(true)}
         onMouseLeave={() => setShowTip(false)}
@@ -65,7 +65,7 @@ const SwitchPriceTip: React.FC<{ onSwitchToPrice?: () => void }> = ({
         Diminua a Parcela
       </div>
       {showTip && (
-        <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-60 px-3 py-2 bg-yellow-100 text-yellow-800 rounded-lg shadow-lg text-center z-10">
+        <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-60 px-3 py-2 bg-yellow-50 text-libra-navy rounded-lg shadow-lg text-center z-10">
           <div className="text-xs mb-2">Na tabela PRICE a renda necessária é menor!</div>
           {onSwitchToPrice && (
             <Button
@@ -221,8 +221,8 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
         </Button>
       </div>
 
-      {/* Valor da parcela e Renda mínima lado a lado */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+      {/* Valor da parcela e Renda mínima empilhados */}
+      <div className="grid grid-cols-1 gap-4 mb-4">
         {/* Valor da parcela destacado */}
         <div className="bg-white rounded-lg p-4">
           {amortizacao === 'SAC' && primeiraParcela ? (
