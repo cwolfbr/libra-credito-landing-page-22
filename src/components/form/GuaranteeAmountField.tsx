@@ -27,15 +27,10 @@ const GuaranteeAmountField: React.FC<GuaranteeAmountFieldProps> = ({
           <Input
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            placeholder="600"
-            className="text-sm pr-20"
+            placeholder="600000"
+            className="text-sm"
             inputMode="numeric"
           />
-          {value && (
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">
-              = R$ {Number(value).toLocaleString('pt-BR')}.000
-            </div>
-          )}
         </div>
         {showError && (
           <p className="text-red-500 text-xs mt-1">
@@ -43,7 +38,7 @@ const GuaranteeAmountField: React.FC<GuaranteeAmountFieldProps> = ({
           </p>
         )}
         <p className="text-xs text-gray-500 mt-1">
-          Mínimo 2x o valor do empréstimo
+          Digite o valor completo • Mínimo 2x o valor do empréstimo
         </p>
       </div>
     </div>

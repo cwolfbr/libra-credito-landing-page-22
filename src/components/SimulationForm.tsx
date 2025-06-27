@@ -60,7 +60,7 @@ import SmartApiMessage from './messages/SmartApiMessage';
 import SimulationResultDisplay from './SimulationResultDisplay';
 import { analyzeApiMessage, ApiMessageAnalysis } from '@/utils/apiMessageAnalyzer';
 import { analyzeLocalMessage } from '@/utils/localMessageAnalyzer';
-import { formatBRL, formatBRLThousands, norm, normThousands } from '@/utils/formatters';
+import { formatBRL, formatBRLInput, norm } from '@/utils/formatters';
 
 const SimulationForm: React.FC = () => {
   const { sessionId, trackSimulation } = useUserJourney();
@@ -80,11 +80,11 @@ const SimulationForm: React.FC = () => {
   const validation = validateForm(emprestimo, garantia, parcelas, amortizacao, cidade);
 
   const handleEmprestimoChange = (value: string) => {
-    setEmprestimo(formatBRLThousands(value));
+    setEmprestimo(formatBRLInput(value));
   };
 
   const handleGarantiaChange = (value: string) => {
-    setGarantia(formatBRLThousands(value));
+    setGarantia(formatBRLInput(value));
   };
 
   // Função para rolar para o resultado no mobile
@@ -199,9 +199,8 @@ const SimulationForm: React.FC = () => {
 
   // Função para ajustar valores automaticamente (30%) e executar simulação
   const handleAdjustValues = async (novoEmprestimo: number, isRural: boolean = false) => {
-    // Ajustar os valores - converter de reais para milhares para manter consistência com a interface
-    const emprestimoEmMilhares = (novoEmprestimo / 1000).toString();
-    setEmprestimo(emprestimoEmMilhares);
+    // Ajustar os valores - usar valor completo com formatação
+    setEmprestimo(formatBRLInput(novoEmprestimo.toString()));
     setIsRuralProperty(isRural);
     setApiMessage(null);
     setErro('');
@@ -214,9 +213,9 @@ const SimulationForm: React.FC = () => {
         return;
       }
 
-      // Recalcular validação com novos valores - usar o valor em milhares para manter consistência
+      // Recalcular validação com novos valores
       const newValidation = validateForm(
-        emprestimoEmMilhares, 
+        formatBRLInput(novoEmprestimo.toString()), 
         garantia, 
         parcelas, 
         amortizacao, 
