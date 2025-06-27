@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import MobileLayout from '@/components/MobileLayout';
 import WaveSeparator from '@/components/ui/WaveSeparator';
 import { Button } from '@/components/ui/button';
-import { TrendingDown, Clock, Calculator, ShieldCheck, Wallet, BadgeCheck } from 'lucide-react';
+import { TrendingDown, Clock, Calculator, ShieldCheck, Wallet, BadgeCheck, FileText, MessageCircle, CheckCircle, CreditCard } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -268,6 +268,134 @@ const Vantagens: React.FC = () => {
             <WaveSeparator variant="hero" height="md" inverted />
           </>
         )}
+
+        {/* Seção de Passos para Obter Crédito */}
+        <section className={`${isMobile ? 'py-8' : 'py-12'} bg-gray-50`}>
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-8">
+              <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-libra-navy mb-3`}>
+                Como obter seu crédito em 4 passos simples
+              </h2>
+              <p className={`${isMobile ? 'text-base' : 'text-lg'} text-gray-600 max-w-2xl mx-auto`}>
+                Processo rápido e descomplicado para realizar seus projetos
+              </p>
+            </div>
+
+            <div className={`grid ${isMobile ? 'grid-cols-1 gap-6' : 'grid-cols-2 lg:grid-cols-4 gap-6'}`}>
+              {/* Passo 1 */}
+              <div className="relative">
+                <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+                  <div className="flex flex-col items-center text-center">
+                    <div className="w-16 h-16 bg-libra-blue/10 rounded-full flex items-center justify-center mb-4">
+                      <FileText className="w-8 h-8 text-libra-blue" />
+                    </div>
+                    <div className="bg-libra-blue text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mb-3">
+                      1
+                    </div>
+                    <h3 className={`${isMobile ? 'text-lg' : 'text-xl'} font-bold text-libra-navy mb-2`}>
+                      Faça uma simulação
+                    </h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      Simule gratuitamente suas condições personalizadas
+                    </p>
+                  </div>
+                </div>
+                {!isMobile && (
+                  <div className="hidden lg:block absolute top-1/2 -right-3 transform -translate-y-1/2 text-libra-blue">
+                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                )}
+              </div>
+
+              {/* Passo 2 */}
+              <div className="relative">
+                <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+                  <div className="flex flex-col items-center text-center">
+                    <div className="w-16 h-16 bg-libra-blue/10 rounded-full flex items-center justify-center mb-4">
+                      <MessageCircle className="w-8 h-8 text-libra-blue" />
+                    </div>
+                    <div className="bg-libra-blue text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mb-3">
+                      2
+                    </div>
+                    <h3 className={`${isMobile ? 'text-lg' : 'text-xl'} font-bold text-libra-navy mb-2`}>
+                      Fale com o consultor
+                    </h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      Converse com nosso especialista e envie sua documentação
+                    </p>
+                  </div>
+                </div>
+                {!isMobile && (
+                  <div className="hidden lg:block absolute top-1/2 -right-3 transform -translate-y-1/2 text-libra-blue">
+                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                )}
+              </div>
+
+              {/* Passo 3 */}
+              <div className="relative">
+                <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+                  <div className="flex flex-col items-center text-center">
+                    <div className="w-16 h-16 bg-libra-blue/10 rounded-full flex items-center justify-center mb-4">
+                      <CheckCircle className="w-8 h-8 text-libra-blue" />
+                    </div>
+                    <div className="bg-libra-blue text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mb-3">
+                      3
+                    </div>
+                    <h3 className={`${isMobile ? 'text-lg' : 'text-xl'} font-bold text-libra-navy mb-2`}>
+                      Receba proposta gratuita
+                    </h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      Proposta personalizada para realizar seus projetos
+                    </p>
+                  </div>
+                </div>
+                {!isMobile && (
+                  <div className="hidden lg:block absolute top-1/2 -right-3 transform -translate-y-1/2 text-libra-blue">
+                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                )}
+              </div>
+
+              {/* Passo 4 */}
+              <div className="relative">
+                <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+                  <div className="flex flex-col items-center text-center">
+                    <div className="w-16 h-16 bg-libra-blue/10 rounded-full flex items-center justify-center mb-4">
+                      <CreditCard className="w-8 h-8 text-libra-blue" />
+                    </div>
+                    <div className="bg-libra-blue text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mb-3">
+                      4
+                    </div>
+                    <h3 className={`${isMobile ? 'text-lg' : 'text-xl'} font-bold text-libra-navy mb-2`}>
+                      Dinheiro na conta
+                    </h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      Assinatura, avaliação do imóvel e liberação do crédito
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Call to action dentro da seção de passos */}
+            <div className="text-center mt-8">
+              <Button 
+                onClick={handleSimular}
+                size="lg"
+                className="bg-libra-blue text-white hover:bg-libra-navy font-semibold px-8 py-3 text-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5"
+              >
+                Começar agora - É grátis
+              </Button>
+            </div>
+          </div>
+        </section>
 
         {/* CTA Section */}
         <section className="py-12 bg-white border-t border-gray-200">
