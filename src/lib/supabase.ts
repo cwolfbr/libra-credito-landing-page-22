@@ -421,7 +421,7 @@ export const supabaseApi = {
   async uploadBlogImage(file: File, fileName?: string): Promise<string> {
     const fileExt = file.name.split('.').pop();
     const finalFileName = fileName || `${Date.now()}-${Math.random().toString(36).substr(2, 9)}.${fileExt}`;
-    const filePath = `blog-images/${new Date().getFullYear()}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${finalFileName}`;
+    const filePath = `${new Date().getFullYear()}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${finalFileName}`;
 
     const { data, error } = await supabase.storage
       .from('blog-images')
@@ -445,12 +445,12 @@ export const supabaseApi = {
     const urlParts = imageUrl.split('/');
     const bucketIndex = urlParts.findIndex(part => part === 'blog-images');
     if (bucketIndex === -1) return false;
-    
+
     const filePath = urlParts.slice(bucketIndex + 1).join('/');
-    
+
     const { error } = await supabase.storage
       .from('blog-images')
-      .remove([`blog-images/${filePath}`]);
+      .remove([filePath]);
     
     if (error) throw error;
     return true;
