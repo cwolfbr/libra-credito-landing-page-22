@@ -17,6 +17,7 @@ interface SimulationResultDisplayProps {
   valorImovel: number;
   cidade: string;
   onNewSimulation: () => void;
+  onSwitchToPrice?: () => void;
 }
 
 /**
@@ -53,7 +54,8 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
   valorEmprestimo,
   valorImovel,
   cidade,
-  onNewSimulation
+  onNewSimulation,
+  onSwitchToPrice
 }) => {
   const isMobile = useIsMobile();
   const { valor, amortizacao, parcelas, primeiraParcela, ultimaParcela } = resultado;
@@ -82,19 +84,31 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
         </div>
 
         {/* Valor da parcela destacado */}
-        <div className="bg-white rounded-lg p-4 text-center mb-4">
+        <div className="bg-white rounded-lg p-4 mb-4">
           {amortizacao === 'SAC' && primeiraParcela ? (
             <div>
-              <div className="text-xs text-gray-600 mb-1">Parcela Inicial (SAC)</div>
-              <div className="text-2xl font-bold text-[#003399]">
-                R$ {primeiraParcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-              </div>
-              <div className="text-xs text-gray-500 mt-1">
-                Última: R$ {ultimaParcela?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+              <div className="text-xs text-gray-600 mb-3 text-center">Sistema SAC - Parcelas Decrescentes</div>
+              <div className="grid grid-cols-2 gap-3">
+                {/* Primeira parcela - destaque maior */}
+                <div className="text-center bg-blue-50 rounded-lg p-3 border-2 border-blue-200">
+                  <div className="text-xs font-medium text-blue-700 mb-1">1ª Parcela</div>
+                  <div className="text-lg font-bold text-[#003399]">
+                    R$ {primeiraParcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  </div>
+                  <div className="text-xs text-blue-600 mt-1">Maior valor</div>
+                </div>
+                {/* Última parcela */}
+                <div className="text-center bg-green-50 rounded-lg p-3 border border-green-200">
+                  <div className="text-xs font-medium text-green-700 mb-1">Última</div>
+                  <div className="text-base font-bold text-green-700">
+                    R$ {ultimaParcela?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  </div>
+                  <div className="text-xs text-green-600 mt-1">Menor valor</div>
+                </div>
               </div>
             </div>
           ) : (
-            <div>
+            <div className="text-center">
               <div className="text-xs text-gray-600 mb-1">Parcela Fixa (PRICE)</div>
               <div className="text-2xl font-bold text-[#003399]">
                 R$ {valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
@@ -117,13 +131,26 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
           <div className="text-lg font-bold">
             R$ {rendaMinima.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
           </div>
-          <div className="text-xs text-white/70 mt-1">
-            {amortizacao === 'SAC' && (
-              <TooltipInfo content="💡 Ao contratar o crédito na tabela PRICE a comprovação de renda necessária é consideravelmente menor">
-                <span className="cursor-help">FICOU ALTO?💡</span>
-              </TooltipInfo>
-            )}
-          </div>
+          {amortizacao === 'SAC' && (
+            <div className="text-xs mt-2">
+              <div className="bg-yellow-500/90 text-yellow-900 rounded-lg p-2 mb-2">
+                <div className="font-medium">💡 Renda muito alta?</div>
+                <div className="text-xs mt-1">
+                  Na tabela PRICE a renda necessária é menor!
+                </div>
+              </div>
+              {onSwitchToPrice && (
+                <Button
+                  onClick={onSwitchToPrice}
+                  className="w-full bg-white/20 hover:bg-white/30 text-white border border-white/30 text-xs py-2"
+                  size="sm"
+                >
+                  <TrendingUp className="w-3 h-3 mr-1" />
+                  Ver simulação PRICE
+                </Button>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Informações sobre taxa e custos */}
@@ -175,19 +202,31 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
       {/* Valor da parcela e Renda mínima lado a lado */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
         {/* Valor da parcela destacado */}
-        <div className="bg-white rounded-lg p-4 text-center">
+        <div className="bg-white rounded-lg p-4">
           {amortizacao === 'SAC' && primeiraParcela ? (
             <div>
-              <div className="text-xs text-gray-600 mb-1">Parcela Inicial (SAC)</div>
-              <div className="text-xl lg:text-2xl font-bold text-[#003399]">
-                R$ {primeiraParcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-              </div>
-              <div className="text-xs text-gray-500 mt-1">
-                Última: R$ {ultimaParcela?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+              <div className="text-xs text-gray-600 mb-3 text-center">Sistema SAC - Parcelas Decrescentes</div>
+              <div className="grid grid-cols-2 gap-4">
+                {/* Primeira parcela - destaque maior */}
+                <div className="text-center bg-blue-50 rounded-lg p-4 border-2 border-blue-200">
+                  <div className="text-sm font-medium text-blue-700 mb-2">1ª Parcela</div>
+                  <div className="text-xl font-bold text-[#003399]">
+                    R$ {primeiraParcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  </div>
+                  <div className="text-xs text-blue-600 mt-2">Maior valor</div>
+                </div>
+                {/* Última parcela */}
+                <div className="text-center bg-green-50 rounded-lg p-4 border border-green-200">
+                  <div className="text-sm font-medium text-green-700 mb-2">Última Parcela</div>
+                  <div className="text-lg font-bold text-green-700">
+                    R$ {ultimaParcela?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  </div>
+                  <div className="text-xs text-green-600 mt-2">Menor valor</div>
+                </div>
               </div>
             </div>
           ) : (
-            <div>
+            <div className="text-center">
               <div className="text-xs text-gray-600 mb-1">Parcela Fixa (PRICE)</div>
               <div className="text-xl lg:text-2xl font-bold text-[#003399]">
                 R$ {valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
@@ -210,13 +249,26 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
           <div className="text-xl lg:text-2xl font-bold text-[#003399]">
             R$ {rendaMinima.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
           </div>
-          <div className="text-xs text-gray-500 mt-1">
-            {amortizacao === 'SAC' && (
-              <TooltipInfo content="💡 Ao contratar o crédito na tabela PRICE a comprovação de renda necessária é consideravelmente menor">
-                <span className="cursor-help">FICOU ALTO?💡</span>
-              </TooltipInfo>
-            )}
-          </div>
+          {amortizacao === 'SAC' && (
+            <div className="text-xs mt-3">
+              <div className="bg-yellow-100 text-yellow-800 rounded-lg p-2 mb-2 border border-yellow-200">
+                <div className="font-medium">💡 Renda muito alta?</div>
+                <div className="text-xs mt-1">
+                  Na tabela PRICE a renda necessária é menor!
+                </div>
+              </div>
+              {onSwitchToPrice && (
+                <Button
+                  onClick={onSwitchToPrice}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs py-2"
+                  size="sm"
+                >
+                  <TrendingUp className="w-3 h-3 mr-1" />
+                  Ver simulação PRICE
+                </Button>
+              )}
+            </div>
+          )}
         </div>
       </div>
 

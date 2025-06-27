@@ -312,6 +312,76 @@ const SimulationForm: React.FC = () => {
     // Manter valores para facilitar nova simulação
   };
 
+  // Função para trocar para tabela PRICE e refazer simulação
+  const handleSwitchToPrice = async () => {
+    if (!sessionId || !cidade) return;
+
+    // Alterar amortização para PRICE
+    setAmortizacao('PRICE');
+    setApiMessage(null);
+    setErro('');
+    setLoading(true);
+
+    // Aguardar um pouco para garantir que o estado seja atualizado
+    setTimeout(async () => {
+      try {
+        const simulationInput = {
+          sessionId,
+          nomeCompleto: 'Lead Anônimo',
+          email: 'nao-informado@temp.com',
+          telefone: '(00) 00000-0000',
+          cidade: cidade,
+          valorEmprestimo: validation.emprestimoValue,
+          valorImovel: validation.garantiaValue,
+          parcelas: parcelas,
+          tipoAmortizacao: 'PRICE',
+          userAgent: navigator.userAgent,
+          ipAddress: undefined
+        };
+
+        console.log('🔄 Refazendo simulação com tabela PRICE:', simulationInput);
+
+        const result = await LocalSimulationService.performSimulation(simulationInput);
+
+        console.log('✅ Simulação PRICE realizada com sucesso:', result);
+
+        // Rastrear simulação na jornada do usuário
+        trackSimulation({
+          simulationId: result.id,
+          valorEmprestimo: result.valorEmprestimo,
+          valorImovel: result.valorImovel,
+          parcelas: result.parcelas,
+          cidade: result.cidade
+        });
+
+        setResultado(result);
+        
+        // Rolar para o resultado no mobile
+        scrollToResult();
+
+      } catch (error) {
+        console.error('Erro na simulação PRICE:', error);
+        
+        if (error instanceof Error) {
+          const analysis = analyzeLocalMessage(error.message);
+          
+          if (analysis.type !== 'unknown_error') {
+            setApiMessage(analysis);
+            setErro('');
+          } else {
+            setErro('Erro ao refazer simulação com tabela PRICE');
+            setApiMessage(null);
+          }
+        } else {
+          setErro('Erro desconhecido ao refazer simulação');
+          setApiMessage(null);
+        }
+      } finally {
+        setLoading(false);
+      }
+    }, 100);
+  };
+
   return (
     <div className={`container mx-auto px-3 ${isMobile ? 'py-2 pb-4' : 'py-2 min-h-[calc(100vh-4rem)]'} ${
       resultado ? 'max-w-6xl' : 'max-w-xl'
@@ -412,6 +482,7 @@ const SimulationForm: React.FC = () => {
               valorImovel={validation.garantiaValue}
               cidade={cidade}
               onNewSimulation={handleNewSimulation}
+              onSwitchToPrice={handleSwitchToPrice}
             />
           </div>
         )}
