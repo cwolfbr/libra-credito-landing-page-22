@@ -53,12 +53,21 @@ const SwitchPriceTip: React.FC<{ onSwitchToPrice?: () => void }> = ({
   onSwitchToPrice,
 }) => {
   const [showTip, setShowTip] = useState(false);
+  const [pinned, setPinned] = useState(false);
   return (
     <div className="relative inline-block text-yellow-800">
       <div
-        onMouseEnter={() => setShowTip(true)}
-        onMouseLeave={() => setShowTip(false)}
-        onClick={() => setShowTip(!showTip)}
+        onMouseEnter={() => !pinned && setShowTip(true)}
+        onMouseLeave={() => !pinned && setShowTip(false)}
+        onClick={() => {
+          if (pinned) {
+            setPinned(false);
+            setShowTip(false);
+          } else {
+            setPinned(true);
+            setShowTip(true);
+          }
+        }}
         className="cursor-pointer font-medium flex items-center gap-1"
       >
         <span role="img" aria-label="dica">💡</span>
@@ -66,8 +75,8 @@ const SwitchPriceTip: React.FC<{ onSwitchToPrice?: () => void }> = ({
       </div>
       {showTip && (
         <div
-          onMouseEnter={() => setShowTip(true)}
-          onMouseLeave={() => setShowTip(false)}
+          onMouseEnter={() => !pinned && setShowTip(true)}
+          onMouseLeave={() => !pinned && setShowTip(false)}
           className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-60 px-3 py-2 bg-yellow-100 text-yellow-800 rounded-lg shadow-lg text-center z-10"
         >
           <div className="text-xs mb-2">Na tabela PRICE a renda necessária é menor!</div>
