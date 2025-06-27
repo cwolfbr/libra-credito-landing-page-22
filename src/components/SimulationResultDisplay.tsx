@@ -65,7 +65,11 @@ const SwitchPriceTip: React.FC<{ onSwitchToPrice?: () => void }> = ({
         Diminua a Parcela
       </div>
       {showTip && (
-        <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-60 px-3 py-2 bg-yellow-100 text-yellow-800 rounded-lg shadow-lg text-center z-10">
+        <div
+          onMouseEnter={() => setShowTip(true)}
+          onMouseLeave={() => setShowTip(false)}
+          className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-60 px-3 py-2 bg-yellow-100 text-yellow-800 rounded-lg shadow-lg text-center z-10"
+        >
           <div className="text-xs mb-2">Na tabela PRICE a renda necessária é menor!</div>
           {onSwitchToPrice && (
             <Button
@@ -176,7 +180,7 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
         </div>
 
         {/* Informações sobre taxa e custos */}
-        <div className="bg-white/5 rounded-lg p-3 mb-4 text-xs">
+        <div className="bg-white/5 rounded-lg p-3 mb-4 lg:mb-3 text-xs">
           <p className="text-white/80 mb-1">
             <strong>Parcelas calculadas</strong> pelo sistema {amortizacao} com taxa de juros de 1,19% a.m. + IPCA.
           </p>
@@ -186,7 +190,7 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
         </div>
 
         {/* CTA e Formulário compacto */}
-        <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-800 rounded-lg p-3 mb-4 text-center">
+        <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-800 rounded-lg p-3 mb-4 lg:mb-3 text-center">
           <p className="font-bold">🎉 Gostou? Solicite uma consultoria gratuita!</p>
         </div>
         
@@ -205,7 +209,7 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
   return (
     <div className="bg-gradient-to-br from-[#003399] to-[#004080] rounded-xl p-4 text-white shadow-xl">
       {/* Header compacto */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <CheckCircle className="w-5 h-5 text-green-400" />
           <h3 className="text-lg font-bold">Simulação Pronta!</h3>
@@ -222,7 +226,7 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
       </div>
 
       {/* Valor da parcela e Renda mínima empilhados */}
-      <div className="grid grid-cols-1 gap-4 mb-4">
+      <div className="grid grid-cols-1 gap-3 mb-3">
         {/* Valor da parcela destacado */}
         <div className="bg-white rounded-lg p-4">
           {amortizacao === 'SAC' && primeiraParcela ? (
@@ -281,7 +285,7 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
 
 
       {/* Informações sobre taxa e custos */}
-      <div className="bg-white/5 rounded-lg p-3 mb-4 text-xs">
+      <div className="bg-white/5 rounded-lg p-3 mb-4 lg:mb-3 text-xs">
         <p className="text-white/80 mb-1">
           <strong>Parcelas calculadas</strong> pelo sistema {amortizacao} com taxa de juros de 1,19% a.m. + IPCA.
         </p>
@@ -291,7 +295,7 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
       </div>
 
       {/* CTA e Formulário compacto */}
-      <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-800 rounded-lg p-3 mb-4 text-center">
+      <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-800 rounded-lg p-3 mb-4 lg:mb-3 text-center">
         <p className="font-bold">🎉 Gostou? Solicite uma consultoria gratuita!</p>
       </div>
       
