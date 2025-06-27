@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Accordion,
   AccordionContent,
@@ -37,6 +37,44 @@ const FAQ: React.FC = () => {
       answer: "Não! A Libra não realiza nenhum tipo de cobrança até a efetiva liberação do crédito. Cuidado com empresas que pedem pagamentos antecipados."
     }
   ];
+
+  // Schema.org Structured Data para FAQ
+  useEffect(() => {
+    const faqSchema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
+    };
+
+    // Adicionar schema ao head
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify(faqSchema);
+    script.id = 'faq-schema';
+    
+    // Remover schema anterior se existir
+    const existingScript = document.getElementById('faq-schema');
+    if (existingScript) {
+      existingScript.remove();
+    }
+    
+    document.head.appendChild(script);
+
+    // Cleanup ao desmontar componente
+    return () => {
+      const schemaScript = document.getElementById('faq-schema');
+      if (schemaScript) {
+        schemaScript.remove();
+      }
+    };
+  }, [faqs]);
 
   return (
     <section id="faq" className={`${isMobile ? 'py-8' : 'py-16'} bg-white`}>

@@ -45,11 +45,13 @@ const Vantagens: React.FC = () => {
   const maxTaxa = useMemo(() => Math.max(...taxasJuros.map(item => item.taxa)), [taxasJuros]);
 
   useEffect(() => {
-    document.title = "Vantagens | Libra Crédito | Benefícios do Crédito com Garantia";
+    // Meta Title otimizado para vantagens - 57 caracteres
+    document.title = "Vantagens Home Equity | Libra Crédito 1,19% a.m.";
     
+    // Meta Description otimizada - 153 caracteres
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Conheça as vantagens do crédito com garantia de imóvel: taxas mais baixas, prazos maiores e aprovação facilitada.');
+      metaDescription.setAttribute('content', 'Vantagens do crédito com garantia de imóvel: taxa mínima 1,19% a.m., até 180 meses, valores até 50% do imóvel. Compare as taxas agora.');
     }
   }, []);
 

@@ -9,13 +9,13 @@ const Simulacao = () => {
   const isMobile = useIsMobile();
 
   useEffect(() => {
-    // Atualiza o título da página para SEO
-    document.title = "Simulação de Crédito | Libra Crédito";
+    // Meta Title otimizado para simulação - 59 caracteres
+    document.title = "Simulação Home Equity | Libra Crédito Garantia Imóvel";
     
-    // Adiciona meta description para SEO
+    // Meta Description otimizada - 154 caracteres
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Simule seu crédito com garantia de imóvel em poucos cliques. Descubra o valor da sua parcela e as melhores condições do mercado.');
+      metaDescription.setAttribute('content', 'Simulação gratuita de crédito com garantia de imóvel. Taxa mínima 1,19% a.m. Descubra sua parcela em segundos com nossa calculadora online.');
     }
   }, []);
 
