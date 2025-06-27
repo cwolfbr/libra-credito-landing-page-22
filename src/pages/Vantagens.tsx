@@ -270,9 +270,9 @@ const Vantagens: React.FC = () => {
         )}
 
         {/* Seção de Passos para Obter Crédito */}
-        <section className={`${isMobile ? 'py-8' : 'py-12'} bg-gray-50`}>
+        <section className={`${isMobile ? 'py-6' : 'py-12'} bg-white`}>
           <div className="container mx-auto px-4">
-            <div className="text-center mb-8">
+            <div className="text-center mb-6">
               <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-libra-navy mb-3`}>
                 Como obter seu crédito em 4 passos simples
               </h2>
@@ -281,21 +281,21 @@ const Vantagens: React.FC = () => {
               </p>
             </div>
 
-            <div className={`grid ${isMobile ? 'grid-cols-1 gap-6' : 'grid-cols-2 lg:grid-cols-4 gap-6'}`}>
+            <div className={`grid ${isMobile ? 'grid-cols-2 gap-4' : 'grid-cols-2 lg:grid-cols-4 gap-6'}`}>
               {/* Passo 1 */}
               <div className="relative">
-                <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+                <div className={`bg-white rounded-xl ${isMobile ? 'p-4' : 'p-6'} shadow-sm hover:shadow-md transition-shadow border border-gray-100`}>
                   <div className="flex flex-col items-center text-center">
-                    <div className="w-16 h-16 bg-libra-blue/10 rounded-full flex items-center justify-center mb-4">
-                      <FileText className="w-8 h-8 text-libra-blue" />
+                    <div className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'} bg-libra-blue/10 rounded-full flex items-center justify-center ${isMobile ? 'mb-2' : 'mb-4'}`}>
+                      <FileText className={`${isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-libra-blue`} />
                     </div>
-                    <div className="bg-libra-blue text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mb-3">
+                    <div className={`bg-libra-blue text-white rounded-full ${isMobile ? 'w-6 h-6' : 'w-8 h-8'} flex items-center justify-center text-sm font-bold ${isMobile ? 'mb-2' : 'mb-3'}`}>
                       1
                     </div>
-                    <h3 className={`${isMobile ? 'text-lg' : 'text-xl'} font-bold text-libra-navy mb-2`}>
+                    <h3 className={`${isMobile ? 'text-sm' : 'text-xl'} font-bold text-libra-navy ${isMobile ? 'mb-1' : 'mb-2'}`}>
                       Faça uma simulação
                     </h3>
-                    <p className="text-gray-600 text-sm leading-relaxed">
+                    <p className={`text-gray-600 ${isMobile ? 'text-xs' : 'text-sm'} leading-relaxed`}>
                       Simule gratuitamente suas condições personalizadas
                     </p>
                   </div>
@@ -311,18 +311,18 @@ const Vantagens: React.FC = () => {
 
               {/* Passo 2 */}
               <div className="relative">
-                <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+                <div className={`bg-white rounded-xl ${isMobile ? 'p-4' : 'p-6'} shadow-sm hover:shadow-md transition-shadow border border-gray-100`}>
                   <div className="flex flex-col items-center text-center">
-                    <div className="w-16 h-16 bg-libra-blue/10 rounded-full flex items-center justify-center mb-4">
-                      <MessageCircle className="w-8 h-8 text-libra-blue" />
+                    <div className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'} bg-libra-blue/10 rounded-full flex items-center justify-center ${isMobile ? 'mb-2' : 'mb-4'}`}>
+                      <MessageCircle className={`${isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-libra-blue`} />
                     </div>
-                    <div className="bg-libra-blue text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mb-3">
+                    <div className={`bg-libra-blue text-white rounded-full ${isMobile ? 'w-6 h-6' : 'w-8 h-8'} flex items-center justify-center text-sm font-bold ${isMobile ? 'mb-2' : 'mb-3'}`}>
                       2
                     </div>
-                    <h3 className={`${isMobile ? 'text-lg' : 'text-xl'} font-bold text-libra-navy mb-2`}>
+                    <h3 className={`${isMobile ? 'text-sm' : 'text-xl'} font-bold text-libra-navy ${isMobile ? 'mb-1' : 'mb-2'}`}>
                       Fale com o consultor
                     </h3>
-                    <p className="text-gray-600 text-sm leading-relaxed">
+                    <p className={`text-gray-600 ${isMobile ? 'text-xs' : 'text-sm'} leading-relaxed`}>
                       Converse com nosso especialista e envie sua documentação
                     </p>
                   </div>
@@ -338,18 +338,18 @@ const Vantagens: React.FC = () => {
 
               {/* Passo 3 */}
               <div className="relative">
-                <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+                <div className={`bg-white rounded-xl ${isMobile ? 'p-4' : 'p-6'} shadow-sm hover:shadow-md transition-shadow border border-gray-100`}>
                   <div className="flex flex-col items-center text-center">
-                    <div className="w-16 h-16 bg-libra-blue/10 rounded-full flex items-center justify-center mb-4">
-                      <CheckCircle className="w-8 h-8 text-libra-blue" />
+                    <div className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'} bg-libra-blue/10 rounded-full flex items-center justify-center ${isMobile ? 'mb-2' : 'mb-4'}`}>
+                      <CheckCircle className={`${isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-libra-blue`} />
                     </div>
-                    <div className="bg-libra-blue text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mb-3">
+                    <div className={`bg-libra-blue text-white rounded-full ${isMobile ? 'w-6 h-6' : 'w-8 h-8'} flex items-center justify-center text-sm font-bold ${isMobile ? 'mb-2' : 'mb-3'}`}>
                       3
                     </div>
-                    <h3 className={`${isMobile ? 'text-lg' : 'text-xl'} font-bold text-libra-navy mb-2`}>
+                    <h3 className={`${isMobile ? 'text-sm' : 'text-xl'} font-bold text-libra-navy ${isMobile ? 'mb-1' : 'mb-2'}`}>
                       Receba proposta gratuita
                     </h3>
-                    <p className="text-gray-600 text-sm leading-relaxed">
+                    <p className={`text-gray-600 ${isMobile ? 'text-xs' : 'text-sm'} leading-relaxed`}>
                       Proposta personalizada para realizar seus projetos
                     </p>
                   </div>
@@ -365,18 +365,18 @@ const Vantagens: React.FC = () => {
 
               {/* Passo 4 */}
               <div className="relative">
-                <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+                <div className={`bg-white rounded-xl ${isMobile ? 'p-4' : 'p-6'} shadow-sm hover:shadow-md transition-shadow border border-gray-100`}>
                   <div className="flex flex-col items-center text-center">
-                    <div className="w-16 h-16 bg-libra-blue/10 rounded-full flex items-center justify-center mb-4">
-                      <CreditCard className="w-8 h-8 text-libra-blue" />
+                    <div className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'} bg-libra-blue/10 rounded-full flex items-center justify-center ${isMobile ? 'mb-2' : 'mb-4'}`}>
+                      <CreditCard className={`${isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-libra-blue`} />
                     </div>
-                    <div className="bg-libra-blue text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mb-3">
+                    <div className={`bg-libra-blue text-white rounded-full ${isMobile ? 'w-6 h-6' : 'w-8 h-8'} flex items-center justify-center text-sm font-bold ${isMobile ? 'mb-2' : 'mb-3'}`}>
                       4
                     </div>
-                    <h3 className={`${isMobile ? 'text-lg' : 'text-xl'} font-bold text-libra-navy mb-2`}>
+                    <h3 className={`${isMobile ? 'text-sm' : 'text-xl'} font-bold text-libra-navy ${isMobile ? 'mb-1' : 'mb-2'}`}>
                       Dinheiro na conta
                     </h3>
-                    <p className="text-gray-600 text-sm leading-relaxed">
+                    <p className={`text-gray-600 ${isMobile ? 'text-xs' : 'text-sm'} leading-relaxed`}>
                       Assinatura, avaliação do imóvel e liberação do crédito
                     </p>
                   </div>
@@ -385,7 +385,7 @@ const Vantagens: React.FC = () => {
             </div>
 
             {/* Call to action dentro da seção de passos */}
-            <div className="text-center mt-8">
+            <div className={`text-center ${isMobile ? 'mt-6' : 'mt-8'}`}>
               <Button 
                 onClick={handleSimular}
                 size="lg"
@@ -397,26 +397,6 @@ const Vantagens: React.FC = () => {
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="py-12 bg-white border-t border-gray-200">
-          <div className="container mx-auto px-4">
-            <div className="text-center max-w-3xl mx-auto">
-              <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-libra-navy mb-4`}>
-                Viu as vantagens? Hora de agir!
-              </h2>
-              <p className={`${isMobile ? 'text-base' : 'text-lg'} text-gray-600 mb-6`}>
-                Use nossa tecnologia inteligente para simular suas condições personalizadas
-              </p>
-              <Button 
-                onClick={handleSimular}
-                size="lg"
-                className="bg-libra-blue text-white hover:bg-libra-navy font-semibold px-8 py-3 text-lg"
-              >
-                Simular Agora
-              </Button>
-            </div>
-          </div>
-        </section>
       </div>
     </MobileLayout>
   );
