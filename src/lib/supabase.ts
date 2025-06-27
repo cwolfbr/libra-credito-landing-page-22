@@ -419,6 +419,9 @@ export const supabaseApi = {
 
   // Upload de imagem para Supabase Storage
   async uploadBlogImage(file: File, fileName?: string): Promise<string> {
+    // Verificar se o bucket existe e criar se necessário
+    await this.ensureBlogImagesBucketExists();
+
     const fileExt = file.name.split('.').pop();
     const finalFileName = fileName || `${Date.now()}-${Math.random().toString(36).substr(2, 9)}.${fileExt}`;
     const filePath = `${new Date().getFullYear()}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${finalFileName}`;
@@ -438,6 +441,43 @@ export const supabaseApi = {
       .getPublicUrl(filePath);
 
     return publicURL.publicUrl;
+  },
+
+  // Garantir que o bucket blog-images existe
+  async ensureBlogImagesBucketExists(): Promise<void> {
+    try {
+      // Verificar se o bucket já existe
+      const { data: buckets, error: listError } = await supabase.storage.listBuckets();
+      
+      if (listError) {
+        console.warn('Erro ao listar buckets:', listError);
+        return; // Se não conseguir listar, assume que existe
+      }
+
+      const bucketExists = buckets?.some(bucket => bucket.name === 'blog-images');
+      
+      if (!bucketExists) {
+        console.log('Bucket blog-images não existe, criando...');
+        
+        // Criar o bucket
+        const { data: createData, error: createError } = await supabase.storage.createBucket('blog-images', {
+          public: true,
+          allowedMimeTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+          fileSizeLimit: 5242880 // 5MB
+        });
+
+        if (createError) {
+          console.error('Erro ao criar bucket blog-images:', createError);
+          throw new Error(`Falha ao criar bucket de imagens: ${createError.message}`);
+        }
+
+        console.log('Bucket blog-images criado com sucesso:', createData);
+      }
+    } catch (error) {
+      console.error('Erro ao verificar/criar bucket:', error);
+      // Não fazer throw aqui para não quebrar o upload se for um erro de permissão
+      // O upload vai tentar e se falhar, vai para o fallback local
+    }
   },
 
   async deleteBlogImage(imageUrl: string) {
