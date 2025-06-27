@@ -50,7 +50,7 @@ const BenefitsSection2: React.FC = () => {
             <div className="w-32 h-40 mx-auto rounded-xl overflow-hidden shadow-lg">
               <img 
                 src="/images/hero-professional.png" 
-                alt="Profissional sorrindo"
+                alt="Consultor especialista em simulação de crédito com garantia de imóvel"
                 className="w-full h-full object-cover"
               />
             </div>

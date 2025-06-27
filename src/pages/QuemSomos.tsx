@@ -81,7 +81,7 @@ const QuemSomos = () => {
               <div className="relative">
                 <ImageOptimizer
                     src="/images/media/timelibra.png"
-                    alt="Time Libra Crédito"
+                    alt="Equipe especialista Libra Crédito em home equity e garantia de imóvel"
                     className="rounded-lg shadow-xl"
                     aspectRatio={16/9}
                   />

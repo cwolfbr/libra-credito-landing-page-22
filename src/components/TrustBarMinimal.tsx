@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Shield, MapPin, Award } from 'lucide-react';
+import { Shield, MapPin, Clock } from 'lucide-react';
 
 const TrustBarMinimal: React.FC = () => {
   const [counters, setCounters] = useState({
@@ -34,7 +34,7 @@ const TrustBarMinimal: React.FC = () => {
 
     const targets = {
       cities: 3000,
-      satisfaction: 98,
+      satisfaction: 24,
       years: 5
     };
 
@@ -71,10 +71,10 @@ const TrustBarMinimal: React.FC = () => {
       label: 'Cidades Atendidas'
     },
     {
-      icon: Award,
+      icon: Clock,
       value: counters.satisfaction,
-      suffix: '%',
-      label: 'Satisfação'
+      suffix: 'h',
+      label: 'Para uma Pré-Proposta'
     },
     {
       icon: Shield,

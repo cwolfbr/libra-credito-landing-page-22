@@ -39,6 +39,7 @@ export class ImageUploadService {
   private static async uploadToSupabase(file: File): Promise<UploadResult> {
     try {
       const url = await supabaseApi.uploadBlogImage(file);
+      console.log('Upload Supabase realizado com sucesso:', url);
       return {
         url,
         fileName: file.name,
@@ -46,7 +47,10 @@ export class ImageUploadService {
       };
     } catch (error) {
       console.error('Erro no upload Supabase:', error);
-      throw new Error('Falha no upload para Supabase Storage');
+      
+      // Fornecer mensagem de erro mais específica
+      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
+      throw new Error(`Falha no upload para Supabase Storage: ${errorMessage}`);
     }
   }
 
@@ -266,6 +270,53 @@ export class ImageUploadService {
       };
     } catch {
       return { localCount: 0, localSizeMB: 0 };
+    }
+  }
+
+  /**
+   * Testar conectividade e funcionalidade do upload
+   */
+  static async testUploadSystem(): Promise<{
+    supabaseWorking: boolean;
+    localWorking: boolean;
+    bucketExists: boolean;
+    error?: string;
+  }> {
+    const result = {
+      supabaseWorking: false,
+      localWorking: false,
+      bucketExists: false,
+      error: undefined as string | undefined
+    };
+
+    try {
+      // Criar um arquivo de teste pequeno
+      const testFile = new File(['test-image-content'], 'test.jpg', { type: 'image/jpeg' });
+
+      // Testar armazenamento local
+      try {
+        await this.uploadToLocal(testFile);
+        result.localWorking = true;
+        console.log('✅ Armazenamento local funcionando');
+      } catch (error) {
+        console.error('❌ Armazenamento local com problemas:', error);
+      }
+
+      // Testar Supabase
+      try {
+        await this.uploadToSupabase(testFile);
+        result.supabaseWorking = true;
+        result.bucketExists = true;
+        console.log('✅ Supabase Storage funcionando');
+      } catch (error) {
+        console.error('❌ Supabase Storage com problemas:', error);
+        result.error = error instanceof Error ? error.message : 'Erro desconhecido no Supabase';
+      }
+
+      return result;
+    } catch (error) {
+      result.error = `Erro geral no teste: ${error instanceof Error ? error.message : 'Erro desconhecido'}`;
+      return result;
     }
   }
 }

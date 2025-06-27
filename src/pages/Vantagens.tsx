@@ -1,24 +1,126 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import MobileLayout from '@/components/MobileLayout';
 import WaveSeparator from '@/components/ui/WaveSeparator';
-import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
-import { TrendingDown, Clock, Calculator, ShieldCheck, Wallet, BadgeCheck } from 'lucide-react';
+import { TrendingDown, Clock, Calculator, ShieldCheck, Wallet, BadgeCheck, FileText, MessageCircle, CheckCircle, CreditCard } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const Vantagens: React.FC = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const [isTableVisible, setIsTableVisible] = useState(false);
+  const [animatedValues, setAnimatedValues] = useState<number[]>([]);
+
+  // Dados das taxas de juros (movido para cima e memoizado)
+  const taxasJuros = useMemo(() => [
+    {
+      nome: "Cartão de Crédito Rotativo",
+      taxa: 14.84,
+      destaque: false
+    },
+    {
+      nome: "Cheque Especial",
+      taxa: 6.74,
+      destaque: false
+    },
+    {
+      nome: "Crédito Pessoal",
+      taxa: 6.72,
+      destaque: false
+    },
+    {
+      nome: "Crédito Consignado",
+      taxa: 2.24,
+      destaque: false
+    },
+    {
+      nome: "Libra Crédito",
+      taxa: 1.19,
+      destaque: true
+    }
+  ], []);
+
+  // Cálculo do valor máximo para animação das barras
+  const maxTaxa = useMemo(() => Math.max(...taxasJuros.map(item => item.taxa)), [taxasJuros]);
 
   useEffect(() => {
-    document.title = "Vantagens | Libra Crédito | Benefícios do Crédito com Garantia";
+    // Meta Title otimizado para vantagens - 57 caracteres
+    document.title = "Vantagens Home Equity | Libra Crédito 1,19% a.m.";
     
+    // Meta Description otimizada - 153 caracteres
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Conheça as vantagens do crédito com garantia de imóvel: taxas mais baixas, prazos maiores e aprovação facilitada.');
+      metaDescription.setAttribute('content', 'Vantagens do crédito com garantia de imóvel: taxa mínima 1,19% a.m., até 180 meses, valores até 50% do imóvel. Compare as taxas agora.');
     }
   }, []);
+
+  // Animação das barras da tabela
+  useEffect(() => {
+    if (!isTableVisible) return;
+
+    // Inicializar valores em 0
+    setAnimatedValues(new Array(taxasJuros.length).fill(0));
+
+    // Animar cada barra sequencialmente com delay para garantir visibilidade
+    setTimeout(() => {
+      taxasJuros.forEach((item, index) => {
+        setTimeout(() => {
+          const targetValue = (item.taxa / maxTaxa) * 100;
+          let currentValue = 0;
+          const increment = targetValue / 20; // Reduzido para animação mais rápida
+          
+          const animationTimer = setInterval(() => {
+            currentValue += increment;
+            if (currentValue >= targetValue) {
+              currentValue = targetValue;
+              clearInterval(animationTimer);
+            }
+            
+            setAnimatedValues(prev => {
+              const newValues = [...prev];
+              newValues[index] = currentValue;
+              return newValues;
+            });
+          }, 50); // Aumentado para animação mais suave
+        }, index * 300); // Aumentado delay para melhor visualização
+      });
+    }, 500); // Delay inicial para garantir que a tabela foi renderizada
+  }, [isTableVisible, taxasJuros, maxTaxa]);
+
+  // Observer para detectar quando a tabela entra na tela
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !isTableVisible) {
+          setIsTableVisible(true);
+        }
+      },
+      { threshold: 0.1, rootMargin: '50px' }
+    );
+
+    // Usar timeout para garantir que os elementos foram renderizados
+    setTimeout(() => {
+      const desktopTable = document.getElementById('comparison-table-desktop');
+      const mobileTable = document.getElementById('comparison-table-mobile');
+      
+      if (desktopTable) {
+        observer.observe(desktopTable);
+      }
+      if (mobileTable) {
+        observer.observe(mobileTable);
+      }
+      
+      // Fallback: se não detectar em 3 segundos, ativar animação
+      setTimeout(() => {
+        if (!isTableVisible) {
+          setIsTableVisible(true);
+        }
+      }, 3000);
+    }, 100);
+
+    return () => observer.disconnect();
+  }, [isTableVisible]);
 
   const vantagens = [
     {
@@ -59,39 +161,9 @@ const Vantagens: React.FC = () => {
     }
   ];
 
-  const taxasJuros = [
-    {
-      nome: "Libra Crédito",
-      taxa: 1.19,
-      destaque: true
-    },
-    {
-      nome: "Crédito Consignado",
-      taxa: 2.24,
-      destaque: false
-    },
-    {
-      nome: "Crédito Pessoal",
-      taxa: 6.72,
-      destaque: false
-    },
-    {
-      nome: "Cheque Especial",
-      taxa: 6.74,
-      destaque: false
-    },
-    {
-      nome: "Cartão de Crédito Rotativo",
-      taxa: 14.84,
-      destaque: false
-    }
-  ];
-
   const handleSimular = () => {
     navigate('/simulacao');
   };
-
-  const maxTaxa = Math.max(...taxasJuros.map(item => item.taxa));
 
   return (
     <MobileLayout>
@@ -141,7 +213,7 @@ const Vantagens: React.FC = () => {
               {/* Comparativo de Taxas - apenas desktop */}
               {!isMobile && (
                 <div className="lg:col-span-7">
-                  <div className="bg-white rounded-lg shadow-lg p-6">
+                  <div id="comparison-table-desktop" className="bg-white rounded-lg shadow-lg p-6">
                     <h2 className="text-xl font-bold text-libra-navy mb-2">Comparativo de Taxas de Juros</h2>
                     <p className="text-sm text-gray-500 mb-4">Fonte: Dados abertos do BACEN - Janeiro 2025</p>
                     <div className="space-y-3">
@@ -155,14 +227,19 @@ const Vantagens: React.FC = () => {
                               {item.taxa.toFixed(2)}% a.m.
                             </span>
                           </div>
-                          <Progress 
-                            value={(item.taxa / maxTaxa) * 100} 
-                            className={`h-3 rounded-full bg-gray-100 [&>div]:transition-all ${
-                              item.destaque 
-                                ? '[&>div]:bg-libra-navy' 
-                                : '[&>div]:bg-red-400/70'
-                            }`}
-                          />
+                          <div className="h-3 rounded-full bg-gray-100 overflow-hidden">
+                            <div 
+                              className={`h-full transition-all duration-500 ease-out ${
+                                item.destaque 
+                                  ? 'bg-libra-navy' 
+                                  : 'bg-red-400/70'
+                              }`}
+                              style={{ 
+                                width: `${animatedValues[index] || (isTableVisible ? ((item.taxa / maxTaxa) * 100) : 0)}%`,
+                                minWidth: animatedValues[index] || (isTableVisible ? '2px' : '0px')
+                              }}
+                            />
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -179,7 +256,7 @@ const Vantagens: React.FC = () => {
             <WaveSeparator variant="hero" height="md" />
             <div className="py-8" style={{ backgroundColor: '#003399' }}>
               <div className="container mx-auto px-4">
-                <div className="bg-white rounded-lg shadow-lg p-4">
+                <div id="comparison-table-mobile" className="bg-white rounded-lg shadow-lg p-4">
                   <h2 className="text-lg font-bold text-libra-navy mb-2">Comparativo de Taxas de Juros</h2>
                   <p className="text-sm text-gray-500 mb-4">Fonte: Dados abertos do BACEN - Janeiro 2025</p>
                   <div className="space-y-3">
@@ -193,14 +270,19 @@ const Vantagens: React.FC = () => {
                             {item.taxa.toFixed(2)}% a.m.
                           </span>
                         </div>
-                        <Progress 
-                          value={(item.taxa / maxTaxa) * 100} 
-                          className={`h-2 rounded-full bg-gray-100 [&>div]:transition-all ${
-                            item.destaque 
-                              ? '[&>div]:bg-libra-navy' 
-                              : '[&>div]:bg-red-400/70'
-                          }`}
-                        />
+                        <div className="h-2 rounded-full bg-gray-100 overflow-hidden">
+                          <div 
+                            className={`h-full transition-all duration-500 ease-out ${
+                              item.destaque 
+                                ? 'bg-libra-navy' 
+                                : 'bg-red-400/70'
+                            }`}
+                            style={{ 
+                              width: `${animatedValues[index] || (isTableVisible ? ((item.taxa / maxTaxa) * 100) : 0)}%`,
+                              minWidth: animatedValues[index] || (isTableVisible ? '2px' : '0px')
+                            }}
+                          />
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -211,26 +293,134 @@ const Vantagens: React.FC = () => {
           </>
         )}
 
-        {/* CTA Section */}
-        <section className="py-12 bg-white border-t border-gray-200">
+        {/* Seção de Passos para Obter Crédito */}
+        <section className={`${isMobile ? 'py-6' : 'py-12'} bg-white`}>
           <div className="container mx-auto px-4">
-            <div className="text-center max-w-3xl mx-auto">
-              <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-libra-navy mb-4`}>
-                Viu as vantagens? Hora de agir!
+            <div className="text-center mb-6">
+              <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-libra-navy mb-3`}>
+                Como obter seu crédito em 4 passos simples
               </h2>
-              <p className={`${isMobile ? 'text-base' : 'text-lg'} text-gray-600 mb-6`}>
-                Use nossa tecnologia inteligente para simular suas condições personalizadas
+              <p className={`${isMobile ? 'text-base' : 'text-lg'} text-gray-600 max-w-2xl mx-auto`}>
+                Processo rápido e descomplicado para realizar seus projetos
               </p>
+            </div>
+
+            <div className={`grid ${isMobile ? 'grid-cols-2 gap-4' : 'grid-cols-2 lg:grid-cols-4 gap-6'}`}>
+              {/* Passo 1 */}
+              <div className="relative">
+                <div className={`bg-white rounded-xl ${isMobile ? 'p-4' : 'p-6'} shadow-sm hover:shadow-md transition-shadow border border-gray-100`}>
+                  <div className="flex flex-col items-center text-center">
+                    <div className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'} bg-libra-blue/10 rounded-full flex items-center justify-center ${isMobile ? 'mb-2' : 'mb-4'}`}>
+                      <FileText className={`${isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-libra-blue`} />
+                    </div>
+                    <div className={`bg-libra-blue text-white rounded-full ${isMobile ? 'w-6 h-6' : 'w-8 h-8'} flex items-center justify-center text-sm font-bold ${isMobile ? 'mb-2' : 'mb-3'}`}>
+                      1
+                    </div>
+                    <h3 className={`${isMobile ? 'text-sm' : 'text-xl'} font-bold text-libra-navy ${isMobile ? 'mb-1' : 'mb-2'}`}>
+                      Faça uma simulação
+                    </h3>
+                    <p className={`text-gray-600 ${isMobile ? 'text-xs' : 'text-sm'} leading-relaxed`}>
+                      Simule gratuitamente suas condições personalizadas
+                    </p>
+                  </div>
+                </div>
+                {!isMobile && (
+                  <div className="hidden lg:block absolute top-1/2 -right-3 transform -translate-y-1/2 text-libra-blue">
+                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                )}
+              </div>
+
+              {/* Passo 2 */}
+              <div className="relative">
+                <div className={`bg-white rounded-xl ${isMobile ? 'p-4' : 'p-6'} shadow-sm hover:shadow-md transition-shadow border border-gray-100`}>
+                  <div className="flex flex-col items-center text-center">
+                    <div className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'} bg-libra-blue/10 rounded-full flex items-center justify-center ${isMobile ? 'mb-2' : 'mb-4'}`}>
+                      <MessageCircle className={`${isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-libra-blue`} />
+                    </div>
+                    <div className={`bg-libra-blue text-white rounded-full ${isMobile ? 'w-6 h-6' : 'w-8 h-8'} flex items-center justify-center text-sm font-bold ${isMobile ? 'mb-2' : 'mb-3'}`}>
+                      2
+                    </div>
+                    <h3 className={`${isMobile ? 'text-sm' : 'text-xl'} font-bold text-libra-navy ${isMobile ? 'mb-1' : 'mb-2'}`}>
+                      Fale com o consultor
+                    </h3>
+                    <p className={`text-gray-600 ${isMobile ? 'text-xs' : 'text-sm'} leading-relaxed`}>
+                      Converse com nosso especialista e envie sua documentação
+                    </p>
+                  </div>
+                </div>
+                {!isMobile && (
+                  <div className="hidden lg:block absolute top-1/2 -right-3 transform -translate-y-1/2 text-libra-blue">
+                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                )}
+              </div>
+
+              {/* Passo 3 */}
+              <div className="relative">
+                <div className={`bg-white rounded-xl ${isMobile ? 'p-4' : 'p-6'} shadow-sm hover:shadow-md transition-shadow border border-gray-100`}>
+                  <div className="flex flex-col items-center text-center">
+                    <div className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'} bg-libra-blue/10 rounded-full flex items-center justify-center ${isMobile ? 'mb-2' : 'mb-4'}`}>
+                      <CheckCircle className={`${isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-libra-blue`} />
+                    </div>
+                    <div className={`bg-libra-blue text-white rounded-full ${isMobile ? 'w-6 h-6' : 'w-8 h-8'} flex items-center justify-center text-sm font-bold ${isMobile ? 'mb-2' : 'mb-3'}`}>
+                      3
+                    </div>
+                    <h3 className={`${isMobile ? 'text-sm' : 'text-xl'} font-bold text-libra-navy ${isMobile ? 'mb-1' : 'mb-2'}`}>
+                      Receba proposta gratuita
+                    </h3>
+                    <p className={`text-gray-600 ${isMobile ? 'text-xs' : 'text-sm'} leading-relaxed`}>
+                      Proposta personalizada para realizar seus projetos
+                    </p>
+                  </div>
+                </div>
+                {!isMobile && (
+                  <div className="hidden lg:block absolute top-1/2 -right-3 transform -translate-y-1/2 text-libra-blue">
+                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                )}
+              </div>
+
+              {/* Passo 4 */}
+              <div className="relative">
+                <div className={`bg-white rounded-xl ${isMobile ? 'p-4' : 'p-6'} shadow-sm hover:shadow-md transition-shadow border border-gray-100`}>
+                  <div className="flex flex-col items-center text-center">
+                    <div className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'} bg-libra-blue/10 rounded-full flex items-center justify-center ${isMobile ? 'mb-2' : 'mb-4'}`}>
+                      <CreditCard className={`${isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-libra-blue`} />
+                    </div>
+                    <div className={`bg-libra-blue text-white rounded-full ${isMobile ? 'w-6 h-6' : 'w-8 h-8'} flex items-center justify-center text-sm font-bold ${isMobile ? 'mb-2' : 'mb-3'}`}>
+                      4
+                    </div>
+                    <h3 className={`${isMobile ? 'text-sm' : 'text-xl'} font-bold text-libra-navy ${isMobile ? 'mb-1' : 'mb-2'}`}>
+                      Dinheiro na conta
+                    </h3>
+                    <p className={`text-gray-600 ${isMobile ? 'text-xs' : 'text-sm'} leading-relaxed`}>
+                      Assinatura, avaliação do imóvel e liberação do crédito
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Call to action dentro da seção de passos */}
+            <div className={`text-center ${isMobile ? 'mt-6' : 'mt-8'}`}>
               <Button 
                 onClick={handleSimular}
                 size="lg"
-                className="bg-libra-blue text-white hover:bg-libra-navy font-semibold px-8 py-3 text-lg"
+                className="bg-libra-blue text-white hover:bg-libra-navy font-semibold px-8 py-3 text-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5"
               >
-                Simular Agora
+                Começar agora - É grátis
               </Button>
             </div>
           </div>
         </section>
+
       </div>
     </MobileLayout>
   );
