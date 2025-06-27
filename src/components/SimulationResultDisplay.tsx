@@ -225,62 +225,72 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
         </Button>
       </div>
 
-      {/* Valor da parcela e Renda mínima empilhados */}
-      <div className="grid grid-cols-1 gap-3 mb-3">
-        {/* Valor da parcela destacado */}
-        <div className="bg-white rounded-lg p-4">
-          {amortizacao === 'SAC' && primeiraParcela ? (
-            <div>
-              <div className="text-xs text-libra-navy mb-3 text-center">Sistema SAC - Parcelas Decrescentes</div>
-              <div className="grid grid-cols-2 gap-4">
-                {/* Primeira parcela - destaque maior */}
-                <div className="text-center bg-libra-light rounded-lg p-4 border-2 border-libra-blue/30">
-                  <div className="text-sm font-medium text-libra-blue mb-2">1ª Parcela</div>
-                  <div className="text-xl font-bold text-libra-navy">
-                    R$ {primeiraParcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                  </div>
-                  <div className="text-xs text-gray-600 mt-2">Maior valor</div>
+      {/* Valor da parcela e renda mínima em layout compacto */}
+      <div className="mb-3">
+        {amortizacao === 'SAC' && primeiraParcela ? (
+          <div className="bg-white rounded-lg p-3">
+            <div className="text-xs text-libra-navy mb-2 text-center">Sistema SAC - Parcelas Decrescentes</div>
+            <div className="grid grid-cols-3 gap-2">
+              {/* Primeira parcela */}
+              <div className="text-center bg-libra-light rounded-lg p-2 border border-libra-blue/30">
+                <div className="text-xs font-medium text-libra-blue mb-1">1ª Parcela</div>
+                <div className="text-lg font-bold text-libra-navy">
+                  R$ {primeiraParcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                 </div>
-                {/* Última parcela */}
-                <div className="text-center bg-libra-light rounded-lg p-4 border border-libra-blue/20">
-                  <div className="text-sm font-medium text-libra-blue mb-2">Última Parcela</div>
-                  <div className="text-lg font-bold text-libra-navy">
-                    R$ {ultimaParcela?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                  </div>
-                  <div className="text-xs text-gray-600 mt-2">Menor valor</div>
+                <div className="text-xs text-gray-600">Maior valor</div>
+              </div>
+              {/* Última parcela */}
+              <div className="text-center bg-libra-light rounded-lg p-2 border border-libra-blue/20">
+                <div className="text-xs font-medium text-libra-blue mb-1">Última Parcela</div>
+                <div className="text-base font-bold text-libra-navy">
+                  R$ {ultimaParcela?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                </div>
+                <div className="text-xs text-gray-600">Menor valor</div>
+              </div>
+              {/* Renda mínima */}
+              <div className="text-center rounded-lg p-2 border border-libra-blue/20">
+                <div className="text-xs text-gray-600 mb-1 flex items-center justify-center gap-1">
+                  <span>Renda necessária</span>
+                  <TooltipInfo content="Renda familiar podendo ser composta por até 4 pessoas">
+                    <Users className="w-3 h-3" />
+                  </TooltipInfo>
+                  <TooltipInfo content="Informações sobre comprovação de renda">
+                    <Info className="w-3 h-3" />
+                  </TooltipInfo>
+                </div>
+                <div className="text-base font-bold text-libra-navy">
+                  R$ {rendaMinima.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                </div>
+                <div className="mt-1 text-xs">
+                  <SwitchPriceTip onSwitchToPrice={onSwitchToPrice} />
                 </div>
               </div>
             </div>
-          ) : (
-            <div className="text-center">
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-3">
+            <div className="bg-white rounded-lg p-4 text-center">
               <div className="text-xs text-gray-600 mb-1">Parcela Fixa (PRICE)</div>
               <div className="text-xl lg:text-2xl font-bold text-libra-navy">
                 R$ {valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
               </div>
             </div>
-          )}
-        </div>
-
-        {/* Renda mínima */}
-        <div className="bg-white rounded-lg p-4 text-center relative">
-          <div className="text-xs text-gray-600 mb-1 flex items-center justify-center gap-1">
-            <span>Renda necessária</span>
-            <TooltipInfo content="Renda familiar podendo ser composta por até 4 pessoas">
-              <Users className="w-3 h-3" />
-            </TooltipInfo>
-            <TooltipInfo content="Informações sobre comprovação de renda">
-              <Info className="w-3 h-3" />
-            </TooltipInfo>
-          </div>
-          <div className="text-xl lg:text-2xl font-bold text-libra-navy">
-            R$ {rendaMinima.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-          </div>
-          {amortizacao === 'SAC' && (
-            <div className="text-xs mt-3">
-              <SwitchPriceTip onSwitchToPrice={onSwitchToPrice} />
+            <div className="bg-white rounded-lg p-4 text-center relative">
+              <div className="text-xs text-gray-600 mb-1 flex items-center justify-center gap-1">
+                <span>Renda necessária</span>
+                <TooltipInfo content="Renda familiar podendo ser composta por até 4 pessoas">
+                  <Users className="w-3 h-3" />
+                </TooltipInfo>
+                <TooltipInfo content="Informações sobre comprovação de renda">
+                  <Info className="w-3 h-3" />
+                </TooltipInfo>
+              </div>
+              <div className="text-xl lg:text-2xl font-bold text-libra-navy">
+                R$ {rendaMinima.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+              </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
 
