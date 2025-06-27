@@ -65,7 +65,7 @@ const SwitchPriceTip: React.FC<{ onSwitchToPrice?: () => void }> = ({
         Diminua a Parcela
       </div>
       {showTip && (
-        <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-60 px-3 py-2 bg-yellow-50 text-libra-navy rounded-lg shadow-lg text-center z-10">
+        <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-60 px-3 py-2 bg-libra-light text-libra-navy rounded-lg shadow-lg text-center z-10">
           <div className="text-xs mb-2">Na tabela PRICE a renda necessária é menor!</div>
           {onSwitchToPrice && (
             <Button
