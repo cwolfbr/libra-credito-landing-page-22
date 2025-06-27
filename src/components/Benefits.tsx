@@ -132,16 +132,17 @@ const Benefits: React.FC = () => {
                   if (testimonialsSection) {
                     // Procura pelo vídeo especificamente dentro da seção de testimonials
                     const videoContainer = testimonialsSection.querySelector('.aspect-video');
+                    const extraOffset = window.innerHeight * 0.15; // Deslocamento adicional de 15%
                     if (videoContainer) {
                       const videoPosition = videoContainer.getBoundingClientRect().top;
                       const videoHeight = videoContainer.getBoundingClientRect().height;
                       const windowHeight = window.innerHeight;
                       const headerOffset = 120;
-                      
+
                       // Calcula a posição para centralizar o vídeo na tela
                       const centerOffset = (windowHeight - videoHeight) / 2;
-                      const targetPosition = videoPosition + window.pageYOffset - centerOffset - headerOffset;
-                      
+                      const targetPosition = videoPosition + window.pageYOffset - centerOffset - headerOffset + extraOffset;
+
                       window.scrollTo({
                         top: targetPosition,
                         behavior: 'smooth'
@@ -150,8 +151,8 @@ const Benefits: React.FC = () => {
                       // Fallback para a seção inteira se não encontrar o vídeo
                       const headerOffset = 120;
                       const elementPosition = testimonialsSection.getBoundingClientRect().top;
-                      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                      
+                      const offsetPosition = elementPosition + window.pageYOffset - headerOffset + extraOffset;
+
                       window.scrollTo({
                         top: offsetPosition,
                         behavior: 'smooth'
