@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import MobileLayout from '@/components/MobileLayout';
 import WaveSeparator from '@/components/ui/WaveSeparator';
 import { Button } from '@/components/ui/button';
@@ -12,8 +12,8 @@ const Vantagens: React.FC = () => {
   const [isTableVisible, setIsTableVisible] = useState(false);
   const [animatedValues, setAnimatedValues] = useState<number[]>([]);
 
-  // Dados das taxas de juros (movido para cima)
-  const taxasJuros = [
+  // Dados das taxas de juros (movido para cima e memoizado)
+  const taxasJuros = useMemo(() => [
     {
       nome: "Cartão de Crédito Rotativo",
       taxa: 14.84,
@@ -39,9 +39,10 @@ const Vantagens: React.FC = () => {
       taxa: 1.19,
       destaque: true
     }
-  ];
+  ], []);
 
-  const maxTaxa = Math.max(...taxasJuros.map(item => item.taxa));
+  // Cálculo do valor máximo para animação das barras
+  const maxTaxa = useMemo(() => Math.max(...taxasJuros.map(item => item.taxa)), [taxasJuros]);
 
   useEffect(() => {
     document.title = "Vantagens | Libra Crédito | Benefícios do Crédito com Garantia";
@@ -59,28 +60,30 @@ const Vantagens: React.FC = () => {
     // Inicializar valores em 0
     setAnimatedValues(new Array(taxasJuros.length).fill(0));
 
-    // Animar cada barra sequencialmente
-    taxasJuros.forEach((item, index) => {
-      setTimeout(() => {
-        const targetValue = (item.taxa / maxTaxa) * 100;
-        let currentValue = 0;
-        const increment = targetValue / 30; // 30 frames de animação
-        
-        const animationTimer = setInterval(() => {
-          currentValue += increment;
-          if (currentValue >= targetValue) {
-            currentValue = targetValue;
-            clearInterval(animationTimer);
-          }
+    // Animar cada barra sequencialmente com delay para garantir visibilidade
+    setTimeout(() => {
+      taxasJuros.forEach((item, index) => {
+        setTimeout(() => {
+          const targetValue = (item.taxa / maxTaxa) * 100;
+          let currentValue = 0;
+          const increment = targetValue / 20; // Reduzido para animação mais rápida
           
-          setAnimatedValues(prev => {
-            const newValues = [...prev];
-            newValues[index] = currentValue;
-            return newValues;
-          });
-        }, 30); // 30ms por frame
-      }, index * 200); // Delay escalonado de 200ms entre cada barra
-    });
+          const animationTimer = setInterval(() => {
+            currentValue += increment;
+            if (currentValue >= targetValue) {
+              currentValue = targetValue;
+              clearInterval(animationTimer);
+            }
+            
+            setAnimatedValues(prev => {
+              const newValues = [...prev];
+              newValues[index] = currentValue;
+              return newValues;
+            });
+          }, 50); // Aumentado para animação mais suave
+        }, index * 300); // Aumentado delay para melhor visualização
+      });
+    }, 500); // Delay inicial para garantir que a tabela foi renderizada
   }, [isTableVisible, taxasJuros, maxTaxa]);
 
   // Observer para detectar quando a tabela entra na tela
@@ -91,15 +94,28 @@ const Vantagens: React.FC = () => {
           setIsTableVisible(true);
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0.1, rootMargin: '50px' }
     );
 
-    // Observar ambas as tabelas (desktop e mobile)
-    const desktopTable = document.getElementById('comparison-table-desktop');
-    const mobileTable = document.getElementById('comparison-table-mobile');
-    
-    if (desktopTable) observer.observe(desktopTable);
-    if (mobileTable) observer.observe(mobileTable);
+    // Usar timeout para garantir que os elementos foram renderizados
+    setTimeout(() => {
+      const desktopTable = document.getElementById('comparison-table-desktop');
+      const mobileTable = document.getElementById('comparison-table-mobile');
+      
+      if (desktopTable) {
+        observer.observe(desktopTable);
+      }
+      if (mobileTable) {
+        observer.observe(mobileTable);
+      }
+      
+      // Fallback: se não detectar em 3 segundos, ativar animação
+      setTimeout(() => {
+        if (!isTableVisible) {
+          setIsTableVisible(true);
+        }
+      }, 3000);
+    }, 100);
 
     return () => observer.disconnect();
   }, [isTableVisible]);
@@ -211,12 +227,15 @@ const Vantagens: React.FC = () => {
                           </div>
                           <div className="h-3 rounded-full bg-gray-100 overflow-hidden">
                             <div 
-                              className={`h-full transition-all duration-300 ease-out ${
+                              className={`h-full transition-all duration-500 ease-out ${
                                 item.destaque 
                                   ? 'bg-libra-navy' 
                                   : 'bg-red-400/70'
                               }`}
-                              style={{ width: `${animatedValues[index] || 0}%` }}
+                              style={{ 
+                                width: `${animatedValues[index] || (isTableVisible ? ((item.taxa / maxTaxa) * 100) : 0)}%`,
+                                minWidth: animatedValues[index] || (isTableVisible ? '2px' : '0px')
+                              }}
                             />
                           </div>
                         </div>
@@ -251,12 +270,15 @@ const Vantagens: React.FC = () => {
                         </div>
                         <div className="h-2 rounded-full bg-gray-100 overflow-hidden">
                           <div 
-                            className={`h-full transition-all duration-300 ease-out ${
+                            className={`h-full transition-all duration-500 ease-out ${
                               item.destaque 
                                 ? 'bg-libra-navy' 
                                 : 'bg-red-400/70'
                             }`}
-                            style={{ width: `${animatedValues[index] || 0}%` }}
+                            style={{ 
+                              width: `${animatedValues[index] || (isTableVisible ? ((item.taxa / maxTaxa) * 100) : 0)}%`,
+                              minWidth: animatedValues[index] || (isTableVisible ? '2px' : '0px')
+                            }}
                           />
                         </div>
                       </div>
