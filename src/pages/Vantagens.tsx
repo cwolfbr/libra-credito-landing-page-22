@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import MobileLayout from '@/components/MobileLayout';
 import WaveSeparator from '@/components/ui/WaveSeparator';
 import { Progress } from '@/components/ui/progress';
@@ -10,6 +10,39 @@ import { useIsMobile } from '@/hooks/use-mobile';
 const Vantagens: React.FC = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const [isTableVisible, setIsTableVisible] = useState(false);
+  const [animatedValues, setAnimatedValues] = useState<number[]>([]);
+
+  // Dados das taxas de juros (movido para cima)
+  const taxasJuros = [
+    {
+      nome: "Cartão de Crédito Rotativo",
+      taxa: 14.84,
+      destaque: false
+    },
+    {
+      nome: "Cheque Especial",
+      taxa: 6.74,
+      destaque: false
+    },
+    {
+      nome: "Crédito Pessoal",
+      taxa: 6.72,
+      destaque: false
+    },
+    {
+      nome: "Crédito Consignado",
+      taxa: 2.24,
+      destaque: false
+    },
+    {
+      nome: "Libra Crédito",
+      taxa: 1.19,
+      destaque: true
+    }
+  ];
+
+  const maxTaxa = Math.max(...taxasJuros.map(item => item.taxa));
 
   useEffect(() => {
     document.title = "Vantagens | Libra Crédito | Benefícios do Crédito com Garantia";
@@ -19,6 +52,58 @@ const Vantagens: React.FC = () => {
       metaDescription.setAttribute('content', 'Conheça as vantagens do crédito com garantia de imóvel: taxas mais baixas, prazos maiores e aprovação facilitada.');
     }
   }, []);
+
+  // Animação das barras da tabela
+  useEffect(() => {
+    if (!isTableVisible) return;
+
+    // Inicializar valores em 0
+    setAnimatedValues(new Array(taxasJuros.length).fill(0));
+
+    // Animar cada barra sequencialmente
+    taxasJuros.forEach((item, index) => {
+      setTimeout(() => {
+        const targetValue = (item.taxa / maxTaxa) * 100;
+        let currentValue = 0;
+        const increment = targetValue / 30; // 30 frames de animação
+        
+        const animationTimer = setInterval(() => {
+          currentValue += increment;
+          if (currentValue >= targetValue) {
+            currentValue = targetValue;
+            clearInterval(animationTimer);
+          }
+          
+          setAnimatedValues(prev => {
+            const newValues = [...prev];
+            newValues[index] = currentValue;
+            return newValues;
+          });
+        }, 30); // 30ms por frame
+      }, index * 200); // Delay escalonado de 200ms entre cada barra
+    });
+  }, [isTableVisible, taxasJuros, maxTaxa]);
+
+  // Observer para detectar quando a tabela entra na tela
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !isTableVisible) {
+          setIsTableVisible(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    // Observar ambas as tabelas (desktop e mobile)
+    const desktopTable = document.getElementById('comparison-table-desktop');
+    const mobileTable = document.getElementById('comparison-table-mobile');
+    
+    if (desktopTable) observer.observe(desktopTable);
+    if (mobileTable) observer.observe(mobileTable);
+
+    return () => observer.disconnect();
+  }, [isTableVisible]);
 
   const vantagens = [
     {
@@ -59,39 +144,9 @@ const Vantagens: React.FC = () => {
     }
   ];
 
-  const taxasJuros = [
-    {
-      nome: "Libra Crédito",
-      taxa: 1.19,
-      destaque: true
-    },
-    {
-      nome: "Crédito Consignado",
-      taxa: 2.24,
-      destaque: false
-    },
-    {
-      nome: "Crédito Pessoal",
-      taxa: 6.72,
-      destaque: false
-    },
-    {
-      nome: "Cheque Especial",
-      taxa: 6.74,
-      destaque: false
-    },
-    {
-      nome: "Cartão de Crédito Rotativo",
-      taxa: 14.84,
-      destaque: false
-    }
-  ];
-
   const handleSimular = () => {
     navigate('/simulacao');
   };
-
-  const maxTaxa = Math.max(...taxasJuros.map(item => item.taxa));
 
   return (
     <MobileLayout>
@@ -141,7 +196,7 @@ const Vantagens: React.FC = () => {
               {/* Comparativo de Taxas - apenas desktop */}
               {!isMobile && (
                 <div className="lg:col-span-7">
-                  <div className="bg-white rounded-lg shadow-lg p-6">
+                  <div id="comparison-table-desktop" className="bg-white rounded-lg shadow-lg p-6">
                     <h2 className="text-xl font-bold text-libra-navy mb-2">Comparativo de Taxas de Juros</h2>
                     <p className="text-sm text-gray-500 mb-4">Fonte: Dados abertos do BACEN - Janeiro 2025</p>
                     <div className="space-y-3">
@@ -156,8 +211,8 @@ const Vantagens: React.FC = () => {
                             </span>
                           </div>
                           <Progress 
-                            value={(item.taxa / maxTaxa) * 100} 
-                            className={`h-3 rounded-full bg-gray-100 [&>div]:transition-all ${
+                            value={animatedValues[index] || 0} 
+                            className={`h-3 rounded-full bg-gray-100 [&>div]:transition-all [&>div]:duration-300 ${
                               item.destaque 
                                 ? '[&>div]:bg-libra-navy' 
                                 : '[&>div]:bg-red-400/70'
@@ -179,7 +234,7 @@ const Vantagens: React.FC = () => {
             <WaveSeparator variant="hero" height="md" />
             <div className="py-8" style={{ backgroundColor: '#003399' }}>
               <div className="container mx-auto px-4">
-                <div className="bg-white rounded-lg shadow-lg p-4">
+                <div id="comparison-table-mobile" className="bg-white rounded-lg shadow-lg p-4">
                   <h2 className="text-lg font-bold text-libra-navy mb-2">Comparativo de Taxas de Juros</h2>
                   <p className="text-sm text-gray-500 mb-4">Fonte: Dados abertos do BACEN - Janeiro 2025</p>
                   <div className="space-y-3">
@@ -194,8 +249,8 @@ const Vantagens: React.FC = () => {
                           </span>
                         </div>
                         <Progress 
-                          value={(item.taxa / maxTaxa) * 100} 
-                          className={`h-2 rounded-full bg-gray-100 [&>div]:transition-all ${
+                          value={animatedValues[index] || 0} 
+                          className={`h-2 rounded-full bg-gray-100 [&>div]:transition-all [&>div]:duration-300 ${
                             item.destaque 
                               ? '[&>div]:bg-libra-navy' 
                               : '[&>div]:bg-red-400/70'
