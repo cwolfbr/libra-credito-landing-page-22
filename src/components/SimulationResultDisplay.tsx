@@ -47,6 +47,43 @@ const TooltipInfo: React.FC<{ children: React.ReactNode; content: string }> = ({
 };
 
 /**
+ * Mostra dica para trocar para PRICE quando a renda fica alta
+ */
+const SwitchPriceTip: React.FC<{ onSwitchToPrice?: () => void }> = ({
+  onSwitchToPrice,
+}) => {
+  const [showTip, setShowTip] = useState(false);
+  return (
+    <div className="relative inline-block text-libra-navy">
+      <div
+        onMouseEnter={() => setShowTip(true)}
+        onMouseLeave={() => setShowTip(false)}
+        onClick={() => setShowTip(!showTip)}
+        className="cursor-pointer font-medium flex items-center gap-1"
+      >
+        <span role="img" aria-label="dica">💡</span>
+        Diminua a Parcela
+      </div>
+      {showTip && (
+        <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-60 px-3 py-2 bg-yellow-50 text-libra-navy rounded-lg shadow-lg text-center z-10">
+          <div className="text-xs mb-2">Na tabela PRICE a renda necessária é menor!</div>
+          {onSwitchToPrice && (
+            <Button
+              onClick={onSwitchToPrice}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs py-1"
+              size="sm"
+            >
+              <TrendingUp className="w-3 h-3 mr-1" />
+              Ver simulação PRICE
+            </Button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+/**
  * Componente otimizado para exibir resultado da simulação com layout responsivo
  */
 const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
@@ -133,22 +170,7 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
           </div>
           {amortizacao === 'SAC' && (
             <div className="text-xs mt-2">
-              <div className="bg-yellow-500/90 text-yellow-900 rounded-lg p-2 mb-2">
-                <div className="font-medium">💡 Renda muito alta?</div>
-                <div className="text-xs mt-1">
-                  Na tabela PRICE a renda necessária é menor!
-                </div>
-              </div>
-              {onSwitchToPrice && (
-                <Button
-                  onClick={onSwitchToPrice}
-                  className="w-full bg-white/20 hover:bg-white/30 text-white border border-white/30 text-xs py-2"
-                  size="sm"
-                >
-                  <TrendingUp className="w-3 h-3 mr-1" />
-                  Ver simulação PRICE
-                </Button>
-              )}
+              <SwitchPriceTip onSwitchToPrice={onSwitchToPrice} />
             </div>
           )}
         </div>
@@ -199,8 +221,8 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
         </Button>
       </div>
 
-      {/* Valor da parcela e Renda mínima lado a lado */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+      {/* Valor da parcela e Renda mínima empilhados */}
+      <div className="grid grid-cols-1 gap-4 mb-4">
         {/* Valor da parcela destacado */}
         <div className="bg-white rounded-lg p-4">
           {amortizacao === 'SAC' && primeiraParcela ? (
@@ -251,22 +273,7 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
           </div>
           {amortizacao === 'SAC' && (
             <div className="text-xs mt-3">
-              <div className="bg-yellow-100 text-yellow-800 rounded-lg p-2 mb-2 border border-yellow-200">
-                <div className="font-medium">💡 Renda muito alta?</div>
-                <div className="text-xs mt-1">
-                  Na tabela PRICE a renda necessária é menor!
-                </div>
-              </div>
-              {onSwitchToPrice && (
-                <Button
-                  onClick={onSwitchToPrice}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs py-2"
-                  size="sm"
-                >
-                  <TrendingUp className="w-3 h-3 mr-1" />
-                  Ver simulação PRICE
-                </Button>
-              )}
+              <SwitchPriceTip onSwitchToPrice={onSwitchToPrice} />
             </div>
           )}
         </div>
