@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import MobileLayout from '@/components/MobileLayout';
 import WaveSeparator from '@/components/ui/WaveSeparator';
-import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
 import { TrendingDown, Clock, Calculator, ShieldCheck, Wallet, BadgeCheck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -210,14 +209,16 @@ const Vantagens: React.FC = () => {
                               {item.taxa.toFixed(2)}% a.m.
                             </span>
                           </div>
-                          <Progress 
-                            value={animatedValues[index] || 0} 
-                            className={`h-3 rounded-full bg-gray-100 [&>div]:transition-all [&>div]:duration-300 ${
-                              item.destaque 
-                                ? '[&>div]:bg-libra-navy' 
-                                : '[&>div]:bg-red-400/70'
-                            }`}
-                          />
+                          <div className="h-3 rounded-full bg-gray-100 overflow-hidden">
+                            <div 
+                              className={`h-full transition-all duration-300 ease-out ${
+                                item.destaque 
+                                  ? 'bg-libra-navy' 
+                                  : 'bg-red-400/70'
+                              }`}
+                              style={{ width: `${animatedValues[index] || 0}%` }}
+                            />
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -248,14 +249,16 @@ const Vantagens: React.FC = () => {
                             {item.taxa.toFixed(2)}% a.m.
                           </span>
                         </div>
-                        <Progress 
-                          value={animatedValues[index] || 0} 
-                          className={`h-2 rounded-full bg-gray-100 [&>div]:transition-all [&>div]:duration-300 ${
-                            item.destaque 
-                              ? '[&>div]:bg-libra-navy' 
-                              : '[&>div]:bg-red-400/70'
-                          }`}
-                        />
+                        <div className="h-2 rounded-full bg-gray-100 overflow-hidden">
+                          <div 
+                            className={`h-full transition-all duration-300 ease-out ${
+                              item.destaque 
+                                ? 'bg-libra-navy' 
+                                : 'bg-red-400/70'
+                            }`}
+                            style={{ width: `${animatedValues[index] || 0}%` }}
+                          />
+                        </div>
                       </div>
                     ))}
                   </div>
