@@ -54,10 +54,12 @@ const SwitchPriceTip: React.FC<{ onSwitchToPrice?: () => void }> = ({
 }) => {
   const [showTip, setShowTip] = useState(false);
   return (
-    <div className="relative inline-block text-yellow-800">
+    <div
+      className="relative inline-block text-yellow-800"
+      onMouseEnter={() => setShowTip(true)}
+      onMouseLeave={() => setShowTip(false)}
+    >
       <div
-        onMouseEnter={() => setShowTip(true)}
-        onMouseLeave={() => setShowTip(false)}
         onClick={() => setShowTip(!showTip)}
         className="cursor-pointer font-medium flex items-center gap-1"
       >
@@ -222,15 +224,15 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
       </div>
 
       {/* Valor da parcela e Renda mínima empilhados */}
-      <div className="grid grid-cols-1 gap-4 mb-4">
+      <div className="grid grid-cols-1 gap-3 mb-3">
         {/* Valor da parcela destacado */}
-        <div className="bg-white rounded-lg p-4">
+        <div className="bg-white rounded-lg p-3">
           {amortizacao === 'SAC' && primeiraParcela ? (
             <div>
               <div className="text-xs text-libra-navy mb-3 text-center">Sistema SAC - Parcelas Decrescentes</div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-3">
                 {/* Primeira parcela - destaque maior */}
-                <div className="text-center bg-libra-light rounded-lg p-4 border-2 border-libra-blue/30">
+                <div className="text-center bg-libra-light rounded-lg p-3 border-2 border-libra-blue/30">
                   <div className="text-sm font-medium text-libra-blue mb-2">1ª Parcela</div>
                   <div className="text-xl font-bold text-libra-navy">
                     R$ {primeiraParcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
@@ -238,7 +240,7 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
                   <div className="text-xs text-gray-600 mt-2">Maior valor</div>
                 </div>
                 {/* Última parcela */}
-                <div className="text-center bg-libra-light rounded-lg p-4 border border-libra-blue/20">
+                <div className="text-center bg-libra-light rounded-lg p-3 border border-libra-blue/20">
                   <div className="text-sm font-medium text-libra-blue mb-2">Última Parcela</div>
                   <div className="text-lg font-bold text-libra-navy">
                     R$ {ultimaParcela?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
@@ -258,7 +260,7 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
         </div>
 
         {/* Renda mínima */}
-        <div className="bg-white rounded-lg p-4 text-center relative">
+        <div className="bg-white rounded-lg p-3 text-center relative">
           <div className="text-xs text-gray-600 mb-1 flex items-center justify-center gap-1">
             <span>Renda necessária</span>
             <TooltipInfo content="Renda familiar podendo ser composta por até 4 pessoas">
@@ -272,7 +274,7 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
             R$ {rendaMinima.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
           </div>
           {amortizacao === 'SAC' && (
-            <div className="text-xs mt-3">
+            <div className="text-xs mt-2">
               <SwitchPriceTip onSwitchToPrice={onSwitchToPrice} />
             </div>
           )}
