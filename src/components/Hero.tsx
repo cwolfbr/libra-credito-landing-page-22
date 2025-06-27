@@ -33,9 +33,9 @@ const Hero: React.FC = () => {
         trustbarHeight -
         centerOffset;
       
-      // Rolagem responsiva: Desktop 20% (25% - 5%), Mobile 30% (25% + 5%)
+      // Rolagem responsiva: Desktop 20% (perfeito), Mobile 24% (ajustado)
       const isMobile = window.innerWidth < 768;
-      const additionalScroll = window.innerHeight * (isMobile ? 0.30 : 0.20);
+      const additionalScroll = window.innerHeight * (isMobile ? 0.24 : 0.20);
       const target = baseTarget + additionalScroll;
       
       window.scrollTo({ top: target, behavior: 'smooth' });
