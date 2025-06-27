@@ -137,21 +137,29 @@ export const MobileOptimized: React.FC<MobileOptimizedProps> = ({ children }) =>
 
 // Hook para detectar orientação
 export const useOrientation = () => {
+  const getOrientation = () => {
+    if (window.screen && (window.screen as any).orientation) {
+      const type = (window.screen as any).orientation.type as string;
+      return type.startsWith('portrait') ? 'portrait' : 'landscape';
+    }
+    return window.matchMedia('(orientation: portrait)').matches ? 'portrait' : 'landscape';
+  };
+
   const [orientation, setOrientation] = React.useState<'portrait' | 'landscape'>(
-    window.innerHeight > window.innerWidth ? 'portrait' : 'landscape'
+    getOrientation()
   );
 
   React.useEffect(() => {
     const handleOrientationChange = () => {
-      setOrientation(window.innerHeight > window.innerWidth ? 'portrait' : 'landscape');
+      setOrientation(getOrientation());
     };
 
-    window.addEventListener('resize', handleOrientationChange);
     window.addEventListener('orientationchange', handleOrientationChange);
+    window.addEventListener('resize', handleOrientationChange);
 
     return () => {
-      window.removeEventListener('resize', handleOrientationChange);
       window.removeEventListener('orientationchange', handleOrientationChange);
+      window.removeEventListener('resize', handleOrientationChange);
     };
   }, []);
 
