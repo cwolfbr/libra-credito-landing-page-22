@@ -61,14 +61,24 @@ export const useOrientation = () => {
   const [orientation, setOrientation] = useState<'portrait' | 'landscape'>('portrait');
 
   useEffect(() => {
+    const getOrientation = () => {
+      if (window.screen && (window.screen as any).orientation) {
+        const type = (window.screen as any).orientation.type as string;
+        return type.startsWith('portrait') ? 'portrait' : 'landscape';
+      }
+      return window.matchMedia('(orientation: portrait)').matches ? 'portrait' : 'landscape';
+    };
+
     const checkOrientation = () => {
-      setOrientation(window.innerHeight > window.innerWidth ? 'portrait' : 'landscape');
+      setOrientation(getOrientation());
     };
 
     checkOrientation();
+    window.addEventListener('orientationchange', checkOrientation);
     window.addEventListener('resize', checkOrientation);
 
     return () => {
+      window.removeEventListener('orientationchange', checkOrientation);
       window.removeEventListener('resize', checkOrientation);
     };
   }, []);
