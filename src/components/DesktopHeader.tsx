@@ -73,16 +73,13 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
             {/* Logo e slogan */}
             <div className="flex items-center gap-6">
               <Link to="/" className="flex items-center">
-                <div className="h-9 lg:h-11 overflow-hidden flex items-center">
+                <div className="h-[52px] lg:h-[65px] overflow-hidden flex items-center">
                   <ImageOptimizer 
                     src="/images/logos/libra-logo.png" 
                     alt="Libra Crédito" 
-                    className="h-16 lg:h-20 w-auto transform scale-110"
+                    className="h-full w-auto"
                     aspectRatio={1}
                     priority={true}
-                    style={{
-                      clipPath: 'inset(25% 0 25% 0)'
-                    }}
                   />
                 </div>
               </Link>
