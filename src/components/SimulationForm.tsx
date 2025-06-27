@@ -199,8 +199,9 @@ const SimulationForm: React.FC = () => {
 
   // Função para ajustar valores automaticamente (30%) e executar simulação
   const handleAdjustValues = async (novoEmprestimo: number, isRural: boolean = false) => {
-    // Ajustar os valores
-    setEmprestimo(formatBRL(novoEmprestimo.toString()));
+    // Ajustar os valores - converter de reais para milhares para manter consistência com a interface
+    const emprestimoEmMilhares = (novoEmprestimo / 1000).toString();
+    setEmprestimo(emprestimoEmMilhares);
     setIsRuralProperty(isRural);
     setApiMessage(null);
     setErro('');
@@ -213,9 +214,9 @@ const SimulationForm: React.FC = () => {
         return;
       }
 
-      // Recalcular validação com novos valores
+      // Recalcular validação com novos valores - usar o valor em milhares para manter consistência
       const newValidation = validateForm(
-        formatBRL(novoEmprestimo.toString()), 
+        emprestimoEmMilhares, 
         garantia, 
         parcelas, 
         amortizacao, 
