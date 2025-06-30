@@ -49,9 +49,9 @@ const WaveSeparator: React.FC<WaveSeparatorProps> = ({
   const heightClass = heightClasses[height];
 
   return (
-    <div 
+    <div
       className={cn(
-        'relative w-full flex-shrink-0 overflow-hidden', // Adiciona overflow-hidden
+        'relative w-full flex-shrink-0 overflow-hidden pointer-events-none', // Adiciona overflow-hidden e desativa interações
         config.background,
         heightClass,
         inverted && '-mt-1', // Margem negativa para ondas invertidas grudarem no header
@@ -62,7 +62,7 @@ const WaveSeparator: React.FC<WaveSeparatorProps> = ({
       {/* SVG com as 3 camadas de profundidade originais */}
       <svg
         className={cn(
-          'absolute w-full h-full', 
+          'absolute w-full h-full pointer-events-none',
           inverted ? '-bottom-1' : '-top-1', // Estende 1px para fora em ambas direções
           inverted && 'transform scale-y-[-1]'
         )}
