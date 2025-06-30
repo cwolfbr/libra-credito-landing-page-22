@@ -21,14 +21,14 @@ export default {
 			},
 		},
 		// Mobile-first breakpoints otimizados para dispositivos premium
-		screens: {
-			'xs': '375px',    // iPhone 13/14 Standard
-			'sm': '414px',    // iPhone Plus/Pro Max
-			'md': '768px',    // iPad Mini
-			'lg': '1024px',   // iPad Pro / Desktop básico
-			'xl': '1280px',   // Desktop padrão
-			'2xl': '1536px',  // Desktop grande
-		},
+            screens: {
+                        'xs': '375px',    // iPhone 13/14 Standard
+                        'sm': '414px',    // iPhone Plus/Pro Max
+                        'md': '768px',    // iPad Mini
+                        'lg': '1024px',   // iPad Pro / Desktop básico
+                        'xl': '1440px',   // new threshold for larger desktops
+                        '2xl': '1536px',  // Desktop grande
+                },
 		extend: {
 			fontFamily: {
 				sans: ['Montserrat', 'sans-serif'],
