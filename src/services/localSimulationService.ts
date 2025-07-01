@@ -123,7 +123,12 @@ export class LocalSimulationService {
 
       // 5. Calcular empréstimo
       const taxaJuros = getInterestRate();
-      const calculation = calculateLoan(input.valorEmprestimo, taxaJuros, input.parcelas);
+      const calculation = calculateLoan(
+        input.valorEmprestimo,
+        taxaJuros,
+        input.parcelas,
+        input.valorImovel
+      );
       
       console.log('💰 Cálculo realizado:', calculation);
 

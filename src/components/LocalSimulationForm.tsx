@@ -129,7 +129,7 @@ const LocalSimulationForm: React.FC = () => {
       }
 
       // Calcular empréstimo
-      const calculation = calculateLoan(empValue, taxaJuros, parcelas);
+      const calculation = calculateLoan(empValue, taxaJuros, parcelas, imValue);
 
       const result: LocalSimulationResult = {
         valorEmprestimo: empValue,
