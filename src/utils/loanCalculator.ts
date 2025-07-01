@@ -80,30 +80,46 @@ function calculatePRICE(principal: number, taxaJuros: number, parcelas: number):
  * @param valorEmprestimo Valor do empréstimo solicitado
  * @param taxaJurosMensal Taxa de juros mensal (ex: 0.0119 para 1.19%)
  * @param numeroParcelas Número de parcelas (36 a 180)
- * @returns Resultado com cálculos SAC e PRICE
+ * @param valorImovel Valor do imóvel usado como garantia
+ * @returns Resultado com cálculos SAC e PRICE já com seguros e taxa administrativa
  */
 export function calculateLoan(
-  valorEmprestimo: number, 
-  taxaJurosMensal: number, 
-  numeroParcelas: number
+  valorEmprestimo: number,
+  taxaJurosMensal: number,
+  numeroParcelas: number,
+  valorImovel: number
 ): LoanCalculationResult {
   // Aplicar taxa de custo operacional configurável
   const custoOperacionalPercent = getCustoOperacional();
   const custoOperacional = valorEmprestimo * (custoOperacionalPercent / 100);
   const valorComCusto = valorEmprestimo + custoOperacional;
-  
+
+  const dfiPercent = getDfiPercentual() / 100;
+  const prestamistaPercent = getPrestamistaPercentual() / 100;
+  const taxaAdmin = getTaxaAdministrativa();
+
   // Calcular SAC
   const sacResult = calculateSAC(valorComCusto, taxaJurosMensal, numeroParcelas);
-  
+
   // Calcular PRICE
   const priceResult = calculatePRICE(valorComCusto, taxaJurosMensal, numeroParcelas);
+
+  const extraDfi = valorImovel * dfiPercent;
+  const extraPrestamistaTotal = valorComCusto * prestamistaPercent;
+
+  const parcelaPrice = priceResult.parcela + extraDfi + extraPrestamistaTotal + taxaAdmin;
+  const parcelaSacInicial = sacResult.parcelaInicial + extraDfi + extraPrestamistaTotal + taxaAdmin;
+  const parcelaSacFinal = (valorComCusto / numeroParcelas) * (1 + taxaJurosMensal) +
+    (valorComCusto / numeroParcelas) * prestamistaPercent +
+    extraDfi +
+    taxaAdmin;
   
   return {
     parcelaSac: {
-      inicial: sacResult.parcelaInicial,
-      final: sacResult.parcelaFinal
+      inicial: parcelaSacInicial,
+      final: parcelaSacFinal
     },
-    parcelaPrice: priceResult.parcela,
+    parcelaPrice: parcelaPrice,
     valorTotal: {
       sac: sacResult.valorTotal,
       price: priceResult.valorTotal
@@ -152,6 +168,54 @@ export function getCustoOperacional(): number {
   
   // Fallback padrão: 11%
   return 11.0;
+}
+
+/**
+ * Percentual do seguro DFI configurado no painel admin
+ */
+export function getDfiPercentual(): number {
+  try {
+    const config = localStorage.getItem('libra_simulation_config');
+    if (config) {
+      const parsed = JSON.parse(config);
+      return parsed.dfiPercentual || 0.014;
+    }
+  } catch (error) {
+    console.warn('Erro ao obter percentual DFI:', error);
+  }
+  return 0.014;
+}
+
+/**
+ * Percentual do seguro prestamista configurado no painel admin
+ */
+export function getPrestamistaPercentual(): number {
+  try {
+    const config = localStorage.getItem('libra_simulation_config');
+    if (config) {
+      const parsed = JSON.parse(config);
+      return parsed.prestamistaPercentual || 0.035;
+    }
+  } catch (error) {
+    console.warn('Erro ao obter percentual prestamista:', error);
+  }
+  return 0.035;
+}
+
+/**
+ * Valor da taxa administrativa configurada no painel admin
+ */
+export function getTaxaAdministrativa(): number {
+  try {
+    const config = localStorage.getItem('libra_simulation_config');
+    if (config) {
+      const parsed = JSON.parse(config);
+      return parsed.taxaAdministrativa || 40;
+    }
+  } catch (error) {
+    console.warn('Erro ao obter taxa administrativa:', error);
+  }
+  return 40;
 }
 
 /**

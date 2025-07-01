@@ -76,7 +76,10 @@ const AdminDashboard: React.FC = () => {
     parcelasMin: 36,
     parcelasMax: 180,
     juros: 1.19,
-    custoOperacional: 11.0
+    custoOperacional: 11.0,
+    dfiPercentual: 0.014,
+    prestamistaPercentual: 0.035,
+    taxaAdministrativa: 40
   });
   const [loadingConfig, setLoadingConfig] = useState(false);
   const [loadingParceiros, setLoadingParceiros] = useState(false);
@@ -163,7 +166,10 @@ const AdminDashboard: React.FC = () => {
           parcelasMin: config.parcelasMin || 36,
           parcelasMax: config.parcelasMax || 180,
           juros: config.juros || 1.19,
-          custoOperacional: config.custoOperacional || 11.0
+          custoOperacional: config.custoOperacional || 11.0,
+          dfiPercentual: config.dfiPercentual || 0.014,
+          prestamistaPercentual: config.prestamistaPercentual || 0.035,
+          taxaAdministrativa: config.taxaAdministrativa || 40
         });
       }
     } catch (error) {
@@ -1536,6 +1542,51 @@ Escreva seu conteúdo aqui...
                   </div>
                 </div>
 
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-3">DFI, Prestamista e Taxa Administrativa</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">% DFI</label>
+                      <Input
+                        type="number"
+                        step="0.0001"
+                        value={simulationConfig.dfiPercentual}
+                        onChange={(e) => setSimulationConfig({
+                          ...simulationConfig,
+                          dfiPercentual: parseFloat(e.target.value)
+                        })}
+                      />
+                      <p className="text-xs text-gray-500 mt-1">Percentual do seguro DFI (mensal)</p>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">% Prestamista</label>
+                      <Input
+                        type="number"
+                        step="0.0001"
+                        value={simulationConfig.prestamistaPercentual}
+                        onChange={(e) => setSimulationConfig({
+                          ...simulationConfig,
+                          prestamistaPercentual: parseFloat(e.target.value)
+                        })}
+                      />
+                      <p className="text-xs text-gray-500 mt-1">Percentual do seguro prestamista (mensal)</p>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Taxa Administrativa (R$)</label>
+                      <Input
+                        type="number"
+                        step="0.01"
+                        value={simulationConfig.taxaAdministrativa}
+                        onChange={(e) => setSimulationConfig({
+                          ...simulationConfig,
+                          taxaAdministrativa: parseFloat(e.target.value)
+                        })}
+                      />
+                      <p className="text-xs text-gray-500 mt-1">Valor fixo acrescido em cada parcela</p>
+                    </div>
+                  </div>
+                </div>
+
                 
                 <div className="pt-4 border-t">
                   <Button 
@@ -1554,6 +1605,8 @@ Escreva seu conteúdo aqui...
                     <p>• Empréstimo: R$ {simulationConfig.valorMinimo.toLocaleString()} a R$ {simulationConfig.valorMaximo.toLocaleString()}</p>
                     <p>• Parcelas: {simulationConfig.parcelasMin} a {simulationConfig.parcelasMax} meses</p>
                     <p>• Taxa: {simulationConfig.juros}% a.m. + {simulationConfig.custoOperacional}% de custos</p>
+                    <p>• DFI: {simulationConfig.dfiPercentual}% | Prestamista: {simulationConfig.prestamistaPercentual}%</p>
+                    <p>• Taxa Adm.: R$ {simulationConfig.taxaAdministrativa}</p>
                   </div>
                 </div>
               </CardContent>
