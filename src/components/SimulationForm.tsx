@@ -60,7 +60,7 @@ import SmartApiMessage from './messages/SmartApiMessage';
 import SimulationResultDisplay from './SimulationResultDisplay';
 import { analyzeApiMessage, ApiMessageAnalysis } from '@/utils/apiMessageAnalyzer';
 import { analyzeLocalMessage } from '@/utils/localMessageAnalyzer';
-import { formatBRL, formatBRLInput, norm } from '@/utils/formatters';
+import { formatBRL, norm } from '@/utils/formatters';
 
 const SimulationForm: React.FC = () => {
   const { sessionId, trackSimulation } = useUserJourney();
@@ -80,11 +80,11 @@ const SimulationForm: React.FC = () => {
   const validation = validateForm(emprestimo, garantia, parcelas, amortizacao, cidade);
 
   const handleEmprestimoChange = (value: string) => {
-    setEmprestimo(formatBRLInput(value));
+    setEmprestimo(formatBRL(value));
   };
 
   const handleGarantiaChange = (value: string) => {
-    setGarantia(formatBRLInput(value));
+    setGarantia(formatBRL(value));
   };
 
   // Função para rolar para o resultado no mobile
@@ -200,7 +200,7 @@ const SimulationForm: React.FC = () => {
   // Função para ajustar valores automaticamente (30%) e executar simulação
   const handleAdjustValues = async (novoEmprestimo: number, isRural: boolean = false) => {
     // Ajustar os valores - usar valor completo com formatação
-    setEmprestimo(formatBRLInput(novoEmprestimo.toString()));
+    setEmprestimo(formatBRL(novoEmprestimo.toString()));
     setIsRuralProperty(isRural);
     setApiMessage(null);
     setErro('');
@@ -215,10 +215,10 @@ const SimulationForm: React.FC = () => {
 
       // Recalcular validação com novos valores
       const newValidation = validateForm(
-        formatBRLInput(novoEmprestimo.toString()), 
-        garantia, 
-        parcelas, 
-        amortizacao, 
+        formatBRL(novoEmprestimo.toString()),
+        garantia,
+        parcelas,
+        amortizacao,
         cidade
       );
 
@@ -420,7 +420,7 @@ const SimulationForm: React.FC = () => {
                 <Button
                 type="submit"
                 disabled={!validation.formularioValido || loading}
-                className="flex-1 bg-libra-blue hover:bg-libra-blue/90 text-white py-2 text-sm font-semibold min-h-[44px]"
+                className="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 text-sm font-semibold min-h-[44px]"
                 >
                   {loading ? (
                     <div className="flex items-center gap-2">
@@ -435,7 +435,7 @@ const SimulationForm: React.FC = () => {
                   type="button"
                   variant="outline"
                   onClick={handleClear}
-                  className="px-4 py-2 text-libra-blue border-libra-blue hover:bg-libra-light min-h-[44px] text-sm"
+                  className="px-4 py-2 text-green-500 border-green-500 hover:bg-green-50 min-h-[44px] text-sm"
                 >
                   LIMPAR
                 </Button>

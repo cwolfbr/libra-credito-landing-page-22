@@ -132,7 +132,7 @@ const CityAutocomplete = ({ value = '', onCityChange }) => {
     <div ref={containerRef} className="flex items-center gap-2 relative">
       {/* Icon */}
       <div className="bg-libra-light p-1.5 rounded-full flex-shrink-0">
-        <MapPin className="w-4 h-4 text-libra-blue" />
+        <MapPin className="w-4 h-4 text-green-500" />
       </div>
       <div className="flex-1 relative">
         <label className="block text-xs font-medium text-libra-navy mb-1">
@@ -150,7 +150,7 @@ const CityAutocomplete = ({ value = '', onCityChange }) => {
           placeholder={
             inputValue.length < 2 ? 'Digite 2 ou mais caracteres' : 'Busque a cidade'
           }
-          className="text-sm w-full px-3 py-2 rounded-md border-2 border-[#3CB371] focus:outline-none focus:border-[#2E8B57] transition-colors"
+          className="text-sm w-full px-3 py-2 rounded-md border-2 border-green-500 focus:outline-none focus:border-green-600 transition-colors"
         />
         
         {/* Suggestion dropdown - Fixed positioning for mobile */}
@@ -160,7 +160,7 @@ const CityAutocomplete = ({ value = '', onCityChange }) => {
               {isLoading && (
                 <li className="px-3 py-2 text-center text-gray-500">
                   <div className="flex items-center justify-center gap-2">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-libra-blue"></div>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-green-500"></div>
                     Buscando...
                   </div>
                 </li>
@@ -189,7 +189,7 @@ const CityAutocomplete = ({ value = '', onCityChange }) => {
                     }`}
                   >
                     <div className="flex items-center gap-2">
-                      <MapPin className="w-3 h-3 text-libra-blue flex-shrink-0" />
+                      <MapPin className="w-3 h-3 text-green-500 flex-shrink-0" />
                       <span className="truncate">{city}</span>
                     </div>
                   </li>

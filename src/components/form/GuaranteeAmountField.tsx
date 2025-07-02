@@ -17,7 +17,7 @@ const GuaranteeAmountField: React.FC<GuaranteeAmountFieldProps> = ({
   return (
     <div className="flex items-center gap-2">
       <div className="bg-libra-light p-1.5 rounded-full flex-shrink-0">
-        <Home className="w-4 h-4 text-libra-blue" />
+        <Home className="w-4 h-4 text-green-500" />
       </div>
       <div className="flex-1">
         <label className="block text-xs font-medium text-libra-navy mb-1">
@@ -27,7 +27,7 @@ const GuaranteeAmountField: React.FC<GuaranteeAmountFieldProps> = ({
           <Input
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            placeholder="600000"
+            placeholder="R$ 600.000"
             className="text-sm"
             inputMode="numeric"
           />
