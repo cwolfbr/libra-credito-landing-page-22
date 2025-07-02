@@ -37,11 +37,7 @@ const InstallmentsField: React.FC<InstallmentsFieldProps> = ({ value, onChange }
           />
           <div className="flex justify-between text-xs text-gray-500 mt-1">
             {Array.from({ length: 13 }, (_, i) => 36 + i * 12).map((months) => (
-              <span key={months}>
-                {months}
-                <br />
-                {months / 12} anos
-              </span>
+              <span key={months}>{months}</span>
             ))}
           </div>
         </div>
