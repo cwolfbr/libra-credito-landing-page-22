@@ -127,9 +127,9 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
       <div className="bg-gradient-to-br from-[#003399] to-[#004080] rounded-xl p-4 text-white shadow-xl">
         {/* Header compacto */}
         <div className="flex items-center gap-2 mb-4">
-          <CheckCircle className="w-5 h-5 text-green-400" />
+          <CheckCircle className="w-5 h-5 text-green-500" />
           <div>
-            <h3 className="font-bold">Simulação Pronta!</h3>
+            <h3 className="text-lg font-bold text-green-500">Simulação Pronta!</h3>
           </div>
         </div>
 
@@ -140,16 +140,16 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
               <div className="text-xs text-libra-navy mb-3 text-center">Sistema SAC - Parcelas Decrescentes</div>
               <div className="grid grid-cols-2 gap-3">
                 {/* Primeira parcela - destaque maior */}
-                <div className="text-center bg-libra-light rounded-lg p-3 border-2 border-libra-blue/30">
-                  <div className="text-xs font-medium text-libra-blue mb-1">1ª Parcela</div>
+                <div className="text-center bg-libra-light rounded-lg p-3 border-2 border-green-500/30">
+                  <div className="text-xs font-medium text-green-500 mb-1">1ª Parcela</div>
                   <div className="text-lg font-bold text-libra-navy">
                     R$ {primeiraParcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                   </div>
                   <div className="text-xs text-gray-600 mt-1">Maior valor</div>
                 </div>
                 {/* Última parcela */}
-                <div className="text-center bg-libra-light rounded-lg p-3 border border-libra-blue/20">
-                  <div className="text-xs font-medium text-libra-blue mb-1">Última</div>
+                <div className="text-center bg-libra-light rounded-lg p-3 border border-green-500/20">
+                  <div className="text-xs font-medium text-green-500 mb-1">Última</div>
                   <div className="text-base font-bold text-libra-navy">
                     R$ {ultimaParcela?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                   </div>
@@ -208,7 +208,7 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
           compact={true}
           className="space-y-3"
           inputClassName="bg-white/90 text-gray-800 placeholder-gray-500"
-          buttonClassName="bg-white text-libra-navy hover:bg-gray-100 font-bold py-3 w-full"
+          buttonClassName="bg-green-500 text-white hover:bg-green-600 font-bold py-3 w-full"
         />
       </div>
     );
@@ -220,13 +220,13 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
       {/* Header compacto */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <CheckCircle className="w-5 h-5 text-green-400" />
-          <h3 className="text-lg font-bold">Simulação Pronta!</h3>
+          <CheckCircle className="w-5 h-5 text-green-500" />
+          <h3 className="text-lg font-bold text-green-500">Simulação Pronta!</h3>
         </div>
         <Button
           onClick={onNewSimulation}
           variant="outline"
-          className="bg-white/10 border-white/30 text-white hover:bg-white/20 text-xs px-3 py-2"
+          className="bg-green-500 border-green-600 text-white hover:bg-green-600 text-xs px-3 py-2"
           size="sm"
         >
           <Calculator className="w-3 h-3 mr-1" />
@@ -241,23 +241,23 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
             <div className="text-xs text-libra-navy mb-2 text-center">Sistema SAC - Parcelas Decrescentes</div>
             <div className="grid grid-cols-3 gap-2">
               {/* Primeira parcela */}
-              <div className="text-center bg-libra-light rounded-lg p-2 border border-libra-blue/30">
-                <div className="text-xs font-medium text-libra-blue mb-1">1ª Parcela</div>
+              <div className="text-center bg-libra-light rounded-lg p-2 border border-green-500/30">
+                <div className="text-xs font-medium text-green-500 mb-1">1ª Parcela</div>
                 <div className="text-lg font-bold text-libra-navy">
                   R$ {primeiraParcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                 </div>
                 <div className="text-xs text-gray-600">Maior valor</div>
               </div>
               {/* Última parcela */}
-              <div className="text-center bg-libra-light rounded-lg p-2 border border-libra-blue/20">
-                <div className="text-xs font-medium text-libra-blue mb-1">Última Parcela</div>
+              <div className="text-center bg-libra-light rounded-lg p-2 border border-green-500/20">
+                <div className="text-xs font-medium text-green-500 mb-1">Última Parcela</div>
                 <div className="text-base font-bold text-libra-navy">
                   R$ {ultimaParcela?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                 </div>
                 <div className="text-xs text-gray-600">Menor valor</div>
               </div>
               {/* Renda mínima */}
-              <div className="text-center rounded-lg p-2 border border-libra-blue/20">
+              <div className="text-center rounded-lg p-2 border border-green-500/20">
                 <div className="text-xs text-gray-600 mb-1 flex items-center justify-center gap-1">
                   <span>Renda necessária</span>
                   <TooltipInfo content="Renda familiar podendo ser composta por até 4 pessoas">
@@ -323,7 +323,7 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
         compact={true}
         className="space-y-3"
         inputClassName="bg-white/90 text-gray-800 placeholder-gray-500"
-        buttonClassName="bg-white text-libra-navy hover:bg-gray-100 font-bold py-3 w-full"
+        buttonClassName="bg-green-500 text-white hover:bg-green-600 font-bold py-3 w-full"
       />
     </div>
   );
