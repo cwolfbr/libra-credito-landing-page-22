@@ -11,7 +11,7 @@ const InstallmentsField: React.FC<InstallmentsFieldProps> = ({ value, onChange }
   return (
     <div className="flex items-center gap-2">
       <div className="bg-libra-light p-1.5 rounded-full flex-shrink-0">
-        <Calendar className="w-4 h-4 text-libra-blue" />
+        <Calendar className="w-4 h-4 text-green-500" />
       </div>
       <div className="flex-1">
         <div className="flex items-center justify-between mb-1">

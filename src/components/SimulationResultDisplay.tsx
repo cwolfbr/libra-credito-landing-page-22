@@ -127,7 +127,7 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
       <div className="bg-gradient-to-br from-[#003399] to-[#004080] rounded-xl p-4 text-white shadow-xl">
         {/* Header compacto */}
         <div className="flex items-center gap-2 mb-4">
-          <CheckCircle className="w-5 h-5 text-green-400" />
+          <CheckCircle className="w-5 h-5 text-green-500" />
           <div>
             <h3 className="font-bold">Simulação Pronta!</h3>
           </div>
@@ -220,7 +220,7 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
       {/* Header compacto */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <CheckCircle className="w-5 h-5 text-green-400" />
+          <CheckCircle className="w-5 h-5 text-green-500" />
           <h3 className="text-lg font-bold">Simulação Pronta!</h3>
         </div>
         <Button

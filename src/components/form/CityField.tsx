@@ -12,7 +12,7 @@ const CityField: React.FC<CityFieldProps> = ({ value, onChange }) => {
   return (
     <div className="flex items-start gap-2">
       <div className="bg-libra-light p-1.5 rounded-full mt-0.5">
-        <MapPin className="w-4 h-4 text-libra-blue" />
+        <MapPin className="w-4 h-4 text-green-500" />
       </div>
       <div className="flex-1">
         <label className="block text-xs font-medium text-libra-navy mb-1">
