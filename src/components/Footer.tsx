@@ -70,7 +70,7 @@ const Footer: React.FC = () => {
                   </svg>
                 </a>
                 <a href="https://www.reclameaqui.com.br/empresa/libra-credito-solucoes-financeiras/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="Reclame Aqui">
-                  <ExternalLink className="w-4 h-4" />
+                  <img src="/images/logos/reclameaqui.svg" alt="Reclame Aqui" className="w-4 h-4" />
                 </a>
                 <button 
                   onClick={scrollToTop} 
@@ -103,7 +103,7 @@ const Footer: React.FC = () => {
                 </svg>
               </a>
               <a href="https://www.reclameaqui.com.br/empresa/libra-credito-solucoes-financeiras/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors" aria-label="Reclame Aqui">
-                <ExternalLink className="w-7 h-7" />
+                <img src="/images/logos/reclameaqui.svg" alt="Reclame Aqui" className="w-7 h-7" />
               </a>
             </div>
             
