@@ -105,14 +105,14 @@ const AccordionTrigger: React.FC<AccordionTriggerProps> = ({ children, className
       className={cn(
         'flex justify-between items-center w-full text-left',
         'hover:bg-gray-50 transition-colors duration-200',
-        'focus:outline-none focus:ring-2 focus:ring-libra-blue focus:ring-offset-2',
+        'focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2',
         className
       )}
     >
       {children}
-      <ChevronDown 
+      <ChevronDown
         className={cn(
-          'w-5 h-5 transition-transform duration-200 text-gray-500',
+          'w-5 h-5 transition-transform duration-200 text-green-500',
           isOpen && 'transform rotate-180'
         )}
       />
