@@ -189,19 +189,19 @@ const Vantagens: React.FC = () => {
             <div className="grid grid-cols-1 gap-6">
               {/* Vantagens */}
               <div>
-                <div className={`grid grid-cols-2 sm:grid-cols-2 ${isMobile ? 'gap-3' : 'gap-4'}`}>
+                <div className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 ${isMobile ? 'gap-3' : 'gap-4'}`}>
                   {vantagens.map((vantagem, index) => {
                     const Icon = vantagem.icon;
                     return (
-                      <div key={index} className={`bg-white ${isMobile ? 'p-3' : 'p-4'} rounded-lg shadow-sm hover:shadow-md transition-shadow`}>
-                        <div className={`flex items-center ${isMobile ? 'mb-2' : 'mb-3'}`}>
+                      <div key={index} className={`bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow`}>
+                        <div className="flex items-center mb-2">
                           <div className={`bg-libra-blue/10 ${isMobile ? 'p-1.5' : 'p-2'} rounded-lg`}>
                             <Icon className={`${isMobile ? 'w-4 h-4' : 'w-5 h-5'} text-libra-blue`} />
                           </div>
                           <h3 className={`${isMobile ? 'text-sm' : 'text-base'} font-bold text-libra-navy ml-2`}>{vantagem.title}</h3>
                         </div>
-                        <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-gray-600 ${isMobile ? 'mb-2' : 'mb-3'}`}>{vantagem.description}</p>
-                        <div className={`bg-libra-light rounded-lg ${isMobile ? 'p-2' : 'p-2'}`}>
+                        <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-gray-600 mb-2`}>{vantagem.description}</p>
+                        <div className="bg-libra-light rounded-lg p-2">
                           <p className={`text-libra-navy font-medium ${isMobile ? 'text-xs' : 'text-sm'}`}>{vantagem.benefit}</p>
                         </div>
                       </div>
