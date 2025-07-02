@@ -80,8 +80,8 @@ const FAQ: React.FC = () => {
     <section id="faq" className={`${isMobile ? 'py-8' : 'py-16'} bg-white`}>
       <div className="container mx-auto px-4">
         <div className="text-center mb-8 md:mb-12">
-          <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy mb-3 md:mb-4`}>
-            Perguntas Frequentes
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+            Perguntas <span className="text-green-500">frequentes:</span>
           </h2>
           <p className={`${isMobile ? 'text-base px-2' : 'text-lg'} text-gray-600 max-w-2xl mx-auto`}>
             Esclarecemos as principais dúvidas sobre crédito com garantia de imóvel
@@ -94,10 +94,10 @@ const FAQ: React.FC = () => {
               <AccordionItem
                 key={index}
                 value={`item-${index}`}
-                className="bg-libra-blue rounded-lg shadow-sm border border-libra-blue/20"
+                className="border border-gray-200 rounded-2xl overflow-hidden bg-white shadow-sm"
               >
-                <AccordionTrigger className={`${isMobile ? 'px-4 py-3' : 'px-6 py-4'} text-left hover:no-underline hover:bg-libra-blue`}>
-                  <span className={`${isMobile ? 'text-sm' : 'text-base'} font-semibold text-white pr-2 hover:text-white`}>{faq.question}</span>
+                <AccordionTrigger className={`${isMobile ? 'px-4 py-3' : 'px-6 py-4'} text-left hover:no-underline hover:bg-gray-50`}>
+                  <span className={`${isMobile ? 'text-sm' : 'text-base'} font-medium text-gray-800 pr-2`}>{faq.question}</span>
                 </AccordionTrigger>
                 <AccordionContent className={`${isMobile ? 'px-4 pb-3' : 'px-6 pb-4'} bg-white rounded-b-lg`}>
                   <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 leading-relaxed`}>{faq.answer}</p>
