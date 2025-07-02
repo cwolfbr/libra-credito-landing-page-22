@@ -15,7 +15,7 @@ const InstallmentsField: React.FC<InstallmentsFieldProps> = ({ value, onChange }
       </div>
       <div className="flex-1">
         <div className="flex items-center justify-between mb-1">
-          <label className="text-xs font-medium text-libra-navy">
+          <label className="text-xs font-medium text-green-500">
             Em quantas parcelas?
           </label>
           <span className="bg-libra-blue text-white px-2 py-0.5 rounded text-xs font-bold">

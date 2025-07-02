@@ -15,7 +15,7 @@ const LoanAmountField: React.FC<LoanAmountFieldProps> = ({ value, onChange }) =>
         <DollarSign className="w-4 h-4 text-green-500" />
       </div>
       <div className="flex-1">
-        <label className="block text-xs font-medium text-libra-navy mb-1">
+        <label className="block text-xs font-medium text-green-500 mb-1">
           Digite o valor desejado do Empréstimo
         </label>
         <div className="relative">

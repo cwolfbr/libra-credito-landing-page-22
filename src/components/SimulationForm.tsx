@@ -390,7 +390,7 @@ const SimulationForm: React.FC = () => {
         {/* Formulário de Simulação */}
         <Card className="shadow-lg">
           <CardHeader className="text-center pb-2">
-            <CardTitle className="text-lg md:text-xl font-bold text-libra-navy mb-1">
+            <CardTitle className="text-lg md:text-xl font-bold text-green-500 mb-1">
               Sua simulação em um clique!
             </CardTitle>
             <p className="text-gray-600 text-xs">
@@ -420,7 +420,7 @@ const SimulationForm: React.FC = () => {
                 <Button
                 type="submit"
                 disabled={!validation.formularioValido || loading}
-                className="flex-1 bg-libra-blue hover:bg-libra-blue/90 text-white py-2 text-sm font-semibold min-h-[44px]"
+                className="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 text-sm font-semibold min-h-[44px]"
                 >
                   {loading ? (
                     <div className="flex items-center gap-2">
