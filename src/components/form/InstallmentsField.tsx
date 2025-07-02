@@ -18,7 +18,7 @@ const InstallmentsField: React.FC<InstallmentsFieldProps> = ({ value, onChange }
           <label className="text-xs font-medium text-libra-navy">
             Em quantas parcelas?
           </label>
-          <span className="bg-libra-blue text-white px-2 py-0.5 rounded text-xs font-bold">
+          <span className="bg-green-500 text-white px-2 py-0.5 rounded text-xs font-bold">
             {value} meses ({Math.round(value / 12)} anos)
           </span>
         </div>

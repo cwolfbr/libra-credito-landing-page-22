@@ -160,7 +160,7 @@ const CityAutocomplete = ({ value = '', onCityChange }) => {
               {isLoading && (
                 <li className="px-3 py-2 text-center text-gray-500">
                   <div className="flex items-center justify-center gap-2">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-libra-blue"></div>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-green-500"></div>
                     Buscando...
                   </div>
                 </li>
