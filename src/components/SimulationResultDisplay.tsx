@@ -126,41 +126,41 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
     return (
       <div className="bg-gradient-to-br from-[#003399] to-[#004080] rounded-xl p-4 text-white shadow-xl">
         {/* Header compacto */}
-        <div className="flex items-center gap-2 mb-4">
-          <CheckCircle className="w-5 h-5 text-green-500" />
+        <div className="flex items-center gap-2 mb-4 text-green-600">
+          <CheckCircle className="w-5 h-5 text-green-600" />
           <div>
             <h3 className="font-bold">Simulação Pronta!</h3>
           </div>
         </div>
 
         {/* Valor da parcela destacado */}
-        <div className="bg-white rounded-lg p-4 mb-4">
+        <div className="bg-green-50 rounded-lg p-4 mb-4 text-green-700">
           {amortizacao === 'SAC' && primeiraParcela ? (
             <div>
-              <div className="text-xs text-libra-navy mb-3 text-center">Sistema SAC - Parcelas Decrescentes</div>
+              <div className="text-xs font-medium mb-3 text-center">Sistema SAC - Parcelas Decrescentes</div>
               <div className="grid grid-cols-2 gap-3">
                 {/* Primeira parcela - destaque maior */}
-                <div className="text-center bg-libra-light rounded-lg p-3 border-2 border-libra-blue/30">
-                  <div className="text-xs font-medium text-libra-blue mb-1">1ª Parcela</div>
-                  <div className="text-lg font-bold text-libra-navy">
+                <div className="text-center bg-green-100 rounded-lg p-3 border-2 border-green-200">
+                  <div className="text-xs font-medium mb-1">1ª Parcela</div>
+                  <div className="text-lg font-bold">
                     R$ {primeiraParcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                   </div>
-                  <div className="text-xs text-gray-600 mt-1">Maior valor</div>
+                  <div className="text-xs mt-1">Maior valor</div>
                 </div>
                 {/* Última parcela */}
-                <div className="text-center bg-libra-light rounded-lg p-3 border border-libra-blue/20">
-                  <div className="text-xs font-medium text-libra-blue mb-1">Última</div>
-                  <div className="text-base font-bold text-libra-navy">
+                <div className="text-center bg-green-100 rounded-lg p-3 border border-green-200">
+                  <div className="text-xs font-medium mb-1">Última</div>
+                  <div className="text-base font-bold">
                     R$ {ultimaParcela?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                   </div>
-                  <div className="text-xs text-gray-600 mt-1">Menor valor</div>
+                  <div className="text-xs mt-1">Menor valor</div>
                 </div>
               </div>
             </div>
           ) : (
             <div className="text-center">
-              <div className="text-xs text-gray-600 mb-1">Parcela Fixa (PRICE)</div>
-              <div className="text-2xl font-bold text-libra-navy">
+              <div className="text-xs mb-1">Parcela Fixa (PRICE)</div>
+              <div className="text-2xl font-bold">
                 R$ {valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
               </div>
             </div>
@@ -168,7 +168,7 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
         </div>
 
         {/* Renda mínima */}
-        <div className="bg-white/10 rounded-lg p-3 mb-4 text-center relative">
+        <div className="bg-green-50 rounded-lg p-3 mb-4 text-center relative text-green-700">
           <div className="text-sm mb-1 flex items-center justify-center gap-1">
             <span>Renda necessária</span>
             <TooltipInfo content="Renda familiar podendo ser composta por até 4 pessoas">
@@ -189,11 +189,11 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
         </div>
 
         {/* Informações sobre taxa e custos */}
-        <div className="bg-white/5 rounded-lg p-3 mb-4 lg:mb-3 text-xs">
-          <p className="text-white/80 mb-1">
+        <div className="bg-green-100 rounded-lg p-3 mb-4 lg:mb-3 text-xs text-green-700">
+          <p className="mb-1">
             <strong>Parcelas calculadas</strong> pelo sistema {amortizacao} com taxa de juros de 1,19% a.m. + IPCA.
           </p>
-          <p className="text-white/70">
+          <p>
             Já inclusos custos com avaliação do imóvel, cartório e impostos.
           </p>
         </div>
@@ -219,8 +219,8 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
     <div className="bg-gradient-to-br from-[#003399] to-[#004080] rounded-xl p-4 text-white shadow-xl">
       {/* Header compacto */}
       <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <CheckCircle className="w-5 h-5 text-green-500" />
+        <div className="flex items-center gap-2 text-green-600">
+          <CheckCircle className="w-5 h-5 text-green-600" />
           <h3 className="text-lg font-bold">Simulação Pronta!</h3>
         </div>
         <Button
@@ -235,30 +235,30 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
       </div>
 
       {/* Valor da parcela e renda mínima em layout compacto */}
-      <div className="mb-3">
+      <div className="mb-3 text-green-700">
         {amortizacao === 'SAC' && primeiraParcela ? (
-          <div className="bg-white rounded-lg p-3">
-            <div className="text-xs text-libra-navy mb-2 text-center">Sistema SAC - Parcelas Decrescentes</div>
+          <div className="bg-green-50 rounded-lg p-3">
+            <div className="text-xs font-medium mb-2 text-center">Sistema SAC - Parcelas Decrescentes</div>
             <div className="grid grid-cols-3 gap-2">
               {/* Primeira parcela */}
-              <div className="text-center bg-libra-light rounded-lg p-2 border border-libra-blue/30">
-                <div className="text-xs font-medium text-libra-blue mb-1">1ª Parcela</div>
-                <div className="text-lg font-bold text-libra-navy">
+              <div className="text-center bg-green-100 rounded-lg p-2 border border-green-200">
+                <div className="text-xs font-medium mb-1">1ª Parcela</div>
+                <div className="text-lg font-bold">
                   R$ {primeiraParcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                 </div>
-                <div className="text-xs text-gray-600">Maior valor</div>
+                <div className="text-xs">Maior valor</div>
               </div>
               {/* Última parcela */}
-              <div className="text-center bg-libra-light rounded-lg p-2 border border-libra-blue/20">
-                <div className="text-xs font-medium text-libra-blue mb-1">Última Parcela</div>
-                <div className="text-base font-bold text-libra-navy">
+              <div className="text-center bg-green-100 rounded-lg p-2 border border-green-200">
+                <div className="text-xs font-medium mb-1">Última Parcela</div>
+                <div className="text-base font-bold">
                   R$ {ultimaParcela?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                 </div>
-                <div className="text-xs text-gray-600">Menor valor</div>
+                <div className="text-xs">Menor valor</div>
               </div>
               {/* Renda mínima */}
-              <div className="text-center rounded-lg p-2 border border-libra-blue/20">
-                <div className="text-xs text-gray-600 mb-1 flex items-center justify-center gap-1">
+              <div className="text-center rounded-lg p-2 border border-green-200">
+                <div className="text-xs mb-1 flex items-center justify-center gap-1">
                   <span>Renda necessária</span>
                   <TooltipInfo content="Renda familiar podendo ser composta por até 4 pessoas">
                     <Users className="w-3 h-3" />
@@ -267,7 +267,7 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
                     <Info className="w-3 h-3" />
                   </TooltipInfo>
                 </div>
-                <div className="text-base font-bold text-libra-navy">
+                <div className="text-base font-bold">
                   R$ {rendaMinima.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                 </div>
                 <div className="mt-1 text-xs">
@@ -278,14 +278,14 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-3">
-            <div className="bg-white rounded-lg p-4 text-center">
-              <div className="text-xs text-gray-600 mb-1">Parcela Fixa (PRICE)</div>
-              <div className="text-xl lg:text-2xl font-bold text-libra-navy">
+            <div className="bg-green-50 rounded-lg p-4 text-center">
+              <div className="text-xs mb-1">Parcela Fixa (PRICE)</div>
+              <div className="text-xl lg:text-2xl font-bold">
                 R$ {valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
               </div>
             </div>
-            <div className="bg-white rounded-lg p-4 text-center relative">
-              <div className="text-xs text-gray-600 mb-1 flex items-center justify-center gap-1">
+            <div className="bg-green-50 rounded-lg p-4 text-center relative">
+              <div className="text-xs mb-1 flex items-center justify-center gap-1">
                 <span>Renda necessária</span>
                 <TooltipInfo content="Renda familiar podendo ser composta por até 4 pessoas">
                   <Users className="w-3 h-3" />
@@ -294,7 +294,7 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
                   <Info className="w-3 h-3" />
                 </TooltipInfo>
               </div>
-              <div className="text-xl lg:text-2xl font-bold text-libra-navy">
+              <div className="text-xl lg:text-2xl font-bold">
                 R$ {rendaMinima.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
               </div>
             </div>
@@ -304,11 +304,11 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
 
 
       {/* Informações sobre taxa e custos */}
-      <div className="bg-white/5 rounded-lg p-3 mb-4 lg:mb-3 text-xs">
-        <p className="text-white/80 mb-1">
+      <div className="bg-green-100 rounded-lg p-3 mb-4 lg:mb-3 text-xs text-green-700">
+        <p className="mb-1">
           <strong>Parcelas calculadas</strong> pelo sistema {amortizacao} com taxa de juros de 1,19% a.m. + IPCA.
         </p>
-        <p className="text-white/70">
+        <p>
           Já inclusos custos com avaliação do imóvel, cartório e impostos.
         </p>
       </div>
