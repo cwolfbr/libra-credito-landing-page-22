@@ -183,12 +183,12 @@ const Vantagens: React.FC = () => {
           </div>
         </section>
 
-        {/* Grid de Vantagens e Comparativo */}
+        {/* Vantagens e Comparativo */}
         <section className={`${isMobile ? 'pt-1 pb-4' : 'pt-1 pb-6'}`}>
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6">
+            <div className="grid grid-cols-1 gap-6">
               {/* Vantagens */}
-              <div className="lg:col-span-5">
+              <div>
                 <div className={`grid grid-cols-2 sm:grid-cols-2 ${isMobile ? 'gap-3' : 'gap-4'}`}>
                   {vantagens.map((vantagem, index) => {
                     const Icon = vantagem.icon;
@@ -212,7 +212,7 @@ const Vantagens: React.FC = () => {
 
               {/* Comparativo de Taxas - apenas desktop */}
               {!isMobile && (
-                <div className="lg:col-span-7">
+                <div>
                   <div id="comparison-table-desktop" className="bg-white rounded-lg shadow-lg p-6">
                     <h2 className="text-xl font-bold text-libra-navy mb-2">Comparativo de Taxas de Juros</h2>
                     <p className="text-sm text-gray-500 mb-4">Fonte: Dados abertos do BACEN - Janeiro 2025</p>
@@ -307,9 +307,9 @@ const Vantagens: React.FC = () => {
 
             <div className={`grid ${isMobile ? 'grid-cols-2 gap-4' : 'grid-cols-2 lg:grid-cols-4 gap-6'}`}>
               {/* Passo 1 */}
-              <div className="relative">
-                <div className={`bg-white rounded-xl ${isMobile ? 'p-4' : 'p-6'} shadow-sm hover:shadow-md transition-shadow border border-gray-100`}>
-                  <div className="flex flex-col items-center text-center">
+              <div className="relative h-full">
+                <div className={`bg-white rounded-xl ${isMobile ? 'p-4' : 'p-6'} shadow-sm hover:shadow-md transition-shadow border border-gray-100 h-full flex flex-col`}>
+                  <div className="flex flex-col items-center text-center flex-grow">
                     <div className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'} bg-libra-blue/10 rounded-full flex items-center justify-center ${isMobile ? 'mb-2' : 'mb-4'}`}>
                       <FileText className={`${isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-libra-blue`} />
                     </div>
@@ -334,9 +334,9 @@ const Vantagens: React.FC = () => {
               </div>
 
               {/* Passo 2 */}
-              <div className="relative">
-                <div className={`bg-white rounded-xl ${isMobile ? 'p-4' : 'p-6'} shadow-sm hover:shadow-md transition-shadow border border-gray-100`}>
-                  <div className="flex flex-col items-center text-center">
+              <div className="relative h-full">
+                <div className={`bg-white rounded-xl ${isMobile ? 'p-4' : 'p-6'} shadow-sm hover:shadow-md transition-shadow border border-gray-100 h-full flex flex-col`}>
+                  <div className="flex flex-col items-center text-center flex-grow">
                     <div className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'} bg-libra-blue/10 rounded-full flex items-center justify-center ${isMobile ? 'mb-2' : 'mb-4'}`}>
                       <MessageCircle className={`${isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-libra-blue`} />
                     </div>
@@ -361,9 +361,9 @@ const Vantagens: React.FC = () => {
               </div>
 
               {/* Passo 3 */}
-              <div className="relative">
-                <div className={`bg-white rounded-xl ${isMobile ? 'p-4' : 'p-6'} shadow-sm hover:shadow-md transition-shadow border border-gray-100`}>
-                  <div className="flex flex-col items-center text-center">
+              <div className="relative h-full">
+                <div className={`bg-white rounded-xl ${isMobile ? 'p-4' : 'p-6'} shadow-sm hover:shadow-md transition-shadow border border-gray-100 h-full flex flex-col`}>
+                  <div className="flex flex-col items-center text-center flex-grow">
                     <div className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'} bg-libra-blue/10 rounded-full flex items-center justify-center ${isMobile ? 'mb-2' : 'mb-4'}`}>
                       <CheckCircle className={`${isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-libra-blue`} />
                     </div>
@@ -388,9 +388,9 @@ const Vantagens: React.FC = () => {
               </div>
 
               {/* Passo 4 */}
-              <div className="relative">
-                <div className={`bg-white rounded-xl ${isMobile ? 'p-4' : 'p-6'} shadow-sm hover:shadow-md transition-shadow border border-gray-100`}>
-                  <div className="flex flex-col items-center text-center">
+              <div className="relative h-full">
+                <div className={`bg-white rounded-xl ${isMobile ? 'p-4' : 'p-6'} shadow-sm hover:shadow-md transition-shadow border border-gray-100 h-full flex flex-col`}>
+                  <div className="flex flex-col items-center text-center flex-grow">
                     <div className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'} bg-libra-blue/10 rounded-full flex items-center justify-center ${isMobile ? 'mb-2' : 'mb-4'}`}>
                       <CreditCard className={`${isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-libra-blue`} />
                     </div>
