@@ -124,9 +124,9 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
   if (isMobile) {
     // Layout Mobile - Sucinto e direto
     return (
-      <div className="bg-gradient-to-br from-[#003399] to-[#004080] rounded-xl p-4 text-white shadow-xl">
+      <div className="bg-green-600 rounded-xl p-4 text-libra-navy shadow-xl">
         {/* Header compacto */}
-        <div className="flex items-center gap-2 mb-4 text-green-600">
+        <div className="flex items-center gap-2 mb-4">
           <CheckCircle className="w-5 h-5 text-green-600" />
           <div>
             <h3 className="font-bold">Simulação Pronta!</h3>
@@ -216,10 +216,10 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
   
   // Layout Desktop - Adaptação do Mobile na Lateral
   return (
-    <div className="bg-gradient-to-br from-[#003399] to-[#004080] rounded-xl p-4 text-white shadow-xl">
+    <div className="bg-green-600 rounded-xl p-4 text-libra-navy shadow-xl">
       {/* Header compacto */}
       <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2 text-green-600">
+      <div className="flex items-center gap-2">
           <CheckCircle className="w-5 h-5 text-green-600" />
           <h3 className="text-lg font-bold">Simulação Pronta!</h3>
         </div>
