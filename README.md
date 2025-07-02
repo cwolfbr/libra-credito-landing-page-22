@@ -126,6 +126,14 @@ public/
 - Export CSV
 - Gestão de status
 
+### **⚙️ Configurações Financeiras**
+No painel `/admin` é possível definir três valores que influenciam o cálculo das parcelas:
+- **% DFI** – seguro de Danos Físicos ao Imóvel aplicado mensalmente sobre o valor do imóvel.
+- **% Prestamista** – seguro prestamista aplicado sobre o valor financiado acrescido do custo operacional.
+- **Taxa Administrativa** – valor fixo somado a cada parcela.
+
+Altere esses campos na seção **"DFI, Prestamista e Taxa Administrativa"** e clique em **Salvar Todas as Configurações**. Os novos valores são gravados no navegador e imediatamente utilizados no simulador para atualizar os cálculos de SAC e Price.
+
 ### **📝 Sistema de Blog**
 - CMS integrado ao Supabase
 - Upload de imagens
