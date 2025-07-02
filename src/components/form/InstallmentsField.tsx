@@ -27,6 +27,7 @@ const InstallmentsField: React.FC<InstallmentsFieldProps> = ({ value, onChange }
             type="range"
             min="36"
             max="180"
+            step="12"
             value={value}
             onChange={(e) => onChange(Number(e.target.value))}
             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
@@ -35,10 +36,13 @@ const InstallmentsField: React.FC<InstallmentsFieldProps> = ({ value, onChange }
             } as React.CSSProperties}
           />
           <div className="flex justify-between text-xs text-gray-500 mt-1">
-            <span>36<br/>3 anos</span>
-            <span>60<br/>5 anos</span>
-            <span>120<br/>10 anos</span>
-            <span>180<br/>15 anos</span>
+            {Array.from({ length: 13 }, (_, i) => 36 + i * 12).map((months) => (
+              <span key={months}>
+                {months}
+                <br />
+                {months / 12} anos
+              </span>
+            ))}
           </div>
         </div>
       </div>
