@@ -7,28 +7,64 @@ const testimonials = [
   {
     name: "José Augusto Felix",
     age: "61 anos",
-    text: "Dentre as possibilidades que haviam no mercado, optei por fechar com a Libra, justamente pelo excelente atendimento e taxas competitivas. Recebi toda a assistência necessária e fiquei bastante satisfeito."
+    text:
+      "Dentre as possibilidades que haviam no mercado, optei por fechar com a Libra, justamente pelo excelente atendimento e taxas competitivas. Recebi toda a assistência necessária e fiquei bastante satisfeito."
   },
   {
     name: "Alcidemir Francisco de Oliveira",
     age: "59 anos",
-    text: "Conheci a Libra pelo Instagram e as conversas iniciais foram rápidas e eficientes. Aprecio muito a atenção aos detalhes e o processo transparente. Eu achei a experiência geral, positiva e útil para o meu objetivo, que era reduzir dívidas."
+    text:
+      "Conheci a Libra pelo Instagram e as conversas iniciais foram rápidas e eficientes. Aprecio muito a atenção aos detalhes e o processo transparente. Eu achei a experiência geral, positiva e útil para o meu objetivo, que era reduzir dívidas."
   },
   {
     name: "Emanuele Cristina Presenti",
     age: "27 anos",
-    text: "Meu primeiro contato com a Libra foi pelo Google, pesquisei mais detalhes sobre a empresa e entrei em contato. A primeira comunicação foi ótima e os consultores também! Fiz cotação com outras empresas, mas o valor que a Libra liberou foi maior, e as condições de pagamento e taxa de juros também foram melhores."
+    text:
+      "Meu primeiro contato com a Libra foi pelo Google, pesquisei mais detalhes sobre a empresa e entrei em contato. A primeira comunicação foi ótima e os consultores também! Fiz cotação com outras empresas, mas o valor que a Libra liberou foi maior, e as condições de pagamento e taxa de juros também foram melhores.",
+    smallText: true
+  },
+  {
+    name: "Rodrigo da Silva Reis Frias",
+    age: "44 anos",
+    text:
+      "A gente se viu num momento bem difícil pós pandemia, somos do comércio, temos um restaurante. Nesse momento eu entrei no Google e digitei “empréstimo com garantia de imóvel para negativado” o primeiro link que apareceu foi o de vocês. Depois que eu preenchi o cadastro que tinha automático, em uns 10 minutos uma pessoa da equipe me ligou, aí já entrei em processo de avaliação. Foi tudo muito rápido. Eu pensava em um valor, mas daí a analista, através dos dados que eu passei, fez um levantamento de todas as dívidas que a gente tinha e me considerou um valor maior ainda e para que eu quitasse as dívidas e ainda ficasse com um dinheiro para capital de giro. Para mim o atendimento foi perfeito, eu estava num momento difícil, eu e a minha esposa brincamos que foi coisa de Deus. Eu tenho muita facilidade para pegar os boletos. Todo mês a gente chama no WhatsApp e o atendimento é muito rápido pelo robozinho.",
+    smallText: true
+  },
+  {
+    name: "Jorge Gaulke",
+    age: "49 anos",
+    text:
+      "Busquei o crédito pensando na melhoria da empresa que tenho com a minha esposa. Foi para comprar alguns equipamentos, para poder atender melhor nossa capacidade. E aí eu acabei descobrindo a Libra por pesquisas, pesquisei na internet e após a simulação um representante entrou em contato comigo, após levantarmos todas as documentações, fui aprovado. A Libra foi a melhor empresa que encontrei em relação a atendimento e facilidade no contrato.",
+    smallText: true
+  },
+  {
+    name: "Valdirene Ruiz Garcia",
+    age: "42 anos",
+    text:
+      "Procurando financiar meu projeto de cosméticos terapêuticos - uma combinação da minha prática como terapeuta com a paixão por criar produtos, como shampoos sólidos, sabonetes, cremes para dor e velas terapêuticas - sabia que o desafio maior seria o investimento inicial. Foi nessa busca que me deparei com a opção de crédito com garantia de imóvel e encontrei a Libra Crédito. O processo foi fácil e o atendimento foi ótimo, consegui o suporte financeiro necessário para dar o primeiro passo com o projeto.",
+    smallText: true
   }
 ];
 
-const TestimonialCard = memo(({ name, age, text, isMobile, isActive, currentIndex, totalTestimonials, onNavigate }: {
-  name: string, 
-  age: string, 
-  text: string, 
-  isMobile: boolean, 
-  isActive: boolean,
-  currentIndex: number,
-  totalTestimonials: number,
+const TestimonialCard = memo(({
+  name,
+  age,
+  text,
+  smallText,
+  isMobile,
+  isActive,
+  currentIndex,
+  totalTestimonials,
+  onNavigate
+}: {
+  name: string;
+  age: string;
+  text: string;
+  smallText?: boolean;
+  isMobile: boolean;
+  isActive: boolean;
+  currentIndex: number;
+  totalTestimonials: number;
   onNavigate: (index: number) => void
 }) => {
   return (
@@ -44,7 +80,7 @@ const TestimonialCard = memo(({ name, age, text, isMobile, isActive, currentInde
           </div>
         </div>
         <div className="flex-grow flex items-center">
-          <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 italic`}>{text}</p>
+          <p className={`${isMobile ? (smallText ? 'text-xs' : 'text-sm') : smallText ? 'text-sm' : 'text-base'} text-gray-600 italic`}>{text}</p>
         </div>
         
         {/* Faixa separadora fixa acima das bolas */}
@@ -118,11 +154,12 @@ const Testimonials: React.FC = () => {
             
             <div className="relative h-[220px] md:h-[200px]">
               {testimonials.map((testimonial, index) => (
-                <TestimonialCard 
+                <TestimonialCard
                   key={index}
                   name={testimonial.name}
                   age={testimonial.age}
                   text={testimonial.text}
+                  smallText={testimonial.smallText}
                   isMobile={isMobile}
                   isActive={currentTestimonial === index}
                   currentIndex={currentTestimonial}
