@@ -60,7 +60,7 @@ import SmartApiMessage from './messages/SmartApiMessage';
 import SimulationResultDisplay from './SimulationResultDisplay';
 import { analyzeApiMessage, ApiMessageAnalysis } from '@/utils/apiMessageAnalyzer';
 import { analyzeLocalMessage } from '@/utils/localMessageAnalyzer';
-import { formatBRL, formatBRLInput, norm } from '@/utils/formatters';
+import { formatBRL, norm } from '@/utils/formatters';
 
 const SimulationForm: React.FC = () => {
   const { sessionId, trackSimulation } = useUserJourney();
@@ -80,11 +80,11 @@ const SimulationForm: React.FC = () => {
   const validation = validateForm(emprestimo, garantia, parcelas, amortizacao, cidade);
 
   const handleEmprestimoChange = (value: string) => {
-    setEmprestimo(formatBRLInput(value));
+    setEmprestimo(formatBRL(value));
   };
 
   const handleGarantiaChange = (value: string) => {
-    setGarantia(formatBRLInput(value));
+    setGarantia(formatBRL(value));
   };
 
   // Função para rolar para o resultado no mobile
@@ -200,7 +200,7 @@ const SimulationForm: React.FC = () => {
   // Função para ajustar valores automaticamente (30%) e executar simulação
   const handleAdjustValues = async (novoEmprestimo: number, isRural: boolean = false) => {
     // Ajustar os valores - usar valor completo com formatação
-    setEmprestimo(formatBRLInput(novoEmprestimo.toString()));
+    setEmprestimo(formatBRL(novoEmprestimo.toString()));
     setIsRuralProperty(isRural);
     setApiMessage(null);
     setErro('');
@@ -215,10 +215,10 @@ const SimulationForm: React.FC = () => {
 
       // Recalcular validação com novos valores
       const newValidation = validateForm(
-        formatBRLInput(novoEmprestimo.toString()), 
-        garantia, 
-        parcelas, 
-        amortizacao, 
+        formatBRL(novoEmprestimo.toString()),
+        garantia,
+        parcelas,
+        amortizacao,
         cidade
       );
 

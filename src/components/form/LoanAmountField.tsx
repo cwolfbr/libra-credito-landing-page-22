@@ -12,7 +12,7 @@ const LoanAmountField: React.FC<LoanAmountFieldProps> = ({ value, onChange }) =>
   return (
     <div className="flex items-center gap-2">
       <div className="bg-libra-light p-1.5 rounded-full flex-shrink-0">
-        <DollarSign className="w-4 h-4 text-libra-blue" />
+        <DollarSign className="w-4 h-4 text-green-500" />
       </div>
       <div className="flex-1">
         <label className="block text-xs font-medium text-libra-navy mb-1">
@@ -22,7 +22,7 @@ const LoanAmountField: React.FC<LoanAmountFieldProps> = ({ value, onChange }) =>
           <Input
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            placeholder="300000"
+            placeholder="R$ 300.000"
             className="text-sm"
             inputMode="numeric"
           />
