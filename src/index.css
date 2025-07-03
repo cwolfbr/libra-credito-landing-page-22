@@ -556,9 +556,9 @@
 
 }
 @media (min-width: 1024px) {
-  body {
-    transform: scale(1.4);
-    transform-origin: top left;
-    width: calc(100% / 1.4);
+  .desktop-scale {
+    transform: scale(0.85);
+    transform-origin: top center;
+    width: calc(100% / 0.85);
   }
 }

@@ -9,42 +9,44 @@ interface MobileLayoutProps {
   showFooter?: boolean;
 }
 
-const MobileLayout: React.FC<MobileLayoutProps> = ({ 
-  children, 
+const MobileLayout: React.FC<MobileLayoutProps> = ({
+  children,
   showHeader = true,
   showFooter = true
 }) => {
-  const { isMobile } = useDevice();
+  const { isDesktop } = useDevice();
 
   return (
     <div className="min-h-screen flex flex-col">
       {/* Skip Navigation Links for Accessibility */}
       <div className="sr-only focus-within:not-sr-only">
-        <a 
-          href="#main-content" 
+        <a
+          href="#main-content"
           className="absolute top-4 left-4 z-50 bg-libra-blue text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-libra-gold"
           tabIndex={1}
         >
           Pular para o conteúdo principal
         </a>
       </div>
-      
+
       {/* Header - Simplificado em mobile */}
       {showHeader && <Header />}
-      
-      {/* Main Content */}
-      <main
-        id="main-content"
-        data-has-header={showHeader ? "true" : "false"}
-        className={`flex-1 ${showHeader ? 'pt-header' : ''}`}
-        role="main"
-        aria-label="Conteúdo principal"
-      >
-        {children}
-      </main>
-      
-      {/* Footer - Sempre mostrar quando solicitado */}
-      {showFooter && <Footer />}
+
+      <div className={`flex flex-col flex-1 ${isDesktop ? 'desktop-scale' : ''}`}> 
+        {/* Main Content */}
+        <main
+          id="main-content"
+          data-has-header={showHeader ? 'true' : 'false'}
+          className={`flex-1 ${showHeader ? 'pt-header' : ''}`}
+          role="main"
+          aria-label="Conteúdo principal"
+        >
+          {children}
+        </main>
+
+        {/* Footer - Sempre mostrar quando solicitado */}
+        {showFooter && <Footer />}
+      </div>
     </div>
   );
 };
