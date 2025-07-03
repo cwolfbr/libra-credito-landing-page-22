@@ -217,88 +217,51 @@ const Vantagens: React.FC = () => {
                 </div>
               </div>
 
-              {/* Comparativo de Taxas - apenas desktop */}
-              {!isMobile && (
-                <div>
-                  <div id="comparison-table-desktop" className="bg-white rounded-lg shadow-lg p-6">
-                    <h2 className="text-xl font-bold text-libra-navy mb-2">Comparativo de Taxas de Juros</h2>
-                    <p className="text-sm text-gray-500 mb-4">Fonte: Dados abertos do BACEN - Janeiro 2025</p>
-                    <div className="space-y-3">
-                      {taxasJuros.map((item, index) => (
-                        <div key={index} className="space-y-2">
-                          <div className="flex justify-between items-center">
-                            <span className={`font-medium text-base ${item.destaque ? 'text-libra-navy font-bold' : 'text-gray-700'}`}>
-                              {item.nome}
-                            </span>
-                            <span className={`font-bold text-base ${item.destaque ? 'text-libra-navy' : 'text-gray-700'}`}>
-                              {item.taxa.toFixed(2)}% a.m.
-                            </span>
-                          </div>
-                          <div className="h-3 rounded-full bg-gray-100 overflow-hidden">
-                            <div 
-                              className={`h-full transition-all duration-500 ease-out ${
-                                item.destaque 
-                                  ? 'bg-libra-navy' 
-                                  : 'bg-red-400/70'
-                              }`}
-                              style={{ 
-                                width: `${animatedValues[index] || (isTableVisible ? ((item.taxa / maxTaxa) * 100) : 0)}%`,
-                                minWidth: animatedValues[index] || (isTableVisible ? '2px' : '0px')
-                              }}
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </section>
 
-        {/* Ondas ao redor do comparativo - apenas mobile, fora do grid */}
-        {isMobile && (
-          <>
-            <WaveSeparator variant="hero" height="md" />
-            <div className="py-8" style={{ backgroundColor: '#003399' }}>
-              <div className="container mx-auto px-4">
-                <div id="comparison-table-mobile" className="bg-white rounded-lg shadow-lg p-4">
-                  <h2 className="text-lg font-bold text-libra-navy mb-2">Comparativo de Taxas de Juros</h2>
-                  <p className="text-sm text-gray-500 mb-4">Fonte: Dados abertos do BACEN - Janeiro 2025</p>
-                  <div className="space-y-3">
-                    {taxasJuros.map((item, index) => (
-                      <div key={index} className="space-y-2">
-                        <div className="flex justify-between items-center">
-                          <span className={`font-medium text-sm ${item.destaque ? 'text-libra-navy font-bold' : 'text-gray-700'}`}>
-                            {item.nome}
-                          </span>
-                          <span className={`font-bold text-sm ${item.destaque ? 'text-libra-navy' : 'text-gray-700'}`}>
-                            {item.taxa.toFixed(2)}% a.m.
-                          </span>
-                        </div>
-                        <div className="h-2 rounded-full bg-gray-100 overflow-hidden">
-                          <div 
-                            className={`h-full transition-all duration-500 ease-out ${
-                              item.destaque 
-                                ? 'bg-libra-navy' 
-                                : 'bg-red-400/70'
-                            }`}
-                            style={{ 
-                              width: `${animatedValues[index] || (isTableVisible ? ((item.taxa / maxTaxa) * 100) : 0)}%`,
-                              minWidth: animatedValues[index] || (isTableVisible ? '2px' : '0px')
-                            }}
-                          />
-                        </div>
+        {/* Comparativo de Taxas com ondas */}
+        <>
+          <WaveSeparator variant="hero" height="md" />
+          <div className={`${isMobile ? 'py-8' : 'py-12'}`} style={{ backgroundColor: '#003399' }}>
+            <div className="container mx-auto px-4">
+              <div
+                id={`comparison-table-${isMobile ? 'mobile' : 'desktop'}`}
+                className={`bg-white rounded-lg shadow-lg ${isMobile ? 'p-4' : 'p-6'}`}
+              >
+                <h2 className={`${isMobile ? 'text-lg' : 'text-xl'} font-bold text-libra-navy mb-2`}>Comparativo de Taxas de Juros</h2>
+                <p className="text-sm text-gray-500 mb-4">Fonte: Dados abertos do BACEN - Janeiro 2025</p>
+                <div className="space-y-3">
+                  {taxasJuros.map((item, index) => (
+                    <div key={index} className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className={`font-medium ${isMobile ? 'text-sm' : 'text-base'} ${item.destaque ? 'text-libra-navy font-bold' : 'text-gray-700'}`}>
+                          {item.nome}
+                        </span>
+                        <span className={`font-bold ${isMobile ? 'text-sm' : 'text-base'} ${item.destaque ? 'text-libra-navy' : 'text-gray-700'}`}>
+                          {item.taxa.toFixed(2)}% a.m.
+                        </span>
                       </div>
-                    ))}
-                  </div>
+                      <div className={`${isMobile ? 'h-2' : 'h-3'} rounded-full bg-gray-100 overflow-hidden`}>
+                        <div
+                          className={`h-full transition-all duration-500 ease-out ${
+                            item.destaque ? 'bg-libra-navy' : 'bg-red-400/70'
+                          }`}
+                          style={{
+                            width: `${animatedValues[index] || (isTableVisible ? ((item.taxa / maxTaxa) * 100) : 0)}%`,
+                            minWidth: animatedValues[index] || (isTableVisible ? '2px' : '0px')
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
-            <WaveSeparator variant="hero" height="md" inverted />
-          </>
-        )}
+          </div>
+          <WaveSeparator variant="hero" height="md" inverted />
+        </>
 
         {/* Seção de Passos para Obter Crédito */}
         <section className={`${isMobile ? 'py-6' : 'py-12'} bg-white`}>
