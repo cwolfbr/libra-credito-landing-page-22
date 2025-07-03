@@ -85,9 +85,9 @@ const TrustBarMinimal: React.FC = () => {
   ];
 
   return (
-    <section 
+    <section
       id="trustbar"
-      className="py-6 md:py-8 bg-[#003399] relative"
+      className="py-[1.2rem] md:py-[1.6rem] bg-[#003399] relative"
     >
       <div className="container mx-auto px-4">
         {/* Grid de estatísticas compacto */}
