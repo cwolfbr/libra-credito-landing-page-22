@@ -70,7 +70,7 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ onPortalClientes, onSimulat
                 <ImageOptimizer 
                   src="/images/logos/libra-logo.png" 
                   alt="Libra Crédito" 
-                  className="h-16 w-auto transform scale-105"
+                  className="h-16 w-auto transform scale-[1.25]"
                   aspectRatio={1}
                   priority={true}
                   style={{
@@ -111,11 +111,11 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ onPortalClientes, onSimulat
                 <li key={item.path}>
                   <Link
                     to={item.path}
-                    className={`block py-3 px-3 text-base font-medium rounded-md transition-colors ${
-                      item.highlight 
-                        ? 'bg-libra-navy text-white hover:bg-libra-navy/90 font-semibold' 
-                        : location.pathname === item.path 
-                          ? 'text-libra-blue bg-blue-50' 
+                    className={`block py-3 px-3 text-[1.25rem] font-medium rounded-md transition-colors ${
+                      item.highlight
+                        ? 'bg-libra-navy text-white hover:bg-libra-navy/90 font-semibold'
+                        : location.pathname === item.path
+                          ? 'text-libra-blue bg-blue-50'
                           : 'text-libra-navy hover:text-libra-blue hover:bg-gray-50'
                     }`}
                     onClick={() => setIsMenuOpen(false)}

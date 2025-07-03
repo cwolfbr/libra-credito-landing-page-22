@@ -41,7 +41,7 @@ const SimpleMobileHeader: React.FC<SimpleMobileHeaderProps> = ({ onPortalCliente
             <ImageOptimizer
               src="/images/logos/libra-logo.png"
               alt="Libra Crédito - Simulação de crédito com garantia de imóvel"
-              className="h-20 w-auto transform scale-105"
+              className="h-20 w-auto transform scale-[1.25]"
               aspectRatio={1}
               priority={true}
               style={{
@@ -83,9 +83,9 @@ const SimpleMobileHeader: React.FC<SimpleMobileHeaderProps> = ({ onPortalCliente
                 <li key={item.path} role="none">
                   <Link
                     to={item.path}
-                    className={`block py-3 px-2 text-sm font-medium rounded-md transition-colors min-h-[44px] flex items-center ${
-                      location.pathname === item.path 
-                        ? 'text-libra-blue bg-blue-50' 
+                    className={`block py-3 px-2 text-[1.0938rem] font-medium rounded-md transition-colors min-h-[44px] flex items-center ${
+                      location.pathname === item.path
+                        ? 'text-libra-blue bg-blue-50'
                         : 'text-libra-navy hover:text-libra-blue hover:bg-gray-50'
                     }`}
                     onClick={() => setIsMenuOpen(false)}
