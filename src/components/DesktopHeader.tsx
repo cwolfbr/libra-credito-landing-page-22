@@ -49,7 +49,10 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
 
 
   return (
-    <>
+    <header
+      className="fixed top-0 left-0 right-0 z-40 bg-white shadow-sm"
+      role="banner"
+    >
       {/* Faixa superior informativa */}
       {showBanner && (
         <div className="w-full bg-libra-navy">
@@ -71,11 +74,6 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
         </div>
       )}
 
-      {/* Header de navegação que permanece no topo após o scroll */}
-      <header
-        className="sticky top-0 left-0 right-0 z-40 bg-white shadow-sm"
-        role="banner"
-      >
         {/* Faixa principal */}
         <div className="border-b border-gray-100">
         <div className="container mx-auto px-4">
@@ -137,7 +135,6 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
         </div>
       </div>
       </header>
-    </>
   );
 };
 
