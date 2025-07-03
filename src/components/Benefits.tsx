@@ -118,7 +118,7 @@ const Benefits: React.FC = () => {
               <Link to="/vantagens">
                 <Button
                   size="lg"
-                  className="bg-green-500 hover:bg-green-600 text-white px-8 py-3"
+                  className="bg-red-500 hover:bg-red-600 text-white px-8 py-3"
                 >
                   Conheça Mais Vantagens
                 </Button>
@@ -126,7 +126,7 @@ const Benefits: React.FC = () => {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-green-500 text-green-500 hover:bg-green-500 hover:text-white px-8 py-3"
+                className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white px-8 py-3"
                 onClick={() => {
                   const testimonialsSection = document.getElementById('testimonials');
                   if (testimonialsSection) {
@@ -180,8 +180,8 @@ const Benefits: React.FC = () => {
             <div className="container mx-auto px-4">
               <div className="flex justify-center items-center">
                 <Link to="/vantagens">
-                  <Button 
-                    className="min-h-[48px] min-w-[200px] bg-white text-[#003399] hover:bg-gray-50 border-0"
+                  <Button
+                    className="min-h-[48px] min-w-[200px] bg-red-500 text-white hover:bg-red-600 border-0"
                     size="default"
                     aria-label="Clique para conhecer mais vantagens do crédito"
                   >
