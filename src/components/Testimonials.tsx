@@ -59,11 +59,11 @@ const TestimonialCard = memo(({ name, age, text, isMobile, isActive, currentInde
           </div>
         </div>
         <div className="flex-grow flex items-center">
-          <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 italic`}>{text}</p>
+          <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-gray-600 italic`}>{text}</p>
         </div>
         
         {/* Faixa separadora fixa acima das bolas */}
-        <div className="border-t border-gray-100 pt-2 mt-4">
+        <div className="border-t border-gray-100 pt-2 mt-auto">
           <div className="flex justify-center gap-1">
             {Array.from({ length: totalTestimonials }).map((_, index) => (
               <button
@@ -106,14 +106,17 @@ const Testimonials: React.FC = () => {
     <section id="testimonials" className={`${isMobile ? 'py-4' : 'py-8 md:py-12'} bg-white scroll-mt-[88px]`}>
       <div className="container mx-auto px-4">
         <div className="text-center mb-6 md:mb-12">
-          <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy mb-2 md:mb-4`}>
-            Quem conhece, Confia!
-          </h2>
+          <div className="flex justify-center items-center gap-2 mb-2 md:mb-4">
+            <MessageSquare className={`${isMobile ? 'w-6 h-6' : 'w-7 h-7 md:w-8 md:h-8'} text-libra-blue`} />
+            <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy`}>
+              Depoimentos de Clientes
+            </h2>
+          </div>
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center max-w-6xl mx-auto">
           <div className="w-full max-w-xl mx-auto">
-            <div className="aspect-video rounded-lg overflow-hidden shadow-xl bg-black">
+            <div className="aspect-video min-h-[260px] md:min-h-[320px] rounded-lg overflow-hidden shadow-xl bg-black">
               <OptimizedYouTube 
                 videoId="ETQRA4cvADk" 
                 title="Depoimento Cliente - Libra Crédito"
@@ -123,15 +126,8 @@ const Testimonials: React.FC = () => {
             </div>
           </div>
           
-          <div className="relative">
-            <div className="flex items-center gap-2 mb-4">
-              <MessageSquare className="w-5 h-5 md:w-6 md:h-6 text-libra-blue" />
-              <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-libra-navy`}>
-                Depoimentos de Clientes
-              </h3>
-            </div>
-            
-            <div className="relative h-[220px] md:h-[200px]">
+          <div className="w-full max-w-xl mx-auto">
+            <div className="relative aspect-video min-h-[260px] md:min-h-[320px]">
               {testimonials.map((testimonial, index) => (
                 <TestimonialCard 
                   key={index}
