@@ -63,7 +63,7 @@ const TestimonialCard = memo(({ name, age, text, isMobile, isActive, currentInde
         </div>
         
         {/* Faixa separadora fixa acima das bolas */}
-        <div className="border-t border-gray-100 pt-2 mt-4">
+        <div className="border-t border-gray-100 pt-2 mt-4 mt-auto">
           <div className="flex justify-center gap-1">
             {Array.from({ length: totalTestimonials }).map((_, index) => (
               <button
@@ -114,7 +114,7 @@ const Testimonials: React.FC = () => {
           </div>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 lg:items-stretch items-center max-w-6xl mx-auto">
           <div className="w-full max-w-xl mx-auto">
             <div className="aspect-video rounded-lg overflow-hidden shadow-xl bg-black">
               <OptimizedYouTube 
@@ -126,8 +126,8 @@ const Testimonials: React.FC = () => {
             </div>
           </div>
           
-          <div className="relative">
-            <div className="relative h-[260px] md:h-[240px]">
+          <div className="relative h-full">
+            <div className="relative h-[260px] lg:h-full">
               {testimonials.map((testimonial, index) => (
                 <TestimonialCard 
                   key={index}
