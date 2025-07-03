@@ -57,7 +57,7 @@ const Hero: React.FC = () => {
             
             <div>
               <h1 id="hero-heading" className="text-xl md:text-2xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold mb-3 md:mb-3 lg:mb-3 leading-tight">
-                Crédito Com Garantia de Imóvel é na Libra!
+                Crédito Com Garantia de Imóvel é mais simples na Libra!
                 <br />
                 Home Equity Facilitado.
               </h1>
@@ -67,7 +67,7 @@ const Hero: React.FC = () => {
                 </p>
                 <div className="flex items-center gap-3">
                   <Shield className="w-5 h-5 lg:w-5 lg:h-5 text-[#003399] flex-shrink-0" aria-hidden="true" />
-                  <p className="text-xs md:text-sm lg:text-sm xl:text-base text-[#003399] leading-relaxed">
+                  <p className="text-xs md:text-sm lg:text-sm xl:text-base text-[#003399] leading-relaxed font-bold">
                     Atendimento Personalizado, Segurança e Transparência!
                   </p>
                 </div>
