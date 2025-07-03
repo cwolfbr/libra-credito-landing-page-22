@@ -189,11 +189,18 @@ const Vantagens: React.FC = () => {
             <div className="grid grid-cols-1 gap-6">
               {/* Vantagens */}
               <div>
-                <div className={`grid grid-cols-2 sm:grid-cols-2 ${isMobile ? 'gap-3' : 'gap-4'}`}>
+                <div
+                  className={`flex ${
+                    isMobile ? 'overflow-x-auto space-x-3 py-2' : 'justify-between space-x-4'
+                  }`}
+                >
                   {vantagens.map((vantagem, index) => {
                     const Icon = vantagem.icon;
                     return (
-                      <div key={index} className={`bg-white ${isMobile ? 'p-3' : 'p-4'} rounded-lg shadow-sm hover:shadow-md transition-shadow`}>
+                      <div
+                        key={index}
+                        className={`bg-white ${isMobile ? 'p-3 min-w-[220px]' : 'p-4 flex-1'} rounded-lg shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between`}
+                      >
                         <div className={`flex items-center ${isMobile ? 'mb-2' : 'mb-3'}`}>
                           <div className={`bg-libra-blue/10 ${isMobile ? 'p-1.5' : 'p-2'} rounded-lg`}>
                             <Icon className={`${isMobile ? 'w-4 h-4' : 'w-5 h-5'} text-libra-blue`} />
