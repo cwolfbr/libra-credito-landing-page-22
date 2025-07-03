@@ -278,24 +278,24 @@ const Vantagens: React.FC = () => {
             <div className={`grid ${isMobile ? 'grid-cols-2 gap-4' : 'grid-cols-2 lg:grid-cols-4 gap-6'}`}>
               {/* Passo 1 */}
               <div className="relative h-full">
-                <div className={`bg-white rounded-xl ${isMobile ? 'p-4' : 'p-6'} shadow-sm hover:shadow-md transition-shadow border border-gray-100 h-full flex flex-col`}>
+                <div className={`bg-libra-blue rounded-xl ${isMobile ? 'p-4' : 'p-6'} shadow-sm hover:shadow-md transition-shadow border border-gray-100 h-full flex flex-col`}>
                   <div className="flex flex-col items-center text-center flex-grow">
-                    <div className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'} bg-libra-blue/10 rounded-full flex items-center justify-center ${isMobile ? 'mb-2' : 'mb-4'}`}>
-                      <FileText className={`${isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-libra-blue`} />
+                    <div className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'} bg-white/20 rounded-full flex items-center justify-center ${isMobile ? 'mb-2' : 'mb-4'}`}>
+                      <FileText className={`${isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-white`} />
                     </div>
-                    <div className={`bg-libra-blue text-white rounded-full ${isMobile ? 'w-6 h-6' : 'w-8 h-8'} flex items-center justify-center text-sm font-bold ${isMobile ? 'mb-2' : 'mb-3'}`}>
+                    <div className={`bg-white text-libra-blue rounded-full ${isMobile ? 'w-6 h-6' : 'w-8 h-8'} flex items-center justify-center text-sm font-bold ${isMobile ? 'mb-2' : 'mb-3'}`}>
                       1
                     </div>
-                    <h3 className={`${isMobile ? 'text-sm' : 'text-xl'} font-bold text-libra-navy ${isMobile ? 'mb-1' : 'mb-2'}`}>
+                    <h3 className={`${isMobile ? 'text-sm' : 'text-xl'} font-bold text-white ${isMobile ? 'mb-1' : 'mb-2'}`}>
                       Faça uma simulação
                     </h3>
-                    <p className={`text-gray-600 ${isMobile ? 'text-xs' : 'text-sm'} leading-relaxed`}>
+                    <p className={`text-white ${isMobile ? 'text-xs' : 'text-sm'} leading-relaxed`}>
                       Simule gratuitamente suas condições personalizadas
                     </p>
                   </div>
                 </div>
                 {!isMobile && (
-                  <div className="hidden lg:block absolute top-1/2 -right-3 transform -translate-y-1/2 text-libra-blue">
+                  <div className="hidden lg:block absolute top-1/2 -right-3 transform -translate-y-1/2 text-white">
                     <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
                     </svg>
@@ -305,24 +305,24 @@ const Vantagens: React.FC = () => {
 
               {/* Passo 2 */}
               <div className="relative h-full">
-                <div className={`bg-white rounded-xl ${isMobile ? 'p-4' : 'p-6'} shadow-sm hover:shadow-md transition-shadow border border-gray-100 h-full flex flex-col`}>
+                <div className={`bg-libra-blue rounded-xl ${isMobile ? 'p-4' : 'p-6'} shadow-sm hover:shadow-md transition-shadow border border-gray-100 h-full flex flex-col`}>
                   <div className="flex flex-col items-center text-center flex-grow">
-                    <div className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'} bg-libra-blue/10 rounded-full flex items-center justify-center ${isMobile ? 'mb-2' : 'mb-4'}`}>
-                      <MessageCircle className={`${isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-libra-blue`} />
+                    <div className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'} bg-white/20 rounded-full flex items-center justify-center ${isMobile ? 'mb-2' : 'mb-4'}`}>
+                      <MessageCircle className={`${isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-white`} />
                     </div>
-                    <div className={`bg-libra-blue text-white rounded-full ${isMobile ? 'w-6 h-6' : 'w-8 h-8'} flex items-center justify-center text-sm font-bold ${isMobile ? 'mb-2' : 'mb-3'}`}>
+                    <div className={`bg-white text-libra-blue rounded-full ${isMobile ? 'w-6 h-6' : 'w-8 h-8'} flex items-center justify-center text-sm font-bold ${isMobile ? 'mb-2' : 'mb-3'}`}>
                       2
                     </div>
-                    <h3 className={`${isMobile ? 'text-sm' : 'text-xl'} font-bold text-libra-navy ${isMobile ? 'mb-1' : 'mb-2'}`}>
+                    <h3 className={`${isMobile ? 'text-sm' : 'text-xl'} font-bold text-white ${isMobile ? 'mb-1' : 'mb-2'}`}>
                       Fale com o consultor
                     </h3>
-                    <p className={`text-gray-600 ${isMobile ? 'text-xs' : 'text-sm'} leading-relaxed`}>
+                    <p className={`text-white ${isMobile ? 'text-xs' : 'text-sm'} leading-relaxed`}>
                       Converse com nosso especialista e envie sua documentação
                     </p>
                   </div>
                 </div>
                 {!isMobile && (
-                  <div className="hidden lg:block absolute top-1/2 -right-3 transform -translate-y-1/2 text-libra-blue">
+                  <div className="hidden lg:block absolute top-1/2 -right-3 transform -translate-y-1/2 text-white">
                     <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
                     </svg>
@@ -332,24 +332,24 @@ const Vantagens: React.FC = () => {
 
               {/* Passo 3 */}
               <div className="relative h-full">
-                <div className={`bg-white rounded-xl ${isMobile ? 'p-4' : 'p-6'} shadow-sm hover:shadow-md transition-shadow border border-gray-100 h-full flex flex-col`}>
+                <div className={`bg-libra-blue rounded-xl ${isMobile ? 'p-4' : 'p-6'} shadow-sm hover:shadow-md transition-shadow border border-gray-100 h-full flex flex-col`}>
                   <div className="flex flex-col items-center text-center flex-grow">
-                    <div className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'} bg-libra-blue/10 rounded-full flex items-center justify-center ${isMobile ? 'mb-2' : 'mb-4'}`}>
-                      <CheckCircle className={`${isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-libra-blue`} />
+                    <div className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'} bg-white/20 rounded-full flex items-center justify-center ${isMobile ? 'mb-2' : 'mb-4'}`}>
+                      <CheckCircle className={`${isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-white`} />
                     </div>
-                    <div className={`bg-libra-blue text-white rounded-full ${isMobile ? 'w-6 h-6' : 'w-8 h-8'} flex items-center justify-center text-sm font-bold ${isMobile ? 'mb-2' : 'mb-3'}`}>
+                    <div className={`bg-white text-libra-blue rounded-full ${isMobile ? 'w-6 h-6' : 'w-8 h-8'} flex items-center justify-center text-sm font-bold ${isMobile ? 'mb-2' : 'mb-3'}`}>
                       3
                     </div>
-                    <h3 className={`${isMobile ? 'text-sm' : 'text-xl'} font-bold text-libra-navy ${isMobile ? 'mb-1' : 'mb-2'}`}>
+                    <h3 className={`${isMobile ? 'text-sm' : 'text-xl'} font-bold text-white ${isMobile ? 'mb-1' : 'mb-2'}`}>
                       Receba proposta gratuita
                     </h3>
-                    <p className={`text-gray-600 ${isMobile ? 'text-xs' : 'text-sm'} leading-relaxed`}>
+                    <p className={`text-white ${isMobile ? 'text-xs' : 'text-sm'} leading-relaxed`}>
                       Proposta personalizada para realizar seus projetos
                     </p>
                   </div>
                 </div>
                 {!isMobile && (
-                  <div className="hidden lg:block absolute top-1/2 -right-3 transform -translate-y-1/2 text-libra-blue">
+                  <div className="hidden lg:block absolute top-1/2 -right-3 transform -translate-y-1/2 text-white">
                     <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
                     </svg>
@@ -359,18 +359,18 @@ const Vantagens: React.FC = () => {
 
               {/* Passo 4 */}
               <div className="relative h-full">
-                <div className={`bg-white rounded-xl ${isMobile ? 'p-4' : 'p-6'} shadow-sm hover:shadow-md transition-shadow border border-gray-100 h-full flex flex-col`}>
+                <div className={`bg-libra-blue rounded-xl ${isMobile ? 'p-4' : 'p-6'} shadow-sm hover:shadow-md transition-shadow border border-gray-100 h-full flex flex-col`}>
                   <div className="flex flex-col items-center text-center flex-grow">
-                    <div className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'} bg-libra-blue/10 rounded-full flex items-center justify-center ${isMobile ? 'mb-2' : 'mb-4'}`}>
-                      <CreditCard className={`${isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-libra-blue`} />
+                    <div className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'} bg-white/20 rounded-full flex items-center justify-center ${isMobile ? 'mb-2' : 'mb-4'}`}>
+                      <CreditCard className={`${isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-white`} />
                     </div>
-                    <div className={`bg-libra-blue text-white rounded-full ${isMobile ? 'w-6 h-6' : 'w-8 h-8'} flex items-center justify-center text-sm font-bold ${isMobile ? 'mb-2' : 'mb-3'}`}>
+                    <div className={`bg-white text-libra-blue rounded-full ${isMobile ? 'w-6 h-6' : 'w-8 h-8'} flex items-center justify-center text-sm font-bold ${isMobile ? 'mb-2' : 'mb-3'}`}>
                       4
                     </div>
-                    <h3 className={`${isMobile ? 'text-sm' : 'text-xl'} font-bold text-libra-navy ${isMobile ? 'mb-1' : 'mb-2'}`}>
+                    <h3 className={`${isMobile ? 'text-sm' : 'text-xl'} font-bold text-white ${isMobile ? 'mb-1' : 'mb-2'}`}>
                       Dinheiro na conta
                     </h3>
-                    <p className={`text-gray-600 ${isMobile ? 'text-xs' : 'text-sm'} leading-relaxed`}>
+                    <p className={`text-white ${isMobile ? 'text-xs' : 'text-sm'} leading-relaxed`}>
                       Assinatura, avaliação do imóvel e liberação do crédito
                     </p>
                   </div>
