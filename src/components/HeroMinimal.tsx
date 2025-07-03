@@ -82,12 +82,11 @@ const HeroMinimal: React.FC = () => {
               
               {/* Título Original */}
               <FloatingElement delay={200}>
-                <h1 
+                <h1
                   id="hero-heading"
                   className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-white"
                 >
-                  Transforme seu Patrimônio<br />
-                  em Oportunidades
+                  Crédito Com Garantia de Imóvel - Home Equity
                 </h1>
               </FloatingElement>
 
@@ -95,13 +94,12 @@ const HeroMinimal: React.FC = () => {
               <FloatingElement delay={400}>
                 <div className="space-y-3 md:space-y-4">
                   <p className="text-lg md:text-xl text-white/90 leading-relaxed font-medium">
-                    Crédito inteligente para quem construiu história.
-                    <span className="text-[#00ccff] font-bold"> Até R$ 5 milhões</span> com as menores taxas do mercado.
+                    Crédito inteligente para quem construiu patrimonio.
                   </p>
                   <div className="flex items-center gap-3">
                     <Shield className="w-5 h-5 text-[#00ccff] flex-shrink-0" aria-hidden="true" />
                     <p className="text-base md:text-lg text-white/80 leading-relaxed">
-                      Segurança, transparência e Atendimento Premium!
+                      Atendimento Personalizado, Segurança e Transparência!
                     </p>
                   </div>
                   <p className="text-base md:text-lg text-white/80 leading-relaxed">
