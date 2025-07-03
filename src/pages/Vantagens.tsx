@@ -157,7 +157,7 @@ const Vantagens: React.FC = () => {
       icon: BadgeCheck,
       title: "Credibilidade",
       description: "Grupo Stéfani - 40+ anos",
-      benefit: <a href="https://www.construtorastefani.com.br/" target="_blank" rel="noopener noreferrer" className="text-libra-blue hover:underline">Tradição e confiança</a>
+      benefit: <a href="https://www.construtorastefani.com.br/" target="_blank" rel="noopener noreferrer" className="text-green-500 hover:underline">Tradição e confiança</a>
     }
   ];
 
@@ -174,10 +174,10 @@ const Vantagens: React.FC = () => {
         {/* Hero Section - Otimizado */}
         <section className={`${isMobile ? 'py-6' : 'py-8'}`}>
           <div className="container mx-auto px-4">
-            <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy text-center mb-3`}>
+            <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-green-500 text-center mb-3`}>
               Vantagens do Crédito com Garantia
             </h1>
-            <p className={`${isMobile ? 'text-base px-2' : 'text-lg'} text-gray-600 max-w-3xl mx-auto text-center`}>
+            <p className={`${isMobile ? 'text-base px-2' : 'text-lg'} text-green-500 max-w-3xl mx-auto text-center`}>
               As melhores condições do mercado para realizar seus projetos
             </p>
           </div>
@@ -205,11 +205,11 @@ const Vantagens: React.FC = () => {
                           <div className={`bg-libra-blue/10 ${isMobile ? 'p-1.5' : 'p-2'} rounded-lg`}>
                             <Icon className={`${isMobile ? 'w-4 h-4' : 'w-5 h-5'} text-libra-blue`} />
                           </div>
-                          <h3 className={`${isMobile ? 'text-sm' : 'text-base'} font-bold text-libra-navy ml-2`}>{vantagem.title}</h3>
+                          <h3 className={`${isMobile ? 'text-sm' : 'text-base'} font-bold text-green-500 ml-2`}>{vantagem.title}</h3>
                         </div>
-                        <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-gray-600 ${isMobile ? 'mb-2' : 'mb-3'}`}>{vantagem.description}</p>
+                        <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-green-500 ${isMobile ? 'mb-2' : 'mb-3'}`}>{vantagem.description}</p>
                         <div className={`bg-libra-light rounded-lg ${isMobile ? 'p-2' : 'p-2'}`}>
-                          <p className={`text-libra-navy font-medium ${isMobile ? 'text-xs' : 'text-sm'}`}>{vantagem.benefit}</p>
+                          <p className={`text-green-500 font-medium ${isMobile ? 'text-xs' : 'text-sm'}`}>{vantagem.benefit}</p>
                         </div>
                       </div>
                     );
