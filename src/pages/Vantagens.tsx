@@ -174,10 +174,10 @@ const Vantagens: React.FC = () => {
         {/* Hero Section - Otimizado */}
         <section className={`${isMobile ? 'py-6' : 'py-8'}`}>
           <div className="container mx-auto px-4">
-            <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-green-500 text-center mb-3`}>
+            <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-libra-navy text-center mb-3`}>
               Vantagens do Crédito com Garantia
             </h1>
-            <p className={`${isMobile ? 'text-base px-2' : 'text-lg'} text-green-500 max-w-3xl mx-auto text-center`}>
+            <p className={`${isMobile ? 'text-base px-2' : 'text-lg'} text-libra-navy max-w-3xl mx-auto text-center`}>
               As melhores condições do mercado para realizar seus projetos
             </p>
           </div>
@@ -190,8 +190,8 @@ const Vantagens: React.FC = () => {
               {/* Vantagens */}
               <div>
                 <div
-                  className={`flex ${
-                    isMobile ? 'overflow-x-auto space-x-3 py-2' : 'justify-between space-x-4'
+                  className={`${
+                    isMobile ? 'grid grid-cols-2 gap-3' : 'flex justify-between space-x-4'
                   }`}
                 >
                   {vantagens.map((vantagem, index) => {
@@ -199,7 +199,7 @@ const Vantagens: React.FC = () => {
                     return (
                       <div
                         key={index}
-                        className={`bg-green-600 ${isMobile ? 'p-3 min-w-[220px]' : 'p-4 flex-1'} rounded-lg shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between`}
+                        className={`bg-green-600 ${isMobile ? 'p-3' : 'p-4 flex-1'} rounded-lg shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between`}
                       >
                         <div className={`flex items-center ${isMobile ? 'mb-2' : 'mb-3'}`}>
                           <div className={`bg-white/20 ${isMobile ? 'p-1.5' : 'p-2'} rounded-lg`}>
