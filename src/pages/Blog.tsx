@@ -181,11 +181,11 @@ const Blog = () => {
                     className="block bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow group"
                   >
                     <article>
-                      <div className="aspect-[3/2] overflow-hidden rounded-t-xl">
+                      <div className="aspect-[3/2] overflow-hidden rounded-t-xl bg-white">
                         <img
                           src={post.imageUrl}
                           alt={post.title}
-                          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                          className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-300"
                           loading="lazy"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
