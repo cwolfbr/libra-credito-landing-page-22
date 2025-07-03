@@ -60,12 +60,13 @@ const Hero: React.FC = () => {
                 Crédito Com Garantia de Imóvel
                 <br />
                 é mais simples na Libra!
-                <br />
-                Libere até 50% do valor do seu imóvel
               </h1>
               <div className="space-y-3 md:space-y-3 lg:space-y-2">
                 <p className="text-sm md:text-base lg:text-base xl:text-lg text-[#003399] leading-relaxed font-medium">
                   Crédito inteligente para quem construiu patrimonio.
+                </p>
+                <p className="text-xl md:text-2xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold leading-tight">
+                  Libere até 50% do valor do seu imóvel
                 </p>
                 <div className="flex items-center gap-3">
                   <Shield className="w-5 h-5 lg:w-5 lg:h-5 text-[#003399] flex-shrink-0" aria-hidden="true" />
