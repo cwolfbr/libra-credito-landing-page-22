@@ -86,7 +86,11 @@ const HeroMinimal: React.FC = () => {
                   id="hero-heading"
                   className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-white"
                 >
-                  Crédito Com Garantia de Imóvel é mais simples na Libra!
+                  Crédito Com Garantia de Imóvel
+                  <span className="block text-lg md:text-xl font-medium">
+                    Libere até 50% do valor do seu imóvel
+                  </span>
+                  é mais simples na Libra!
                   <br />
                   Home Equity Facilitado.
                 </h1>
