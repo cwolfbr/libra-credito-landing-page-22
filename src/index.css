@@ -274,7 +274,7 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground overflow-x-hidden;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
   
@@ -565,11 +565,4 @@
     overflow: hidden;
   }
 
-}
-@media (min-width: 1024px) {
-  .desktop-scale {
-    transform: scale(0.85);
-    transform-origin: top center;
-    width: calc(100% / 0.85);
-  }
 }
