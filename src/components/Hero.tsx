@@ -57,18 +57,16 @@ const Hero: React.FC = () => {
             
             <div>
               <h1 id="hero-heading" className="text-xl md:text-2xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold mb-3 md:mb-3 lg:mb-3 leading-tight">
-                Transforme seu Patrimônio<br />
-                em Oportunidades
+                Crédito Com Garantia de Imóvel - Home Equity
               </h1>
               <div className="space-y-3 md:space-y-3 lg:space-y-2">
                 <p className="text-sm md:text-base lg:text-base xl:text-lg text-[#003399] leading-relaxed font-medium">
-                  Crédito inteligente para quem construiu história.
-                  Até R$ 5 milhões com as menores taxas do mercado.
+                  Crédito inteligente para quem construiu patrimonio.
                 </p>
                 <div className="flex items-center gap-3">
                   <Shield className="w-5 h-5 lg:w-5 lg:h-5 text-[#003399] flex-shrink-0" aria-hidden="true" />
                   <p className="text-xs md:text-sm lg:text-sm xl:text-base text-[#003399] leading-relaxed">
-                    Regulamentado pelo Banco Central - Segurança e transparência
+                    Atendimento Personalizado, Segurança e Transparência!
                   </p>
                 </div>
                 <p className="text-xs md:text-sm lg:text-sm xl:text-base text-[#003399] leading-relaxed">
