@@ -23,7 +23,7 @@
  * ```
  */
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Info, X } from 'lucide-react';
@@ -38,6 +38,22 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
   const location = useLocation();
   const navigate = useNavigate();
   const [showBanner, setShowBanner] = useState(true);
+  const headerRef = useRef<HTMLElement | null>(null);
+
+  // Atualiza o offset do header sempre que o banner é exibido ou ocultado
+  useEffect(() => {
+    const updateOffset = () => {
+      if (headerRef.current) {
+        const height = headerRef.current.offsetHeight;
+        document.documentElement.style.setProperty(
+          '--header-offset-desktop',
+          `${height + 16}px`
+        );
+      }
+    };
+
+    updateOffset();
+  }, [showBanner]);
 
   const navigationItems = [
     { name: 'Home', path: '/' },
@@ -53,6 +69,7 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
         data-desktop="true"
         className="fixed top-0 left-0 right-0 z-40 bg-white shadow-sm"
         role="banner"
+        ref={headerRef}
       >
       {/* Faixa superior informativa */}
       {showBanner && (
