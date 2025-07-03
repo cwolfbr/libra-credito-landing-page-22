@@ -85,9 +85,9 @@ const TrustBarMinimal: React.FC = () => {
   ];
 
   return (
-    <section 
+    <section
       id="trustbar"
-      className="py-6 md:py-8 bg-[#003399] relative"
+      className="py-[1.2rem] md:py-[1.6rem] bg-[#003399] relative"
     >
       <div className="container mx-auto px-4">
         {/* Grid de estatísticas compacto */}
@@ -106,13 +106,13 @@ const TrustBarMinimal: React.FC = () => {
 
                 {/* Valor e label em linha */}
                 <div className="text-center md:text-left">
-                  <div className="text-lg md:text-2xl font-bold text-white leading-none">
+                  <div className="text-[0.9rem] md:text-[1.2rem] font-bold text-white leading-none">
                     {stat.value}
-                    <span className="text-white font-bold bg-white/10 px-1 rounded text-sm md:text-xl">
+                    <span className="text-white font-bold text-[0.7rem] md:text-[1rem]">
                       {stat.suffix}
                     </span>
                   </div>
-                  <div className="text-xs md:text-sm font-medium text-white/80 mt-0.5">
+                  <div className="text-[0.6rem] md:text-[0.7rem] font-medium text-white/80 mt-0.5">
                     {stat.label}
                   </div>
                 </div>
