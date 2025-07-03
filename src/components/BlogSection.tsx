@@ -93,7 +93,7 @@ const BlogSection: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {[...Array(3)].map((_, i) => (
               <Card key={i} className="animate-pulse">
-                <div className="w-full aspect-square bg-gray-200 rounded-t-lg"></div>
+                <div className="w-full aspect-video bg-gray-200 rounded-t-lg"></div>
                 <CardHeader className="pb-3">
                   <div className="h-4 bg-gray-200 rounded w-1/3 mb-2"></div>
                   <div className="h-6 bg-gray-200 rounded w-full"></div>
@@ -116,7 +116,7 @@ const BlogSection: React.FC = () => {
               >
                 <Card className="hover:shadow-lg transition-all duration-300 group-hover:-translate-y-1 overflow-hidden h-full">
                   {/* Imagem do post */}
-                  <div className="aspect-square overflow-hidden rounded-t-lg bg-white">
+                  <div className="aspect-video overflow-hidden rounded-t-lg bg-white">
                     <img
                       src={post.imageUrl}
                       alt={post.title}
