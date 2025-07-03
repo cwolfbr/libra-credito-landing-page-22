@@ -91,7 +91,18 @@
       }
     }
   }
-  
+
+  /* Desktop header fix */
+  @media (min-width: 768px) {
+    header[data-desktop="true"] {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+    }
+  }
+
   /* Touch-Friendly Components */
   .touch-target {
     @apply min-h-[48px] min-w-[48px] flex items-center justify-center;
