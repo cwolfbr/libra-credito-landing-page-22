@@ -555,3 +555,10 @@
   }
 
 }
+@media (min-width: 1024px) {
+  body {
+    transform: scale(1.4);
+    transform-origin: top left;
+    width: calc(100% / 1.4);
+  }
+}
