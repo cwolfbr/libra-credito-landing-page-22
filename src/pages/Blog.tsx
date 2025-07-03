@@ -112,7 +112,7 @@ const Blog = () => {
         <div className="container mx-auto px-4">
           {/* Hero Section */}
           <div className="text-center mb-4 mt-8">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-libra-navy mb-2">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-libra-navy mb-2">
               Blog Libra Crédito
             </h1>
           </div>
@@ -154,16 +154,16 @@ const Blog = () => {
           </div>
 
           {/* Blog Posts */}
-          {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="bg-white rounded-xl shadow-sm animate-pulse">
-                  <div className="aspect-video bg-gray-200 rounded-t-xl"></div>
-                  <div className="p-6">
-                    <div className="h-4 bg-gray-200 rounded w-1/3 mb-2"></div>
-                    <div className="h-6 bg-gray-200 rounded w-full mb-3"></div>
-                    <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
-                    <div className="h-4 bg-gray-200 rounded w-2/3 mb-4"></div>
+            {loading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[...Array(6)].map((_, i) => (
+                  <div key={i} className="bg-white rounded-xl shadow-sm animate-pulse">
+                    <div className="aspect-[3/2] bg-gray-200 rounded-t-xl"></div>
+                    <div className="p-4">
+                      <div className="h-4 bg-gray-200 rounded w-1/3 mb-2"></div>
+                      <div className="h-6 bg-gray-200 rounded w-full mb-3"></div>
+                      <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
+                      <div className="h-4 bg-gray-200 rounded w-2/3 mb-4"></div>
                     <div className="flex justify-between">
                       <div className="h-4 bg-gray-200 rounded w-1/4"></div>
                       <div className="h-4 bg-gray-200 rounded w-1/4"></div>
@@ -173,36 +173,36 @@ const Blog = () => {
               ))}
             </div>
           ) : filteredPosts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredPosts.map((post) => (
-                <Link
-                  key={post.id}
-                  to={`/blog/${post.slug}`}
-                  className="block bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow group"
-                >
-                  <article>
-                    <div className="aspect-video overflow-hidden rounded-t-xl">
-                      <img
-                        src={post.imageUrl}
-                        alt={post.title}
-                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
-                        loading="lazy"
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredPosts.map((post) => (
+                  <Link
+                    key={post.id}
+                    to={`/blog/${post.slug}`}
+                    className="block bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow group"
+                  >
+                    <article>
+                      <div className="aspect-[3/2] overflow-hidden rounded-t-xl">
+                        <img
+                          src={post.imageUrl}
+                          alt={post.title}
+                          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                          loading="lazy"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
                           target.src = '/images/blog/default-blog.jpg';
                         }}
                       />
                     </div>
-                    <div className="p-6">
-                      <span className="text-sm text-libra-blue font-medium">
-                        {CATEGORIES.find(cat => cat.id === post.category)?.name}
-                      </span>
-                      <h3 className="text-xl font-bold text-libra-navy mt-2 mb-3 group-hover:text-libra-blue transition-colors">
-                        {post.title}
-                      </h3>
-                      <p className="text-gray-600 mb-4 line-clamp-2">
-                        {post.description}
-                      </p>
+                      <div className="p-4">
+                        <span className="text-sm text-libra-blue font-medium">
+                          {CATEGORIES.find(cat => cat.id === post.category)?.name}
+                        </span>
+                        <h3 className="text-lg font-bold text-libra-navy mt-2 mb-2 group-hover:text-libra-blue transition-colors">
+                          {post.title}
+                        </h3>
+                        <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                          {post.description}
+                        </p>
                       <div className="flex items-center justify-between text-sm text-gray-500">
                         <span>{new Date(post.createdAt || '').toLocaleDateString('pt-BR')}</span>
                         <span>{post.readTime} min de leitura</span>
