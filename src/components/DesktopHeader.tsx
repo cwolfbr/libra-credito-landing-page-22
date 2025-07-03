@@ -23,10 +23,10 @@
  * ```
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Info } from 'lucide-react';
+import { Info, X } from 'lucide-react';
 import ImageOptimizer from '@/components/ImageOptimizer';
 
 interface DesktopHeaderProps {
@@ -37,6 +37,7 @@ interface DesktopHeaderProps {
 const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimulateNow }) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [showBanner, setShowBanner] = useState(true);
 
   const navigationItems = [
     { name: 'Home', path: '/' },
@@ -50,16 +51,25 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
   return (
     <>
       {/* Faixa superior informativa */}
-      <div className="w-full bg-libra-navy">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-center py-2">
-            <div className="flex items-center text-white text-sm font-semibold">
-              <Info className="w-4 h-4 mr-2 text-white" />
-              A Libra não realiza nenhum tipo de cobrança até a liberação do crédito
+      {showBanner && (
+        <div className="w-full bg-libra-navy">
+          <div className="container mx-auto px-4">
+            <div className="relative flex items-center justify-center py-2">
+              <div className="flex items-center text-white text-sm font-semibold">
+                <Info className="w-4 h-4 mr-2 text-white" />
+                A Libra não realiza nenhum tipo de cobrança até a liberação do crédito
+              </div>
+              <button
+                className="absolute right-0 top-1/2 -translate-y-1/2 text-white hover:text-gray-200"
+                onClick={() => setShowBanner(false)}
+                aria-label="Fechar aviso"
+              >
+                <X className="w-4 h-4" />
+              </button>
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Header de navegação que permanece no topo após o scroll */}
       <header
