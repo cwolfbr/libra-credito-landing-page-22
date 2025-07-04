@@ -120,7 +120,7 @@ const BlogSection: React.FC = () => {
                     <img
                       src={post.imageUrl}
                       alt={post.title}
-                      className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
                       loading="lazy"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
