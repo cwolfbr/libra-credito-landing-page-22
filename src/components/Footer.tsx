@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronUp, Phone, Mail, Facebook, Instagram, Linkedin, Youtube, ExternalLink } from 'lucide-react';
+import RASeal from '@/components/RASeal';
 import WaveSeparator from '@/components/ui/WaveSeparator';
 import ImageOptimizer from '@/components/ImageOptimizer';
 
@@ -107,26 +108,20 @@ const Footer: React.FC = () => {
               </a>
             </div>
 
-            <div id="ra-verified-seal">
-              <script
-                type="text/javascript"
-                id="ra-embed-verified-seal"
-                src="https://s3.amazonaws.com/raichu-beta/ra-verified/bundle.js"
-                data-id="Y21PdzlSbG1iOEw4ZWVzMDpsaWJyYS1jcmVkaXRvLXNvbHVjb2VzLWZpbmFuY2VpcmFz"
-                data-target="ra-verified-seal"
-                data-model="2"
-              ></script>
-            </div>
-            
             {/* Botão Voltar ao Topo - apenas desktop */}
-            <button 
-              onClick={scrollToTop} 
+            <button
+              onClick={scrollToTop}
               className="hidden md:flex items-center gap-1 md:gap-2 ml-auto text-white/80 hover:text-white transition-colors text-xs md:text-sm"
               aria-label="Voltar ao topo"
             >
               <ChevronUp className="w-3 h-3 md:w-4 md:h-4" />
               <span className="hidden md:inline">Voltar ao topo</span>
             </button>
+          </div>
+
+          {/* Selo ReclameAQUI - posicionamento responsivo */}
+          <div className="col-span-3 md:col-span-1 md:col-start-3 flex justify-center md:justify-end">
+            <RASeal className="mx-auto md:ml-auto" />
           </div>
         </div>
 
