@@ -182,9 +182,9 @@ export const MobileWizard: React.FC<MobileWizardProps> = ({
         </div>
         
         {/* Progress Bar */}
-        <div className="h-1 bg-gray-100 relative overflow-hidden">
+        <div className="wizard-progress">
           <div
-            className="absolute inset-y-0 left-0 bg-libra-blue transition-all duration-300 ease-out"
+            className="wizard-progress-bar transition-all duration-300 ease-out"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -195,12 +195,12 @@ export const MobileWizard: React.FC<MobileWizardProps> = ({
             <div
               key={index}
               className={cn(
-                "h-2 rounded-full transition-all duration-300",
+                "wizard-indicator",
                 index === currentStep
-                  ? "w-8 bg-libra-blue"
+                  ? "wizard-indicator-active"
                   : index < currentStep
-                  ? "w-2 bg-libra-blue"
-                  : "w-2 bg-gray-300"
+                  ? "wizard-indicator-complete"
+                  : ""
               )}
             />
           ))}
