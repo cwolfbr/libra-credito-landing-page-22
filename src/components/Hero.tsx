@@ -57,8 +57,11 @@ const Hero: React.FC = () => {
             {isMobile && <div className="h-8"></div>}
             
             <div>
-                <h1 id="hero-heading" className="text-[1.5rem] md:text-[1.8rem] lg:text-[1.8rem] xl:text-[2.25rem] 2xl:text-[2.7rem] font-bold mb-3 md:mb-3 lg:mb-3 leading-tight">
-                  Crédito Com Garantia de Imóvel
+                <h1
+                  id="hero-heading"
+                  className="text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-5xl font-bold mb-3 md:mb-3 lg:mb-3 leading-tight"
+                >
+                  <span className="whitespace-nowrap">Crédito Com Garantia de Imóvel</span>
                   <br />
                   é mais simples na Libra!
                 </h1>
