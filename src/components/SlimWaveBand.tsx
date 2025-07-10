@@ -7,10 +7,23 @@ interface SlimWaveBandProps {
 }
 
 const SlimWaveBand: React.FC<SlimWaveBandProps> = ({ className }) => (
-  <div className={cn('relative w-full overflow-hidden', className)}>
-    <WaveSeparator variant="hero" height="sm" inverted className="relative z-10" />
-    <div className="h-6 md:h-8 bg-[#0044cc]" />
-    <WaveSeparator variant="hero" height="sm" className="relative z-10 -mt-1" />
+  <div
+    className={cn(
+      'relative w-full h-6 md:h-8 bg-[#003399] overflow-hidden',
+      className
+    )}
+  >
+    <WaveSeparator
+      variant="hero"
+      height="sm"
+      inverted
+      className="absolute inset-0 bg-transparent"
+    />
+    <WaveSeparator
+      variant="hero"
+      height="sm"
+      className="absolute inset-0 bg-transparent"
+    />
   </div>
 );
 
