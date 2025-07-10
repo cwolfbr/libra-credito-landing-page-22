@@ -97,6 +97,13 @@ const SimulationForm: React.FC = () => {
       return;
     }
 
+    const key = import.meta.env.VITE_OPENCAGE_API_KEY;
+    if (!key) {
+      setErro('Chave da API de geocodifica\u00e7\u00e3o n\u00e3o configurada.');
+      setErroTipo('error');
+      return;
+    }
+
     setErro('');
     setErroTipo('info');
 
@@ -107,6 +114,11 @@ const SimulationForm: React.FC = () => {
           const key = import.meta.env.VITE_OPENCAGE_API_KEY;
           const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${key}&language=pt-BR`;
           const resp = await fetch(url);
+          if (!resp.ok) {
+            setErro('Falha ao consultar a API de geocodifica\u00e7\u00e3o.');
+            setErroTipo('error');
+            return;
+          }
           const data = await resp.json();
           const comp = data.results?.[0]?.components;
           const cityName = comp?.city || comp?.town || comp?.village;
