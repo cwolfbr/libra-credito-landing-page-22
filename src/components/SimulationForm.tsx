@@ -61,6 +61,7 @@ import SimulationResultDisplay from './SimulationResultDisplay';
 import { analyzeApiMessage, ApiMessageAnalysis } from '@/utils/apiMessageAnalyzer';
 import { analyzeLocalMessage } from '@/utils/localMessageAnalyzer';
 import { formatBRL, norm } from '@/utils/formatters';
+import { getAllCities } from '@/utils/cityLtvService';
 
 const SimulationForm: React.FC = () => {
   const { sessionId, trackSimulation } = useUserJourney();
@@ -73,6 +74,7 @@ const SimulationForm: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [resultado, setResultado] = useState<SimulationResult | null>(null);
   const [erro, setErro] = useState('');
+  const [erroTipo, setErroTipo] = useState<'error' | 'warning' | 'info'>('error');
   const [apiMessage, setApiMessage] = useState<ApiMessageAnalysis | null>(null);
   const [isRuralProperty, setIsRuralProperty] = useState(false);
 
@@ -85,6 +87,62 @@ const SimulationForm: React.FC = () => {
 
   const handleGarantiaChange = (value: string) => {
     setGarantia(formatBRL(value));
+  };
+
+  // Detectar cidade automaticamente usando geolocalização
+  const fetchCityFromLocation = () => {
+    if (!navigator.geolocation) {
+      setErro('Geolocaliza\u00e7\u00e3o n\u00e3o suportada pelo navegador.');
+      setErroTipo('warning');
+      return;
+    }
+
+    setErro('');
+    setErroTipo('info');
+
+    navigator.geolocation.getCurrentPosition(
+      async position => {
+        try {
+          const { latitude, longitude } = position.coords;
+          const key = import.meta.env.VITE_OPENCAGE_API_KEY;
+          const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${key}&language=pt-BR`;
+          const resp = await fetch(url);
+          const data = await resp.json();
+          const comp = data.results?.[0]?.components;
+          const cityName = comp?.city || comp?.town || comp?.village;
+          const state = comp?.state_code;
+          if (cityName && state) {
+            const formatted = `${cityName.toUpperCase()} - ${state}`;
+            const all = getAllCities();
+            if (all.includes(formatted)) {
+              setCidade(formatted);
+              setErro('');
+            } else {
+              setCidade(formatted);
+              setErro('Cidade detectada diferente do padr\u00e3o. Confirme ou ajuste manualmente.');
+              setErroTipo('warning');
+            }
+          } else {
+            setErro('N\u00e3o foi poss\u00edvel determinar sua cidade.');
+            setErroTipo('warning');
+          }
+        } catch (err) {
+          console.error('Erro ao buscar cidade:', err);
+          setErro('Erro ao obter cidade pela localiza\u00e7\u00e3o.');
+          setErroTipo('error');
+        }
+      },
+      error => {
+        console.error('Geo erro', error);
+        if (error.code === error.PERMISSION_DENIED) {
+          setErro('Permiss\u00e3o de localiza\u00e7\u00e3o negada.');
+          setErroTipo('warning');
+        } else {
+          setErro('N\u00e3o foi poss\u00edvel acessar sua localiza\u00e7\u00e3o.');
+          setErroTipo('error');
+        }
+      }
+    );
   };
 
   // Função para rolar para o resultado no mobile
@@ -106,6 +164,7 @@ const SimulationForm: React.FC = () => {
 
     setLoading(true);
     setErro('');
+    setErroTipo('error');
     setResultado(null);
 
     try {
@@ -156,6 +215,7 @@ const SimulationForm: React.FC = () => {
           // É uma mensagem estruturada do serviço local
           setApiMessage(analysis);
           setErro(''); // Limpar erro genérico
+          setErroTipo('error');
         } else {
           // É um erro genérico
           let errorMessage = 'Erro desconhecido ao realizar simulação';
@@ -167,10 +227,12 @@ const SimulationForm: React.FC = () => {
           }
           
           setErro(errorMessage);
+          setErroTipo('error');
           setApiMessage(null);
         }
       } else {
         setErro('Erro desconhecido ao realizar simulação');
+        setErroTipo('error');
         setApiMessage(null);
       }
     } finally {
@@ -186,6 +248,7 @@ const SimulationForm: React.FC = () => {
     setCidade('');
     setResultado(null);
     setErro('');
+    setErroTipo('error');
     setApiMessage(null);
     setIsRuralProperty(false);
   };
@@ -197,6 +260,7 @@ const SimulationForm: React.FC = () => {
     setIsRuralProperty(isRural);
     setApiMessage(null);
     setErro('');
+    setErroTipo('error');
 
     // Aguardar um pouco para garantir que os estados sejam atualizados
     setTimeout(async () => {
@@ -267,6 +331,8 @@ const SimulationForm: React.FC = () => {
           if (analysis.type !== 'unknown_error') {
             setApiMessage(analysis);
             setErro('');
+            setErroTipo('error');
+            setErroTipo('error');
           } else {
             let errorMessage = 'Erro ao processar simulação automática';
             
@@ -277,10 +343,12 @@ const SimulationForm: React.FC = () => {
             }
             
             setErro(errorMessage);
+            setErroTipo('error');
             setApiMessage(null);
           }
         } else {
           setErro('Erro desconhecido na simulação automática');
+          setErroTipo('error');
           setApiMessage(null);
         }
       } finally {
@@ -293,6 +361,7 @@ const SimulationForm: React.FC = () => {
   const handleTryAgain = () => {
     setApiMessage(null);
     setErro('');
+    setErroTipo('error');
     setResultado(null);
     // Manter os valores preenchidos para facilitar nova tentativa
   };
@@ -302,6 +371,7 @@ const SimulationForm: React.FC = () => {
     setResultado(null);
     setApiMessage(null);
     setErro('');
+    setErroTipo('error');
     // Manter valores para facilitar nova simulação
   };
 
@@ -313,6 +383,7 @@ const SimulationForm: React.FC = () => {
     setAmortizacao('PRICE');
     setApiMessage(null);
     setErro('');
+    setErroTipo('error');
     setLoading(true);
 
     // Aguardar um pouco para garantir que o estado seja atualizado
@@ -363,10 +434,12 @@ const SimulationForm: React.FC = () => {
             setErro('');
           } else {
             setErro('Erro ao refazer simulação com tabela PRICE');
+            setErroTipo('error');
             setApiMessage(null);
           }
         } else {
           setErro('Erro desconhecido ao refazer simulação');
+          setErroTipo('error');
           setApiMessage(null);
         }
       } finally {
@@ -403,6 +476,16 @@ const SimulationForm: React.FC = () => {
             <form onSubmit={handleSubmit} className="space-y-2">
               
               <CityAutocomplete value={cidade} onCityChange={setCidade} />
+              <div className="flex justify-end">
+                <Button
+                  type="button"
+                  variant="secondary"
+                  className="mt-1 text-xs"
+                  onClick={fetchCityFromLocation}
+                >
+                  Detectar minha cidade
+                </Button>
+              </div>
 
               <LoanAmountField value={emprestimo} onChange={handleEmprestimoChange} />
 
@@ -457,15 +540,16 @@ const SimulationForm: React.FC = () => {
               {/* Erro genérico */}
               {erro && !apiMessage && (
                 <div className="mt-3">
-                  <ApiMessageDisplay 
+                  <ApiMessageDisplay
                     message={erro}
-                    type="error"
-                    onRetry={() => {
-                      setErro('');
-                      if (validation.formularioValido) {
-                        handleSubmit(new Event('submit') as any);
-                      }
-                    }}
+                    type={erroTipo}
+                      onRetry={() => {
+                        setErro('');
+                        setErroTipo('error');
+                        if (validation.formularioValido) {
+                          handleSubmit(new Event('submit') as any);
+                        }
+                      }}
                     showRetryButton={validation.formularioValido}
                   />
                 </div>
