@@ -40,7 +40,7 @@ cp .env.example .env
 # Configure suas variáveis no arquivo .env:
 # - VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY (obrigatório)
 # - VITE_WEBHOOK_URL (opcional - para webhook de simulações)
-# - VITE_OPENCAGE_API_KEY (necessário para geocodificação)
+# - VITE_OPENCAGE_API_KEY (necessário para geocodificação – já incluso em `.env.example` para testes)
 # - Outras conforme necessário
 ```
 
