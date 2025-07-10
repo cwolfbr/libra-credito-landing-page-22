@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronUp, Phone, Mail, Facebook, Instagram, Linkedin, Youtube, ExternalLink } from 'lucide-react';
 import WaveSeparator from '@/components/ui/WaveSeparator';
@@ -11,6 +11,29 @@ const Footer: React.FC = () => {
       behavior: 'smooth'
     });
   };
+
+  useEffect(() => {
+    const container = document.getElementById('ra-verified-seal');
+    if (!container) return;
+
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.id = 'ra-embed-verified-seal';
+    script.src =
+      'https://s3.amazonaws.com/raichu-beta/ra-verified/bundle.js';
+    script.setAttribute(
+      'data-id',
+      'Y21PdzlSbG1iOEw4ZWVzMDpsaWJyYS1jcmVkaXRvLXNvbHVjb2VzLWZpbmFuY2VpcmFz'
+    );
+    script.setAttribute('data-target', 'ra-verified-seal');
+    script.setAttribute('data-model', '2');
+
+    container.appendChild(script);
+
+    return () => {
+      container.removeChild(script);
+    };
+  }, []);
 
   return (
     <>
@@ -106,6 +129,8 @@ const Footer: React.FC = () => {
                 <ExternalLink className="w-7 h-7" />
               </a>
             </div>
+
+            <div id="ra-verified-seal" className="mt-4" />
             
             {/* Botão Voltar ao Topo - apenas desktop */}
             <button 
