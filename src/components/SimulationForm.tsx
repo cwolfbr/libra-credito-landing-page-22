@@ -401,7 +401,7 @@ const SimulationForm: React.FC = () => {
             <CardTitle className="text-lg md:text-xl font-bold text-green-500 mb-1">
               Sua simulação em um clique!
             </CardTitle>
-            <p className="text-gray-600 text-xs">
+            <p className="text-gray-600 text-xs font-bold">
               Com apenas algumas informações você já entende se as parcelas que cabem no orçamento!
             </p>
           </CardHeader>
