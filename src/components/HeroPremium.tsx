@@ -45,28 +45,28 @@ const HeroPremium: React.FC = () => {
 
   return (
 <section
-      className="flex items-center bg-white py-10 md:py-16"
+      className="flex flex-col justify-center bg-white py-8 md:py-12"
       aria-labelledby="hero-heading"
       role="banner"
     >
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2 lg:gap-12">
+        <div className="grid grid-cols-1 items-center gap-6 md:grid-cols-2 md:gap-8">
           {/* Lado Esquerdo: Conteúdo de Texto */}
-          <div className="animate-fade-in-up space-y-5 text-center md:text-left">
-            <div className="space-y-3">
+          <div className="animate-fade-in-up space-y-4 text-center md:text-left">
+            <div className="space-y-2">
               <h1
                 id="hero-heading"
-                className="text-3xl font-extrabold leading-tight tracking-tighter text-libra-navy md:text-4xl"
+                className="text-3xl font-extrabold leading-tight tracking-tighter text-libra-navy sm:text-4xl"
               >
                 <span className="block">Crédito com Garantia de Imóvel:</span>
-                <span className="block text-libra-blue">Simples e Inteligente.</span>
+                <span className="block text-libra-blue">Simples, Rápido e Inteligente.</span>
               </h1>
-              <p className="text-base text-gray-600 md:text-lg">
-                Use seu patrimônio para realizar projetos com as melhores condições do mercado.
+              <p className="text-md text-gray-600 sm:text-lg">
+                Use seu patrimônio para realizar projetos com as melhores condições.
               </p>
             </div>
 
-            <div className="space-y-3 text-sm text-gray-700">
+            <div className="space-y-2 text-sm text-gray-700">
               <div className="flex items-center justify-center gap-2 md:justify-start">
                 <Shield
                   className="h-4 w-4 flex-shrink-0 text-libra-blue"
@@ -81,12 +81,12 @@ const HeroPremium: React.FC = () => {
               </p>
             </div>
 
-            <p className="text-lg font-bold text-libra-navy md:text-xl">
+            <p className="text-lg font-bold text-libra-navy sm:text-xl">
               Crédito de até 50% do valor do seu imóvel.
             </p>
 
             {/* Botões */}
-            <div className="flex flex-col gap-3 pt-3 sm:flex-row sm:justify-center md:justify-start">
+            <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:justify-center md:justify-start">
               <HeroButton
                 onClick={scrollToSimulator}
                 variant="primary"
@@ -104,8 +104,8 @@ const HeroPremium: React.FC = () => {
             </div>
           </div>
 
-          {/* Lado Direito: Vídeo Institucional */}
-          <div className="w-full max-w-lg mx-auto">
+          {/* Lado Direito: Vídeo */}
+          <div className="w-full max-w-md mx-auto">
             <div className="aspect-w-16 aspect-h-9 overflow-hidden rounded-lg shadow-lg">
               <OptimizedYouTube
                 videoId="E9lwL6R2l1s"
@@ -118,6 +118,20 @@ const HeroPremium: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Botão "Saiba Mais" - Oculto em mobile para economizar espaço */}
+      {!isMobile && (
+        <div className="mt-8 flex justify-center">
+          <button
+            onClick={scrollToBenefits}
+            className="group flex flex-col items-center gap-1 text-libra-navy transition-opacity hover:opacity-80"
+            aria-label="Rolar para a próxima seção"
+          >
+            <span className="text-xs font-medium">Saiba Mais</span>
+            <ChevronDown className="h-5 w-5 animate-bounce group-hover:animate-none" />
+          </button>
+        </div>
+      )}
     </section>
   );
 };
