@@ -44,87 +44,94 @@ const HeroPremium: React.FC = () => {
   };
 
   return (
-    <section 
-      className="min-h-[60vh] md:min-h-[65vh] lg:min-h-[65vh] xl:min-h-[calc(100vh-280px)] pb-2 bg-white relative flex flex-col justify-center"
+<section
+      className="flex flex-col justify-center bg-white py-8 md:py-12"
       aria-labelledby="hero-heading"
       role="banner"
     >
-      <div className="container mx-auto px-4 relative z-10 flex-grow flex flex-col justify-center">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center">
-          {/* Lado Esquerdo */}
-          <div className="text-[#003399] space-y-4 md:space-y-5 text-center flex flex-col items-center animate-fade-in-up">
-            {/* Espaçamento extra para mobile */}
-            {isMobile && <div className="h-4"></div>}
-            
-            <div>
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 items-center gap-6 md:grid-cols-2 md:gap-8">
+          {/* Lado Esquerdo: Conteúdo de Texto */}
+          <div className="animate-fade-in-up space-y-4 text-center md:text-left">
+            <div className="space-y-2">
               <h1
                 id="hero-heading"
-                className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 leading-tight"
+                className="text-3xl font-extrabold leading-tight tracking-tighter text-libra-navy sm:text-4xl"
               >
-                <span className="block">Crédito com Garantia de Imóvel</span>
-                <span className="block">é mais simples na Libra!</span>
+                <span className="block">Crédito com Garantia de Imóvel:</span>
+                <span className="block text-libra-blue">Simples, Rápido e Inteligente.</span>
               </h1>
-              <div className="space-y-4">
-                <p className="text-base md:text-lg lg:text-xl text-[#003399] leading-relaxed font-medium">
-                  Crédito inteligente para quem construiu patrimônio.
-                </p>
-                <div className="flex items-center gap-3 justify-center">
-                  <Shield className="w-5 h-5 lg:w-6 lg:h-6 text-[#003399] flex-shrink-0" aria-hidden="true" />
-                  <p className="text-sm md:text-base lg:text-lg text-[#003399] leading-relaxed font-bold">
-                    Atendimento Personalizado, Segurança e Transparência!
-                  </p>
-                </div>
-                <p className="text-base md:text-lg lg:text-xl text-[#003399] leading-relaxed font-bold">
-                  Taxas a partir de 1,19% a.m. • Até 180 meses • 100% online
-                </p>
-                <p className="text-xl md:text-2xl lg:text-3xl font-bold leading-tight">
-                  Libere até 50% do valor do seu imóvel
-                </p>
-              </div>
+              <p className="text-md text-gray-600 sm:text-lg">
+                Use seu patrimônio para realizar projetos com as melhores condições.
+              </p>
             </div>
 
+            <div className="space-y-2 text-sm text-gray-700">
+              <div className="flex items-center justify-center gap-2 md:justify-start">
+                <Shield
+                  className="h-4 w-4 flex-shrink-0 text-libra-blue"
+                  aria-hidden="true"
+                />
+                <p className="font-semibold">
+                  Segurança, Transparência e Atendimento Personalizado.
+                </p>
+              </div>
+              <p className="font-medium">
+                <span className="font-bold text-libra-blue">Taxas a partir de 1,19% a.m.</span> • Até 180 meses • 100% online.
+              </p>
+            </div>
+
+            <p className="text-lg font-bold text-libra-navy sm:text-xl">
+              Crédito de até 50% do valor do seu imóvel.
+            </p>
+
             {/* Botões */}
-            <div className="flex flex-col sm:flex-row gap-4 w-full max-w-sm mx-auto pt-4">
+            <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:justify-center md:justify-start">
               <HeroButton
                 onClick={scrollToSimulator}
                 variant="primary"
+                className="w-full sm:w-auto"
               >
                 Simular Agora
               </HeroButton>
               <HeroButton
                 onClick={goToVantagens}
                 variant="secondary"
+                className="w-full sm:w-auto"
               >
-                Conheça as Vantagens
+                Conhecer Vantagens
               </HeroButton>
             </div>
           </div>
 
-            <div className="w-full max-w-xl lg:max-w-lg xl:max-w-none mx-auto">
-            <div className="hero-video">
+          {/* Lado Direito: Vídeo */}
+          <div className="w-full max-w-md mx-auto">
+            <div className="aspect-w-16 aspect-h-9 overflow-hidden rounded-lg shadow-lg">
               <OptimizedYouTube
                 videoId="E9lwL6R2l1s"
                 title="Vídeo institucional Libra Crédito"
                 priority={true}
                 className="w-full h-full"
-                thumbnailSrc="/images/video-thumbnail.jpg"
+                thumbnailSrc="/images/media/video-cgi-libra.png"
               />
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Botão Saiba Mais */}
-        <div className="flex justify-center mt-4 md:mt-4 lg:mt-2">
+      {/* Botão "Saiba Mais" - Oculto em mobile para economizar espaço */}
+      {!isMobile && (
+        <div className="mt-8 flex justify-center">
           <button
             onClick={scrollToBenefits}
-            className="text-[#003399] flex flex-col items-center gap-1 opacity-90 hover:opacity-100 transition-opacity"
-            aria-label="Rolar para benefícios"
+            className="group flex flex-col items-center gap-1 text-libra-navy transition-opacity hover:opacity-80"
+            aria-label="Rolar para a próxima seção"
           >
-            <span className="text-sm md:text-sm lg:text-xs font-medium">Saiba mais</span>
-            <ChevronDown className="w-5 h-5 md:w-5 md:h-5 lg:w-4 lg:h-4 animate-bounce" />
+            <span className="text-xs font-medium">Saiba Mais</span>
+            <ChevronDown className="h-5 w-5 animate-bounce group-hover:animate-none" />
           </button>
         </div>
-      </div>
+      )}
     </section>
   );
 };
