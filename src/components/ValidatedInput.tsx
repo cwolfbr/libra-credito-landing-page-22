@@ -14,6 +14,7 @@ interface ValidatedInputProps {
   placeholder?: string;
   required?: boolean;
   className?: string;
+  inputRef?: React.Ref<HTMLInputElement>;
 }
 
 export const ValidatedInput: React.FC<ValidatedInputProps> = ({
@@ -26,7 +27,8 @@ export const ValidatedInput: React.FC<ValidatedInputProps> = ({
   type = 'text',
   placeholder,
   required = false,
-  className
+  className,
+  inputRef
 }) => {
   const hasError = touched && error;
   const isValid = touched && !error && value;
@@ -46,6 +48,7 @@ export const ValidatedInput: React.FC<ValidatedInputProps> = ({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onBlur={onBlur}
+          ref={inputRef}
           placeholder={placeholder}
           className={cn(
             "pr-10 transition-colors",
