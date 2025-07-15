@@ -104,7 +104,7 @@ const HeroPremium: React.FC = () => {
             </div>
           </div>
 
-          {/* Lado Direito: Vídeo */}
+          {/* Lado Direito: Vídeo Institucional */}
           <div className="w-full max-w-lg mx-auto">
             <div className="aspect-w-16 aspect-h-9 overflow-hidden rounded-lg shadow-lg">
               <OptimizedYouTube
