@@ -61,8 +61,8 @@ const HeroPremium: React.FC = () => {
                 id="hero-heading"
                 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 leading-tight"
               >
-                Crédito com Garantia de Imóvel
-                <span className="text-green-600"> é mais simples na Libra!</span>
+                <span className="block whitespace-nowrap">Crédito com Garantia de Imóvel</span>
+                <span className="block text-green-600">é mais simples na Libra!</span>
               </h1>
               <p className="text-lg md:text-xl lg:text-2xl text-[#003399] font-semibold">
                 Crédito inteligente para quem construiu patrimônio
