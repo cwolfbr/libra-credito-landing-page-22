@@ -26,6 +26,29 @@ export default defineConfig(({ mode }) => ({
             : `<link rel="stylesheet" href="${href}" media="print" onload="this.media='all'">`;
         });
       }
+    },
+    {
+      name: 'inline-css',
+      apply: 'build',
+      enforce: 'post',
+      generateBundle(_, bundle) {
+        const css: string[] = [];
+        for (const [fileName, asset] of Object.entries(bundle)) {
+          if (fileName.endsWith('.css') && asset.type === 'asset') {
+            css.push(String(asset.source));
+            delete bundle[fileName];
+          }
+        }
+        const htmlAsset = bundle['index.html'];
+        if (htmlAsset && htmlAsset.type === 'asset') {
+          let html = String(htmlAsset.source);
+          html = html.replace(/<link rel="stylesheet"[^>]*>/g, '');
+          if (css.length) {
+            html = html.replace('</head>', `<style>${css.join('\n')}</style></head>`);
+          }
+          htmlAsset.source = html;
+        }
+      }
     }
   ].filter(Boolean),
   resolve: {
