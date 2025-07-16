@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { WebhookService, WebhookResult } from '@/services/webhookService';
-import MobileLayout from '@/components/MobileLayout';
+import MainLayout from '@/components/MainLayout';
 
 const TestWebhook: React.FC = () => {
   const [webhookUrl, setWebhookUrl] = useState(process.env.VITE_WEBHOOK_URL || '');
@@ -83,7 +83,7 @@ const TestWebhook: React.FC = () => {
   };
 
   return (
-    <MobileLayout>
+    <MainLayout>
       <div className="max-w-4xl mx-auto p-6 space-y-6">
         <Card>
           <CardHeader>
@@ -245,7 +245,7 @@ const TestWebhook: React.FC = () => {
           </CardContent>
         </Card>
       </div>
-    </MobileLayout>
+    </MainLayout>
   );
 };
 

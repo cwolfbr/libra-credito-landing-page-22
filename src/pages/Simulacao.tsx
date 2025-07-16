@@ -1,6 +1,6 @@
 
 import React, { useEffect } from 'react';
-import MobileLayout from '@/components/MobileLayout';
+import MainLayout from '@/components/MainLayout';
 import SimulationForm from '@/components/SimulationForm';
 import WaveSeparator from '@/components/ui/WaveSeparator';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -20,12 +20,12 @@ const Simulacao = () => {
   }, []);
 
   return (
-    <MobileLayout>
+    <MainLayout>
       <WaveSeparator variant="hero" height="md" inverted />
       <div className="bg-white">
         <SimulationForm />
       </div>
-    </MobileLayout>
+    </MainLayout>
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import MobileLayout from '@/components/MobileLayout';
+import MainLayout from '@/components/MainLayout';
 import WaveSeparator from '@/components/ui/WaveSeparator';
 import { Button } from '@/components/ui/button';
 import { TrendingDown, Clock, Calculator, ShieldCheck, Wallet, BadgeCheck, FileText, MessageCircle, CheckCircle, CreditCard } from 'lucide-react';
@@ -175,7 +175,7 @@ const Vantagens: React.FC = () => {
   };
 
   return (
-    <MobileLayout>
+    <MainLayout>
       {/* Faixa Separadora Superior Invertida - Exatamente como na home */}
       <WaveSeparator variant="hero" height={isMobile ? "sm" : "md"} inverted />
       
@@ -401,7 +401,7 @@ const Vantagens: React.FC = () => {
         </section>
 
       </div>
-    </MobileLayout>
+    </MainLayout>
   );
 };
 

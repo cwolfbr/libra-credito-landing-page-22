@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import MobileLayout from '@/components/MobileLayout';
+import MainLayout from '@/components/MainLayout';
 import ImageOptimizer from '@/components/ImageOptimizer';
 import WaveSeparator from '@/components/ui/WaveSeparator';
 import { Button } from '@/components/ui/button';
@@ -53,7 +53,7 @@ const QuemSomos = () => {
   ];
 
   return (
-    <MobileLayout>
+    <MainLayout>
       <WaveSeparator variant="hero" height="md" inverted />
       <div className="bg-white">
         {/* Quem Somos e Nossa História lado a lado */}
@@ -161,7 +161,7 @@ const QuemSomos = () => {
           </div>
         </section>
       </div>
-    </MobileLayout>
+    </MainLayout>
   );
 };
 
