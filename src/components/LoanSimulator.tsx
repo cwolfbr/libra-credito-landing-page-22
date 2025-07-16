@@ -38,25 +38,19 @@
  * ```
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { HelpCircle, AlertCircle, Info } from 'lucide-react';
-import { toast } from '@/hooks/use-toast';
+import { HelpCircle, Info } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { formatCurrency } from '@/utils/formatters';
+import { useLoanCalculator } from '@/hooks/useLoanCalculator';
 
 type LoanPurpose = 'consolidacao' | 'capital' | 'investimento' | 'reforma';
 type PropertyType = 'casa' | 'apartamento' | 'comercial' | 'rural';
-
-const formatCurrency = (value: number): string => {
-  return value.toLocaleString('pt-BR', {
-    style: 'currency',
-    currency: 'BRL'
-  });
-};
 
 const LoanSimulator: React.FC = () => {
   const isMobile = useIsMobile();
@@ -65,65 +59,49 @@ const LoanSimulator: React.FC = () => {
   const [cep, setCep] = useState<string>('');
   const [propertyType, setPropertyType] = useState<PropertyType>('casa');
   const [showResults, setShowResults] = useState<boolean>(false);
-  const [monthlyPayment, setMonthlyPayment] = useState<number>(0);
-  const [requiredIncome, setRequiredIncome] = useState<number>(0);
 
-  // Handle loan amount change
+  const {
+    monthlyPayment,
+    requiredIncome,
+    minPropertyValue,
+    maxPropertyValue,
+    calculateLoan,
+  } = useLoanCalculator({ loanAmount });
+
+  useEffect(() => {
+    if (showResults) {
+      calculateLoan();
+    }
+  }, [loanAmount, showResults, calculateLoan]);
+
   const handleLoanAmountChange = (value: number[]) => {
     const newLoanAmount = value[0];
     setLoanAmount(newLoanAmount);
   };
-  
-  const calculateLoan = () => {
-    // Simulação de cálculo - Será substituído pela chamada API
-    const interest = 0.0109; // 1.09% ao mês
-    const term = 180; // 15 anos em meses
 
-    // Cálculo da parcela usando a fórmula de amortização
-    const payment = loanAmount * (interest * Math.pow(1 + interest, term)) / (Math.pow(1 + interest, term) - 1);
-
-    // Renda necessária (aprox. 30% da renda)
-    let income = payment / 0.3;
-
-    // Aplicar valor mínimo de 7 mil reais para renda necessária
-    income = Math.max(income, 7000);
-    setMonthlyPayment(payment);
-    setRequiredIncome(income);
-    setShowResults(true);
-  };
-  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setShowResults(true);
     calculateLoan();
   };
-  
-  const formatCEP = (value: string) => {
-    // Remove tudo que não é número
-    const numbers = value.replace(/\D/g, '');
 
-    // Formata como CEP (00000-000)
+  const formatCEP = (value: string) => {
+    const numbers = value.replace(/\D/g, '');
     if (numbers.length <= 5) {
       return numbers;
-    } else {
-      return `${numbers.slice(0, 5)}-${numbers.slice(5, 8)}`;
     }
+    return `${numbers.slice(0, 5)}-${numbers.slice(5, 8)}`;
   };
-  
+
   const handleCEPChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formattedCEP = formatCEP(e.target.value);
     setCep(formattedCEP);
   };
-  
+
   const handleContactRequest = () => {
     window.open('https://api.whatsapp.com/send/?phone=5516996360424&text=Ol%C3%A1%2C+Quero+agendar+uma+conversa+com+o+consultor%21&type=phone_number&app_absent=0', '_blank');
   };
 
-  // Cálculo do valor mínimo necessário do imóvel (2x o valor do empréstimo)
-  const minPropertyValue = loanAmount * 2;
-  
-  // Cálculo do valor máximo necessário do imóvel (3x o valor do empréstimo)
-  const maxPropertyValue = loanAmount * 3;
-  
   const loanAmountLabelId = "loan-amount-label";
 
   return (

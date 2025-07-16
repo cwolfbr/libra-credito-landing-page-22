@@ -1,5 +1,5 @@
 import React, { useEffect, lazy, Suspense } from 'react';
-import MobileLayout from '@/components/MobileLayout';
+import MainLayout from '@/components/MainLayout';
 import PremiumLoading from '@/components/ui/PremiumLoading';
 
 // Lazy loading dos componentes do novo design
@@ -32,7 +32,7 @@ const Home2: React.FC = () => {
   }, []);
 
   return (
-    <MobileLayout>
+    <MainLayout>
       <Suspense fallback={<SectionLoader />}>
         <Hero2 />
       </Suspense>
@@ -56,7 +56,7 @@ const Home2: React.FC = () => {
       <Suspense fallback={<SectionLoader />}>
         <StepsSection />
       </Suspense>
-    </MobileLayout>
+    </MainLayout>
   );
 };
 

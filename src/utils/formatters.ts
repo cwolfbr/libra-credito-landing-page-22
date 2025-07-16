@@ -21,3 +21,15 @@ export const formatBRLInput = (value: string) => {
   const formatted = Number(num).toLocaleString('pt-BR');
   return formatted;
 };
+
+/**
+ * Formata um número como uma string de moeda no formato BRL.
+ * @param value O número a ser formatado.
+ * @returns A string formatada como moeda (ex: "R$ 1.234,56").
+ */
+export const formatCurrency = (value: number): string => {
+  return value.toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  });
+};

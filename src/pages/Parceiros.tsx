@@ -3,7 +3,7 @@ import { HandshakeIcon, LockKeyhole } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { SelectItem } from "@/components/ui/select";
-import MobileLayout from '@/components/MobileLayout';
+import MainLayout from '@/components/MainLayout';
 import WaveSeparator from '@/components/ui/WaveSeparator';
 import { PartnersService } from '@/services/partnersService';
 import { useUserJourney } from '@/hooks/useUserJourney';
@@ -340,7 +340,7 @@ const Parceiros = () => {
   };
 
   return (
-    <MobileLayout>
+    <MainLayout>
       <WaveSeparator variant="hero" height="md" inverted />
       
       <div className="bg-white pb-4 md:pb-8">
@@ -576,7 +576,7 @@ const Parceiros = () => {
           </div>
         </div>
       </div>
-    </MobileLayout>
+    </MainLayout>
   );
 };
 

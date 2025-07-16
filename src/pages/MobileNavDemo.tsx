@@ -1,5 +1,5 @@
 import React from 'react';
-import MobileLayout from '@/components/MobileLayout';
+import MainLayout from '@/components/MainLayout';
 import { useDevice } from '@/hooks/useDevice';
 import { Calculator, MessageCircle, Home, Menu } from 'lucide-react';
 
@@ -7,7 +7,7 @@ const MobileNavDemo = () => {
   const { isMobile, deviceType, hasNotch } = useDevice();
 
   return (
-    <MobileLayout>
+    <MainLayout>
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
         <section className="bg-gradient-to-b from-libra-blue to-blue-700 text-white p-6 pb-12">
@@ -160,7 +160,7 @@ const MobileNavDemo = () => {
           </div>
         </section>
       </div>
-    </MobileLayout>
+    </MainLayout>
   );
 };
 

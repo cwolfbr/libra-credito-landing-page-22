@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Clock, Calendar, Tag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import MobileLayout from '@/components/MobileLayout';
+import MainLayout from '@/components/MainLayout';
 import WaveSeparator from '@/components/ui/WaveSeparator';
 import { BlogService, type BlogPost as BlogPostType } from '@/services/blogService';
 
@@ -43,7 +43,7 @@ const BlogPost = () => {
 
   if (loading) {
     return (
-      <MobileLayout>
+      <MainLayout>
         <WaveSeparator variant="hero" height="md" inverted />
         <div className="bg-white flex-1 pb-8 flex items-center justify-center">
           <div className="text-center">
@@ -51,13 +51,13 @@ const BlogPost = () => {
             <p className="text-gray-600">Carregando post...</p>
           </div>
         </div>
-      </MobileLayout>
+      </MainLayout>
     );
   }
 
   if (!post) {
     return (
-      <MobileLayout>
+      <MainLayout>
         <WaveSeparator variant="hero" height="md" inverted />
         <div className="bg-white flex-1 pb-8 flex items-center justify-center">
           <div className="text-center">
@@ -71,7 +71,7 @@ const BlogPost = () => {
             </Link>
           </div>
         </div>
-      </MobileLayout>
+      </MainLayout>
     );
   }
 
@@ -115,7 +115,7 @@ const BlogPost = () => {
   };
 
   return (
-    <MobileLayout>
+    <MainLayout>
       <WaveSeparator variant="hero" height="md" inverted />
       
       <div className="bg-white flex-1 pb-8 md:pb-12">
@@ -219,7 +219,7 @@ const BlogPost = () => {
           </div>
         </div>
       </div>
-    </MobileLayout>
+    </MainLayout>
   );
 };
 

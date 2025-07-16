@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import MobileLayout from '@/components/MobileLayout';
+import MainLayout from '@/components/MainLayout';
 
 const PoliticaCookies: React.FC = () => {
   useEffect(() => {
@@ -12,7 +12,7 @@ const PoliticaCookies: React.FC = () => {
   }, []);
 
   return (
-    <MobileLayout>
+    <MainLayout>
       <div className="min-h-screen bg-gray-50 py-12">
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="bg-white rounded-lg shadow-lg p-8">
@@ -134,7 +134,7 @@ const PoliticaCookies: React.FC = () => {
           </div>
         </div>
       </div>
-    </MobileLayout>
+    </MainLayout>
   );
 };
 
