@@ -1,7 +1,7 @@
 import React, { useEffect, lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import MobileLayout from '@/components/MobileLayout';
+import MainLayout from '@/components/MainLayout';
 import LoadingSpinner from '@/components/ui/loading-spinner';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -45,7 +45,7 @@ const Index: React.FC = () => {
   };
 
   return (
-    <MobileLayout>
+    <MainLayout>
       {/* Faixa Separadora Superior Invertida - Ondas para baixo */}
       <WaveSeparator variant="hero" height="md" inverted />
       
@@ -104,7 +104,7 @@ const Index: React.FC = () => {
       <Suspense fallback={<SectionLoader />}>
         <BlogSection />
       </Suspense>
-    </MobileLayout>
+    </MainLayout>
   );
 };
 
