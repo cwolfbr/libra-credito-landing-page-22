@@ -77,8 +77,8 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ onPortalClientes, onSimulat
           </div>
 
           <div className="flex items-center gap-2">
-            <Button 
-              className="min-h-[40px] px-4 text-sm font-semibold bg-red-600 text-white hover:bg-red-700 shadow-md"
+            <Button
+              className="min-h-[40px] px-4 text-sm font-bold bg-[#ff6666] text-white hover:bg-[#ff5a5a] shadow-md"
               size="sm"
               onClick={onSimulateNow}
               aria-label="Simular crédito agora"
