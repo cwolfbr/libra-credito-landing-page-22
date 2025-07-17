@@ -1,9 +1,8 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
-import { componentTagger } from "lovable-tagger";
+import { visualizer } from "rollup-plugin-visualizer";
 
-// https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
@@ -12,10 +11,11 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
-    mode === 'development' && componentTagger(),
-    // Convert render blocking CSS links to asynchronous
-    // ones during the build by injecting media="print" and
-    // onload handler.
+    visualizer({
+      open: true,
+      gzipSize: true,
+      brotliSize: true,
+    }),
     {
       name: 'async-css-loader',
       apply: 'build',
@@ -35,23 +35,39 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     target: 'esnext',
-    minify: 'esbuild',
-    // Inline all CSS into the JavaScript bundles to avoid
-    // additional render‑blocking requests for CSS files
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        passes: 2,
+      },
+      mangle: {
+        properties: {
+          regex: /^_/,
+        },
+      },
+    },
     cssCodeSplit: true,
     rollupOptions: {
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            if (id.includes('react-router-dom')) {
-              return 'react-router'
+            if (id.includes('@tanstack/react-query')) {
+              return 'vendor_react-query';
+            }
+            if (id.includes('react-router-dom') || id.includes('react-router')) {
+              return 'vendor_react-router';
             }
             if (id.includes('@supabase')) {
-              return 'supabase'
+              return 'vendor_supabase';
+            }
+            if (id.includes('react-dom')) {
+              return 'vendor_react-dom';
             }
             if (id.includes('react')) {
-              return 'react'
+              return 'vendor_react';
             }
+            return 'vendor';
           }
         },
         assetFileNames: (assetInfo) => {
@@ -71,4 +87,4 @@ export default defineConfig(({ mode }) => ({
       }
     }
   }
-  }));
+}));
