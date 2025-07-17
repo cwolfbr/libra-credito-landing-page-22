@@ -145,11 +145,11 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
                 Portal de Clientes
               </Button>
               
-              <Button 
+              <Button
                 onClick={onSimulateNow}
                 size="sm"
                 aria-label="Simular crédito agora"
-                className="px-4 lg:px-6 font-bold bg-red-600 text-white hover:bg-red-700 shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 text-sm lg:text-base"
+                className="px-4 lg:px-6 font-bold bg-[#ff6666] text-white hover:bg-[#ff5a5a] shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 text-sm lg:text-base"
               >
                 Simule Agora
               </Button>
