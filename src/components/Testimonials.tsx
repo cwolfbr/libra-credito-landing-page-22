@@ -1,7 +1,8 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import { MessageSquare, User } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import OptimizedYouTube from './OptimizedYouTube';
+import { useSwipeGesture } from '@/hooks/useSwipeGesture';
 
 const testimonials = [
   {
@@ -93,7 +94,8 @@ TestimonialCard.displayName = 'TestimonialCard';
 const Testimonials: React.FC = () => {
   const isMobile = useIsMobile();
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
-  
+  const swipeRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
@@ -101,6 +103,15 @@ const Testimonials: React.FC = () => {
     
     return () => clearInterval(interval);
   }, []);
+
+  useSwipeGesture(swipeRef, {
+    onSwipeLeft: () =>
+      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length),
+    onSwipeRight: () =>
+      setCurrentTestimonial(
+        (prev) => (prev - 1 + testimonials.length) % testimonials.length
+      )
+  });
   
   return (
     <section id="testimonials" className={`${isMobile ? 'py-4' : 'py-8 md:py-12'} bg-white scroll-mt-header`}>
@@ -127,7 +138,7 @@ const Testimonials: React.FC = () => {
           </div>
           
           <div className="relative h-full">
-            <div className="relative h-[260px] lg:h-full">
+            <div ref={swipeRef} className="relative h-[260px] lg:h-full">
               {testimonials.map((testimonial, index) => (
                 <TestimonialCard 
                   key={index}
