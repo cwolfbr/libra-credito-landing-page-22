@@ -26,7 +26,7 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
       return thumbnailSrc;
     }
     // Fallback para YouTube se a imagem local falhar
-    return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+    return `/images/video-thumbnail.webp`;
   };
 
   const loadVideo = () => {
