@@ -1,12 +1,6 @@
-/**
- * Serviço para consulta de LTV por cidade
- * 
- * @description Gerencia a consulta ao arquivo LTV_Cidades.json
- * e implementa a lógica de validação por cidade
- */
+import cityData from '../../LTV_Cidades.json';
 
-import ltvCidades from '../../LTV_Cidades.json';
-
+// Interfaces... (as mesmas de antes)
 export interface CityLtvData {
   'CIDADE - UF': string;
   LTV: number;
@@ -21,122 +15,119 @@ export interface CityValidationResult {
   allowCalculation: boolean;
 }
 
-/**
- * Lista todas as cidades disponíveis para autocomplete
- */
-export function getAllCities(): string[] {
-  return (ltvCidades as CityLtvData[]).map(item => item['CIDADE - UF']);
+// Armazena os dados das cidades em cache para evitar múltiplas cargas
+let cachedCityData: CityLtvData[] | null = null;
+
+async function getCityData(): Promise<CityLtvData[]> {
+  if (cachedCityData) {
+    return cachedCityData;
+  }
+  // Em um ambiente de produção, o JSON pode ser servido de um CDN
+  // e o fetch seria para uma URL externa.
+  // const response = await fetch('/LTV_Cidades.json');
+  // const data = await response.json();
+  cachedCityData = cityData;
+  return cityData;
 }
 
-/**
- * Busca cidades que correspondem ao termo de pesquisa
- */
-export function searchCities(searchTerm: string): string[] {
+export async function getAllCities(): Promise<string[]> {
+  const data = await getCityData();
+  return data.map(item => item['CIDADE - UF']);
+}
+
+export async function searchCities(searchTerm: string): Promise<string[]> {
   if (!searchTerm || searchTerm.length < 2) return [];
-  
   const term = searchTerm.toLowerCase();
-  return getAllCities().filter(city => 
-    city.toLowerCase().includes(term)
-  ).slice(0, 10); // Limita a 10 resultados
+  const cities = await getAllCities();
+  return cities.filter(city => city.toLowerCase().includes(term)).slice(0, 10);
 }
 
-/**
- * Valida uma cidade e retorna seu status de LTV
- */
-export function validateCity(cityName: string): CityValidationResult {
+export async function validateCity(cityName: string): Promise<CityValidationResult> {
   if (!cityName || cityName.trim() === '') {
     return {
       found: false,
       status: 'not_found',
       message: 'Por favor, selecione uma cidade',
-      allowCalculation: false
+      allowCalculation: false,
     };
   }
 
-  // Buscar cidade no JSON
-  const cityData = (ltvCidades as CityLtvData[]).find(
+  const data = await getCityData();
+  const cityInfo = data.find(
     item => item['CIDADE - UF'].toLowerCase() === cityName.toLowerCase()
   );
 
-  if (!cityData) {
+  if (!cityInfo) {
     return {
       found: false,
       status: 'not_found',
       message: 'Cidade não encontrada em nossa base de dados',
-      allowCalculation: false
+      allowCalculation: false,
     };
   }
 
-  const { LTV } = cityData;
+  const { LTV } = cityInfo;
 
-  // Aplicar regras de negócio baseadas no LTV
   switch (LTV) {
     case 0:
       return {
         found: true,
-        city: cityData['CIDADE - UF'],
+        city: cityInfo['CIDADE - UF'],
         ltv: LTV,
         status: 'not_working',
-        message: 'Infelizmente ainda não trabalhamos nesta cidade. Nossa equipe está trabalhando para expandir nossa cobertura.',
-        allowCalculation: false
+        message: 'Infelizmente ainda não trabalhamos nesta cidade...',
+        allowCalculation: false,
       };
-
     case 1:
       return {
         found: true,
-        city: cityData['CIDADE - UF'],
+        city: cityInfo['CIDADE - UF'],
         ltv: LTV,
         status: 'rural_only',
-        message: 'Para esta cidade, trabalhamos apenas com imóveis rurais. Verifique se seu imóvel se enquadra nesta categoria.',
-        allowCalculation: false
+        message: 'Para esta cidade, trabalhamos apenas com imóveis rurais...',
+        allowCalculation: false,
       };
-
     case 30:
       return {
         found: true,
-        city: cityData['CIDADE - UF'],
+        city: cityInfo['CIDADE - UF'],
         ltv: LTV,
         status: 'ltv_30',
-        message: 'Para esta cidade, o LTV máximo é de 30%. Certifique-se de que o valor do empréstimo não exceda 30% do valor do imóvel.',
-        allowCalculation: true
+        message: 'Para esta cidade, o LTV máximo é de 30%...',
+        allowCalculation: true,
       };
-
     case 50:
       return {
         found: true,
-        city: cityData['CIDADE - UF'],
+        city: cityInfo['CIDADE - UF'],
         ltv: LTV,
         status: 'success',
-        message: 'Cidade válida para simulação. Você pode prosseguir com o cálculo.',
-        allowCalculation: true
+        message: 'Cidade válida para simulação.',
+        allowCalculation: true,
       };
-
     default:
       return {
         found: true,
-        city: cityData['CIDADE - UF'],
+        city: cityInfo['CIDADE - UF'],
         ltv: LTV,
         status: 'not_found',
-        message: 'Configuração de LTV não reconhecida para esta cidade',
-        allowCalculation: false
+        message: 'Configuração de LTV não reconhecida.',
+        allowCalculation: false,
       };
   }
 }
 
-/**
- * Valida se o LTV do empréstimo está dentro do limite da cidade
- */
-export function validateLTV(
+export async function validateLTV(
   valorEmprestimo: number,
   valorImovel: number,
   cityName: string
-): { valid: boolean; message: string; suggestedLoanAmount?: number } {
-  const cityValidation = validateCity(cityName);
+): Promise<{ valid: boolean; message: string; suggestedLoanAmount?: number }> {
+  const cityValidation = await validateCity(cityName);
   
   if (!cityValidation.found || !cityValidation.allowCalculation) {
     return {
       valid: false,
-      message: cityValidation.message
+      message: cityValidation.message,
     };
   }
 
@@ -145,34 +136,28 @@ export function validateLTV(
 
   if (ltvSolicitado > ltvMaximo) {
     const valorMaximoEmprestimo = Math.floor((valorImovel * ltvMaximo) / 100);
-    
     return {
       valid: false,
-      message: `O valor solicitado excede o LTV máximo de ${ltvMaximo}% para esta cidade. Valor máximo: R$ ${valorMaximoEmprestimo.toLocaleString('pt-BR')}`,
-      suggestedLoanAmount: valorMaximoEmprestimo
+      message: `O valor solicitado excede o LTV máximo de ${ltvMaximo}%...`,
+      suggestedLoanAmount: valorMaximoEmprestimo,
     };
   }
 
   return {
     valid: true,
-    message: 'LTV dentro do limite permitido para esta cidade'
+    message: 'LTV dentro do limite permitido.',
   };
 }
 
-/**
- * Obtém informações completas sobre uma cidade
- */
-export function getCityInfo(cityName: string): CityLtvData | null {
-  return (ltvCidades as CityLtvData[]).find(
+export async function getCityInfo(cityName: string): Promise<CityLtvData | null> {
+  const data = await getCityData();
+  return data.find(
     item => item['CIDADE - UF'].toLowerCase() === cityName.toLowerCase()
   ) || null;
 }
 
-/**
- * Estatísticas do arquivo de cidades
- */
-export function getCityStats() {
-  const cities = ltvCidades as CityLtvData[];
+export async function getCityStats() {
+  const cities = await getCityData();
   const stats = {
     total: cities.length,
     notWorking: cities.filter(c => c.LTV === 0).length,
@@ -184,6 +169,6 @@ export function getCityStats() {
   return {
     ...stats,
     workingCities: stats.ltv30 + stats.ltv50,
-    coverage: ((stats.ltv30 + stats.ltv50) / stats.total * 100).toFixed(1)
+    coverage: ((stats.ltv30 + stats.ltv50) / stats.total * 100).toFixed(1),
   };
 }
