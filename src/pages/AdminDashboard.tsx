@@ -52,7 +52,8 @@ const AdminDashboard: React.FC = () => {
     total: 0,
     novos: 0,
     interessados: 0,
-    contatados: 0
+    contatados: 0,
+    finalizados: 0
   });
   
   // Estados para parceiros
@@ -89,7 +90,8 @@ const AdminDashboard: React.FC = () => {
     total: 0,
     pendentes: 0,
     aprovados: 0,
-    rejeitados: 0
+    rejeitados: 0,
+    em_analise: 0
   });
 
   // Verificar autenticação ao carregar
@@ -219,7 +221,7 @@ const AdminDashboard: React.FC = () => {
 
   // Função para inserir texto no editor
   const insertText = (before: string, after: string = '', placeholder: string = '') => {
-    const textarea = document.querySelector('textarea[placeholder*="Título do Post"]') as HTMLTextAreaElement;
+    const textarea = document.querySelector('textarea[placeholder*="Conteúdo do post"]') as HTMLTextAreaElement;
     if (!textarea) return;
 
     const start = textarea.selectionStart;
@@ -317,7 +319,8 @@ const AdminDashboard: React.FC = () => {
       total: data.length,
       pendentes: data.filter(p => p.status === 'pendente').length,
       aprovados: data.filter(p => p.status === 'aprovado').length,
-      rejeitados: data.filter(p => p.status === 'rejeitado').length
+      rejeitados: data.filter(p => p.status === 'rejeitado').length,
+      em_analise: data.filter(p => p.status === 'em_analise').length
     };
     setStatsParceiros(stats);
   };
@@ -334,7 +337,7 @@ const AdminDashboard: React.FC = () => {
   const loadSimulacoes = async () => {
     setLoading(true);
     try {
-      const data = await LocalSimulationService.getSimulacoes(100);
+      const data = await LocalSimulationService.getSimulacoes(1000);
       setSimulacoes(data);
       calculateStats(data);
     } catch (error) {
@@ -349,7 +352,8 @@ const AdminDashboard: React.FC = () => {
       total: data.length,
       novos: data.filter(s => s.status === 'novo').length,
       interessados: data.filter(s => s.status === 'interessado').length,
-      contatados: data.filter(s => s.status === 'contatado').length
+      contatados: data.filter(s => s.status === 'contatado').length,
+      finalizados: data.filter(s => s.status === 'finalizado').length
     };
     setStats(stats);
   };
@@ -409,9 +413,10 @@ const AdminDashboard: React.FC = () => {
     return blogPosts.filter(post => {
       const matchStatus = 
         filtroStatusBlog === 'todos' ||
-        (filtroStatusBlog === 'published' && post.published) ||
+        (filtroStatusBlog === 'published' && post.published && !post.featuredPost) ||
         (filtroStatusBlog === 'draft' && !post.published) ||
-        (filtroStatusBlog === 'featured' && post.featuredPost);
+        (filtroStatusBlog === 'featured' && post.featuredPost && post.published) ||
+        (filtroStatusBlog === 'featured_draft' && post.featuredPost && !post.published);
       
       const matchTitle = !filtroTituloBlog || 
         post.title.toLowerCase().includes(filtroTituloBlog.toLowerCase()) ||
@@ -680,10 +685,10 @@ const AdminDashboard: React.FC = () => {
                     {filteredSimulacoes.map((simulacao) => (
                       <TableRow key={simulacao.id}>
                         <TableCell className="text-sm">
-                          {new Date(simulacao.created_at!).toLocaleDateString()}
+                          {simulacao.created_at ? new Date(simulacao.created_at).toLocaleDateString('pt-BR') : 'Data não informada'}
                           <br />
                           <span className="text-gray-500 text-xs">
-                            {new Date(simulacao.created_at!).toLocaleTimeString()}
+                            {simulacao.created_at ? new Date(simulacao.created_at).toLocaleTimeString('pt-BR') : ''}
                           </span>
                         </TableCell>
                         <TableCell className="font-medium">
@@ -696,10 +701,10 @@ const AdminDashboard: React.FC = () => {
                         <TableCell>{simulacao.cidade}</TableCell>
                         <TableCell className="text-sm">
                           <div className="font-semibold text-green-600">
-                            {formatBRL(simulacao.valor_emprestimo.toString())}
+                            {simulacao.valor_emprestimo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                           </div>
                           <div className="text-gray-500 text-xs">
-                            Imóvel: {formatBRL(simulacao.valor_imovel.toString())}
+                            Imóvel: {simulacao.valor_imovel.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                           </div>
                         </TableCell>
                         <TableCell>
@@ -860,10 +865,10 @@ const AdminDashboard: React.FC = () => {
                     {filteredParceiros.map((parceiro) => (
                       <TableRow key={parceiro.id}>
                         <TableCell className="text-sm">
-                          {new Date(parceiro.created_at!).toLocaleDateString()}
+                          {parceiro.created_at ? new Date(parceiro.created_at).toLocaleDateString('pt-BR') : 'Data não informada'}
                           <br />
                           <span className="text-gray-500 text-xs">
-                            {new Date(parceiro.created_at!).toLocaleTimeString()}
+                            {parceiro.created_at ? new Date(parceiro.created_at).toLocaleTimeString('pt-BR') : ''}
                           </span>
                         </TableCell>
                         <TableCell className="font-medium">
@@ -875,9 +880,9 @@ const AdminDashboard: React.FC = () => {
                         </TableCell>
                         <TableCell>{parceiro.cidade}</TableCell>
                         <TableCell className="text-sm">
-                          {parceiro.cnpj ? 
+                          {parceiro.cnpj && parceiro.cnpj.length >= 8 ?
                             `${parceiro.cnpj.substring(0, 8)}****` : 
-                            'Não informado'
+                            parceiro.cnpj || 'Não informado'
                           }
                         </TableCell>
                         <TableCell className="text-sm">
@@ -1024,7 +1029,14 @@ const AdminDashboard: React.FC = () => {
                       onChange={(e) => setPostForm({...postForm, readTime: parseInt(e.target.value) || 0})}
                     />
                     <p className="text-xs text-gray-500 mt-1">
-                      {postForm.content ? `Auto: ${BlogService.calculateReadTime(postForm.content)} min` : 'Calculado automaticamente'}
+                      {postForm.content ? `Auto: ${(() => {
+                        try {
+                          return BlogService.calculateReadTime(postForm.content);
+                        } catch (error) {
+                          console.error('Erro ao calcular tempo de leitura:', error);
+                          return 5;
+                        }
+                      })()} min` : 'Calculado automaticamente'}
                     </p>
                   </div>
                   <div className="space-y-3">
@@ -1323,7 +1335,7 @@ Escreva seu conteúdo aqui...
                                     📖 {post.readTime} min
                                   </span>
                                   <span className="text-xs text-gray-500">
-                                    🕒 {new Date(post.createdAt || '').toLocaleDateString()}
+                                    🕒 {post.createdAt ? new Date(post.createdAt).toLocaleDateString('pt-BR') : 'Data não informada'}
                                   </span>
                                 </div>
                                 <div className="flex items-center gap-2 mt-2">
@@ -1602,7 +1614,7 @@ Escreva seu conteúdo aqui...
                   </p>
                   <div className="text-xs text-gray-500 mt-3 space-y-1">
                     <p><strong>Valores atuais:</strong></p>
-                    <p>• Empréstimo: R$ {simulationConfig.valorMinimo.toLocaleString()} a R$ {simulationConfig.valorMaximo.toLocaleString()}</p>
+                    <p>• Empréstimo: {simulationConfig.valorMinimo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} a {simulationConfig.valorMaximo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
                     <p>• Parcelas: {simulationConfig.parcelasMin} a {simulationConfig.parcelasMax} meses</p>
                     <p>• Taxa: {simulationConfig.juros}% a.m. + {simulationConfig.custoOperacional}% de custos</p>
                     <p>• DFI: {simulationConfig.dfiPercentual}% | Prestamista: {simulationConfig.prestamistaPercentual}%</p>

@@ -1,9 +1,10 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, lazy, Suspense } from 'react';
 import MobileLayout from '@/components/MobileLayout';
-import SimulationForm from '@/components/SimulationForm';
 import WaveSeparator from '@/components/ui/WaveSeparator';
 import { useIsMobile } from '@/hooks/use-mobile';
+
+const SimulationForm = lazy(() => import('@/components/SimulationForm'));
 
 const Simulacao = () => {
   const isMobile = useIsMobile();
@@ -23,7 +24,9 @@ const Simulacao = () => {
     <MobileLayout>
       <WaveSeparator variant="hero" height="md" inverted />
       <div className="bg-white">
-        <SimulationForm />
+        <Suspense fallback={<div>Carregando...</div>}>
+          <SimulationForm />
+        </Suspense>
       </div>
     </MobileLayout>
   );

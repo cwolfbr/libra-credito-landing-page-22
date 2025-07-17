@@ -116,7 +116,7 @@ const BenefitsSection2: React.FC = () => {
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-8 flex items-center justify-center">
                   <img 
-                    src="/images/media/estadao-logo.png"
+                    src="/images/media/webp/estadao-logo.webp"
                     alt="Estadão"
                     className="max-w-full max-h-full object-contain"
                   />
@@ -141,7 +141,7 @@ const BenefitsSection2: React.FC = () => {
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-8 flex items-center justify-center">
                   <img 
-                    src="/images/media/g1-logo.png"
+                    src="/images/media/webp/g1-logo.webp"
                     alt="G1 Globo"
                     className="max-w-full max-h-full object-contain"
                   />
@@ -166,7 +166,7 @@ const BenefitsSection2: React.FC = () => {
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-8 flex items-center justify-center">
                   <img 
-                    src="/images/media/acidadeon-logo.png"
+                    src="/images/media/webp/acidadeon-logo.webp"
                     alt="A Cidade ON"
                     className="max-w-full max-h-full object-contain"
                   />
@@ -191,7 +191,7 @@ const BenefitsSection2: React.FC = () => {
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-8 flex items-center justify-center">
                   <img 
-                    src="/images/media/revide-logo.png"
+                    src="/images/media/webp/revide-logo.webp"
                     alt="Revide"
                     className="max-w-full max-h-full object-contain"
                   />

@@ -65,17 +65,12 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ onPortalClientes, onSimulat
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <Link to="/" aria-label="Página inicial da Libra Crédito">
-              <div className="h-12 overflow-hidden flex items-center">
-                <ImageOptimizer 
-                  src="/images/logos/libra-logo.png" 
-                  alt="Libra Crédito" 
-                  className="h-16 w-auto transform scale-[1.25]"
-                  aspectRatio={1}
-                  priority={true}
-                  style={{
-                    clipPath: 'inset(30% 0 30% 0)'
-                  }}
+            <Link to="/" aria-label="Página inicial da Libra Crédito" className="tap-transparent">
+              <div className="h-16 overflow-hidden flex items-center">
+                <img
+                  src="/images/media/webp/logo-header.webp"
+                  alt="Libra Crédito"
+                  className="h-full w-auto pointer-events-none max-w-none"
                 />
               </div>
             </Link>
@@ -83,7 +78,7 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ onPortalClientes, onSimulat
 
           <div className="flex items-center gap-2">
             <Button 
-              className="min-h-[40px] px-4 text-sm font-semibold bg-libra-navy text-white hover:bg-libra-navy/90 shadow-md"
+              className="min-h-[40px] px-4 text-sm font-semibold bg-red-600 text-white hover:bg-red-700 shadow-md"
               size="sm"
               onClick={onSimulateNow}
               aria-label="Simular crédito agora"

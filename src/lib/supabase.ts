@@ -20,9 +20,15 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-// Configurações do Supabase
-const supabaseUrl = 'https://plqljbugvhrffmvdsmsb.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBscWxqYnVndmhyZmZtdmRzbXNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkyNDIyNjYsImV4cCI6MjA2NDgxODI2Nn0.D9n_r-aQeApj9fADGhiiOBKoaqV3rzuBvWCAx3g3exY';
+// Configurações do Supabase - usando variáveis de ambiente com fallback
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://wprkpdqnmibxphiofoqk.supabase.co';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'sb_publishable_xjn_ruSWUfyiqoMIrQfcOw_-YVtj5lr';
+
+// Log para debug (apenas em development)
+if (typeof window !== 'undefined' && import.meta.env.DEV) {
+  console.log('Supabase URL:', supabaseUrl);
+  console.log('Supabase Key:', supabaseAnonKey?.substring(0, 20) + '...');
+}
 
 // Tipos TypeScript para as tabelas
 export interface SimulacaoData {
@@ -164,7 +170,7 @@ export const supabaseApi = {
     try {
       const { data, error } = await supabase
         .from('parceiros')
-        .select('count')
+        .select('*')
         .limit(1);
       
       if (error) {
@@ -200,7 +206,7 @@ export const supabaseApi = {
     return result;
   },
 
-  async getSimulacoes(limit = 50) {
+  async getSimulacoes(limit = 1000) {
     const { data, error } = await supabase
       .from('simulacoes')
       .select('*')

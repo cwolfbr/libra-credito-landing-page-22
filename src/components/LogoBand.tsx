@@ -3,12 +3,12 @@ import ImageOptimizer from '@/components/ImageOptimizer';
 
 const LogoBand: React.FC = () => {
   return (
-    <div className="w-full bg-[#003399] flex justify-center py-4">
-      <div className="flex items-center h-20">
+    <div className="w-full bg-[#003399] flex justify-center py-8">
+      <div className="flex items-center">
         <ImageOptimizer
           src="/images/logos/libra-logo.png"
           alt="Libra Crédito"
-          className="h-[90%] w-auto"
+          className="h-24 w-auto"
           aspectRatio={1}
           priority={false}
         />

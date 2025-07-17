@@ -105,14 +105,12 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
           <div className="flex items-center justify-between h-[62px] lg:h-[82px]">
             {/* Logo e slogan */}
             <div className="flex items-center gap-6">
-              <Link to="/" className="flex items-center">
+              <Link to="/" className="flex items-center tap-transparent">
                 <div className="h-[62px] lg:h-[82px] overflow-hidden flex items-center">
-                  <ImageOptimizer
-                    src="/images/logos/libra-logo.png"
+                  <img
+                    src="/images/media/webp/logo-header.webp"
                     alt="Libra Crédito - Home Equity com garantia de imóvel"
-                    className="h-full w-auto transform scale-[1.25]"
-                    aspectRatio={1}
-                    priority={true}
+                    className="h-full w-auto pointer-events-none max-w-none"
                   />
                 </div>
               </Link>
@@ -151,7 +149,7 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
                 onClick={onSimulateNow}
                 size="sm"
                 aria-label="Simular crédito agora"
-                className="px-4 lg:px-6 font-bold bg-libra-navy text-white hover:bg-libra-navy/90 shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 text-sm lg:text-base"
+                className="px-4 lg:px-6 font-bold bg-red-600 text-white hover:bg-red-700 shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 text-sm lg:text-base"
               >
                 Simule Agora
               </Button>
