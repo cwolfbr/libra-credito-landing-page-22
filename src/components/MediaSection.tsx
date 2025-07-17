@@ -6,25 +6,25 @@ import { useIsMobile } from '@/hooks/use-mobile';
 const mediaLinks = [
   {
     name: 'G1 Globo',
-    logo: '/images/media/webp/g1-logo.webp',
+    logo: '/images/media/g1-logo.png',
     title: 'A Libra Crédito tem soluções financeiras com as menores taxas no pós-pandemia',
     url: 'https://g1.globo.com/sp/ribeirao-preto-franca/especial-publicitario/libra-credito-solucoes-financeiras/noticia/2022/10/28/a-libra-credito-tem-solucoes-financeiras-com-as-menores-taxas-no-pos-pandemia.ghtml'
   },
   {
     name: 'Estadão',
-    logo: '/images/media/webp/estadao-logo.webp',
+    logo: '/images/media/estadao-logo.png',
     title: 'Libra simplifica processo para empréstimo com garantia de imóvel',
     url: 'https://bluestudioexpress.estadao.com.br/conteudo/2023/08/24/libra-simplifica-processo-para-emprestimo-com-garantia-de-imovel/'
   },
   {
     name: 'A Cidade ON',
-    logo: '/images/media/webp/acidadeon-logo.webp',
+    logo: '/images/media/acidadeon-logo.png',
     title: 'Libra Crédito oferece empréstimo de baixo custo e personalizado',
     url: 'https://www.acidadeon.com/ribeiraopreto/conteudo-patrocinado/libracredito/libra-credito-oferece-emprestimo-de-baixo-custo-e-personalizado/'
   },
   {
     name: 'Revide',
-    logo: '/images/media/webp/revide-logo.webp',
+    logo: '/images/media/revide-logo.png',
     title: 'A revolução do crédito',
     url: 'https://www.revide.com.br/noticias/revista/a-revolucao-do-credito/'
   }

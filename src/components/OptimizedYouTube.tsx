@@ -59,7 +59,7 @@ const OptimizedYouTube: React.FC<OptimizedYouTubeProps> = ({
             {/* WebP se disponível e não houve erro */}
             {thumbnailSrc && !imageError && (
               <source 
-                srcSet="/images/video-thumbnail.webp" 
+                srcSet="/images/webp/video-thumbnail.webp"
                 type="image/webp"
               />
             )}

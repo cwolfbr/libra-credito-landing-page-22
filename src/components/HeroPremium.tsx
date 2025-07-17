@@ -105,7 +105,7 @@ const HeroPremium: React.FC = () => {
                 title="Vídeo institucional Libra Crédito"
                 priority={true}
                 className="w-full h-full"
-                thumbnailSrc="/images/video-thumbnail.jpg"
+                thumbnailSrc="/images/webp/video-thumbnail.webp"
               />
             </div>
           </div>

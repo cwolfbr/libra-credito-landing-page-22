@@ -2,7 +2,6 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
-import { visualizer } from "rollup-plugin-visualizer";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -14,21 +13,6 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     mode === 'development' && componentTagger(),
-    // Convert render blocking CSS links to asynchronous
-    // ones during the build by injecting media="print" and
-    // onload handler.
-    {
-      name: 'async-css-loader',
-      apply: 'build',
-      transformIndexHtml(html) {
-        return html.replace(/<link rel="stylesheet" href="(.*?)">/g, (full, href) => {
-          return full.includes('media=') || full.includes('onload=')
-            ? full
-            : `<link rel="stylesheet" href="${href}" media="print" onload="this.media='all'">`;
-        });
-      }
-    },
-    visualizer({ open: true }),
   ].filter(Boolean),
   resolve: {
     alias: {

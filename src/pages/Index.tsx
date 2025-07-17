@@ -7,11 +7,11 @@ import { useIsMobile } from '@/hooks/use-mobile';
 
 // Hero não deve ser lazy loaded pois contém o LCP
 import HeroPremium from '@/components/HeroPremium';
-import TrustBarMinimal from '@/components/TrustBarMinimal';
 import WaveSeparator from '@/components/ui/WaveSeparator';
-import LogoBand from '@/components/LogoBand';
 
 // Lazy loading dos componentes pesados
+const TrustBarMinimal = lazy(() => import('@/components/TrustBarMinimal'));
+const LogoBand = lazy(() => import('@/components/LogoBand'));
 const Benefits = lazy(() => import('@/components/Benefits'));
 const Testimonials = lazy(() => import('@/components/Testimonials'));
 const MediaSection = lazy(() => import('@/components/MediaSection'));
@@ -54,14 +54,20 @@ const Index: React.FC = () => {
       {/* Faixa Separadora com Ondas - Apenas adicionada, sem alterar o resto */}
       <WaveSeparator variant="hero" height="md" />
       
-      <TrustBarMinimal />
+      <Suspense fallback={<SectionLoader />}>
+        <TrustBarMinimal />
+      </Suspense>
       
       <Suspense fallback={<SectionLoader />}>
         <Benefits />
       </Suspense>
 
       {/* Faixa azul com logo - apenas para desktop */}
-      {!isMobile && <LogoBand />}
+      {!isMobile && (
+        <Suspense fallback={<div style={{ height: '7rem' }} />}>
+          <LogoBand />
+        </Suspense>
+      )}
 
       <Suspense fallback={<SectionLoader />}>
         <Testimonials />
