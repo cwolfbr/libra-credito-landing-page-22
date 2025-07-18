@@ -9,6 +9,8 @@ const ScrollToTop = () => {
       top: 0,
       behavior: 'smooth'
     });
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
   }, [pathname]);
 
   return null;
