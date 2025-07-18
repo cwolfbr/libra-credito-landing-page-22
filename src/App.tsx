@@ -53,10 +53,12 @@ const App = () => {
       import('./styles/minimal-premium.css');
     };
 
-    // Atraso para garantir que não interfira com a primeira pintura
-    const timer = setTimeout(loadNonCriticalCss, 100);
-
-    return () => clearTimeout(timer);
+    // Usa requestIdleCallback para carregar o CSS quando a thread principal estiver ociosa
+    if ('requestIdleCallback' in window) {
+      (window as any).requestIdleCallback(loadNonCriticalCss);
+    } else {
+      setTimeout(loadNonCriticalCss, 100);
+    }
   }, []);
 
   return (
