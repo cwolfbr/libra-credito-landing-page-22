@@ -167,7 +167,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-          /* Real image loads asynchronously */
+          /* Real image loads immediately */
         contain: strict;
         will-change: auto;
         transform: translateZ(0);
@@ -436,18 +436,28 @@
                     " id="lcp-placeholder">
                       <span style="opacity: 0.9;">▶ Libra Crédito</span>
                     </div>
-                    <!-- Imagem real carregada via JS depois do LCP -->
-                    <img id="hero-thumbnail" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Miniatura do Vídeo institucional Libra Crédito" width="480" height="360" style="
-                      opacity: 0;
-                      position: absolute;
-                      inset: 0;
-                      width: 100%;
-                      height: 100%;
-                      object-fit: cover;
-                      transition: opacity 0.5s ease;
-                      contain: strict;
-                      transform: translateZ(0);
-                    " data-src="/images/video-thumbnail.webp">
+                    <!-- Imagem real carregada imediatamente para evitar LCP delay -->
+                    <img
+                      id="hero-thumbnail"
+                      src="/images/video-thumbnail.webp"
+                      alt="Miniatura do Vídeo institucional Libra Crédito"
+                      width="480"
+                      height="360"
+                      loading="eager"
+                      fetchpriority="high"
+                      decoding="sync"
+                      style="
+                        opacity: 0;
+                        position: absolute;
+                        inset: 0;
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        transition: opacity 0.5s ease;
+                        contain: strict;
+                        transform: translateZ(0);
+                      "
+                    >
                     <div class="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/40 transition-colors duration-200">
                       <div class="w-16 h-16 md:w-20 md:h-20 bg-red-600 rounded-full flex items-center justify-center shadow-lg group-hover:bg-red-700 transition-all duration-200 group-hover:scale-105">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play w-8 h-8 md:w-10 md:h-10 text-white ml-1">
@@ -492,16 +502,18 @@
           placeholder.style.transform = 'translateZ(0)';
           
           if (placeholder && realImg) {
-            const realSrc = realImg.getAttribute('data-src');
-            if (realSrc) {
-              realImg.src = realSrc;
-              realImg.onload = () => {
-                realImg.style.opacity = '1';
-                setTimeout(() => {
-                  placeholder.style.opacity = '0';
-                  setTimeout(() => placeholder.style.display = 'none', 500);
-                }, 100);
-              };
+            const reveal = () => {
+              realImg.style.opacity = '1';
+              setTimeout(() => {
+                placeholder.style.opacity = '0';
+                setTimeout(() => placeholder.style.display = 'none', 500);
+              }, 100);
+            };
+
+            if (realImg.complete) {
+              reveal();
+            } else {
+              realImg.onload = reveal;
             }
           }
         }
