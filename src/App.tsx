@@ -1,4 +1,5 @@
 import { Suspense, lazy } from 'react';
+import { HelmetProvider } from 'react-helmet-async';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ScrollToTop from '@/components/ScrollToTop';
@@ -53,50 +54,52 @@ const queryClient = new QueryClient({
 
 const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <MobileProvider>
-        <BrowserRouter>
-          <ScrollToTop />
-          <Suspense fallback={<Loading />}>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/vantagens" element={
-                <Suspense fallback={<Loading />}>
-                  <TooltipProvider><Vantagens /></TooltipProvider>
-                </Suspense>
-              } />
-              <Route path="/quem-somos" element={<QuemSomos />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/:slug" element={<BlogPost />} />
-              <Route path="/parceiros" element={<Parceiros />} />
-              <Route path="/simulacao" element={
-                <Suspense fallback={<Loading />}>
-                  <TooltipProvider><Simulacao /></TooltipProvider>
-                </Suspense>
-              } />
-              <Route path="/simulacao/sapi" element={<SimulacaoSapi />} />
-              <Route path="/simulacao/local" element={<SimulacaoLocal />} />
-              <Route path="/politica-privacidade" element={<PoliticaPrivacidade />} />
-              <Route path="/politica-cookies" element={<PoliticaCookies />} />
-              <Route path="/admin" element={
-                <Suspense fallback={<Loading />}>
-                  <TooltipProvider><AdminDashboard /></TooltipProvider>
-                </Suspense>
-              } />
-              <Route path="/test-supabase" element={<SupabaseTestPage />} />
-              <Route path="/test-webhook" element={<TestWebhook />} />
-              <Route path="/mobile-demo" element={<MobileDemo />} />
-              <Route path="/mobile-nav" element={<MobileNavDemo />} />
-              <Route path="/simulacao-wizard" element={<SimulacaoWizard />} />
-              <Route path="/wizard-test" element={<SimpleWizardTest />} />
-              <Route path="/confirmacao" element={<Confirmacao />} />
-              <Route path="/home2" element={<Home2 />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </BrowserRouter>
-      </MobileProvider>
-    </QueryClientProvider>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <MobileProvider>
+          <BrowserRouter>
+            <ScrollToTop />
+            <Suspense fallback={<Loading />}>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/vantagens" element={
+                  <Suspense fallback={<Loading />}>
+                    <TooltipProvider><Vantagens /></TooltipProvider>
+                  </Suspense>
+                } />
+                <Route path="/quem-somos" element={<QuemSomos />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/:slug" element={<BlogPost />} />
+                <Route path="/parceiros" element={<Parceiros />} />
+                <Route path="/simulacao" element={
+                  <Suspense fallback={<Loading />}>
+                    <TooltipProvider><Simulacao /></TooltipProvider>
+                  </Suspense>
+                } />
+                <Route path="/simulacao/sapi" element={<SimulacaoSapi />} />
+                <Route path="/simulacao/local" element={<SimulacaoLocal />} />
+                <Route path="/politica-privacidade" element={<PoliticaPrivacidade />} />
+                <Route path="/politica-cookies" element={<PoliticaCookies />} />
+                <Route path="/admin" element={
+                  <Suspense fallback={<Loading />}>
+                    <TooltipProvider><AdminDashboard /></TooltipProvider>
+                  </Suspense>
+                } />
+                <Route path="/test-supabase" element={<SupabaseTestPage />} />
+                <Route path="/test-webhook" element={<TestWebhook />} />
+                <Route path="/mobile-demo" element={<MobileDemo />} />
+                <Route path="/mobile-nav" element={<MobileNavDemo />} />
+                <Route path="/simulacao-wizard" element={<SimulacaoWizard />} />
+                <Route path="/wizard-test" element={<SimpleWizardTest />} />
+                <Route path="/confirmacao" element={<Confirmacao />} />
+                <Route path="/home2" element={<Home2 />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </BrowserRouter>
+        </MobileProvider>
+      </QueryClientProvider>
+    </HelmetProvider>
   );
 };
 

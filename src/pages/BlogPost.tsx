@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Clock, Calendar, Tag } from 'lucide-react';
+import SEO from '@/components/Seo';
 import { Button } from '@/components/ui/button';
 import MobileLayout from '@/components/MobileLayout';
 import WaveSeparator from '@/components/ui/WaveSeparator';
@@ -24,12 +25,6 @@ const BlogPost = () => {
         const foundPost = await BlogService.getPostBySlug(slug);
         if (foundPost) {
           setPost(foundPost);
-          document.title = `${foundPost.title} | Blog Libra Crédito`;
-          
-          const metaDescription = document.querySelector('meta[name="description"]');
-          if (metaDescription) {
-            metaDescription.setAttribute('content', foundPost.description);
-          }
         }
       } catch (error) {
         console.error('Erro ao carregar post:', error);
@@ -114,8 +109,44 @@ const BlogPost = () => {
     return html;
   };
 
+  const articleSchema = post ? {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://libracredito.com.br/blog/${post.slug}`
+    },
+    "headline": post.title,
+    "description": post.description,
+    "image": post.imageUrl,
+    "author": {
+      "@type": "Organization",
+      "name": "Libra Crédito"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Libra Crédito",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://libracredito.com.br/images/logos/libra-logo.png"
+      }
+    },
+    "datePublished": post.createdAt,
+    "dateModified": post.updatedAt || post.createdAt
+  } : null;
+
   return (
     <MobileLayout>
+      {post && (
+        <SEO
+          title={`${post.title} | Blog Libra Crédito`}
+          description={post.description}
+          canonical={`/blog/${post.slug}`}
+          ogImage={post.imageUrl}
+          ogType="article"
+          schema={articleSchema}
+        />
+      )}
       <WaveSeparator variant="hero" height="md" inverted />
       
       <div className="bg-white flex-1 pb-8 md:pb-12">
