@@ -1,7 +1,10 @@
-import React, { useEffect, lazy, Suspense } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/useMobileContext';
+
+// SEO Component
+import SEO from '@/components/Seo';
 
 // Critical components - NOT lazy loaded for LCP
 import HeroPremium from '@/components/HeroPremium';
@@ -23,23 +26,55 @@ const Index: React.FC = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
 
-  useEffect(() => {
-    // Meta Title otimizado - 58 caracteres
-    document.title = "Home Equity Libra Crédito | Garantia Imóvel 1,19% a.m";
-    
-    // Meta Description otimizada - 155 caracteres
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', 'Crédito com garantia de imóvel (Home Equity) da Libra: taxa mínima 1,19% a.m., até 180 meses. Simule grátis e libere até 50% do valor do imóvel.');
-    }
-  }, []);
-
   const goToQuemSomos = () => {
     navigate('/quem-somos');
   };
 
+  const financialServiceSchema = {
+      "@context": "https://schema.org",
+      "@type": "FinancialService",
+      "name": "Libra Crédito",
+      "description": "Empréstimo com garantia de imóvel com as melhores taxas do mercado. Simule online e receba uma proposta em minutos.",
+      "url": "https://libracredito.com.br",
+      "logo": "https://libracredito.com.br/images/logos/libra-logo.png",
+      "serviceType": "Empréstimo com Garantia de Imóvel",
+      "provider": {
+        "@type": "Organization",
+        "name": "Libra Crédito"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "BR"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "1342"
+      },
+      "offers": {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "FinancialProduct",
+          "name": "Home Equity",
+          "interestRate": 1.19,
+          "loanTerm": {
+            "@type": "QuantitativeValue",
+            "minValue": 60,
+            "maxValue": 180,
+            "unitCode": "MON"
+          }
+        }
+      }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
+      <SEO
+        title="Home Equity Libra Crédito | Garantia Imóvel 1,19% a.m."
+        description="Crédito com garantia de imóvel (Home Equity) da Libra: taxa mínima 1,19% a.m., até 180 meses. Simule grátis e libere até 50% do valor do imóvel."
+        canonical="/"
+        schema={financialServiceSchema}
+      />
       <Header />
 
       <main

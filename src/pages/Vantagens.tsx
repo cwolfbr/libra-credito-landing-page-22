@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
+import SEO from '@/components/Seo';
 import MobileLayout from '@/components/MobileLayout';
 import WaveSeparator from '@/components/ui/WaveSeparator';
 import { Button } from '@/components/ui/button';
@@ -43,17 +44,6 @@ const Vantagens: React.FC = () => {
 
   // Cálculo do valor máximo para animação das barras
   const maxTaxa = useMemo(() => Math.max(...taxasJuros.map(item => item.taxa)), [taxasJuros]);
-
-  useEffect(() => {
-    // Meta Title otimizado para vantagens - 57 caracteres
-    document.title = "Vantagens Home Equity | Libra Crédito 1,19% a.m.";
-    
-    // Meta Description otimizada - 153 caracteres
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', 'Vantagens do crédito com garantia de imóvel: taxa mínima 1,19% a.m., até 180 meses, valores até 50% do imóvel. Compare as taxas agora.');
-    }
-  }, []);
 
   // Animação das barras da tabela
   useEffect(() => {
@@ -174,8 +164,31 @@ const Vantagens: React.FC = () => {
     navigate('/simulacao');
   };
 
+  const advantagesPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "url": "https://libracredito.com.br/vantagens",
+    "name": "Vantagens do Home Equity Libra Crédito",
+    "description": "Descubra as vantagens do crédito com garantia de imóvel na Libra Crédito: taxas de juros mais baixas, prazos de pagamento mais longos e maiores valores de empréstimo.",
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Menores Taxas de Juros" },
+        { "@type": "ListItem", "position": 2, "name": "Prazos Estendidos de Pagamento" },
+        { "@type": "ListItem", "position": 3, "name": "Valores de Empréstimo Maiores" },
+        { "@type": "ListItem", "position": 4, "name": "Aprovação Facilitada" }
+      ]
+    }
+  };
+
   return (
     <MobileLayout>
+      <SEO
+        title="Vantagens Home Equity | Libra Crédito com Taxa de 1,19% a.m."
+        description="Conheça as vantagens do crédito com garantia de imóvel: taxa de 1,19% a.m., prazos longos e valores elevados. Ideal para seus projetos."
+        canonical="/vantagens"
+        schema={advantagesPageSchema}
+      />
       {/* Faixa Separadora Superior Invertida - Exatamente como na home */}
       <WaveSeparator variant="hero" height={isMobile ? "sm" : "md"} inverted />
       
