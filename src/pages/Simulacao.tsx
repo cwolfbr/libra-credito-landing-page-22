@@ -4,6 +4,7 @@ import MobileLayout from '@/components/MobileLayout';
 import SimulationForm from '@/components/SimulationForm';
 import WaveSeparator from '@/components/ui/WaveSeparator';
 import { useIsMobile } from '@/hooks/use-mobile';
+import scrollToTarget from '@/utils/scrollToTarget';
 
 const Simulacao = () => {
   const isMobile = useIsMobile();
@@ -19,10 +20,25 @@ const Simulacao = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (!isMobile) {
+      const frame = requestAnimationFrame(() => {
+        const card = document.getElementById('simulation-card');
+        const headerHeight = document.querySelector('header')?.offsetHeight ?? 0;
+        const cardHeader = card?.querySelector('[data-sim-card-header="true"]') as HTMLElement | null;
+        if (cardHeader) {
+          scrollToTarget(cardHeader, -headerHeight);
+
+        }
+      });
+      return () => cancelAnimationFrame(frame);
+    }
+  }, [isMobile]);
+
   return (
     <MobileLayout>
       <WaveSeparator variant="hero" height="md" inverted />
-      <div className="bg-white">
+      <div className="bg-white lg:flex lg:justify-center">
         <SimulationForm />
       </div>
     </MobileLayout>

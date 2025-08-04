@@ -5,14 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Libra Crédito | Empréstimo com Garantia de Imóvel</title>
     <meta name="description" content="Crédito com garantia de imóvel com as melhores taxas do mercado." />
+    <meta name="robots" content="index,follow" />
     
-    <!-- Performance Critical Resource Hints -->
-    <link rel="preload" href="/fonts/Montserrat-Regular.ttf" as="font" type="font/ttf" crossorigin>
-    <link rel="preload" href="/fonts/Montserrat-Bold.ttf" as="font" type="font/ttf" crossorigin>
-    <link rel="preload" href="/fonts/Montserrat-Thin.ttf" as="font" type="font/ttf" crossorigin>
+    <!-- Preload local Comfortaa font -->
+    <link rel="preload" as="font" href="/fonts/Comfortaa.woff2" type="font/woff2" crossorigin>
 
-    <!-- Main stylesheet -->
-    <link rel="stylesheet" href="/assets/css/index.css">
+    <!-- Preload LCP image for maximum priority -->
+    <link rel="preload" as="image" href="/images/media/video-cgi-libra.webp" fetchpriority="high">
+
+    <!-- Preload main stylesheet -->
+    <link rel="preload" href="/assets/css/index.css" as="style" onload="this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/assets/css/index.css"></noscript>
 
     <!-- Early hints for critical resources -->
     <link rel="dns-prefetch" href="https://img.youtube.com">
@@ -20,9 +23,7 @@
     <link rel="dns-prefetch" href="https://www.youtube-nocookie.com">
     <link rel="dns-prefetch" href="https://vercel.app">
     
-    <!-- CRITICAL LCP Strategy: Remove image preload to eliminate render blocking -->
-    <!-- Video thumbnail now uses instant SVG placeholder for LCP -->
-    <link rel="preload" href="/images/logos/libra-logo.png" as="image" fetchpriority="high">
+
     
       <!-- RADICAL LCP: Force immediate DOM/CSS render -->
       <!--
@@ -54,7 +55,7 @@
       body {
         line-height: 1.5;
         -webkit-font-smoothing: antialiased;
-        font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        font-family: 'Comfortaa', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
         font-weight: 300;
         background: #ffffff;
         overflow-x: hidden;
@@ -97,11 +98,6 @@
         color: white;
         display: flex;
         align-items: center;
-        /* CRITICAL LCP optimizations */
-        contain: layout style paint;
-        will-change: auto;
-        transform: translateZ(0);
-        backface-visibility: hidden;
       }
       
       @media (max-width: 767px) {
@@ -157,62 +153,14 @@
         border-radius: 0.75rem;
       }
       
-      .video-thumbnail-placeholder {
-        /* CRITICAL LCP: SVG placeholder renders instantly - no network delay */
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        contain: strict;
-        will-change: auto;
-        transform: translateZ(0);
-        backface-visibility: hidden;
-        display: block;
-      }
-      
+      .video-thumbnail-placeholder,
       .video-thumbnail-real {
         position: absolute;
         inset: 0;
         width: 100%;
         height: 100%;
         object-fit: cover;
-          /* Real image loads asynchronously */
-        contain: strict;
-        will-change: auto;
-        transform: translateZ(0);
-        backface-visibility: hidden;
-        -webkit-backface-visibility: hidden;
-        image-rendering: -webkit-optimize-contrast;
-        image-rendering: crisp-edges;
         display: block;
-        image-rendering: -webkit-optimize-contrast;
-        /* Force hardware acceleration */
-        backface-visibility: hidden;
-        -webkit-backface-visibility: hidden;
-        /* Optimize paint performance */
-        isolation: isolate;
-        /* Critical: Prevent any delays */
-        opacity: 1;
-        visibility: visible;
-      }
-      
-      /* Hero video container otimizado */
-      .hero-video {
-        contain: strict;
-        content-visibility: visible;
-        will-change: auto;
-        /* Força aceleração por hardware */
-        transform: translate3d(0, 0, 0);
-        backface-visibility: hidden;
-        /* Otimização de paint */
-        isolation: isolate;
-        /* Prevenção de layout shifts */
-        overflow: hidden;
-        /* Renderização otimizada */
-        -webkit-transform: translateZ(0);
-        -webkit-backface-visibility: hidden;
-        -webkit-perspective: 1000;
       }
       
       /* Otimizações para transições */
@@ -310,9 +258,8 @@
     <!-- Main stylesheet will be injected by Vite -->
     
     <!-- Favicon - Libra Crédito -->
-    <link rel="icon" href="/favicon.png" type="image/png" />
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="icon" href="/logo-azul.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/logo-azul.ico" />
     
     <!-- Apple Touch Icons -->
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -346,7 +293,7 @@
       "name": "Libra Crédito",
       "description": "Empréstimo com garantia de imóvel com as melhores taxas do mercado",
       "url": "https://libracredito.com.br",
-      "logo": "https://libracredito.com.br/images/logos/libra-logo.png",
+      "logo": "https://libracredito.com.br/images/logos/logo-azul.png",
       "priceRange": "R$ 100.000 - R$ 5.000.000",
       "areaServed": {
         "@type": "Country",
@@ -359,106 +306,10 @@
       }
     }
     </script>
-    <!-- Lazy load analytics after critical content -->
-    <script>
-      // Defer analytics until after LCP
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      
-      // Load analytics after page interaction or 3 seconds
-      let analyticsLoaded = false;
-      const loadAnalytics = () => {
-        if (analyticsLoaded) return;
-        analyticsLoaded = true;
-        
-        const script = document.createElement('script');
-        script.async = true;
-        script.src = 'https://www.googletagmanager.com/gtag/js?id=UA-XXXXXX';
-        document.head.appendChild(script);
-        
-        script.onload = () => {
-          gtag('js', new Date());
-          gtag('config', 'UA-XXXXXX', { send_page_view: false });
-        };
-      };
-      
-      // Load on first interaction
-      ['mousedown', 'touchstart', 'keydown', 'scroll'].forEach(event => {
-        document.addEventListener(event, loadAnalytics, { once: true, passive: true });
-      });
-      
-      // Fallback: load after 3 seconds
-      setTimeout(loadAnalytics, 3000);
-    </script>
   </head>
 
   <body>
-    <div id="root">
-      <section class="min-h-[60vh] md:min-h-[65vh] lg:min-h-[65vh] xl:min-h-[calc(100vh-280px)] pb-2 bg-white relative flex flex-col justify-center" aria-labelledby="hero-heading" role="banner">
-        <div class="container mx-auto px-4 relative z-10 flex-grow flex flex-col justify-center">
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center">
-            <div class="text-[#003399] space-y-4 md:space-y-5 text-center flex flex-col items-center animate-fade-in-up">
-              <div>
-                <h1 id="hero-heading" class="text-xl md:text-3xl lg:text-4xl font-extrabold mb-4 leading-tight">
-                  <span class="block whitespace-nowrap">Crédito com Garantia de Imóvel</span>
-                  <span class="block text-green-700">é mais simples na Libra!</span>
-                </h1>
-                <p class="text-lg md:text-xl lg:text-2xl text-[#003399] font-semibold">Crédito inteligente para quem construiu patrimônio.</p>
-                <ul class="mt-2 space-y-1 text-sm md:text-base lg:text-lg text-[#003399] font-medium">
-                  <li class="flex items-center justify-center gap-2 bg-green-50 rounded-md py-1 px-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield w-4 h-4 md:w-5 md:h-5 flex-shrink-0" aria-hidden="true">
-                      <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
-                    </svg>
-                    <span class="text-center">Atendimento Personalizado, Segurança e Transparência</span>
-                  </li>
-                  <li>
-                    Taxas a partir de <span class="font-bold text-green-700">1,19% a.m.</span> • Até 180 meses • 100% online
-                  </li>
-                </ul>
-                <p class="text-lg md:text-xl lg:text-2xl font-bold text-[#003399] mt-3">Libere até 50% do valor do seu imóvel.</p>
-              </div>
-              <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full max-w-sm mx-auto pt-3 sm:pt-4">
-                <button class="w-full cta-button px-6 py-3 text-sm sm:px-8 sm:py-4 sm:text-base font-bold bg-gradient-to-r from-[#003399] to-[#0055CC] text-white" type="button">Simular Agora</button>
-                <button class="w-full cta-button px-6 py-3 text-sm sm:px-8 sm:py-4 sm:text-base font-bold bg-transparent border-2 border-[#003399] text-[#003399] hover:bg-[#003399] hover:text-white" type="button">Conheça as Vantagens</button>
-              </div>
-            </div>
-            <div class="w-full max-w-xl lg:max-w-lg xl:max-w-none mx-auto">
-              <div class="hero-video aspect-video" style="contain-intrinsic-size:480px 360px; contain:strict;">
-                <div class="relative w-full h-full overflow-hidden w-full h-full">
-                  <button class="w-full h-full cursor-pointer relative bg-black flex items-center justify-center hero-video group" type="button" aria-label="Reproduzir vídeo: Vídeo institucional Libra Crédito">
-                    <!-- OPTIMIZED LCP: Direct image load for immediate LCP -->
-                    <link rel="preload" as="image" href="/images/optimized/video-thumbnail.webp">
-                    <img src="/images/optimized/video-thumbnail.webp" alt="Miniatura do Vídeo institucional Libra Crédito" width="480" height="360" style="
-                      position: absolute;
-                      inset: 0;
-                      width: 100%;
-                      height: 100%;
-                      object-fit: cover;
-                      display: block;
-                    " loading="lazy">
-                    <div class="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/40 transition-colors duration-200">
-                      <div class="w-16 h-16 md:w-20 md:h-20 bg-red-600 rounded-full flex items-center justify-center shadow-lg group-hover:bg-red-700 transition-all duration-200 group-hover:scale-105">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play w-8 h-8 md:w-10 md:h-10 text-white ml-1">
-                          <polygon points="6 3 20 12 6 21 6 3"></polygon>
-                        </svg>
-                      </div>
-                    </div>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="flex justify-center mt-4 md:mt-4 lg:mt-2">
-            <button class="text-[#003399] flex flex-col items-center gap-1 opacity-90 hover:opacity-100 transition-opacity" aria-label="Rolar para benefícios" type="button">
-              <span class="text-sm md:text-sm lg:text-xs font-medium">Saiba mais</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down w-5 h-5 md:w-5 md:h-5 lg:w-4 lg:h-4 animate-bounce">
-                <path d="m6 9 6 6 6-6"></path>
-              </svg>
-            </button>
-          </div>
-        </div>
-      </section>
-    </div>
+    <div id="root"></div>
     
     
     <script type="module" src="/src/main.tsx" defer></script>
@@ -468,7 +319,10 @@
     <!-- Service Worker Registration after interaction -->
     <script>
       if ('serviceWorker' in navigator) {
+        let swRegistered = false;
         const registerSW = () => {
+          if (swRegistered) return;
+          swRegistered = true;
           navigator.serviceWorker.register('/sw.js')
             .then(reg => console.log('SW registered:', reg))
             .catch(err => console.log('SW registration failed:', err));
@@ -478,9 +332,28 @@
           window.addEventListener(event, registerSW, { once: true, passive: true });
         });
 
-        window.addEventListener('load', () => {
-          setTimeout(registerSW, 5000);
-        });
+        window.addEventListener('load', () => setTimeout(registerSW, 5000));
+      }
+    </script>
+
+    <script>
+      function initGtag() {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-4LXR55Y9HS');
+      }
+      function loadGtag() {
+        const gtagScript = document.createElement('script');
+        gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-4LXR55Y9HS';
+        gtagScript.async = true;
+        gtagScript.onload = initGtag;
+        document.head.appendChild(gtagScript);
+      }
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(loadGtag);
+      } else {
+        window.addEventListener('load', loadGtag);
       }
     </script>
   </body>

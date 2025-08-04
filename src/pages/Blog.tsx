@@ -1,8 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, TrendingUp, Wallet, Home, Building, FileText, CreditCard, BookOpen } from 'lucide-react';
+import Search from 'lucide-react/dist/esm/icons/search';
+import TrendingUp from 'lucide-react/dist/esm/icons/trending-up';
+import Wallet from 'lucide-react/dist/esm/icons/wallet';
+import Home from 'lucide-react/dist/esm/icons/home';
+import Building from 'lucide-react/dist/esm/icons/building';
+import FileText from 'lucide-react/dist/esm/icons/file-text';
+import CreditCard from 'lucide-react/dist/esm/icons/credit-card';
+import BookOpen from 'lucide-react/dist/esm/icons/book-open';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious
+} from '@/components/ui/carousel';
 import MobileLayout from '@/components/MobileLayout';
 import WaveSeparator from '@/components/ui/WaveSeparator';
 import { BlogService, type BlogPost as BlogPostType } from '@/services/blogService';
@@ -132,26 +146,62 @@ const Blog = () => {
           </div>
 
           {/* Categories */}
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2 mb-8">
-            {CATEGORIES.map((category) => {
-              const Icon = category.icon;
-              return (
-                <Button
-                  key={category.id}
-                  variant="outline"
-                  className={`h-auto ${isMobile ? 'p-3' : 'p-2'} flex flex-col items-center gap-1 hover:bg-libra-blue/5 ${
-                    selectedCategory === category.id ? 'border-libra-blue text-libra-blue' : ''
-                  }`}
-                  onClick={() => setSelectedCategory(
-                    selectedCategory === category.id ? null : category.id
-                  )}
-                >
-                  <Icon className="w-4 h-4" />
-                  <span className={`${isMobile ? 'text-xs' : 'text-xs'} font-semibold text-center leading-tight`}>{category.name}</span>
-                </Button>
-              );
-            })}
-          </div>
+          {isMobile ? (
+            <Carousel className="mb-8">
+              <CarouselContent className="-ml-2">
+                {CATEGORIES.map((category) => {
+                  const Icon = category.icon;
+                  return (
+                    <CarouselItem key={category.id} className="basis-1/3 pl-2">
+                      <Button
+                        variant="outline"
+                        className={`h-auto p-3 flex flex-col items-center gap-1 whitespace-normal hover:bg-libra-blue/5 ${
+                          selectedCategory === category.id ? 'border-libra-blue text-libra-blue' : ''
+                        }`}
+                        onClick={() =>
+                          setSelectedCategory(
+                            selectedCategory === category.id ? null : category.id
+                          )
+                        }
+                      >
+                        <Icon className="w-4 h-4" />
+                        <span className="text-xs font-semibold text-center leading-tight break-words">
+                          {category.name}
+                        </span>
+                      </Button>
+                    </CarouselItem>
+                  );
+                })}
+              </CarouselContent>
+              <CarouselPrevious className="-left-4" />
+              <CarouselNext className="-right-4" />
+            </Carousel>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2 mb-8">
+              {CATEGORIES.map((category) => {
+                const Icon = category.icon;
+                return (
+                  <Button
+                    key={category.id}
+                    variant="outline"
+                    className={`h-auto p-2 flex flex-col items-center gap-1 whitespace-normal hover:bg-libra-blue/5 ${
+                      selectedCategory === category.id ? 'border-libra-blue text-libra-blue' : ''
+                    }`}
+                    onClick={() =>
+                      setSelectedCategory(
+                        selectedCategory === category.id ? null : category.id
+                      )
+                    }
+                  >
+                    <Icon className="w-4 h-4" />
+                    <span className="text-xs font-semibold text-center leading-tight break-words">
+                      {category.name}
+                    </span>
+                  </Button>
+                );
+              })}
+            </div>
+          )}
 
           {/* Blog Posts */}
             {loading ? (
@@ -189,7 +239,7 @@ const Blog = () => {
                           loading="lazy"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
-                          target.src = '/images/blog/default-blog.jpg';
+                          target.src = 'https://placehold.co/600x400?text=Blog+Image';
                         }}
                       />
                     </div>
@@ -230,10 +280,10 @@ const Blog = () => {
               <p className={`${isMobile ? 'text-base' : 'text-lg'} text-gray-600 mb-6`}>
                 Aplique o que aprendeu e descubra suas condições personalizadas
               </p>
-              <Button 
+              <Button
                 onClick={handleSimular}
                 size="lg"
-                className="bg-libra-blue text-white hover:bg-libra-navy font-semibold px-8 py-3 text-lg"
+                className="bg-red-600 text-white hover:bg-red-700 font-semibold px-8 py-3 text-lg"
               >
                 Simular Agora
               </Button>

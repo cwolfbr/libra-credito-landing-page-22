@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { useDevice } from '@/hooks/useDevice';
+import Menu from 'lucide-react/dist/esm/icons/menu';
+import X from 'lucide-react/dist/esm/icons/x';
+
 import { Button } from '@/components/ui/button';
 
 interface SimpleMobileHeaderProps {
@@ -31,16 +34,16 @@ const SimpleMobileHeader: React.FC<SimpleMobileHeaderProps> = ({ onPortalCliente
       data-mobile="true"
       className="fixed top-0 left-0 right-0 z-[9999] bg-white border-b border-gray-200 shadow-sm"
     >
-      <div className="h-16 px-4 flex items-center justify-between">
+      <div className="h-[64px] px-4 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center tap-transparent" aria-label="Ir para página inicial da Libra Crédito">
-          <div className="h-16 overflow-hidden flex items-center">
+          <div className="h-[64px] overflow-hidden flex items-center">
             <img
-              src="/images/optimized/logo-header.webp"
+              src="/images/logos/logo-header.webp"
               alt="Libra Crédito - Simulação de crédito com garantia de imóvel"
-              className="h-[85%] w-auto pointer-events-none max-w-none"
-              width="150"
-              height="150"
+              className="header-logo h-[48px]"
+              width="90"
+              height="90"
             />
           </div>
         </Link>
@@ -48,7 +51,7 @@ const SimpleMobileHeader: React.FC<SimpleMobileHeaderProps> = ({ onPortalCliente
         {/* Right side buttons */}
         <div className="flex items-center gap-2">
           {/* Simular Button - destaque principal */}
-          <Button 
+          <Button
             onClick={handleSimulate}
             size="sm"
             className="bg-red-600 text-white hover:bg-red-700 text-sm px-4 py-3 h-11 min-h-[44px]"
@@ -92,13 +95,14 @@ const SimpleMobileHeader: React.FC<SimpleMobileHeaderProps> = ({ onPortalCliente
               
               {/* Portal de Clientes */}
               {onPortalClientes && (
-                <li className="pt-2 border-t border-gray-100">
+                <li role="none">
                   <button
                     onClick={() => {
                       onPortalClientes();
                       setIsMenuOpen(false);
                     }}
-                    className="w-full text-left py-3 px-2 text-sm font-medium text-libra-blue hover:bg-blue-50 rounded-md transition-colors"
+                    className="w-full text-left py-3 px-2 text-[1.0938rem] font-medium text-libra-navy hover:text-libra-blue hover:bg-gray-50 rounded-md transition-colors flex items-center min-h-[44px]"
+                    role="menuitem"
                   >
                     Portal de Clientes
                   </button>

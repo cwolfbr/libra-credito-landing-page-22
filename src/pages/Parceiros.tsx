@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { HandshakeIcon, LockKeyhole } from 'lucide-react';
+import HandshakeIcon from 'lucide-react/dist/esm/icons/handshake';
+import LockKeyhole from 'lucide-react/dist/esm/icons/lock-keyhole';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { SelectItem } from "@/components/ui/select";
@@ -292,7 +293,10 @@ const Parceiros = () => {
       setTouched({});
       
       setSuccess(true);
-      
+
+      // Scrollar para o topo para exibir a mensagem de sucesso
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
       // Exibir mensagem de sucesso temporária
       setTimeout(() => {
         setSuccess(false);
@@ -568,7 +572,6 @@ const Parceiros = () => {
                 
                 <div className="text-xs text-libra-silver/80 space-y-2">
                   <p>✓ Material de divulgação</p>
-                  <p>✓ Relatórios de comissão</p>
                   <p>✓ Suporte especializado</p>
                 </div>
               </div>

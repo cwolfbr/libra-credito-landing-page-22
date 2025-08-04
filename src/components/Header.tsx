@@ -33,7 +33,7 @@ const DialogHeader = lazy(() => import('@/components/ui/dialog').then(m => ({ de
 const DialogTitle = lazy(() => import('@/components/ui/dialog').then(m => ({ default: m.DialogTitle })));
 const DialogClose = lazy(() => import('@/components/ui/dialog').then(m => ({ default: m.DialogClose })));
 const Button = lazy(() => import('@/components/ui/button').then(m => ({ default: m.Button })));
-const Info = lazy(() => import('lucide-react').then(m => ({ default: m.Info })));
+const Info = lazy(() => import('lucide-react/dist/esm/icons/info').then(m => ({ default: m.default })));
 
 const Header: React.FC = () => {
   const [isInfoPopupOpen, setIsInfoPopupOpen] = useState(false);
@@ -42,24 +42,20 @@ const Header: React.FC = () => {
   const navigate = useNavigate();
   const { isMobile } = useDevice();
 
-  // Lazy load popup apenas após 2 segundos (post-LCP)
+  // Carrega o popup assim que o componente é montado
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const currentPath = location.pathname;
-      const allowedPaths = ['/', '/simulacao'];
-      
-      if (allowedPaths.includes(currentPath)) {
-        const storageKey = `popup_seen_${currentPath.replace('/', 'home')}`;
-        const hasSeenPopup = localStorage.getItem(storageKey);
-        
-        if (!hasSeenPopup) {
-          setShouldShowDialog(true);
-          setIsInfoPopupOpen(true);
-        }
-      }
-    }, 2000);
+    const currentPath = location.pathname;
+    const allowedPaths = ['/', '/simulacao'];
 
-    return () => clearTimeout(timer);
+    if (allowedPaths.includes(currentPath)) {
+      const storageKey = `popup_seen_${currentPath.replace('/', 'home')}`;
+      const hasSeenPopup = localStorage.getItem(storageKey);
+
+      if (!hasSeenPopup) {
+        setShouldShowDialog(true);
+        setIsInfoPopupOpen(true);
+      }
+    }
   }, [location.pathname]);
 
   const handleClosePopup = (e: React.MouseEvent<HTMLButtonElement>) => {

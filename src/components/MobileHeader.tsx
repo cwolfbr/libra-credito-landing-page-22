@@ -26,7 +26,9 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Info } from 'lucide-react';
+import Menu from 'lucide-react/dist/esm/icons/menu';
+import X from 'lucide-react/dist/esm/icons/x';
+import Info from 'lucide-react/dist/esm/icons/info';
 
 interface MobileHeaderProps {
   onPortalClientes: () => void;
@@ -62,21 +64,23 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({ onPortalClientes, onSimulat
 
       {/* Header principal */}
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-[52px]">
           <div className="flex items-center">
             <Link to="/" aria-label="Página inicial da Libra Crédito" className="tap-transparent">
-              <div className="h-16 overflow-hidden flex items-center">
+              <div className="h-[52px] overflow-hidden flex items-center">
                 <img
-                  src="/images/optimized/logo-header.webp"
+                  src="/images/logos/logo-header.webp"
                   alt="Libra Crédito"
-                  className="h-[85%] w-auto pointer-events-none max-w-none"
+                  className="header-logo"
+                  width="120"
+                  height="120"
                 />
               </div>
             </Link>
           </div>
 
           <div className="flex items-center gap-2">
-            <Button 
+            <Button
               className="min-h-[40px] px-4 text-sm font-semibold bg-red-600 text-white hover:bg-red-700 shadow-md"
               size="sm"
               onClick={onSimulateNow}

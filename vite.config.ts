@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import compression from "vite-plugin-compression";
+import { visualizer } from "rollup-plugin-visualizer";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -21,6 +22,11 @@ export default defineConfig(({ mode }) => ({
       algorithm: 'brotliCompress',
       ext: '.br',
       filter: /\.(js|css)$/i,
+    }),
+    process.env.STATS && visualizer({
+      filename: 'stats.html',
+      template: 'treemap',
+      open: true,
     })
   ].filter(Boolean),
   resolve: {
@@ -63,12 +69,14 @@ export default defineConfig(({ mode }) => ({
           'vendor-react': ['react', 'react-dom'],
           'vendor-router': ['react-router-dom'],
           'vendor-query': ['@tanstack/react-query'],
+          'vendor-supabase': ['@supabase/supabase-js'],
           'vendor-ui': [
-            '@radix-ui/react-dialog', 
+            '@radix-ui/react-dialog',
             '@radix-ui/react-select'
           ],
           'vendor-utils': ['axios', 'clsx', 'class-variance-authority'],
-          // Separar ícones para tree shaking
+          // Separar ícones para melhor tree shaking e parse mais rápido
+          'vendor-icons': ['lucide-react']
         },
       }
     }
@@ -76,13 +84,19 @@ export default defineConfig(({ mode }) => ({
   // Otimizações de dependências para lazy loading
   optimizeDeps: {
     include: [
-      'react', 
-      'react-dom', 
+      'react',
+      'react-dom',
       'react-router-dom',
       'clsx',
-      'class-variance-authority'
+      'class-variance-authority',
+      'lucide-react'
     ],
     // Excluir para lazy loading
     exclude: ['@supabase/supabase-js']
+  },
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: './src/setupTests.ts'
   }
   }));

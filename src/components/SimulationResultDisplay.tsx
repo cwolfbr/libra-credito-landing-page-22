@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-import { Calculator, CheckCircle, Users, Info, TrendingUp, Headphones } from 'lucide-react';
+import Calculator from 'lucide-react/dist/esm/icons/calculator';
+import CheckCircle from 'lucide-react/dist/esm/icons/check-circle';
+import Users from 'lucide-react/dist/esm/icons/users';
+import TrendingUp from 'lucide-react/dist/esm/icons/trending-up';
+import Headphones from 'lucide-react/dist/esm/icons/headphones';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import ContactForm from './ContactForm';
@@ -86,7 +90,7 @@ const SwitchPriceTip: React.FC<{ onSwitchToPrice?: () => void }> = ({
               className="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs py-1"
               size="sm"
             >
-              <TrendingUp className="w-3 h-3 mr-1" />
+              <TrendingUp className="w-3 h-3 mr-1 text-[#003399]" />
               Ver simulação PRICE
             </Button>
           )}
@@ -101,14 +105,14 @@ const SwitchPriceTip: React.FC<{ onSwitchToPrice?: () => void }> = ({
  */
 const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
   resultado,
-  valorEmprestimo,
-  valorImovel,
-  cidade,
+  valorEmprestimo: _valorEmprestimo,
+  valorImovel: _valorImovel,
+  cidade: _cidade,
   onNewSimulation,
   onSwitchToPrice
 }) => {
   const isMobile = useIsMobile();
-  const { valor, amortizacao, parcelas, primeiraParcela, ultimaParcela } = resultado;
+  const { valor, amortizacao, parcelas: _parcelas, primeiraParcela, ultimaParcela } = resultado;
   
   // Cálculo da renda mínima familiar
   const calcularRendaMinima = () => {
@@ -124,20 +128,21 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
   if (isMobile) {
     // Layout Mobile - Sucinto e direto
     return (
-      <div className="bg-green-600 rounded-xl p-4 text-libra-navy shadow-xl">
+      <div className="flex flex-col h-full bg-libra-green rounded-xl p-4 text-libra-navy shadow-xl">
+
         {/* Header compacto */}
-        <div className="flex items-center gap-2 mb-4">
-          <CheckCircle className="w-5 h-5 text-green-600" />
+        <div className="flex items-center gap-2 mb-2">
+          <CheckCircle className="w-5 h-5 text-white" />
           <div>
             <h3 className="font-bold text-white">Simulação Pronta!</h3>
           </div>
         </div>
 
         {/* Valor da parcela destacado */}
-        <div className="bg-green-50 rounded-lg p-4 mb-4 text-green-700">
+        <div className="bg-green-50 rounded-lg p-4 mb-2 text-libra-navy">
           {amortizacao === 'SAC' && primeiraParcela ? (
             <div>
-              <div className="text-xs font-medium mb-3 text-center">Sistema SAC - Parcelas Decrescentes</div>
+              <div className="text-xs font-medium mb-2 text-center">Sistema SAC - Parcelas Decrescentes</div>
               <div className="grid grid-cols-2 gap-3 text-center">
                 {/* Primeira parcela */}
                 <div className="bg-green-100 rounded-lg p-3 border border-green-200">
@@ -168,11 +173,11 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
         </div>
 
         {/* Renda mínima */}
-        <div className="bg-green-50 rounded-lg p-3 mb-4 text-center relative text-green-700">
+        <div className="bg-green-50 rounded-lg p-3 mb-2 text-center relative text-libra-navy">
           <div className="text-sm mb-1 flex items-center justify-center gap-1">
             <span className="font-bold">Renda necessária</span>
             <TooltipInfo content="Renda familiar podendo ser composta por até 4 pessoas">
-              <Users className="w-3 h-3" />
+              <Users className="w-3 h-3 text-[#003399]" />
             </TooltipInfo>
           </div>
           <div className="text-lg font-bold whitespace-nowrap">
@@ -186,7 +191,7 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
         </div>
 
         {/* Informações sobre taxa e custos */}
-        <div className="bg-green-100 rounded-lg p-3 mb-4 lg:mb-3 text-xs text-green-700">
+        <div className="bg-green-100 rounded-lg p-3 mb-2 lg:mb-2 text-xs text-[#003399]">
           <p className="mb-1">
             <strong>Parcelas calculadas</strong> pelo sistema {amortizacao} com taxa de juros de 1,19% a.m. + IPCA.
           </p>
@@ -196,9 +201,11 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
         </div>
 
         {/* CTA e Formulário compacto */}
-        <div className="bg-libra-blue text-white rounded-lg p-4 mb-4 lg:mb-3 flex items-center justify-center gap-2">
-          <Headphones className="w-5 h-5" />
-          <p className="text-lg font-bold">Gostou? Solicite uma consultoria gratuita!</p>
+        <div className="bg-libra-blue text-white rounded-lg p-4 mb-2 lg:mb-2 flex items-center justify-center gap-2">
+          <Headphones className="w-5 h-5 text-[#003399]" />
+        <p className="text-lg font-bold">
+          Gostou? <span className="block sm:inline">Solicite uma consultoria gratuita!</span>
+        </p>
         </div>
         
         <ContactForm
@@ -213,32 +220,33 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
   
   // Layout Desktop - Adaptação do Mobile na Lateral
   return (
-    <div className="bg-green-600 rounded-xl p-4 text-libra-navy shadow-xl">
+    <div className="flex flex-col h-full bg-libra-green rounded-xl p-4 text-libra-navy shadow-xl">
+
       {/* Header compacto */}
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-2">
       <div className="flex items-center gap-2">
-          <CheckCircle className="w-5 h-5 text-green-600" />
+          <CheckCircle className="w-5 h-5 text-white" />
           <h3 className="text-lg font-bold text-white">Simulação Pronta!</h3>
         </div>
         <Button
           onClick={onNewSimulation}
           variant="outline"
-          className="bg-white/10 border-white/30 text-white hover:bg-white/20 text-xs px-3 py-2"
+          className="bg-white/10 border-white/30 text-white hover:bg-white/20 text-xs px-2 py-1"
           size="sm"
         >
-          <Calculator className="w-3 h-3 mr-1" />
-          Nova Simulação
+          <Calculator className="w-3 h-3 mr-1 text-white" />
+          <span className="font-bold">Nova Simulação</span>
         </Button>
       </div>
 
       {/* Valor da parcela e renda mínima em layout compacto */}
-      <div className="mb-3 text-green-700">
+      <div className="mb-2 text-libra-navy">
         {amortizacao === 'SAC' && primeiraParcela ? (
-          <div className="bg-green-50 rounded-lg p-3">
+          <div className="bg-green-50 rounded-lg p-2">
             <div className="text-xs font-medium mb-2 text-center">Sistema SAC - Parcelas Decrescentes</div>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 gap-1">
               {/* Primeira parcela */}
-              <div className="text-center bg-green-100 rounded-lg p-2 border border-green-200">
+              <div className="text-center bg-green-100 rounded-lg p-1 border border-green-200">
                 <div className="text-xs font-medium mb-1">1ª Parcela</div>
                 <div className="text-lg font-bold">
                   R$ {primeiraParcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
@@ -246,7 +254,7 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
                 <div className="text-xs">Maior valor</div>
               </div>
               {/* Última parcela */}
-              <div className="text-center bg-green-100 rounded-lg p-2 border border-green-200">
+              <div className="text-center bg-green-100 rounded-lg p-1 border border-green-200">
                 <div className="text-xs font-medium mb-1">Última Parcela</div>
                 <div className="text-base font-bold">
                   R$ {ultimaParcela?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
@@ -254,11 +262,11 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
                 <div className="text-xs">Menor valor</div>
               </div>
               {/* Renda mínima */}
-              <div className="text-center rounded-lg p-2 border border-green-200">
+              <div className="text-center rounded-lg p-1 border border-green-200">
                 <div className="text-xs mb-1 flex items-center justify-center gap-1">
                   <span className="font-bold">Renda necessária</span>
                   <TooltipInfo content="Renda familiar podendo ser composta por até 4 pessoas">
-                    <Users className="w-3 h-3" />
+                    <Users className="w-3 h-3 text-[#003399]" />
                   </TooltipInfo>
                 </div>
                 <div className="text-base font-bold">
@@ -272,17 +280,18 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-2">
-            <div className="bg-green-50 rounded-lg p-4 text-center">
+            <div className="bg-green-50 rounded-lg p-3 text-center">
+
               <div className="text-xs mb-1">Parcela Fixa (PRICE)</div>
               <div className="text-xl lg:text-2xl font-bold">
                 R$ {valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
               </div>
             </div>
-            <div className="bg-green-50 rounded-lg p-4 text-center relative">
+            <div className="bg-green-50 rounded-lg p-3 text-center relative">
               <div className="text-xs mb-1 flex items-center justify-center gap-1">
                 <span className="font-bold">Renda necessária</span>
                 <TooltipInfo content="Renda familiar podendo ser composta por até 4 pessoas">
-                  <Users className="w-3 h-3" />
+                  <Users className="w-3 h-3 text-[#003399]" />
                 </TooltipInfo>
               </div>
               <div className="text-xl lg:text-2xl font-bold">
@@ -295,7 +304,7 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
 
 
       {/* Informações sobre taxa e custos */}
-      <div className="bg-green-100 rounded-lg p-3 mb-4 lg:mb-3 text-xs text-green-700">
+      <div className="bg-green-100 rounded-lg p-3 mb-2 lg:mb-2 text-xs text-[#003399]">
         <p className="mb-1">
           <strong>Parcelas calculadas</strong> pelo sistema {amortizacao} com taxa de juros de 1,19% a.m. + IPCA.
         </p>
@@ -305,9 +314,11 @@ const SimulationResultDisplay: React.FC<SimulationResultDisplayProps> = ({
       </div>
 
       {/* CTA e Formulário compacto */}
-      <div className="bg-libra-blue text-white rounded-lg p-4 mb-4 lg:mb-3 flex items-center justify-center gap-2">
-        <Headphones className="w-5 h-5" />
-        <p className="text-lg font-bold">Gostou? Solicite uma consultoria gratuita!</p>
+      <div className="bg-libra-blue text-white rounded-lg p-4 mb-2 lg:mb-2 flex items-center justify-center gap-2">
+        <Headphones className="w-5 h-5 text-[#003399]" />
+        <p className="text-lg font-bold">
+          Gostou? <span className="block sm:inline">Solicite uma consultoria gratuita!</span>
+        </p>
       </div>
       
       <ContactForm

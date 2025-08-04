@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Lock, User, Eye, EyeOff } from 'lucide-react';
+import Lock from 'lucide-react/dist/esm/icons/lock';
+import User from 'lucide-react/dist/esm/icons/user';
+import Eye from 'lucide-react/dist/esm/icons/eye';
+import EyeOff from 'lucide-react/dist/esm/icons/eye-off';
 
 interface AdminLoginProps {
   onLogin: (credentials: { email: string; password: string }) => void;
@@ -28,7 +31,7 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin, loading, error }) => {
         <div className="text-center">
           <div className="mx-auto h-16 w-auto flex justify-center mb-6">
             <img
-              src="/images/logos/libra-logo.png"
+              src="/images/logos/logo-azul.png"
               alt="Libra Crédito"
               className="h-16 w-auto"
               loading="lazy"

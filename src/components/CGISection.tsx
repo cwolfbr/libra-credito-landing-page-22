@@ -31,7 +31,7 @@ const CGISection: React.FC = () => {
         {/* Section Header */}
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">
-            Como usar seu <span className="text-green-500">CGI Libra?</span>
+            Como usar seu <span className="text-green-700">CGI Libra?</span>
           </h2>
           <p className="text-gray-600 text-lg">
             Literalmente do jeito que quiser!
@@ -78,7 +78,7 @@ const CGISection: React.FC = () => {
               Com o CGI Libra, você tem a liberdade de usar o crédito como desejar, 
               sempre com as melhores condições do mercado.
             </p>
-            <button className="bg-libra-blue hover:bg-blue-700 text-white font-bold px-8 py-3 rounded-full transition-colors">
+            <button className="bg-red-600 hover:bg-red-700 text-white font-bold px-8 py-3 rounded-full transition-colors">
               Simular Agora
             </button>
           </div>

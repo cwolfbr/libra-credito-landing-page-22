@@ -1,10 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { MapPin } from 'lucide-react';
-import { searchCities } from '@/utils/cityLtvService';
+import MapPin from 'lucide-react/dist/esm/icons/map-pin';
+import scrollToTarget from '@/utils/scrollToTarget';
+
+import { cn } from '@/lib/utils';
 
 interface CityAutocompleteProps {
   value?: string;
   onCityChange?: (city: string) => void;
+  isInvalid?: boolean;
 }
 
 /**
@@ -12,7 +15,7 @@ interface CityAutocompleteProps {
  * Searches city suggestions from LTV_Cidades.json as user types 
  * and only allows selection of valid cities.
  */
-const CityAutocomplete: React.FC<CityAutocompleteProps> = ({ value = '', onCityChange }) => {
+const CityAutocomplete: React.FC<CityAutocompleteProps> = ({ value = '', onCityChange, isInvalid = false }) => {
   const [inputValue, setInputValue] = useState<string>(value);
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -46,6 +49,7 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({ value = '', onCityC
 
     fetchTimeout.current = setTimeout(async () => {
       try {
+        const { searchCities } = await import('@/utils/cityLtvService');
         const results = await searchCities(inputValue);
         setSuggestions(results);
         setIsLoading(false);
@@ -65,19 +69,13 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({ value = '', onCityC
 
   // Function to scroll input to top of viewport
   const scrollToInput = (): void => {
-    if (inputRef.current && window.innerWidth < 768) { // Only on mobile
+    if (inputRef.current && window.innerWidth < 768) {
       setTimeout(() => {
         if (!inputRef.current) return;
-        const headerHeight = 80; // Approximate header height
-        const rect = inputRef.current.getBoundingClientRect();
-        const elementTop = rect.top + window.pageYOffset;
-        const targetPosition = elementTop - headerHeight;
-        
-        window.scrollTo({
-          top: targetPosition,
-          behavior: 'smooth'
-        });
-      }, 300); // Delay to allow keyboard to appear
+        const headerHeight = 80;
+        scrollToTarget(inputRef.current as HTMLElement, -headerHeight);
+
+      }, 300);
     }
   };
 
@@ -138,13 +136,13 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({ value = '', onCityC
 
   return (
     <div ref={containerRef} className="flex flex-col gap-1 relative">
-      <label className="text-xs font-medium text-green-500 mb-1">
+      <label className="text-xs font-medium text-green-700 mb-1">
         Selecione a cidade do imóvel a ser utilizado como garantia
       </label>
       <div className="flex items-center gap-2">
         {/* Icon */}
         <div className="bg-libra-light p-1.5 rounded-full flex-shrink-0">
-          <MapPin className="w-4 h-4 text-green-500" />
+          <MapPin className="w-4 h-4 text-green-700" />
         </div>
         <div className="flex-1 relative">
           {/* Input with green border */}
@@ -159,7 +157,12 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({ value = '', onCityC
             placeholder={
               inputValue.length < 2 ? 'Digite 2 ou mais caracteres' : 'Busque a cidade'
             }
-            className="text-sm w-full px-3 py-2 rounded-md border-2 border-green-500 focus:outline-none focus:border-green-600 transition-colors"
+            className={cn(
+              'text-sm w-full px-3 py-2 rounded-md border-2 focus:outline-none transition-colors scroll-mt-header',
+              isInvalid
+                ? 'border-red-500 focus:border-red-500'
+                : 'border-green-700 focus:border-green-800'
+            )}
           />
 
           {/* Suggestion dropdown - Fixed positioning for mobile */}
@@ -198,7 +201,7 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({ value = '', onCityC
                       }`}
                     >
                       <div className="flex items-center gap-2">
-                        <MapPin className="w-3 h-3 text-green-500 flex-shrink-0" />
+                        <MapPin className="w-3 h-3 text-green-700 flex-shrink-0" />
                         <span className="truncate">{city}</span>
                       </div>
                     </li>

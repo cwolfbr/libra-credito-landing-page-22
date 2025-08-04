@@ -14,7 +14,6 @@
  * - Compatibilidade total com componentes existentes
  */
 
-import { validateCity, validateLTV } from '@/utils/cityLtvService';
 import { validateEmail, validatePhone, formatPhone } from '@/utils/validations';
 import { supabaseApi, SimulacaoData, supabase } from '@/lib/supabase';
 
@@ -31,6 +30,7 @@ export interface SimulationInput {
   tipoAmortizacao: string;
   userAgent?: string;
   ipAddress?: string;
+  isRuralProperty?: boolean;
 }
 
 export interface SimulationResult {
@@ -54,6 +54,12 @@ export interface ContactFormInput {
   telefone: string;
   imovelProprio: 'proprio' | 'terceiro';
   observacoes?: string;
+  utm_source?: string | null;
+  utm_medium?: string | null;
+  utm_campaign?: string | null;
+  utm_term?: string | null;
+  utm_content?: string | null;
+  landing_page?: string | null;
 }
 
 // Classe principal do serviço local
@@ -71,6 +77,7 @@ export class LocalSimulationService {
       this.validateSimulationInput(input);
       
       // 2. Validar cidade e LTV
+      const { validateCity, validateLTV } = await import('@/utils/cityLtvService');
       const cityValidation = await validateCity(input.cidade);
       console.log('🏘️ Validação da cidade:', cityValidation);
       
@@ -84,9 +91,7 @@ export class LocalSimulationService {
       }
 
       // Para imóveis rurais (LTV 1), permitir cálculo mas com aviso
-      let isRuralProperty = false;
       if (cityValidation.status === 'rural_only') {
-        isRuralProperty = true;
         console.log('🏡 Imóvel rural detectado para', input.cidade);
       }
 
@@ -96,7 +101,7 @@ export class LocalSimulationService {
       if (cityValidation.status !== 'rural_only') {
         ltvValidation = await validateLTV(input.valorEmprestimo, input.valorImovel, input.cidade);
         console.log('📊 Validação de LTV:', ltvValidation);
-        
+
         if (!ltvValidation.valid) {
           // Retornar erro com sugestão de ajuste
           let errorMessage = ltvValidation.message;
@@ -106,10 +111,11 @@ export class LocalSimulationService {
           throw new Error(errorMessage);
         }
       } else {
-        // Para imóveis rurais (LTV 1), aplicar limite de 30% do valor do imóvel
+        // Para cidades rurais, sempre avisar sobre limite de 30%
         const ltvCalculado = (input.valorEmprestimo / input.valorImovel) * 100;
-        if (ltvCalculado > 30) {
-          const valorMaximo = Math.floor((input.valorImovel * 30) / 100);
+        const valorMaximo = Math.floor((input.valorImovel * 30) / 100);
+
+        if (!input.isRuralProperty || ltvCalculado > 30) {
           throw new Error(`Para a cidade ${input.cidade}, trabalhamos apenas com imóveis rurais com limite de empréstimo de até 30% do valor do imóvel. Valor máximo: R$ ${valorMaximo.toLocaleString('pt-BR')}`);
         }
       }
@@ -319,7 +325,13 @@ export class LocalSimulationService {
         email: input.email.trim().toLowerCase(),
         telefone: input.telefone.replace(/\D/g, ''), // Remove all non-digits
         imovelProprio: input.imovelProprio === 'proprio' ? 'Imóvel próprio' : 'Imóvel de terceiro',
-        aceitaPolitica: Boolean(input.aceitaPolitica)
+        aceitaPolitica: Boolean(input.aceitaPolitica),
+        utm_source: input.utm_source || null,
+        utm_medium: input.utm_medium || null,
+        utm_campaign: input.utm_campaign || null,
+        utm_term: input.utm_term || null,
+        utm_content: input.utm_content || null,
+        landing_page: input.landing_page || null
       };
 
       // Validar campos obrigatórios

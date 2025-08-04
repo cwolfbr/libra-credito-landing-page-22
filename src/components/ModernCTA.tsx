@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Zap, TrendingUp } from 'lucide-react';
+import ArrowRight from 'lucide-react/dist/esm/icons/arrow-right';
+import Zap from 'lucide-react/dist/esm/icons/zap';
+import TrendingUp from 'lucide-react/dist/esm/icons/trending-up';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ModernCTAProps {
@@ -62,14 +64,14 @@ const ModernCTA: React.FC<ModernCTAProps> = ({
               </div>
             </div>
 
-            {/* Título com efeito usando Montserrat */}
+            {/* Título com efeito usando Comfortaa */}
             <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl lg:text-4xl'} font-bold mb-4 text-white relative font-sans`}>
               <span className="bg-gradient-to-r from-white via-[#00ccff]/80 to-white bg-clip-text text-transparent">
                 {title}
               </span>
             </h2>
 
-            {/* Subtítulo usando Montserrat */}
+            {/* Subtítulo usando Comfortaa */}
             <p className={`${isMobile ? 'text-base px-2' : 'text-lg'} mb-8 text-gray-300 max-w-2xl mx-auto leading-relaxed font-sans`}>
               {subtitle}
             </p>
@@ -98,14 +100,13 @@ const ModernCTA: React.FC<ModernCTAProps> = ({
                 size={isMobile ? "default" : "lg"}
                 className={`
                   relative font-sans
-                  ${isMobile ? 'min-h-[48px] px-8' : 'min-h-[56px] px-12'} 
-                  bg-gradient-to-r from-[#00ccff] via-[#0099dd] to-[#003399]
-                  hover:from-[#00ddff] hover:via-[#00aaee] hover:to-[#0044aa]
+                  ${isMobile ? 'min-h-[48px] px-8' : 'min-h-[56px] px-12'}
+                  bg-red-600 hover:bg-red-700
                   text-white font-semibold
                   border-0 rounded-xl
                   shadow-2xl
                   transform transition-all duration-300
-                  hover:scale-105 hover:shadow-[#00ccff]/25
+                  hover:scale-105 hover:shadow-red-600/25
                   group
                 `}
               >
@@ -119,7 +120,7 @@ const ModernCTA: React.FC<ModernCTAProps> = ({
               </Button>
             </div>
 
-            {/* Texto de segurança usando Montserrat */}
+            {/* Texto de segurança usando Comfortaa */}
             <p className="mt-6 text-sm text-gray-400 font-sans">
               🔒 Simulação gratuita e sem compromisso • Dados protegidos
             </p>

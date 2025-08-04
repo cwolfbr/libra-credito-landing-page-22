@@ -1,6 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronUp, Facebook, Instagram, Linkedin, Youtube } from 'lucide-react';
+import ChevronUp from 'lucide-react/dist/esm/icons/chevron-up';
+import Facebook from 'lucide-react/dist/esm/icons/facebook';
+import Instagram from 'lucide-react/dist/esm/icons/instagram';
+import Linkedin from 'lucide-react/dist/esm/icons/linkedin';
+import Youtube from 'lucide-react/dist/esm/icons/youtube';
 import RASeal from '@/components/RASeal';
 import WaveSeparator from '@/components/ui/WaveSeparator';
 // import ImageOptimizer from '@/components/ImageOptimizer';
@@ -120,7 +124,7 @@ const Footer: React.FC = () => {
 
         {/* Informações Legais */}
         <div className="text-center border-t border-white/20 pt-6 md:pt-8">
-          <p className="text-sm md:text-base text-white">&copy; 2024 Libra Crédito. Todos os direitos reservados.</p>
+          <p className="text-sm md:text-base text-white">&copy; 2025 Libra Crédito. Todos os direitos reservados.</p>
           <p className="mt-2 text-sm md:text-base text-white/90">
             CNPJ: 34.308.576/0001-32 | Rua Eliseu Guilherme, 879, sala 01 – Jardim Sumaré, Ribeirão Preto – SP, 14025-020
           </p>

@@ -2,9 +2,19 @@ import React, { useEffect, useState, useMemo } from 'react';
 import MobileLayout from '@/components/MobileLayout';
 import WaveSeparator from '@/components/ui/WaveSeparator';
 import { Button } from '@/components/ui/button';
-import { TrendingDown, Clock, Calculator, ShieldCheck, Wallet, BadgeCheck, FileText, MessageCircle, CheckCircle, CreditCard } from 'lucide-react';
+import TrendingDown from 'lucide-react/dist/esm/icons/trending-down';
+import Clock from 'lucide-react/dist/esm/icons/clock';
+import Calculator from 'lucide-react/dist/esm/icons/calculator';
+import ShieldCheck from 'lucide-react/dist/esm/icons/shield-check';
+import Wallet from 'lucide-react/dist/esm/icons/wallet';
+import BadgeCheck from 'lucide-react/dist/esm/icons/badge-check';
+import FileText from 'lucide-react/dist/esm/icons/file-text';
+import MessageCircle from 'lucide-react/dist/esm/icons/message-circle';
+import CheckCircle from 'lucide-react/dist/esm/icons/check-circle';
+import CreditCard from 'lucide-react/dist/esm/icons/credit-card';
 import { useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
+import Seo from '@/components/Seo';
 
 const Vantagens: React.FC = () => {
   const navigate = useNavigate();
@@ -44,16 +54,13 @@ const Vantagens: React.FC = () => {
   // Cálculo do valor máximo para animação das barras
   const maxTaxa = useMemo(() => Math.max(...taxasJuros.map(item => item.taxa)), [taxasJuros]);
 
-  useEffect(() => {
-    // Meta Title otimizado para vantagens - 57 caracteres
-    document.title = "Vantagens Home Equity | Libra Crédito 1,19% a.m.";
-    
-    // Meta Description otimizada - 153 caracteres
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', 'Vantagens do crédito com garantia de imóvel: taxa mínima 1,19% a.m., até 180 meses, valores até 50% do imóvel. Compare as taxas agora.');
-    }
-  }, []);
+  const vantJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Vantagens do Crédito com Garantia de Imóvel',
+    description:
+      'Vantagens do crédito com garantia de imóvel: taxa mínima 1,19% a.m., até 180 meses, valores até 50% do imóvel. Compare as taxas agora.',
+  };
 
   // Animação das barras da tabela
   useEffect(() => {
@@ -176,6 +183,12 @@ const Vantagens: React.FC = () => {
 
   return (
     <MobileLayout>
+      <Seo
+        title="Vantagens Home Equity | Libra Crédito 1,19% a.m."
+        description="Vantagens do crédito com garantia de imóvel: taxa mínima 1,19% a.m., até 180 meses, valores até 50% do imóvel. Compare as taxas agora."
+        jsonLd={vantJsonLd}
+        schemaId="vantagens-schema"
+      />
       {/* Faixa Separadora Superior Invertida - Exatamente como na home */}
       <WaveSeparator variant="hero" height={isMobile ? "sm" : "md"} inverted />
       
@@ -255,7 +268,7 @@ const Vantagens: React.FC = () => {
                       <div className={`${isMobile ? 'h-2' : 'h-3'} rounded-full bg-gray-100 overflow-hidden`}>
                         <div
                           className={`h-full transition-all duration-500 ease-out ${
-                            item.destaque ? 'bg-libra-navy' : 'bg-red-400/70'
+                            item.destaque ? 'bg-libra-navy' : 'bg-red-600'
                           }`}
                           style={{
                             width: `${animatedValues[index] ?? 0}%`,
@@ -389,10 +402,10 @@ const Vantagens: React.FC = () => {
 
             {/* Call to action dentro da seção de passos */}
             <div className={`text-center ${isMobile ? 'mt-6' : 'mt-8'}`}>
-              <Button 
+              <Button
                 onClick={handleSimular}
                 size="lg"
-                className="bg-libra-blue text-white hover:bg-libra-navy font-semibold px-8 py-3 text-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5"
+                className="bg-red-600 text-white hover:bg-red-700 font-semibold px-8 py-3 text-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5"
               >
                 SIMULE GRÁTIS
               </Button>

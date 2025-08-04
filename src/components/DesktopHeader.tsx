@@ -26,7 +26,8 @@
 import React, { useState, useRef, useLayoutEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Info, X } from 'lucide-react';
+import Info from 'lucide-react/dist/esm/icons/info';
+import X from 'lucide-react/dist/esm/icons/x';
 // import ImageOptimizer from '@/components/ImageOptimizer';
 
 interface DesktopHeaderProps {
@@ -39,6 +40,7 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
   const _navigate = useNavigate();
   const [showBanner, setShowBanner] = useState(true);
   const headerRef = useRef<HTMLElement | null>(null);
+  const headerHeightRef = useRef(0);
 
   // Atualiza o offset do header reagindo a mudanças de tamanho
   useLayoutEffect(() => {
@@ -46,11 +48,13 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
     if (!header) return;
 
     const updateOffset = () => {
-      const { offsetHeight } = header;
-      document.documentElement.style.setProperty(
-        '--header-offset-desktop',
-        `${offsetHeight}px`
-      );
+      headerHeightRef.current = header.offsetHeight;
+      requestAnimationFrame(() => {
+        document.documentElement.style.setProperty(
+          '--header-offset-desktop',
+          `${headerHeightRef.current}px`
+        );
+      });
     };
 
     updateOffset();
@@ -102,17 +106,17 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
         <div className="border-b border-gray-100">
         <div className="container mx-auto px-4">
           {/* Height increased 20% for desktop */}
-          <div className="flex items-center justify-between h-[62px] lg:h-[82px]">
+          <div className="flex items-center justify-between h-[50px] lg:h-[66px]">
             {/* Logo e slogan */}
             <div className="flex items-center gap-6">
               <Link to="/" className="flex items-center tap-transparent">
-                <div className="h-[62px] lg:h-[82px] overflow-hidden flex items-center">
+                <div className="h-[50px] lg:h-[66px] overflow-hidden flex items-center">
                   <img
-                    src="/images/optimized/logo-header.webp"
+                    src="/images/logos/logo-header.webp"
                     alt="Libra Crédito - Home Equity com garantia de imóvel"
-                    className="h-[85%] w-auto pointer-events-none max-w-none"
-                    width="150"
-                    height="150"
+                    className="header-logo"
+                    width="120"
+                    height="120"
                   />
                 </div>
               </Link>
@@ -147,7 +151,7 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = ({ onPortalClientes, onSimul
                 Portal de Clientes
               </Button>
               
-              <Button 
+              <Button
                 onClick={onSimulateNow}
                 size="sm"
                 aria-label="Simular crédito agora"

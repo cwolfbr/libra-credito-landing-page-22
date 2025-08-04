@@ -204,7 +204,7 @@ export class WebhookService {
       let responseText = '';
       try {
         responseText = await response.text();
-      } catch (e) {
+      } catch {
         // Ignorar erro ao ler resposta
       }
       
@@ -269,7 +269,7 @@ export class WebhookService {
       email: 'teste@exemplo.com',
       telefone: '(11) 99999-9999',
       cidade: 'São Paulo',
-      valorEmprestimo: 100000,
+      valorEmprestimo: 75000,
       valorImovel: 300000,
       parcelas: 36,
       tipoAmortizacao: 'SAC',

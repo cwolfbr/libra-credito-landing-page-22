@@ -8,9 +8,10 @@ const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/src/styles/critical.css',
-  '/images/logos/libra-logo.png',
+  '/images/logos/logo-azul.png',
   '/images/logos/libra-icon.png',
-  '/favicon.ico',
+
+  '/logo-azul.ico',
   '/manifest.json'
 ];
 
@@ -226,7 +227,7 @@ function isStaticAsset(url) {
     url.pathname.endsWith('.js') ||
     url.pathname.endsWith('.woff2') ||
     url.pathname.endsWith('.woff') ||
-    url.pathname.includes('/favicon')
+    url.pathname.endsWith('.ico')
   );
 }
 
@@ -293,8 +294,8 @@ self.addEventListener('push', (event) => {
     const data = event.data.json();
     const options = {
       body: data.body,
-      icon: '/images/logos/libra-icon.png',
-      badge: '/images/logos/libra-icon.png',
+      icon: '/icon-192.png',
+      badge: '/icon-192.png',
       data: data.data
     };
     

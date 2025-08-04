@@ -1,6 +1,7 @@
 import React from 'react';
 import { Input } from '@/components/ui/input';
-import { AlertCircle, CheckCircle } from 'lucide-react';
+import AlertCircle from 'lucide-react/dist/esm/icons/alert-circle';
+import CheckCircle from 'lucide-react/dist/esm/icons/check-circle';
 import { cn } from '@/lib/utils';
 
 interface ValidatedInputProps {
@@ -60,7 +61,7 @@ export const ValidatedInput: React.FC<ValidatedInputProps> = ({
             {hasError ? (
               <AlertCircle className="h-4 w-4 text-red-500" />
             ) : (
-              <CheckCircle className="h-4 w-4 text-green-500" />
+              <CheckCircle className="h-4 w-4 text-green-700" />
             )}
           </div>
         )}

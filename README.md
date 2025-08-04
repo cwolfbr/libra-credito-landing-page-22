@@ -155,6 +155,7 @@ Altere esses campos na seção **"DFI, Prestamista e Taxa Administrativa"** e cl
 # Desenvolvimento
 npm run dev              # Servidor de desenvolvimento
 npm run build           # Build para produção
+npm run build:stats     # Gera stats.html com visualização do bundle
 npm run preview         # Preview do build
 
 # Qualidade de código
@@ -171,6 +172,18 @@ essas versões são servidas automaticamente quando presentes. Se utilizar outro
 provedor, verifique a documentação para habilitar o uso de arquivos
 pré-comprimidos e garanta que os cabeçalhos `Content-Encoding` sejam enviados
 corretamente.
+
+### Teste de performance (Lighthouse)
+Após rodar `npm run preview`, execute o Lighthouse para checar a performance:
+
+```bash
+npx lighthouse http://localhost:4173 --only-categories=performance --preset=desktop
+```
+
+Metas recomendadas:
+- **FCP ≤ 2.5 s**
+- **LCP ≤ 10 s**
+- **Speed Index ≤ 5 s**
 
 ---
 

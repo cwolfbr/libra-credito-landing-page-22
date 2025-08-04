@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { MapPin } from 'lucide-react';
+import MapPin from 'lucide-react/dist/esm/icons/map-pin';
 
 interface CityFieldProps {
   value: string;
@@ -16,7 +16,7 @@ const CityField: React.FC<CityFieldProps> = ({ value, onChange }) => {
       </label>
       <div className="flex items-center gap-2">
         <div className="bg-libra-light p-1.5 rounded-full flex-shrink-0">
-          <MapPin className="w-4 h-4 text-green-500" />
+          <MapPin className="w-4 h-4 text-green-700" />
         </div>
         <div className="flex-1">
           <Select value={value} onValueChange={onChange}>

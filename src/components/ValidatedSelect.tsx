@@ -6,7 +6,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { AlertCircle, CheckCircle } from 'lucide-react';
+import AlertCircle from 'lucide-react/dist/esm/icons/alert-circle';
+import CheckCircle from 'lucide-react/dist/esm/icons/check-circle';
 import { cn } from '@/lib/utils';
 
 interface ValidatedSelectProps {
@@ -66,7 +67,7 @@ export const ValidatedSelect: React.FC<ValidatedSelectProps> = ({
                 {hasError ? (
                   <AlertCircle className="h-4 w-4 text-red-500" />
                 ) : (
-                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  <CheckCircle className="h-4 w-4 text-green-700" />
                 )}
               </div>
             )}

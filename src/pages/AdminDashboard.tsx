@@ -32,7 +32,23 @@ import ImageUploader from '@/components/ImageUploader';
 import StorageStats from '@/components/StorageStats';
 import SupabaseDiagnostics from '@/components/SupabaseDiagnostics';
 import { SimulacaoData, ParceiroData } from '@/lib/supabase';
-import { Eye, Download, RefreshCw, Users, Calculator, TrendingUp, Clock, Handshake, UserCheck, Building, FileText, Settings, Plus, Edit, Trash2, Save, LogOut } from 'lucide-react';
+import Eye from 'lucide-react/dist/esm/icons/eye';
+import Download from 'lucide-react/dist/esm/icons/download';
+import RefreshCw from 'lucide-react/dist/esm/icons/refresh-cw';
+import Users from 'lucide-react/dist/esm/icons/users';
+import Calculator from 'lucide-react/dist/esm/icons/calculator';
+import TrendingUp from 'lucide-react/dist/esm/icons/trending-up';
+import Clock from 'lucide-react/dist/esm/icons/clock';
+import Handshake from 'lucide-react/dist/esm/icons/handshake';
+import UserCheck from 'lucide-react/dist/esm/icons/user-check';
+import Building from 'lucide-react/dist/esm/icons/building';
+import FileText from 'lucide-react/dist/esm/icons/file-text';
+import Settings from 'lucide-react/dist/esm/icons/settings';
+import Plus from 'lucide-react/dist/esm/icons/plus';
+import Edit from 'lucide-react/dist/esm/icons/edit';
+import Trash2 from 'lucide-react/dist/esm/icons/trash-2';
+import Save from 'lucide-react/dist/esm/icons/save';
+import LogOut from 'lucide-react/dist/esm/icons/log-out';
 import { formatBRL } from '@/utils/formatters';
 
 const AdminDashboard: React.FC = () => {
@@ -74,7 +90,7 @@ const AdminDashboard: React.FC = () => {
   
   // Estados para configurações do simulador interno
   const [simulationConfig, setSimulationConfig] = useState({
-    valorMinimo: 100000,
+    valorMinimo: 75000,
     valorMaximo: 5000000,
     parcelasMin: 36,
     parcelasMax: 180,
@@ -165,7 +181,7 @@ const AdminDashboard: React.FC = () => {
       if (storedConfig) {
         const config = JSON.parse(storedConfig);
         setSimulationConfig({
-          valorMinimo: config.valorMinimo || 100000,
+          valorMinimo: config.valorMinimo || 75000,
           valorMaximo: config.valorMaximo || 5000000,
           parcelasMin: config.parcelasMin || 36,
           parcelasMax: config.parcelasMax || 180,
@@ -1317,7 +1333,7 @@ Escreva seu conteúdo aqui...
                             alt={post.title} 
                             className="w-20 h-20 object-cover rounded-lg border"
                             onError={(e) => {
-                              (e.target as HTMLImageElement).src = '/images/blog/capital-giro.jpg';
+                              (e.target as HTMLImageElement).src = 'https://placehold.co/600x400?text=Blog+Image';
                             }}
                           />
                           <div className="flex-1 min-w-0">
