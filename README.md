@@ -11,6 +11,9 @@ Landing page moderna para **Libra Crédito** com sistema completo de:
 - ✅ **Integração Supabase + Blog**
 - ✅ **Formulário de parceiros**
 
+### 🧑‍💻 Documentação para Desenvolvedores
+- Consulte o [Guia de Desenvolvimento](docs/DEVELOPER_GUIDE.md) para detalhes de arquitetura, convenções e fluxo de contribuição.
+
 ---
 
 ## 🚀 Setup Rápido (5 minutos)
