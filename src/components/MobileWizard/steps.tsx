@@ -14,7 +14,7 @@ export const ValueStep: React.FC<WizardStepProps> = ({ data, updateData, errors 
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 wizard-card">
       <div className="text-center mb-8">
         <h3 className="text-2xl font-bold text-libra-blue mb-2">
           Quanto você precisa?
@@ -24,19 +24,19 @@ export const ValueStep: React.FC<WizardStepProps> = ({ data, updateData, errors 
         </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        {values.map((option) => (
-          <button
-            key={option.value}
-            onClick={() => updateData({ loanAmount: option.value })}
-            className={cn(
-              "p-6 rounded-xl border-2 transition-all duration-200",
-              "hover:border-libra-blue hover:shadow-md",
-              "focus:outline-none focus:ring-2 focus:ring-libra-blue focus:ring-offset-2",
-              data.loanAmount === option.value
-                ? "border-libra-blue bg-blue-50 shadow-md"
-                : "border-gray-200 bg-white"
-            )}
+        <div className="grid grid-cols-2 gap-3">
+          {values.map((option) => (
+            <button
+              key={option.value}
+              onClick={() => updateData({ loanAmount: option.value })}
+              className={cn(
+                "p-6 rounded-xl border-2 transition-all duration-200 interactive-libra",
+                "hover:border-libra-blue",
+                "focus:outline-none focus:ring-2 focus:ring-libra-blue focus:ring-offset-2",
+                data.loanAmount === option.value
+                  ? "border-libra-blue bg-blue-50 shadow-libra-glow"
+                  : "border-gray-200 bg-white"
+              )}
           >
             <span className={cn(
               "text-lg font-semibold block",
@@ -89,7 +89,7 @@ export const TermStep: React.FC<WizardStepProps> = ({ data, updateData }) => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 wizard-card">
       <div className="text-center mb-8">
         <h3 className="text-2xl font-bold text-libra-blue mb-2">
           Em quantos meses?
@@ -105,11 +105,11 @@ export const TermStep: React.FC<WizardStepProps> = ({ data, updateData }) => {
             key={term.value}
             onClick={() => updateData({ loanTerm: term.value })}
             className={cn(
-              "w-full p-4 rounded-xl border-2 transition-all duration-200 text-left",
-              "hover:border-libra-blue hover:shadow-md",
+              "w-full p-4 rounded-xl border-2 transition-all duration-200 text-left interactive-libra",
+              "hover:border-libra-blue",
               "focus:outline-none focus:ring-2 focus:ring-libra-blue focus:ring-offset-2",
               data.loanTerm === term.value
-                ? "border-libra-blue bg-blue-50 shadow-md"
+                ? "border-libra-blue bg-blue-50 shadow-libra-glow"
                 : "border-gray-200 bg-white"
             )}
           >
@@ -167,7 +167,7 @@ export const ContactStep: React.FC<WizardStepProps> = ({ data, updateData, error
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 wizard-card">
       <div className="text-center mb-8">
         <h3 className="text-2xl font-bold text-libra-blue mb-2">
           Como podemos te contatar?
@@ -262,7 +262,7 @@ export const SummaryStep: React.FC<WizardStepProps> = ({ data }) => {
   const totalInterest = totalPayment - data.loanAmount;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 wizard-card">
       <div className="text-center mb-8">
         <h3 className="text-2xl font-bold text-libra-blue mb-2">
           Sua simulação está pronta!

@@ -333,3 +333,28 @@ html {
 .interactive-libra:active {
   transform: translateY(0) scale(0.98);
 }
+
+/* Wizard Premium Styles */
+.wizard-card {
+  @apply card-minimal p-4 md:p-6;
+}
+
+.wizard-progress {
+  @apply h-1 bg-gray-100 rounded-full overflow-hidden;
+}
+
+.wizard-progress-bar {
+  @apply h-full bg-gradient-to-r from-libra-navy via-libra-blue to-libra-cyan;
+}
+
+.wizard-indicator {
+  @apply h-2 rounded-full transition-all duration-300 bg-gray-300;
+}
+
+.wizard-indicator-active {
+  @apply w-8 bg-libra-cyan shadow-libra-glow;
+}
+
+.wizard-indicator-complete {
+  @apply w-2 bg-libra-blue;
+}
