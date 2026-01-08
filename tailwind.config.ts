@@ -106,6 +106,7 @@ export default {
 					gold: '#D4AF37',
 					silver: '#F0F0F0',
 					blue: '#003399', // Cor de enfase alterada
+					'blue-light': '#e6eefc',
 					light: '#F8F9FA'
 				}
 			},

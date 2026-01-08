@@ -395,11 +395,11 @@ const SimulationForm: React.FC = () => {
     <div
       className={`container mx-auto px-3 ${
         isMobile ? 'py-2 pb-4' : 'py-2 min-h-[calc(100vh-4rem)]'
-      } ${showSideComplement ? 'max-w-6xl' : 'max-w-xl'}`}
+      } ${showSideComplement ? 'max-w-6xl' : 'max-w-xl'} bg-gradient-to-b from-libra-blue-light to-white`}
     >
       <div className={`${showSideComplement ? 'grid grid-cols-1 lg:grid-cols-2 gap-6' : ''}`}>
         {/* Formulário de Simulação */}
-        <Card className="shadow-lg">
+        <Card>
           <CardHeader className="text-center pb-2">
             <CardTitle className="text-lg md:text-xl font-bold text-green-500 mb-1">
               Sua simulação em um clique!
