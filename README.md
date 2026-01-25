@@ -81,6 +81,8 @@ npm run dev
 
 - **Frontend:** React 18 + TypeScript + Vite
 - **Styling:** Tailwind CSS + shadcn/ui
+  - CSS stylesheets are converted to load asynchronously during the build
+    to avoid render blocking without altering the layout.
 - **Backend:** Supabase (PostgreSQL + Auth + Storage)
 - **Analytics:** Custom tracking system
 - **Deploy:** Vercel (configurado)
